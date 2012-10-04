@@ -35,6 +35,11 @@ class GitlabCi < Sinatra::Base
 
     haml :index
   end
+  
+  get '/projects/new' do
+    # add project
+    haml :new
+  end
 
   get '/projects/:name' do
     @project = Project.find_by_name(params[:name])
@@ -51,11 +56,6 @@ class GitlabCi < Sinatra::Base
 
   get '/:id/status' do
     # build status badge
-  end
-
-  get '/projects/new' do
-    # add project
-    haml :new
   end
 
   post '/projects' do
