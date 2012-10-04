@@ -6,8 +6,9 @@ Bundler.require
 require 'sinatra'
 require 'sinatra/activerecord'
 
-$: << File.dirname(__FILE__) + "/models"
+$: << File.dirname(__FILE__) + "/lib"
 require 'project'
+require 'runner'
 
 class GitlabCi < Sinatra::Base
   register Sinatra::ActiveRecordExtension
@@ -18,6 +19,10 @@ class GitlabCi < Sinatra::Base
 
   get '/' do
     @projects = Project.all
+
+    @projects.each do |project|
+      Runner.new(project).run
+    end
 
     haml :index
   end
@@ -36,6 +41,13 @@ class GitlabCi < Sinatra::Base
   end
 
   post '/projects' do
-    # add project
+    project_params = params.select {|k,v| Project.attribute_names.include?(k.to_s)}
+    @project = Project.new(project_params)
+
+    if @project.save
+      redirect '/'
+    else
+      haml :new
+    end
   end
 end

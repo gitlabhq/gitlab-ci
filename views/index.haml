@@ -1,12 +1,15 @@
 %h1 Projects:
 
 - @projects.each do |project|
-  - if project.status
+  - if project.status == 'success'
     .alert.alert-success
       %h2 #{project.name} : SUCCESS
-  - else
+  - elsif project.status == 'fail'
     .alert.alert-error
       %h2 #{project.name} : FAIL
+  - else
+    .alert
+      %h2 #{project.name} : UNDEFINED
 
 - if @projects.empty?
   .alert
