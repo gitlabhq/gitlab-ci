@@ -16,4 +16,8 @@ class Project < ActiveRecord::Base
   def last_build
     builds.last
   end
+
+  def human_status
+    status
+  end
 end
