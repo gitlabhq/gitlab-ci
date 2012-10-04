@@ -1,5 +1,10 @@
 class Runner
   attr_accessor :project, :build
+  @queue = :runner
+
+  def self.perform(project_id)
+    new(Project.find(project_id)).run
+  end
 
   def initialize(project)
     @project = project
