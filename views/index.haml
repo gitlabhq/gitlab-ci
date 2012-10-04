@@ -1,0 +1,10 @@
+%h1 Projects:
+
+- @projects.each do |project|
+  - if project.status
+    .alert.alert-success
+      %h2 #{project.name} : SUCCESS
+  - else
+    .alert.alert-error
+      %h2 #{project.name} : FAIL
+

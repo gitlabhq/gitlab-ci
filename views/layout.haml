@@ -1,0 +1,16 @@
+!!! 5
+%html{ lang: "en"}
+  %link{:href => "/bootstrap/css/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "/custom.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
+  %script{:src => "/bootstrap/js/bootstrap.min.js", :type => "text/javascript"}
+  %body
+    .navbar
+      .navbar-inner
+        %a.brand{:href => "#"} GitLab CI
+        %ul.nav
+          %li.active
+            %a{:href => "#"} Home
+          %li
+            %a{:href => "#"} Add Project
+    .container
+      = yield
