@@ -13,7 +13,7 @@ class Runner
   def run
     @build = Build.create(
       project_id: project.id,
-      status: 'undefined'
+      status: 'runing'
     )
 
     trace = ''

@@ -9,6 +9,20 @@ module Helper
     end
   end
 
+  def build_status_class build
+    if build.status == 'success'
+      'label-success'
+    elsif build.status == 'fail'
+      'label-important'
+    else
+      ''
+    end
+  end
+
+  def run_project_path project
+    "/projects/#{project.name}/run"
+  end
+
   def project_path project
     "/projects/#{project.name}"
   end

@@ -7,6 +7,8 @@ require 'sinatra'
 require 'sinatra/base'
 require "sinatra/reloader"
 require 'sinatra/activerecord'
+require 'will_paginate'
+require 'will_paginate/active_record'
 
 $: << File.dirname(__FILE__) + "/lib"
 require 'project'
@@ -17,10 +19,11 @@ class GitlabCi < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end
+  register Sinatra::ActiveRecordExtension
 
   include Helper
+  include WillPaginate::Sinatra::Helpers
 
-  register Sinatra::ActiveRecordExtension
 
   set :haml, format: :html5
   set layout: true
@@ -39,7 +42,7 @@ class GitlabCi < Sinatra::Base
 
   get '/projects/:name' do
     @project = Project.find_by_name(params[:name])
-    @builds = @project.builds.order('id DESC')
+    @builds = @project.builds.order('id DESC').paginate(:page => params[:page], :per_page => 30)
 
     haml :project
   end
