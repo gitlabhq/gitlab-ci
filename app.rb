@@ -30,7 +30,7 @@ class GitlabCi < Sinatra::Base
     @projects = Project.all
 
     @projects.each do |project|
-      Runner.new(project).run
+      Resque.enqueue(Runner, project.id)
     end
 
     haml :index
