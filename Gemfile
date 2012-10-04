@@ -11,6 +11,7 @@ gem 'resque'
 gem 'foreman'
 gem 'pry'
 gem 'stamp'
+gem 'will_paginate', '~> 3.0'
 
 # DB
 gem 'sqlite3'

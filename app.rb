@@ -7,6 +7,8 @@ require 'sinatra'
 require 'sinatra/base'
 require "sinatra/reloader"
 require 'sinatra/activerecord'
+require 'will_paginate'
+require 'will_paginate/active_record'
 
 $: << File.dirname(__FILE__) + "/lib"
 require 'project'
@@ -17,10 +19,11 @@ class GitlabCi < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end
+  register Sinatra::ActiveRecordExtension
 
   include Helper
+  include WillPaginate::Sinatra::Helpers
 
-  register Sinatra::ActiveRecordExtension
 
   set :haml, format: :html5
   set layout: true
@@ -29,13 +32,9 @@ class GitlabCi < Sinatra::Base
   get '/' do
     @projects = Project.all
 
-    @projects.each do |project|
-      Resque.enqueue(Runner, project.id)
-    end
-
     haml :index
   end
-  
+
   get '/projects/new' do
     # add project
     haml :new
@@ -43,12 +42,13 @@ class GitlabCi < Sinatra::Base
 
   get '/projects/new' do
     # add project
+
     haml :new
   end
 
   get '/projects/:name' do
     @project = Project.find_by_name(params[:name])
-    @builds = @project.builds.order('id DESC')
+    @builds = @project.builds.order('id DESC').paginate(:page => params[:page], :per_page => 30)
 
     haml :project
   end
@@ -57,6 +57,13 @@ class GitlabCi < Sinatra::Base
     @project = Project.find_by_name(params[:name])
 
     haml :edit
+  end
+
+  get '/projects/:name/run' do
+    @project = Project.find_by_name(params[:name])
+    Resque.enqueue(Runner, @project.id)
+
+    redirect project_path @project
   end
 
   get '/:id/status' do

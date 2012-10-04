@@ -19,6 +19,10 @@ module Helper
     end
   end
 
+  def run_project_path project
+    "/projects/#{project.name}/run"
+  end
+
   def project_path project
     "/projects/#{project.name}"
   end

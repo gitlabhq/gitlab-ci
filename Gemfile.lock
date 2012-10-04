@@ -68,6 +68,7 @@ GEM
     tzinfo (0.3.33)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    will_paginate (3.0.1)
 
 PLATFORMS
   ruby
@@ -84,3 +85,4 @@ DEPENDENCIES
   sqlite3
   stamp
   thin
+  will_paginate (~> 3.0)

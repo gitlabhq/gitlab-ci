@@ -1,4 +1,10 @@
-%h3 Project: #{@project.name}
+%h3
+  Project: #{@project.name}
+  .right
+    %a.btn.btn-small{href: run_project_path(@project)}  Run
+    %a.btn.btn-small{href: edit_project_path(@project)}
+      %i.icon-edit
+      Edit
 #accordion2.accordion
   - @builds.each do |build|
     .accordion-group
@@ -16,6 +22,7 @@
             = preserve do
               = build.trace
 
+  = will_paginate @builds
 - if @builds.empty?
   .alert
     No builds yet
