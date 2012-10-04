@@ -1,15 +1,16 @@
 %h1 Projects:
-
 - @projects.each do |project|
-  - if project.status == 'success'
-    .alert.alert-success
-      %h2 #{project.name} : SUCCESS
-  - elsif project.status == 'fail'
-    .alert.alert-error
-      %h2 #{project.name} : FAIL
-  - else
-    .alert
-      %h2 #{project.name} : UNDEFINED
+  %div.alert{class: project_statuc_class(project) }
+    .row
+      .span6
+        %h4
+          #{project.name} : #{project.human_status}
+      .span5
+        %a.btn{href: project_path(project)} Builds
+        %a.btn Run
+        %a.btn{href: edit_project_path(project)}
+          %i.icon-edit
+          Edit
 
 - if @projects.empty?
   .alert
