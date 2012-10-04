@@ -1,16 +1,17 @@
-%h1 Projects:
+%h2 Projects:
+%br
 - @projects.each do |project|
-  %div.alert{class: project_statuc_class(project) }
-    .row
-      .span6
-        %h4
-          #{project.name} : #{project.human_status}
-      .span5
-        %a.btn{href: project_path(project)} Builds
-        %a.btn Run
-        %a.btn{href: edit_project_path(project)}
-          %i.icon-edit
-          Edit
+  .project_box
+    .title
+      %strong= project.name
+    .alert{class: project_statuc_class(project) }
+      #{project.human_status}
+    .body
+      %a.btn.btn-small{href: project_path(project)} Builds
+      %a.btn.btn-small Run
+      %a.btn.btn-small{href: edit_project_path(project)}
+        %i.icon-edit
+        Edit
 
 - if @projects.empty?
   .alert

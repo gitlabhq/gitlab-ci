@@ -1,18 +1,20 @@
-%h1= @project.name
-
+%h3 Project: #{@project.name}
 #accordion2.accordion
   - @builds.each do |build|
     .accordion-group
       .accordion-heading
-        %a.accordion-toggle{"data-parent" => "#accordion2", "data-toggle" => "collapse", :href => "#collapseOne"}
-          %code= build.id
+        %a.accordion-toggle{"data-parent" => "#accordion2", "data-toggle" => "collapse", :href => "#build_#{build.id}"}
+          %span.label{class: build_status_class(build)}= build.status
+          &rarr;
+          %strong Build #{build.id}
           = build.commit_ref
-          %span= build.status
-          %span= build.updated_at
-      #collapseOne.accordion-body.collapse
+          .right
+            %span= build.updated_at.stamp('19:00 Aug 27')
+      .accordion-body.collapse{id: "build_#{build.id}"}
         .accordion-inner
-          %pre
-            = build.trace
+          %pre.trace
+            = preserve do
+              = build.trace
 
 - if @builds.empty?
   .alert
