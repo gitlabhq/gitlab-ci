@@ -29,13 +29,9 @@ class GitlabCi < Sinatra::Base
   get '/' do
     @projects = Project.all
 
-    @projects.each do |project|
-      Resque.enqueue(Runner, project.id)
-    end
-
     haml :index
   end
-  
+
   get '/projects/new' do
     # add project
     haml :new
@@ -54,8 +50,12 @@ class GitlabCi < Sinatra::Base
     haml :edit
   end
 
-  get '/:id/status' do
-    # build status badge
+  #TODO build_id - must be commit_ref
+  get '/project/:name/:build_id/status' do
+    @project = Project.find_by_name(params[:name])
+    @build = @project.builds.find(params[:build_id])
+
+    haml :status
   end
 
   post '/projects' do
@@ -63,6 +63,7 @@ class GitlabCi < Sinatra::Base
     @project = Project.new(project_params)
 
     if @project.save
+      Resque.enqueue(Runner, @project.id)
       redirect '/'
     else
       haml :new
