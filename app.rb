@@ -28,6 +28,8 @@ class GitlabCi < Sinatra::Base
   end
 
   get '/:id' do
+    @project = Project.find_by_name(params[:id])
+    @builds = @project.builds.order('id DESC')
     haml :project
   end
 
