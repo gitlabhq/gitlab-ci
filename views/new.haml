@@ -1,0 +1,13 @@
+%form.form-horizontal{ action: '/projects' }
+  .control-group
+    %label{for: 'name'} Name
+    %input{type: 'text', name: 'name', class: 'input-xxlarge'}
+  .control-group
+    %label{for: 'path'} Path
+    %input{type: 'text', name: 'path', class: 'input-xxlarge'}
+  .control-group
+    %label{for: 'scripts'} Scripts
+    %textarea{name: 'scripts', class: 'input-xxlarge'}
+
+  %hr
+  %input.btn{type: 'submit', value: 'Save'}

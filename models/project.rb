@@ -1,7 +1,5 @@
-class Project
-  attr_accessor :status, :name
+class Project < ActiveRecord::Base
+  attr_accessible :name, :path, :scripts
 
-  def initialize(name, status)
-    @name, @status = name, status
-  end
+  validates_presence_of :name, :path, :scripts
 end

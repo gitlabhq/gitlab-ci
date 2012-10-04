@@ -3,19 +3,22 @@ require 'rubygems'
 require 'bundler'
 Bundler.require
 
+require 'sinatra'
+require 'sinatra/activerecord'
+
 $: << File.dirname(__FILE__) + "/models"
 require 'project'
 
 class GitlabCi < Sinatra::Base
+  register Sinatra::ActiveRecordExtension
+
   set :haml, format: :html5
   set layout: true
+  set :database, 'sqlite3:///ci.db'
 
   get '/' do
-    @projects = [
-      Project.new('GitLab', true),
-      Project.new('Diaspora', false),
-      Project.new('Rails', true)
-    ]
+    @projects = Project.all
+
     haml :index
   end
 
@@ -27,7 +30,12 @@ class GitlabCi < Sinatra::Base
     # build status badge
   end
 
-  post '/project' do
+  get '/projects/new' do
+    # add project
+    haml :new
+  end
+
+  post '/projects' do
     # add project
   end
 end
