@@ -53,10 +53,9 @@ class GitlabCi < Sinatra::Base
     haml :edit
   end
 
-  #TODO build_id - must be commit_ref
-  get '/project/:name/:build_id/status' do
+  get '/project/:name/status' do
     @project = Project.find_by_name(params[:name])
-    @build = @project.builds.find(params[:build_id])
+    @build = @project.builds.last
 
     haml :status
   end
