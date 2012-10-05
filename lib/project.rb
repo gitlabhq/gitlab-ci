@@ -7,6 +7,18 @@ class Project < ActiveRecord::Base
 
   has_many :builds
 
+  def register_build opts={}
+    default_opts = {
+      project_id: self.id,
+      status: 'runing'
+    }
+
+    allowed_opts = {}
+    allowed_opts[:commit_ref] = opts[:after]
+
+    @build = Build.create(default_opts.merge!(allowed_opts))
+  end
+
   def status
     if last_build
       last_build.status

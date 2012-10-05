@@ -49,7 +49,9 @@ class GitlabCi < Sinatra::Base
 
   get '/projects/:name/run' do
     @project = Project.find_by_name(params[:name])
-    Resque.enqueue(Runner, @project.id)
+    @build = @project.register_build
+
+    Resque.enqueue(Runner, @build.id)
 
     redirect project_path(@project)
   end
@@ -58,13 +60,6 @@ class GitlabCi < Sinatra::Base
     @project = Project.find_by_name(params[:name])
 
     haml :edit
-  end
-
-  get '/project/:name/status' do
-    @project = Project.find_by_name(params[:name])
-    @build = @project.builds.last
-
-    haml :status
   end
 
   post '/projects' do
@@ -89,5 +84,12 @@ class GitlabCi < Sinatra::Base
     else
       haml :new
     end
+  end
+
+  post '/projects/:name/build' do
+    @project = Project.find_by_name(params[:name])
+    @build = @project.register_build(params)
+
+    Resque.enqueue(Runner, @build.id)
   end
 end

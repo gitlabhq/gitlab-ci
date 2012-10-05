@@ -7,7 +7,8 @@
     %input{type: 'text', name: 'path', class: 'input-xxlarge', value: @project.path}
   .control-group
     %label{for: 'scripts'} Scripts
-    %textarea{name: 'scripts', class: 'input-xxlarge', value: @project.scripts}
+    %textarea{name: 'scripts', class: 'input-xxlarge'}
+      = @project.scripts
 
   %hr
   %input.btn{type: 'submit', value: 'Save'}

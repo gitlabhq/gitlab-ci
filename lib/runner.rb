@@ -2,28 +2,29 @@ class Runner
   attr_accessor :project, :build
   @queue = :runner
 
-  def self.perform(project_id)
-    new(Project.find(project_id)).run
+  def self.perform(build_id)
+    new(Build.find(build_id)).run
   end
 
-  def initialize(project)
-    @project = project
+  def initialize(build)
+    @build = build
+    @project = build.project
   end
 
   def run
-    @build = Build.create(
-      project_id: project.id,
-      status: 'runing'
-    )
-
     trace = ''
     path = project.path
-    project.scripts.each_line do |line|
+    commands = project.scripts
+    commands.each_line do |line|
+      line = line.strip
+      trace << "\n"
       cmd = "cd #{path} && " + line
+      trace << cmd
+      trace << "\n"
       trace << `#{cmd}`
 
       unless $?.exitstatus == 0
-        @build.update_attributes(
+        build.update_attributes(
           trace: trace,
           status: 'fail'
         )
@@ -32,7 +33,7 @@ class Runner
       end
     end
 
-    @build.update_attributes(
+    build.update_attributes(
       trace: trace,
       status: 'success'
     )
