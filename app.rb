@@ -28,7 +28,7 @@ class GitlabCi < Sinatra::Base
   set :haml, format: :html5
   set layout: true
   set :database, 'sqlite3:///ci.db'
-  set :database_extras, timeout: 1000
+  set :database_extras, timeout: 4000
 
   get '/' do
     @projects = Project.all
