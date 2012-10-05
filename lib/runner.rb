@@ -1,3 +1,4 @@
+require 'open3'
 class Runner
   attr_accessor :project, :build
   @queue = :runner
@@ -15,21 +16,39 @@ class Runner
     trace = ''
     path = project.path
     commands = project.scripts
-    commands.each_line do |line|
-      line = line.strip
-      trace << "\n"
-      cmd = "cd #{path} && " + line
-      trace << cmd
-      trace << "\n"
-      trace << `#{cmd}`
 
-      unless $?.exitstatus == 0
-        build.update_attributes(
-          trace: trace,
-          status: 'fail'
-        )
+    Dir.chdir(path) do
+      commands.each_line do |line|
+        line = line.strip
+        trace << "\n"
+        cmd = line
+        trace << cmd
+        trace << "\n"
 
-        return false
+        vars = {
+          "BUNDLE_GEMFILE" => nil,
+          "BUNDLE_BIN_PATH" => nil,
+          "RUBYOPT" => nil,
+          "rvm_" => nil,
+          "RACK_ENV" => nil,
+          "RAILS_ENV" => nil,
+          "PWD" => path
+        }
+        options = {
+          :chdir => path
+        }
+
+        stdin, stdout, stderr = Open3.popen3(vars, cmd, options)
+        trace << stdout.read
+
+        unless $?.exitstatus == 0
+          build.update_attributes(
+            trace: trace,
+            status: 'fail'
+          )
+
+          return false
+        end
       end
     end
 
