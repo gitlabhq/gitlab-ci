@@ -1,1 +1,1 @@
-QUEUE=* bundle exec rake resque:work
+PIDFILE=./resque.pid BACKGROUND=yes QUEUE=* exec rake resque:work
