@@ -1,5 +1,6 @@
 body {
   color:#666;
+  margin-bottom:10px;
 }
 
 .right {
@@ -34,3 +35,7 @@ pre.trace {
   color:#fff;
 }
 .navbar .navbar-inner { border-radius: 0; }
+
+.builds .build.alert{
+  margin-bottom: 6px;
+}

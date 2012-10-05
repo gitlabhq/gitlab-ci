@@ -64,6 +64,13 @@ class GitlabCi < Sinatra::Base
     haml :edit
   end
 
+  get '/builds/:id' do
+    @build = Build.find(params[:id])
+    @project = @build.project
+
+    haml :build
+  end
+
   post '/projects' do
     @project = Project.new(params[:project])
 

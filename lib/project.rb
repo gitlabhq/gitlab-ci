@@ -10,7 +10,7 @@ class Project < ActiveRecord::Base
   def register_build opts={}
     default_opts = {
       project_id: self.id,
-      status: 'runing'
+      status: 'running'
     }
 
     allowed_opts = {}

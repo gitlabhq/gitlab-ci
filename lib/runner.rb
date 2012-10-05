@@ -21,15 +21,12 @@ class Runner
     Dir.chdir(path) do
       commands.each_line do |line|
         unless command(line, path)
-          build.update_attributes(status: 'fail')
+          build.failed!
         end
       end
     end
 
-    build.update_attributes(
-      trace: @output,
-      status: 'success'
-    )
+    build.success!
   end
 
   def command(cmd, path)
