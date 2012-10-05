@@ -1,13 +1,13 @@
 %form.form-horizontal{ action: '/projects', method: 'post' }
   .control-group
     %label{for: 'name'} Name
-    %input{type: 'text', name: 'name', class: 'input-xxlarge'}
+    %input{type: 'text', name: 'project[name]', class: 'input-xxlarge', value: @project.name, required: true}
   .control-group
     %label{for: 'path'} Path
-    %input{type: 'text', name: 'path', class: 'input-xxlarge'}
+    %input{type: 'text', name: 'project[path]', class: 'input-xxlarge', value: @project.path, required: true}
   .control-group
     %label{for: 'scripts'} Scripts
-    %textarea{name: 'scripts', class: 'input-xxlarge'}
+    %textarea{name: 'project[scripts]', class: 'input-xxlarge'}= @project.scripts
 
   %hr
   %input.btn{type: 'submit', value: 'Save'}

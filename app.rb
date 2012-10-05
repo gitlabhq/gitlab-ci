@@ -37,13 +37,14 @@ class GitlabCi < Sinatra::Base
   end
 
   get '/projects/new' do
-    # add project
+    @project = Project.new
+
     haml :new
   end
 
   get '/projects/:name' do
     @project = Project.find_by_name(params[:name])
-    @builds = @project.builds.order('id DESC').paginate(:page => params[:page], :per_page => 30)
+    @builds = @project.builds.order('id DESC').paginate(:page => params[:page], :per_page => 10)
 
     haml :project
   end
@@ -64,8 +65,7 @@ class GitlabCi < Sinatra::Base
   end
 
   post '/projects' do
-    project_params = params.select {|k,v| Project.attribute_names.include?(k.to_s)}
-    @project = Project.new(project_params)
+    @project = Project.new(params[:project])
 
     if @project.save
       Resque.enqueue(Runner, @project.id)
@@ -76,9 +76,8 @@ class GitlabCi < Sinatra::Base
   end
 
   post '/projects/:name' do
-    project_params = params.select {|k,v| Project.attribute_names.include?(k.to_s)}
     @project = Project.find_by_name(params[:name])
-    @project.update_attributes(project_params)
+    @project.update_attributes(params[:project])
 
     if @project.save
       redirect '/'
