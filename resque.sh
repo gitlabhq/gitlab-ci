@@ -1,1 +1,1 @@
-QUEUE=* be rake resque:work
+QUEUE=* bundle exec rake resque:work

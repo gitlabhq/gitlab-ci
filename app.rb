@@ -47,6 +47,13 @@ class GitlabCi < Sinatra::Base
     haml :project
   end
 
+  get '/projects/:name/run' do
+    @project = Project.find_by_name(params[:name])
+    Resque.enqueue(Runner, @project.id)
+
+    redirect project_path(@project)
+  end
+
   get '/projects/:name/edit' do
     @project = Project.find_by_name(params[:name])
 
