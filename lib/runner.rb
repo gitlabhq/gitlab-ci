@@ -21,7 +21,7 @@ class Runner
     Dir.chdir(path) do
       commands.each_line do |line|
         unless command(line, path)
-          build.fail!
+          build.fail! and return
         end
       end
     end
