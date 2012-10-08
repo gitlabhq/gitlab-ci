@@ -60,7 +60,7 @@ class GitlabCi < Sinatra::Base
 
     Resque.enqueue(Runner, @build.id)
 
-    redirect project_path(@project)
+    redirect build_path(@build)
   end
 
   get '/projects/:name/edit' do

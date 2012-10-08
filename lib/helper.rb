@@ -40,4 +40,8 @@ module Helper
   def edit_project_path project
     "/projects/#{project.name}/edit"
   end
+
+  def build_path build
+    "/builds/#{build.id}"
+  end
 end
