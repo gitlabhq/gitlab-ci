@@ -10,11 +10,16 @@ require 'sinatra/activerecord'
 require 'will_paginate'
 require 'will_paginate/active_record'
 
+# Include to load path
 $: << File.dirname(__FILE__) + "/lib"
+
+# Settings & db
+require 'settings'
+
+# Libs
 require 'project'
 require 'runner'
 require 'helper'
-
 
 class GitlabCi < Sinatra::Base
   configure :development do
@@ -28,7 +33,7 @@ class GitlabCi < Sinatra::Base
 
   set :haml, format: :html5
   set layout: true
-  set :database, 'mysql2://root:1710@localhost/gitlab-ci'
+  set :database, Settings.db_url
 
   get '/' do
     @projects = Project.all

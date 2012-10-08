@@ -16,3 +16,5 @@ gem 'will_paginate', '~> 3.0'
 gem 'mysql2'
 gem 'sinatra-activerecord'
 
+# Settings
+gem 'settingslogic'
