@@ -13,6 +13,6 @@ gem 'stamp'
 gem 'will_paginate', '~> 3.0'
 
 # DB
-gem 'sqlite3'
+gem 'mysql2'
 gem 'sinatra-activerecord'
 

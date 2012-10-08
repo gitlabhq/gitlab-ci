@@ -15,6 +15,7 @@ require 'project'
 require 'runner'
 require 'helper'
 
+
 class GitlabCi < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
@@ -27,8 +28,7 @@ class GitlabCi < Sinatra::Base
 
   set :haml, format: :html5
   set layout: true
-  set :database, 'sqlite3:///ci.db'
-  set :database_extras, timeout: 4000
+  set :database, 'mysql2://root:1710@localhost/gitlab-ci'
 
   get '/' do
     @projects = Project.all
