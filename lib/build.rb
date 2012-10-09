@@ -28,4 +28,8 @@ class Build < ActiveRecord::Base
   def update_status status
     update_attributes(status: status)
   end
+
+  def write_trace(trace)
+    update_attributes(trace: trace)
+  end
 end

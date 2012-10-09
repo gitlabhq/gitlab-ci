@@ -31,15 +31,17 @@ class Runner
 
     build.success!
   rescue Errno::ENOENT
+    @output << "INVALID PROJECT PATH"
     build.fail!
   ensure
-    build.update_attributes(trace: @output)
+    build.write_trace(@output)
   end
 
   def command(cmd, path)
     cmd = cmd.strip
     status = 0
 
+    @output ||= ""
     @output << "\n"
     @output << cmd
     @output << "\n"
@@ -61,6 +63,7 @@ class Runner
     Open3.popen3(vars, cmd, options) do |stdin, stdout, stderr, wait_thr|
       status = wait_thr.value.exitstatus
       @output << stdout.read
+      @output << stderr.read
     end
     status == 0
   end
