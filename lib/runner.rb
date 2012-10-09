@@ -20,17 +20,25 @@ class Runner
 
     Dir.chdir(path) do
       commands.each_line do |line|
-        unless command(line, path)
-          build.fail! and return
+        status = command(line, path)
+
+        unless status
+          build.fail!
+          return
         end
       end
     end
 
     build.success!
+  rescue Errno::ENOENT
+    build.fail!
+  ensure
+    build.update_attributes(trace: @output)
   end
 
   def command(cmd, path)
     cmd = cmd.strip
+    status = 0
 
     @output << "\n"
     @output << cmd
@@ -50,12 +58,10 @@ class Runner
       :chdir => path
     }
 
-    Open3.popen3(vars, cmd, options) do |stdin, stdout, stderr|
+    Open3.popen3(vars, cmd, options) do |stdin, stdout, stderr, wait_thr|
+      status = wait_thr.value.exitstatus
       @output << stdout.read
-
-      build.update_attributes(trace: @output)
     end
-
-    $?.exitstatus == 0
+    status == 0
   end
 end
