@@ -1,1 +1,5 @@
 ci.db
+config/application.yml
+log/*
+tmp/*
+*.pid

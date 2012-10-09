@@ -8,6 +8,10 @@
     # Create the GitLab CI database
     mysql> CREATE DATABASE IF NOT EXISTS `gitlab_ci` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`;
 
+
+    # Copy config file
+    cp config/application.yml.example config/application.yml
+
     # Setup DB
     bundle exec rake db:migrate
 
