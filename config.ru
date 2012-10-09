@@ -1,2 +1,8 @@
 require './app.rb'
-run GitlabCi
+
+require 'resque/server'
+
+run Rack::URLMap.new(
+  "/"       => GitlabCi.new,
+  "/resque" => Resque::Server.new
+)
