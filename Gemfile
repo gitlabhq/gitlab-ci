@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'sinatra-respond_to'
 gem 'rake'
 
 gem 'thin'

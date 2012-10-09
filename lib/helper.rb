@@ -1,4 +1,14 @@
 module Helper
+  JS_ESCAPE_MAP = {
+    '\\'    => '\\\\',
+    '</'    => '<\/',
+    "\r\n"  => '\n',
+    "\n"    => '\n',
+    "\r"    => '\n',
+    '"'     => '\\"',
+    "'"     => "\\'"
+  }
+
   def project_statuc_class(project)
     if project.status == 'success'
       'alert-success'
@@ -43,5 +53,13 @@ module Helper
 
   def build_path build
     "/builds/#{build.id}"
+  end
+
+  def escape_javascript(javascript)
+    if javascript
+      result = javascript.gsub(/(\\|<\/|\r\n|\342\200\250|[\n\r"'])/u) {|match| JS_ESCAPE_MAP[match] }
+    else
+      ''
+    end
   end
 end

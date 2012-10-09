@@ -9,6 +9,9 @@ class Runner
   end
 
   def initialize(build)
+    @logger = Logger.new(STDOUT)
+    @logger.level = Logger::INFO
+
     @build = build
     @project = build.project
     @output = ''
@@ -18,9 +21,12 @@ class Runner
     path = project.path
     commands = project.scripts
 
+
+
     Dir.chdir(path) do
       commands.each_line do |line|
         status = command(line, path)
+        build.write_trace(@output)
 
         unless status
           build.fail!
@@ -64,6 +70,10 @@ class Runner
       status = wait_thr.value.exitstatus
       @output << stdout.read
       @output << stderr.read
+      #stdout.each do |line|
+        #@output << line
+        #build.write_trace(@output)
+      #end
     end
     status == 0
   end

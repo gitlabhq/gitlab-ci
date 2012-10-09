@@ -1,0 +1,8 @@
+- if @build.running?
+  :plain
+    $('#build-trace').html("#{escape_javascript(@build.trace)}");
+    getBuild('#{build_path(@build)}');
+- else
+  :plain
+    location.href = "#{build_path(@build)}";
+

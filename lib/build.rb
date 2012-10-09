@@ -30,6 +30,7 @@ class Build < ActiveRecord::Base
   end
 
   def write_trace(trace)
+    self.reload
     update_attributes(trace: trace)
   end
 end

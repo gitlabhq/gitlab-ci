@@ -7,6 +7,8 @@ require 'sinatra'
 require 'sinatra/base'
 require "sinatra/reloader"
 require 'sinatra/activerecord'
+require 'sinatra/respond_to'
+
 require 'will_paginate'
 require 'will_paginate/active_record'
 
@@ -25,7 +27,9 @@ class GitlabCi < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end
+
   register Sinatra::ActiveRecordExtension
+  register Sinatra::RespondTo
 
   include Helper
   include WillPaginate::Sinatra::Helpers
@@ -73,7 +77,10 @@ class GitlabCi < Sinatra::Base
     @build = Build.find(params[:id])
     @project = @build.project
 
-    haml :build
+    respond_to do |format|
+      format.html { haml :build }
+      format.js   { haml :build }
+    end
   end
 
   post '/projects' do
