@@ -2,10 +2,11 @@
   Project: #{@project.name}
   .right
     %a.btn.btn-small{href: project_path(@project)}  Builds
-    %a.btn.btn-small{href: run_project_path(@project)}  Run
-    %a.btn.btn-small{href: edit_project_path(@project)}
-      %i.icon-edit
-      Edit Project
+    - if is_user?
+      %a.btn.btn-small{href: run_project_path(@project)}  Run
+      %a.btn.btn-small{href: edit_project_path(@project)}
+        %i.icon-edit
+        Edit Project
 
 .alert{class: build_status_alert_class(@build)}
   %h4
@@ -21,10 +22,11 @@
 %br
 .right
   %a.btn.btn-small{href: project_path(@project)}  Builds
-  %a.btn.btn-small{href: run_project_path(@project)}  Run
-  %a.btn.btn-small{href: edit_project_path(@project)}
-    %i.icon-edit
-    Edit Project
+  - if is_user?
+    %a.btn.btn-small{href: run_project_path(@project)}  Run
+    %a.btn.btn-small{href: edit_project_path(@project)}
+      %i.icon-edit
+      Edit Project
 
 
 - if @build.running?

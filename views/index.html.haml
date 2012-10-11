@@ -8,10 +8,11 @@
       #{project.human_status}
     .body
       %a.btn.btn-small{href: project_path(project)} Builds
-      %a.btn.btn-small{href: run_project_path(project)}  Run
-      %a.btn.btn-small{href: edit_project_path(project)}
-        %i.icon-edit
-        Edit
+      - if is_user?
+        %a.btn.btn-small{href: run_project_path(project)}  Run
+        %a.btn.btn-small{href: edit_project_path(project)}
+          %i.icon-edit
+          Edit
 
 - if @projects.empty?
   .alert

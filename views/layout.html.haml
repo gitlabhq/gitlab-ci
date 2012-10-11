@@ -15,7 +15,15 @@
         %ul.nav
           %li
             %a{:href => "/"} Home
-          %li
-            %a{:href => "/projects/new"} Add Project
+          - if is_user?
+            %li
+              %span.btn.disabled= @user.email
+            %li
+              %a{:href => "/projects/new"} Add Project
+            %li
+              %a{:href => "/logout"} Logout
+          - else
+            %li
+              %a{:href => "/login"} Login
     .container
       = yield

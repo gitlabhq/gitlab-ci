@@ -20,10 +20,13 @@ require 'settings'
 
 # Libs
 require 'project'
+require 'user'
 require 'runner'
 require 'helper'
 
 class GitlabCi < Sinatra::Base
+  TOKEN = 'c93d3bf7a7c4afe94X64e30c2ce39f4f'
+
   configure :development do
     register Sinatra::Reloader
   end
@@ -34,7 +37,25 @@ class GitlabCi < Sinatra::Base
   include Helper
   include WillPaginate::Sinatra::Helpers
 
+  register do
+    def auth (type)
+      condition do
+        redirect "/login" unless send("is_#{type}?")
+      end
+    end
+  end
 
+  helpers do
+    def is_user?
+      @user != nil
+    end
+  end
+
+  before do
+    @user = User.find_by_id(session[:user_id])
+  end
+
+  set :sessions => true
   set :haml, format: :html5
   set layout: true
   set :database, Settings.db_url
@@ -58,7 +79,7 @@ class GitlabCi < Sinatra::Base
     haml :project
   end
 
-  get '/projects/:name/run' do
+  get '/projects/:name/run', auth: 'user' do
     @project = Project.find_by_name(params[:name])
     @build = @project.register_build
 
@@ -67,7 +88,7 @@ class GitlabCi < Sinatra::Base
     redirect build_path(@build)
   end
 
-  get '/projects/:name/edit' do
+  get '/projects/:name/edit', auth: 'user' do
     @project = Project.find_by_name(params[:name])
 
     haml :edit
@@ -83,7 +104,7 @@ class GitlabCi < Sinatra::Base
     end
   end
 
-  post '/projects' do
+  post '/projects', auth: 'user' do
     @project = Project.new(params[:project])
 
     if @project.save
@@ -94,7 +115,7 @@ class GitlabCi < Sinatra::Base
     end
   end
 
-  post '/projects/:name' do
+  post '/projects/:name', auth: 'user' do
     @project = Project.find_by_name(params[:name])
     @project.update_attributes(params[:project])
 
@@ -106,9 +127,29 @@ class GitlabCi < Sinatra::Base
   end
 
   post '/projects/:name/build' do
-    @project = Project.find_by_name(params[:name])
-    @build = @project.register_build(params)
+    if params[:token] == TOKEN
+      @project = Project.find_by_name(params[:name])
+      @build = @project.register_build(params)
+      Resque.enqueue(Runner, @build.id)a
+      status 200
+    else
+      status 403
+    end
+  end
 
-    Resque.enqueue(Runner, @build.id)
+  get "/login" do
+    haml :login
+  end
+
+  post "/login" do
+    user = User.authenticate(params['email'], params['password'])
+
+    session[:user_id] = user.id if user
+    redirect '/'
+  end
+
+  get "/logout" do
+    session[:user_id] = nil
+    redirect '/'
   end
 end
