@@ -39,3 +39,15 @@ pre.trace {
 .builds .build.alert{
   margin-bottom: 6px;
 }
+
+.color31 {
+    color: red !important;
+}
+
+.color32 {
+    color: green !important;
+}
+
+.color33 {
+    color: yellow !important;
+}
