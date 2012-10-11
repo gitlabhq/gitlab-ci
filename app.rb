@@ -130,7 +130,7 @@ class GitlabCi < Sinatra::Base
     if params[:token] == TOKEN
       @project = Project.find_by_name(params[:name])
       @build = @project.register_build(params)
-      Resque.enqueue(Runner, @build.id)a
+      Resque.enqueue(Runner, @build.id)
       status 200
     else
       status 403
