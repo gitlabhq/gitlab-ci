@@ -16,3 +16,9 @@ task :add_user do
   task email.to_sym do ; end
   task pass.to_sym do ; end
 end
+
+desc 'Interactive console'
+task :console do
+  sh 'pry -r ./app.rb'
+end
+task :c => :console
