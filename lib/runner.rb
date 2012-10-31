@@ -1,5 +1,8 @@
 require 'open3'
+require 'timeout'
+
 class Runner
+  TIMEOUT = 1800
   attr_accessor :project, :build, :output
 
   @queue = :runner
@@ -39,6 +42,9 @@ class Runner
   rescue Errno::ENOENT
     @output << "INVALID PROJECT PATH"
     build.fail!
+  rescue Timeout::Error
+    @output << "TIMEOUT"
+    build.fail!
   ensure
     build.write_trace(@output)
   end
@@ -66,15 +72,15 @@ class Runner
       :chdir => path
     }
 
-    Open3.popen3(vars, cmd, options) do |stdin, stdout, stderr, wait_thr|
-      status = wait_thr.value.exitstatus
-      @output << stdout.read
-      @output << stderr.read
-      #stdout.each do |line|
-        #@output << line
-        #build.write_trace(@output)
-      #end
+    Timeout.timeout(TIMEOUT) do
+      Open3.popen3(vars, cmd, options) do |stdin, stdout, stderr, wait_thr|
+        status = wait_thr.value.exitstatus
+        @pid = wait_thr.pid
+        @output << stdout.read
+        @output << stderr.read
+      end
     end
+
     status == 0
   end
 end
