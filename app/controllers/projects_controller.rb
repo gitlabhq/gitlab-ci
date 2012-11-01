@@ -1,7 +1,7 @@
 require 'runner'
 
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index]
+  before_filter :authenticate_user!, except: [:index, :build]
 
   def index
     @projects = Project.all
@@ -54,5 +54,17 @@ class ProjectsController < ApplicationController
     Resque.enqueue(Runner, @build.id)
 
     redirect_to project_build_path(@project, @build)
+  end
+
+  def build
+    @project = Project.find(params[:id])
+
+    if @project.token && @project.token == params[:token]
+      @build = @project.register_build(params)
+      Resque.enqueue(Runner, @build.id)
+      head 200
+    else
+      head 403
+    end
   end
 end

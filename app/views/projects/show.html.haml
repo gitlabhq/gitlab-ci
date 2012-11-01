@@ -5,6 +5,11 @@
     %a.btn.btn-small{href: edit_project_path(@project)}
       %i.icon-edit
       Edit
+
+.alert.alert-info
+  %strong POST
+  = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge'
+
 .builds
   - @builds.each do |build|
     .build.alert{class: build_status_alert_class(build)}

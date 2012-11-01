@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121101091638) do
+ActiveRecord::Schema.define(:version => 20121101121639) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20121101091638) do
     t.text     "scripts",                      :null => false
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
+    t.string   "token"
   end
 
   create_table "users", :force => true do |t|

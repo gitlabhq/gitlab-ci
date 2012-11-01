@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :path, :scripts, :timeout
+  attr_accessible :name, :path, :scripts, :timeout, :token
 
-  validates_presence_of :name, :path, :scripts, :timeout
+  validates_presence_of :name, :path, :scripts, :timeout, :token
 
   has_many :builds, dependent: :destroy
 

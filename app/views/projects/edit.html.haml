@@ -5,3 +5,10 @@
 = link_to 'Back', project_path(@project)
 %hr
 = render 'form'
+
+
+.alert.alert-error
+  .right
+    %span After project will be removed there is no way to restore builds information
+    = link_to 'Remove Project', project_path(@project), method: :delete, confirm: 'Project will be removed. Are you sure?', class: 'btn btn-danger'
+  .clearfix
