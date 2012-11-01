@@ -30,6 +30,7 @@ gem 'will_paginate', '~> 3.0'
 gem 'rake'
 gem 'foreman'
 gem 'jquery-rails'
+gem 'childprocess'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

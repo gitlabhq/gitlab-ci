@@ -58,29 +58,22 @@ class Runner
     @output << cmd
     @output << "\n"
 
-    vars = {
-      "BUNDLE_GEMFILE" => nil,
-      "BUNDLE_BIN_PATH" => nil,
-      "RUBYOPT" => nil,
-      "rvm_" => nil,
-      "RACK_ENV" => nil,
-      "RAILS_ENV" => nil,
-      "PWD" => path
-    }
+    @process = ChildProcess.build(cmd)
+    @tmp_file = Tempfile.new("child-output")
+    @process.io.stdout = @tmp_file
+    @process.cwd = path
+    @process.environment['BUNDLE_GEMFILE'] = ''
+    @process.start
 
-    options = {
-      :chdir => path
-    }
-
-    Timeout.timeout(project.timeout) do
-      Open3.popen3(vars, cmd, options) do |stdin, stdout, stderr, wait_thr|
-        status = wait_thr.value.exitstatus
-        @pid = wait_thr.pid
-        @output << stdout.read
-        @output << stderr.read
-      end
+    begin
+      @process.poll_for_exit(project.timeout)
+    rescue ChildProcess::TimeoutError
+      @process.stop # tries increasingly harsher methods to kill the process.
     end
 
-    status == 0
+    @process.exit_code == 0
+  ensure
+    @tmp_file.rewind
+    @output << @tmp_file.read
   end
 end
