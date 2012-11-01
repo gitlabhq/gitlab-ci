@@ -1,24 +1,7 @@
-require 'sinatra/activerecord/rake'
-require 'resque/tasks'
-require './app'
+#!/usr/bin/env rake
+# Add your own tasks in files placed in lib/tasks ending in .rake,
+# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-desc 'Create new user:  rake add_user test@test.com pAs$word'
-task :add_user do
-  pass  = ARGV[2]
-  email = ARGV[1]
+require File.expand_path('../config/application', __FILE__)
 
-  user = User.create(email: email, password: User.encrypt(pass))
-  if user.valid?
-    puts "SUCCESS"
-  else
-    puts "ERROR"
-  end
-  task email.to_sym do ; end
-  task pass.to_sym do ; end
-end
-
-desc 'Interactive console'
-task :console do
-  sh 'pry -r ./app.rb'
-end
-task :c => :console
+GitlabCi::Application.load_tasks

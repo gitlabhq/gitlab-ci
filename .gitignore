@@ -1,5 +1,9 @@
 ci.db
 config/application.yml
+config/database.yml
 log/*
 tmp/*
 *.pid
+/.bundle
+/db/*.sqlite3
+/log/*.log
