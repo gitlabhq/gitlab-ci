@@ -1,6 +1,0 @@
-# DB
-db: 
-  username: root
-  password: 'PASSWORD'
-  host: localhost
-  name: 'gitlab_ci'
