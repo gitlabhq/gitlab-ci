@@ -10,7 +10,7 @@
     .build.alert{class: build_status_alert_class(build)}
       %span.label{class: build_status_class(build)}= build.status
       &rarr;
-      %a{href: "/builds/#{build.id}"}
+      = link_to project_build_path(@project, build) do
         %strong Build #{build.id}
         %small= build.commit_ref
       .right

@@ -16,9 +16,13 @@
               = link_to 'Home', root_path
             - if current_user
               %li
-                %span.btn.disabled= current_user.email
-              %li
                 = link_to 'Add Project', new_project_path
+              %li
+                = link_to 'Resque', resque_path
+              %li
+                = link_to edit_user_registration_path do
+                  %i.icon-user
+                  = current_user.email
               %li
                 = link_to 'Logout', destroy_user_session_path, class: "logout", method: :delete
             - else
