@@ -1,0 +1,19 @@
+%h2 Projects:
+%br
+- @projects.each do |project|
+  .project_box
+    .title
+      %strong= project.name
+    .alert{class: project_statuc_class(project) }
+      #{project.human_status}
+    .body
+      %a.btn.btn-small{href: project_path(project)} Builds
+      - if current_user
+        %a.btn.btn-small{href: run_project_path(project)}  Run
+        %a.btn.btn-small{href: edit_project_path(project)}
+          %i.icon-edit
+          Edit
+
+- if @projects.empty?
+  .alert
+    No projects yet

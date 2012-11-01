@@ -1,0 +1,24 @@
+= form_for @project do |f|
+  - if @project.errors.any?
+    #error_explanation
+      %p.lead= "#{pluralize(@project.errors.count, "error")} prohibited this project from being saved:"
+      .alert.alert-error
+        %ul
+          - @project.errors.full_messages.each do |msg|
+            %li= msg
+
+  .field
+    = f.label :name
+    = f.text_field :name, class: 'input-xxlarge'
+  .field
+    = f.label :timeout
+    = f.number_field :timeout, class: 'input-xxlarge'
+  .field
+    = f.label :path
+    = f.text_field :path, class: 'input-xxlarge'
+  .field
+    = f.label :scripts
+    = f.text_area :scripts, class: 'input-xxlarge'
+  .form-actions
+    = f.submit 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', projects_path, class: 'btn'

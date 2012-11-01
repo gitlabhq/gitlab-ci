@@ -1,0 +1,32 @@
+!!! 5
+%html{ lang: "en"}
+  %head
+    %meta{charset: "utf-8"}
+    %title GitLab CI
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          %a.brand{:href => "/"} GitLab CI
+          %ul.nav
+            %li
+              = link_to 'Home', root_path
+            - if current_user
+              %li
+                = link_to 'Add Project', new_project_path
+              %li
+                = link_to 'Resque', resque_path
+              %li
+                = link_to edit_user_registration_path do
+                  %i.icon-user
+                  = current_user.email
+              %li
+                = link_to 'Logout', destroy_user_session_path, class: "logout", method: :delete
+            - else
+              %li
+                = link_to 'Login', new_user_session_path
+    .container-fluid
+      = yield
