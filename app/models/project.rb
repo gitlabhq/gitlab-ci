@@ -1,11 +1,9 @@
-require_relative 'build'
-
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts
 
   validates_presence_of :name, :path, :scripts
 
-  has_many :builds
+  has_many :builds, dependent: :destroy
 
   def register_build opts={}
     default_opts = {

@@ -13,3 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+//
+function getBuild(buildPath) { 
+  console.log('run');
+  setTimeout(function() {
+    $.get(buildPath + ".js");
+  }, 1500);
+}
+

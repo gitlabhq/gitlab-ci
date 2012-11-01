@@ -1,0 +1,16 @@
+= form_for @build do |f|
+  - if @build.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@build.errors.count, "error")} prohibited this build from being saved:"
+      %ul
+        - @build.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :trace
+    = f.text_area :trace
+  .field
+    = f.label :status
+    = f.text_field :status
+  .actions
+    = f.submit 'Save'
