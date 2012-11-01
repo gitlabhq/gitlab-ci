@@ -5,14 +5,21 @@
     .title
       %strong= project.name
     .alert{class: project_statuc_class(project) }
-      #{project.human_status}
+      - if project.last_build
+        #{project.human_status}
+        .right
+          = time_ago_in_words project.last_build_date
+          ago
+      - else
+        No builds yet
     .body
-      %a.btn.btn-small{href: project_path(project)} Builds
+      = link_to 'Builds', project_path(project), class: 'btn btn-info btn-small'
       - if current_user
-        %a.btn.btn-small{href: run_project_path(project)}  Run
-        %a.btn.btn-small{href: edit_project_path(project)}
-          %i.icon-edit
-          Edit
+        .right
+          %a.btn.btn-small{href: run_project_path(project)}  Run
+          %a.btn.btn-small{href: edit_project_path(project)}
+            %i.icon-edit
+            Edit
 
 - if @projects.empty?
   .alert
