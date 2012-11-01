@@ -2,7 +2,12 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 User.create(
   :email => "admin@local.host",
-  :name => "Administrator",
   :password => "5iveL!fe",
   :password_confirmation => "5iveL!fe"
+)
+
+Project.create(
+  :name => "Test",
+  :path => "/tmp",
+  :scripts => "ls"
 )

@@ -37,7 +37,7 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
   gem "therubyracer"
-  gem 'bootstrap-sass',   "2.0.4"
+  gem 'bootstrap-sass'
 end
 
 group :development do

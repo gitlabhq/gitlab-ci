@@ -1,23 +1,19 @@
-%h1 Listing projects
-
-%table
-  %tr
-    %th Name
-    %th Path
-    %th Scripts
-    %th
-    %th
-    %th
-
-  - @projects.each do |project|
-    %tr
-      %td= project.name
-      %td= project.path
-      %td= project.scripts
-      %td= link_to 'Show', project
-      %td= link_to 'Edit', edit_project_path(project)
-      %td= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }
-
+%h2 Projects:
 %br
+- @projects.each do |project|
+  .project_box
+    .title
+      %strong= project.name
+    .alert{class: project_statuc_class(project) }
+      #{project.human_status}
+    .body
+      %a.btn.btn-small{href: project_path(project)} Builds
+      - if current_user
+        %a.btn.btn-small{href: run_project_path(project)}  Run
+        %a.btn.btn-small{href: edit_project_path(project)}
+          %i.icon-edit
+          Edit
 
-= link_to 'New Project', new_project_path
+- if @projects.empty?
+  .alert
+    No projects yet

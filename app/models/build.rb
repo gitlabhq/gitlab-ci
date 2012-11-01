@@ -1,6 +1,12 @@
 class Build < ActiveRecord::Base
   belongs_to :project
 
+  attr_accessible :project_id,
+    :commit_ref,
+    :status,
+    :finished_at,
+    :trace
+
   def failed?
     status == 'fail'
   end

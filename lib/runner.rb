@@ -72,7 +72,7 @@ class Runner
       :chdir => path
     }
 
-    Timeout.timeout(TIMEOUT) do
+    Timeout.timeout(project.timeout) do
       Open3.popen3(vars, cmd, options) do |stdin, stdout, stderr, wait_thr|
         status = wait_thr.value.exitstatus
         @pid = wait_thr.pid

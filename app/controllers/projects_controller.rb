@@ -1,5 +1,7 @@
+require 'runner'
+
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except :index
+  before_filter :authenticate_user!, except: [:index]
 
   def index
     @projects = Project.all
@@ -7,6 +9,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
+    @builds = @project.builds.order('id DESC').paginate(:page => params[:page], :per_page => 20)
   end
 
   def new
@@ -42,5 +45,14 @@ class ProjectsController < ApplicationController
     @project.destroy
 
     redirect_to projects_url
+  end
+
+  def run
+    @project = Project.find(params[:id])
+    @build = @project.register_build
+
+    Resque.enqueue(Runner, @build.id)
+
+    redirect_to project_build_path(@project, @build)
   end
 end

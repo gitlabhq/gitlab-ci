@@ -1,5 +1,6 @@
 class BuildsController < ApplicationController
-  before_filter :authenticate_user!, except :index, :show
+  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :project
 
   def index
     @builds = Build.all
@@ -53,5 +54,11 @@ class BuildsController < ApplicationController
       format.html { redirect_to builds_url }
       format.json { head :no_content }
     end
+  end
+
+  protected
+
+  def project
+    @project = Project.find(params[:project_id])
   end
 end

@@ -3,30 +3,26 @@
   %head
     %meta{charset: "utf-8"}
     %title GitLab CI
-    %link{:href => "/bootstrap/css/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
-    %link{:href => "/custom.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
-    %script{:src => "/jquery-1.8.2.min.js", :type => "text/javascript"}
-    %script{:src => "/application.js", :type => "text/javascript"}
-    %script{:src => "/bootstrap/js/bootstrap.min.js", :type => "text/javascript"}
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    .navbar
+    .navbar.navbar-fixed-top
       .navbar-inner
-        %a.brand{:href => "/"} GitLab CI
-        %ul.nav
-          %li
-            %a{:href => "/"} Home
-          - if is_user?
+        .container-fluid
+          %a.brand{:href => "/"} GitLab CI
+          %ul.nav
             %li
-              %span.btn.disabled= @user.email
-            %li
-              %a{:href => "/projects/new"} Add Project
-            %li
-              %a{:href => "/logout"} Logout
-          - else
-            %li
-              %a{:href => "/login"} Login
-    .container
+              = link_to 'Home', root_path
+            - if current_user
+              %li
+                %span.btn.disabled= current_user.email
+              %li
+                = link_to 'Add Project', new_project_path
+              %li
+                = link_to 'Logout', destroy_user_session_path, class: "logout", method: :delete
+            - else
+              %li
+                = link_to 'Login', new_user_session_path
+    .container-fluid
       = yield
