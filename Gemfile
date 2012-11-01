@@ -8,13 +8,27 @@ gem 'mysql2'
 # Settings
 gem 'settingslogic'
 
-gem 'rake'
+# Auth
+gem 'devise'
+
+# Web server
 gem 'thin'
+
+# Haml
 gem 'haml-rails'
+
+# Jobs
 gem 'resque'
-gem 'foreman'
+
+# Format dates
 gem 'stamp'
+
+# Pagination
 gem 'will_paginate', '~> 3.0'
+
+# Other
+gem 'rake'
+gem 'foreman'
 gem 'jquery-rails'
 
 group :assets do
@@ -28,4 +42,5 @@ end
 
 group :development do
   gem 'pry'
+  gem 'rspec-rails'
 end
