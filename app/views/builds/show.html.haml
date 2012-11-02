@@ -18,7 +18,7 @@
 .clearfix
 %pre.trace#build-trace
   = preserve do
-    = @build.trace
+    = raw @build.trace
 %br
 .right
   %a.btn.btn-small{href: project_path(@project)}  Builds

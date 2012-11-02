@@ -61,6 +61,7 @@ class Runner
     @process = ChildProcess.build(cmd)
     @tmp_file = Tempfile.new("child-output")
     @process.io.stdout = @tmp_file
+    @process.io.stderr = @tmp_file
     @process.cwd = path
     @process.environment['BUNDLE_GEMFILE'] = ''
     @process.start
