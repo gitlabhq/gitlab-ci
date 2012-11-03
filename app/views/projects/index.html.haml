@@ -1,9 +1,10 @@
-%h2 Projects:
+%h3 Projects
 %br
 - @projects.each do |project|
   .project_box
     .title
-      %strong= project.name
+      = link_to project do
+        %strong= project.name
     .alert{class: project_statuc_class(project) }
       - if project.last_build
         #{project.human_status}
@@ -13,13 +14,12 @@
       - else
         No builds yet
     .body
-      = link_to 'Builds', project_path(project), class: 'btn btn-info btn-small'
       - if current_user
-        .right
-          %a.btn.btn-small{href: run_project_path(project)}  Run
-          %a.btn.btn-small{href: edit_project_path(project)}
-            %i.icon-edit
-            Edit
+        = link_to 'Builds', project_path(project), class: 'btn btn-info btn-small'
+        %a.btn.btn-small{href: run_project_path(project)}  Run
+        %a.btn.btn-small{href: edit_project_path(project)}
+          %i.icon-edit.icon-white
+          Edit
 
 - if @projects.empty?
   .alert

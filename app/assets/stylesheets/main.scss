@@ -1,8 +1,32 @@
 @import "bootstrap";
 
+
+$style_color: #5bc;
+
 body {
   color:#666;
   padding: 65px 0;
+}
+
+a {
+  color: #3ab;
+
+  &:hover {
+    color: #278;
+  }
+}
+
+.navbar-ci {
+  .navbar-inner {
+    padding: 4px;
+    background: $style_color;
+
+    .brand,
+    .nav > li > a {
+      color: #fff;
+      text-shadow: 0 1px 0 #29b;
+    }
+  }
 }
 
 .container-fluid {
@@ -19,21 +43,21 @@ body {
   margin-right:20px;
   margin-bottom:20px;
   float:left;
-  width:270px;
-}
+  width:330px;
 
-.project_box .alert {
-  border-radius: 0;
-}
+  .title {
+    font-size:16px;
+    line-height:28px;
+    padding: 10px;
+  }
 
-.project_box .title {
-  font-size:14px;
-  line-height:28px;
-  padding: 10px;
-}
+  .alert {
+    border-radius: 0;
+  }
 
-.project_box .body {
-  padding:10px;
+  .body {
+    padding:10px;
+  }
 }
 
 pre.trace {
@@ -58,3 +82,28 @@ pre.trace {
   color: yellow !important;
 }
 
+.btn {
+  background: $style_color;
+  color: #fff;
+  text-shadow: 0 1px 0 #29b;
+  border-radius:0;
+  &:hover {
+    background: #6cd;
+    color: #fff;
+    text-shadow: 0 1px 0 #29b;
+  }
+
+  &.btn-primary {
+    background: #29a;
+    border:1px solid #279;
+  }
+
+  &.btn-danger {
+    background: #D33;
+    border:1px solid red;
+  }
+}
+
+.well {
+  border-radius: 0;
+}

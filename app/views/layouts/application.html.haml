@@ -7,7 +7,7 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    .navbar.navbar-fixed-top
+    .navbar.navbar-fixed-top.navbar-ci
       .navbar-inner
         .container-fluid
           %a.brand{:href => "/"} GitLab CI
@@ -18,10 +18,12 @@
               %li
                 = link_to 'Add Project', new_project_path
               %li
+                = link_to 'Users', users_path
+              %li
                 = link_to 'Resque', resque_path
               %li
-                = link_to edit_user_registration_path do
-                  %i.icon-user
+                = link_to edit_user_path(current_user) do
+                  %i.icon-user.icon-white
                   = current_user.email
               %li
                 = link_to 'Logout', destroy_user_session_path, class: "logout", method: :delete
@@ -29,4 +31,8 @@
               %li
                 = link_to 'Login', new_user_session_path
     .container-fluid
+      - if alert || notice
+        %small
+          = alert || notice
+          %hr
       = yield

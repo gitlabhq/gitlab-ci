@@ -6,8 +6,13 @@ User.create(
   :password_confirmation => "5iveL!fe"
 )
 
-Project.create(
-  :name => "Test",
-  :path => "/tmp",
-  :scripts => "ls"
-)
+if Rails.env == 'development'
+  5.times do
+    Project.create(
+      :name => "Test",
+      :path => "/tmp",
+      :token => "u4asd4u320a",
+      :scripts => "ls"
+    )
+  end
+end
