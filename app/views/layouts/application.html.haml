@@ -12,8 +12,6 @@
         .container-fluid
           %a.brand{:href => "/"} GitLab CI
           %ul.nav
-            %li
-              = link_to 'Home', root_path
             - if current_user
               %li
                 = link_to 'Add Project', new_project_path

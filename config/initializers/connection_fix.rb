@@ -12,9 +12,7 @@
 #   http://coderrr.wordpress.com/2009/01/08/activerecord-threading-issues-and-resolutions/
 
 if defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter)
-
   module ActiveRecord::ConnectionAdapters
-
     class Mysql2Adapter
       alias_method :execute_without_retry, :execute
 
@@ -30,7 +28,5 @@ if defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter)
         end
       end
     end
-
   end
-
 end

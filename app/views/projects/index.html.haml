@@ -15,7 +15,7 @@
         No builds yet
     .body
       - if current_user
-        = link_to 'Builds', project_path(project), class: 'btn btn-info btn-small'
+        = link_to 'Builds', project_path(project), class: 'btn btn-small'
         %a.btn.btn-small{href: run_project_path(project)}  Run
         %a.btn.btn-small{href: edit_project_path(project)}
           %i.icon-edit.icon-white

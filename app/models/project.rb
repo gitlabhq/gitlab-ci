@@ -34,6 +34,16 @@ class Project < ActiveRecord::Base
   def human_status
     status
   end
+
+  def status_image
+    if status == 'success'
+      'success.png'
+    elsif status == 'fail'
+      'failed.png'
+    else
+      'unknown.png'
+    end
+  end
 end
 
 # == Schema Information

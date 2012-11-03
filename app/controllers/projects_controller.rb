@@ -1,7 +1,7 @@
 require 'runner'
 
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :build]
+  before_filter :authenticate_user!, except: [:index, :build, :status]
 
   def index
     @projects = Project.all
@@ -66,5 +66,11 @@ class ProjectsController < ApplicationController
     else
       head 403
     end
+  end
+
+  def status
+    @project = Project.find(params[:id])
+
+    send_file Rails.root.join('public', @project.status_image), filename: 'success.png', disposition: 'inline'
   end
 end
