@@ -59,6 +59,8 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'factory_girl_rails'
+  gem "ffaker"
 
   gem 'shoulda-matchers'
   gem 'guard-rspec'

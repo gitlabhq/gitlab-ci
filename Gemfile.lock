@@ -62,6 +62,12 @@ GEM
     eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    factory_girl (4.1.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.1.0)
+      factory_girl (~> 4.1.0)
+      railties (>= 3.0.0)
+    ffaker (1.14.0)
     ffi (1.1.5)
     foreman (0.60.2)
       thor (>= 0.13.6)
@@ -211,6 +217,8 @@ DEPENDENCIES
   childprocess
   coffee-rails (~> 3.2.1)
   devise
+  factory_girl_rails
+  ffaker
   foreman
   growl
   guard-rspec
