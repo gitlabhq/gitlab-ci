@@ -16,6 +16,11 @@ a {
   }
 }
 
+.sidebar {
+  border-left: 1px solid #eee;
+  padding-left: 20px;
+}
+
 .navbar-ci {
   .navbar-inner {
     padding: 4px;
@@ -101,9 +106,18 @@ pre.trace {
   &.btn-danger {
     background: #D33;
     border:1px solid red;
+    text-shadow: 0 1px 0 #D44;
   }
 }
 
 .well {
+  border-radius: 0;
+}
+
+.form-actions {
+  background: none;
+}
+
+.alert {
   border-radius: 0;
 }

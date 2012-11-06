@@ -1,5 +1,6 @@
-%h3 Users
-%hr
+%h3
+  Users
+%br
 
 .row-fluid
   .span7
@@ -11,8 +12,9 @@
           = link_to 'Remove', user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-small right'
           %hr
   .span5
-    .well
+    .sidebar
       %h4 New User
+      %br
       = form_for(@new_user, html: { class: 'form-horizontal' }) do |f|
         .control-group
           = f.label :email, class: 'control-label'
