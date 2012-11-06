@@ -1,20 +1,19 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :path, :scripts, :timeout, :token
+  attr_accessible :name, :path, :scripts, :timeout, :token, :default_ref
 
-  validates_presence_of :name, :path, :scripts, :timeout, :token
+  validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
 
   has_many :builds, dependent: :destroy
 
   def register_build opts={}
-    default_opts = {
+    data = {
       project_id: self.id,
-      status: 'running'
+      status: 'running',
+      ref: ref,  
+      sha: last_commit(ref)
     }
 
-    allowed_opts = {}
-    allowed_opts[:commit_ref] = opts[:after]
-
-    @build = Build.create(default_opts.merge!(allowed_opts))
+    @build = Build.create(data)
   end
 
   def status
@@ -44,6 +43,15 @@ class Project < ActiveRecord::Base
       'unknown.png'
     end
   end
+
+  def repo
+    @repo ||= Grit::Repo.new(path)
+  end
+
+  def last_commit(ref)
+    repo.commits(ref, 1).first.sha
+  end
+
 end
 
 # == Schema Information

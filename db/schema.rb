@@ -11,26 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121101121639) do
+ActiveRecord::Schema.define(:version => 20121106143042) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
-    t.string   "commit_ref"
+    t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
     t.text     "trace"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "sha"
   end
 
   create_table "projects", :force => true do |t|
-    t.string   "name",                         :null => false
-    t.string   "path",                         :null => false
-    t.integer  "timeout",    :default => 1800, :null => false
-    t.text     "scripts",                      :null => false
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.string   "name",                          :null => false
+    t.string   "path",                          :null => false
+    t.integer  "timeout",     :default => 1800, :null => false
+    t.text     "scripts",                       :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.string   "token"
+    t.string   "default_ref"
   end
 
   create_table "users", :force => true do |t|
