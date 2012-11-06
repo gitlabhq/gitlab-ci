@@ -1,5 +1,13 @@
 source 'https://rubygems.org'
 
+def darwin_only(require_as)
+  RUBY_PLATFORM.include?('darwin') && require_as
+end
+
+def linux_only(require_as)
+  RUBY_PLATFORM.include?('linux') && require_as
+end
+
 gem 'rails', '3.2.8'
 
 # DB
@@ -41,10 +49,20 @@ group :assets do
   gem 'bootstrap-sass'
 end
 
+
 group :development do
   gem 'annotate'
+end
+
+
+group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'annotate'
+
+  gem 'shoulda-matchers'
+  gem 'guard-rspec'
+  gem 'rb-fsevent', require: darwin_only('rb-fsevent')
+  gem 'growl',      require: darwin_only('growl')
+  gem 'rb-inotify', require: linux_only('rb-inotify')
 end
