@@ -15,6 +15,22 @@
   .right
     %span= @build.updated_at.stamp('19:00 Aug 27')
   = @build.status
+
+- if @build.git_author_name
+  %p
+    %b Author:
+    #{@build.git_author_name}
+- if @project.gitlab_url
+  %p
+    %b GitLab:
+    = gitlab_build_compare_link(@build, @project)
+- if @build.started_at
+  %p
+    %b Duration:
+    #{distance_of_time_in_words(@build.started_at, @build.updated_at)}
+%p
+  %b Finished:
+  #{time_ago_in_words(@build.updated_at)} ago
 .clearfix
 %pre.trace#build-trace
   = preserve do

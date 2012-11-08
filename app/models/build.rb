@@ -2,7 +2,7 @@ class Build < ActiveRecord::Base
   belongs_to :project
 
   attr_accessible :project_id, :ref, :sha,
-    :status, :finished_at, :trace
+    :status, :finished_at, :trace, :started_at
 
   def failed?
     status == 'fail'
@@ -10,6 +10,12 @@ class Build < ActiveRecord::Base
 
   def success?
     status == 'success'
+  end
+
+  def git_author_name
+    project.last_commit(self.sha).author.name
+  rescue
+    nil
   end
 
   def running?
@@ -35,6 +41,10 @@ class Build < ActiveRecord::Base
   def write_trace(trace)
     self.reload
     update_attributes(trace: ansi_color_codes(trace))
+  end
+
+  def short_sha
+    sha[0..8]
   end
 
   def ansi_color_codes(string)
