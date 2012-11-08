@@ -24,13 +24,14 @@
   %p
     %b GitLab:
     = gitlab_build_compare_link(@build, @project)
-- if @build.started_at
+- if @build.success? || @build.failed?
+  - if @build.started_at
+    %p
+      %b Duration:
+      #{distance_of_time_in_words(@build.started_at, @build.updated_at)}
   %p
-    %b Duration:
-    #{distance_of_time_in_words(@build.started_at, @build.updated_at)}
-%p
-  %b Finished:
-  #{time_ago_in_words(@build.updated_at)} ago
+    %b Finished:
+    #{time_ago_in_words(@build.updated_at)} ago
 .clearfix
 %pre.trace#build-trace
   = preserve do

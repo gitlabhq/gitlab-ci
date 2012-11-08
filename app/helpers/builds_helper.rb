@@ -8,7 +8,7 @@ module BuildsHelper
 
     if compare_link
       gitlab_url << "/compare/#{prev_build.short_sha}...#{build.short_sha}"
-      link_to "Compare #{prev_build.short_sha}...#{build.short_sha}", '#'
+      link_to "Compare #{prev_build.short_sha}...#{build.short_sha}", gitlab_url
     else
       gitlab_url << "/commit/#{build.short_sha}"
       link_to "#{build.short_sha}", gitlab_url
