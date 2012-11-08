@@ -1,15 +1,20 @@
 require 'spec_helper'
 
 describe Project do
-  subject { Project.new }
+  subject { FactoryGirl.build :project }
 
   it { should have_many(:builds) }
 
+  describe :path do
+    it { should allow_value(Rails.root.join('tmp', 'test_repo')).for(:path) }
+    it { should_not allow_value('/tmp').for(:path) }
+  end
+
   it { should validate_presence_of :name }
-  it { should validate_presence_of :path }
   it { should validate_presence_of :scripts }
   it { should validate_presence_of :timeout }
   it { should validate_presence_of :token }
+  it { should validate_presence_of :default_ref }
 end
 
 # == Schema Information

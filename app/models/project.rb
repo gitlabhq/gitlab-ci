@@ -5,6 +5,15 @@ class Project < ActiveRecord::Base
 
   has_many :builds, dependent: :destroy
 
+  validate :repo_present?
+
+  def repo_present?
+    repo
+  rescue Grit::NoSuchPathError, Grit::InvalidGitRepositoryError
+    errors.add(:path, 'Project path is not a git repository')
+    false
+  end
+
   def register_build opts={}
     ref = opts[:ref] || default_ref || 'master'
 
@@ -53,7 +62,6 @@ class Project < ActiveRecord::Base
   def last_commit(ref)
     repo.commits(ref, 1).first.sha
   end
-
 end
 
 

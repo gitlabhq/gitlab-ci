@@ -4,7 +4,8 @@ FactoryGirl.define do
   factory :project do
     name Faker::Name.name
     token 'iPWx6WM4lhHNedGfBpPJNP'
-    path '/tmp'
+    default_ref 'master'
+    path Rails.root.join('tmp', 'test_repo')
     scripts 'ls'
   end
 end
