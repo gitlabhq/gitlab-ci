@@ -23,7 +23,7 @@ class Build < ActiveRecord::Base
     end
 
     after_transition :pending => :running do |build, transition|
-      build.started_at = Time.now
+      build.update_attributes started_at: Time.now
     end
 
     state :pending, value: 'pending'
