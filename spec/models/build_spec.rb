@@ -4,6 +4,9 @@ describe Build do
   subject { Build.new }
 
   it { should belong_to(:project) }
+  it { should validate_presence_of :sha }
+  it { should validate_presence_of :ref }
+  it { should validate_presence_of :status }
 end
 
 

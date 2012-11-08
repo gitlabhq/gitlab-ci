@@ -4,6 +4,10 @@ class Build < ActiveRecord::Base
   attr_accessible :project_id, :ref, :sha,
     :status, :finished_at, :trace, :started_at
 
+  validates :sha, presence: true
+  validates :ref, presence: true
+  validates :status, presence: true
+
   def failed?
     status == 'fail'
   end

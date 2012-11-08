@@ -24,7 +24,10 @@ class Runner
     path = project.path
     commands = project.scripts
 
-    build.update_attributes(started_at: Time.now)
+    build.update_attributes(
+      started_at: Time.now,
+      status: 'running'
+    )
 
     Dir.chdir(path) do
       commands.each_line do |line|

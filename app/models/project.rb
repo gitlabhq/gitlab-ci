@@ -20,7 +20,7 @@ class Project < ActiveRecord::Base
 
     data = {
       project_id: self.id,
-      status: 'running',
+      status: 'waiting',
       ref: ref,
       sha: sha
     }
