@@ -24,10 +24,7 @@ class Runner
     path = project.path
     commands = project.scripts
 
-    build.update_attributes(
-      started_at: Time.now,
-      status: 'running'
-    )
+    build.run!
 
     Dir.chdir(path) do
       commands.each_line do |line|
@@ -35,7 +32,7 @@ class Runner
         build.write_trace(@output)
 
         unless status
-          build.fail!
+          build.drop!
           return
         end
       end
@@ -44,10 +41,10 @@ class Runner
     build.success!
   rescue Errno::ENOENT
     @output << "INVALID PROJECT PATH"
-    build.fail!
+    build.drop!
   rescue Timeout::Error
     @output << "TIMEOUT"
-    build.fail!
+    build.drop!
   ensure
     build.write_trace(@output)
   end

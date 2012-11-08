@@ -37,6 +37,9 @@ gem 'grit'
 # Pagination
 gem 'will_paginate', '~> 3.0'
 
+# State machine
+gem 'state_machine'
+
 # Other
 gem 'rake'
 gem 'foreman'

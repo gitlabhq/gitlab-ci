@@ -8,34 +8,34 @@ class Build < ActiveRecord::Base
   validates :ref, presence: true
   validates :status, presence: true
 
-  def failed?
-    status == 'fail'
-  end
 
-  def success?
-    status == 'success'
+  state_machine :status, initial: :pending do
+    event :run do
+      transition pending: :running
+    end
+
+    event :drop do
+      transition running: :failed
+    end
+
+    event :success do
+      transition running: :success
+    end
+
+    after_transition :pending => :running do |build, transition|
+      build.started_at = Time.now
+    end
+
+    state :pending, value: 'pending'
+    state :running, value: 'running'
+    state :failed, value: 'failed'
+    state :success, value: 'success'
   end
 
   def git_author_name
     project.last_commit(self.sha).author.name
   rescue
     nil
-  end
-
-  def running?
-    status == 'running'
-  end
-
-  def success!
-    update_status 'success'
-  end
-
-  def fail!
-    update_status 'fail'
-  end
-
-  def running!
-    update_status 'running'
   end
 
   def update_status status

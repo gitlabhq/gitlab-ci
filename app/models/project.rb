@@ -20,7 +20,6 @@ class Project < ActiveRecord::Base
 
     data = {
       project_id: self.id,
-      status: 'waiting',
       ref: ref,
       sha: sha
     }
@@ -47,9 +46,9 @@ class Project < ActiveRecord::Base
   end
 
   def status_image
-    if status == 'success'
+    if status.success?
       'success.png'
-    elsif status == 'fail'
+    elsif status.failed?
       'failed.png'
     else
       'unknown.png'
