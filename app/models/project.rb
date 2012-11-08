@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
     data = {
       project_id: self.id,
       status: 'running',
-      ref: ref,  
+      ref: ref,
       sha: last_commit(ref)
     }
 
@@ -54,17 +54,19 @@ class Project < ActiveRecord::Base
 
 end
 
+
 # == Schema Information
 #
 # Table name: projects
 #
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)     not null
-#  path       :string(255)     not null
-#  timeout    :integer(4)      default(1800), not null
-#  scripts    :text            default(""), not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#  token      :string(255)
+#  id          :integer(4)      not null, primary key
+#  name        :string(255)     not null
+#  path        :string(255)     not null
+#  timeout     :integer(4)      default(1800), not null
+#  scripts     :text            default(""), not null
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
+#  token       :string(255)
+#  default_ref :string(255)
 #
 
