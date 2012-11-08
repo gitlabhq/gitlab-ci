@@ -12,7 +12,8 @@ if Rails.env == 'development'
       :name => "Test",
       :path => "/tmp",
       :token => "u4asd4u320a",
-      :scripts => "ls"
+      :scripts => "ls",
+      :default_ref => 'master'
     )
   end
 end

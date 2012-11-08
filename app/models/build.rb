@@ -1,11 +1,8 @@
 class Build < ActiveRecord::Base
   belongs_to :project
 
-  attr_accessible :project_id,
-    :commit_ref,
-    :status,
-    :finished_at,
-    :trace
+  attr_accessible :project_id, :ref, :sha,
+    :status, :finished_at, :trace
 
   def failed?
     status == 'fail'
@@ -46,17 +43,19 @@ class Build < ActiveRecord::Base
   end
 end
 
+
 # == Schema Information
 #
 # Table name: builds
 #
 #  id          :integer(4)      not null, primary key
 #  project_id  :integer(4)
-#  commit_ref  :string(255)
+#  ref         :string(255)
 #  status      :string(255)
 #  finished_at :datetime
 #  trace       :text
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  sha         :string(255)
 #
 

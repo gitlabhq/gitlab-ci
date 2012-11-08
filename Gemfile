@@ -31,6 +31,9 @@ gem 'resque'
 # Format dates
 gem 'stamp'
 
+# Git support
+gem 'grit'
+
 # Pagination
 gem 'will_paginate', '~> 3.0'
 
