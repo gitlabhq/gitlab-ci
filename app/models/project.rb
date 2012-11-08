@@ -6,6 +6,8 @@ class Project < ActiveRecord::Base
   has_many :builds, dependent: :destroy
 
   def register_build opts={}
+    ref = opts[:ref] || default_ref || 'master'
+
     data = {
       project_id: self.id,
       status: 'running',
