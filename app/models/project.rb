@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :path, :scripts, :timeout, :token, :default_ref
+  attr_accessible :name, :path, :scripts, :timeout, :token, :default_ref, :gitlab_url
 
   validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
 
@@ -16,12 +16,13 @@ class Project < ActiveRecord::Base
 
   def register_build opts={}
     ref = opts[:ref] || default_ref || 'master'
+    sha = opts[:after] || last_commit(ref).sha
 
     data = {
       project_id: self.id,
       status: 'running',
       ref: ref,
-      sha: last_commit(ref)
+      sha: sha
     }
 
     @build = Build.create(data)
@@ -60,7 +61,7 @@ class Project < ActiveRecord::Base
   end
 
   def last_commit(ref)
-    repo.commits(ref, 1).first.sha
+    repo.commits(ref, 1).first
   end
 end
 

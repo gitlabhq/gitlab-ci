@@ -1,7 +1,6 @@
 %h3 New project
 
-%hr
-&larr;
-= link_to 'Back', projects_path
+= link_to projects_path do
+  &larr; Back to projects
 %hr
 = render 'form'

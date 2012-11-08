@@ -7,24 +7,44 @@
           - @project.errors.full_messages.each do |msg|
             %li= msg
 
-  .field
-    = f.label :name
-    = f.text_field :name, class: 'input-xxlarge'
-  .field
-    = f.label :timeout
-    = f.number_field :timeout, class: 'input-xxlarge'
-  .field
-    = f.label :path
-    = f.text_field :path, class: 'input-xxlarge'
-  .field
-    = f.label :default_ref, "Default branch"
-    = f.text_field :default_ref, class: 'input-xxlarge'
-  .field
-    = f.label :token
-    = f.text_field :token, class: 'input-xxlarge'
-  .field
-    = f.label :scripts
-    = f.text_area :scripts, class: 'input-xxlarge'
+  .row-fluid
+    .span6
+      %fieldset
+        %legend Project
+        .field
+          = f.label :name
+          = f.text_field :name, class: 'input-xlarge', placeholder: 'my-project'
+        .field
+          = f.label :token
+          = f.text_field :token, class: 'input-xlarge', placeholder: 'xEeFCaDAB89'
+      %fieldset
+        %legend Git
+        .field
+          = f.label :path
+          = f.text_field :path, class: 'input-xlarge', placeholder: '/home/gitlab_ci/projectname'
+        .field
+          = f.label :default_ref, "Default branch"
+          = f.text_field :default_ref, class: 'input-xlarge', placeholder: 'master'
+
+      %fieldset
+        %legend GitLab
+        .field
+          = f.label :gitlab_url, "GitLab url to project"
+          = f.text_field :gitlab_url, class: 'input-xlarge', placeholder: 'http://gitlab.domain.com/project-slug'
+
+    .span6
+
+      %fieldset
+        %legend Build
+        .field
+          = f.label :timeout, 'Timeout (in seconds)'
+          = f.number_field :timeout, class: 'input-xlarge'
+        .field
+          = f.label :scripts
+          = f.text_area :scripts, class: 'input-xxlarge', rows: 18
+
   .form-actions
     = f.submit 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', projects_path, class: 'btn'
+    - unless @project.new_record?
+      = link_to 'Remove Project', project_path(@project), method: :delete, confirm: 'Project will be removed. Are you sure?', class: 'btn btn-danger right'

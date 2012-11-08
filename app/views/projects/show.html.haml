@@ -1,5 +1,7 @@
 %h3
   Project: #{@project.name}
+  - if @project.gitlab_url
+    %small= link_to 'View on GitLab', @project.gitlab_url
   .right
     %a.btn.btn-small{href: run_project_path(@project)}  Run
     %a.btn.btn-small{href: edit_project_path(@project)}
