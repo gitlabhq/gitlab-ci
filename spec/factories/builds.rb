@@ -2,5 +2,6 @@
 
 FactoryGirl.define do
   factory :build do
+    ref 'master'
   end
 end

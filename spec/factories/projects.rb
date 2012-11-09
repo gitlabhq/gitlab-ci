@@ -5,7 +5,7 @@ FactoryGirl.define do
     name Faker::Name.name
     token 'iPWx6WM4lhHNedGfBpPJNP'
     default_ref 'master'
-    path Rails.root.join('tmp', 'test_repo')
+    path Rails.root.join('tmp', 'test_repo').to_s
     scripts 'ls'
   end
 end

@@ -15,6 +15,14 @@ describe Project do
   it { should validate_presence_of :timeout }
   it { should validate_presence_of :token }
   it { should validate_presence_of :default_ref }
+
+  describe :register_build do
+    let(:project) { FactoryGirl.create :project }
+
+    it { project.register_build.should be_kind_of(Build) }
+    it { project.register_build.should be_pending }
+    it { project.register_build.should be_valid }
+  end
 end
 
 # == Schema Information

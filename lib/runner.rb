@@ -39,7 +39,8 @@ class Runner
     end
 
     build.success!
-  rescue Errno::ENOENT
+  rescue Errno::ENOENT => ex
+
     @output << "INVALID PROJECT PATH"
     build.drop!
   rescue Timeout::Error
