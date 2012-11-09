@@ -46,9 +46,9 @@ class Project < ActiveRecord::Base
   end
 
   def status_image
-    if status.success?
+    if last_build.success?
       'success.png'
-    elsif status.failed?
+    elsif last_build.failed?
       'failed.png'
     else
       'unknown.png'
@@ -59,7 +59,7 @@ class Project < ActiveRecord::Base
     @repo ||= Grit::Repo.new(path)
   end
 
-  def last_commit(ref)
+  def last_commit(ref = 'master')
     repo.commits(ref, 1).first
   end
 end

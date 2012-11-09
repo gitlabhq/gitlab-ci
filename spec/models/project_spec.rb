@@ -16,12 +16,29 @@ describe Project do
   it { should validate_presence_of :token }
   it { should validate_presence_of :default_ref }
 
-  describe :register_build do
+  context :valid_project do
     let(:project) { FactoryGirl.create :project }
 
-    it { project.register_build.should be_kind_of(Build) }
-    it { project.register_build.should be_pending }
-    it { project.register_build.should be_valid }
+    it { project.repo_present?.should be_true }
+
+    describe :register_build do
+      let(:build) { project.register_build }
+
+      it { build.should be_kind_of(Build) }
+      it { build.should be_pending }
+      it { build.should be_valid }
+      it { build.should == project.last_build }
+    end
+
+    context :project_with_build do
+      before { project.register_build }
+
+      it { project.status.should == 'pending' }
+      it { project.last_build.should be_kind_of(Build)  }
+      it { project.human_status.should == 'pending' }
+      it { project.status_image.should == 'unknown.png' }
+      it { project.last_commit.sha.should == 'a26f8df380e56dc79cd74087c8ed4f031eef0460' }
+    end
   end
 end
 

@@ -38,10 +38,6 @@ class Build < ActiveRecord::Base
     nil
   end
 
-  def update_status status
-    update_attributes(status: status)
-  end
-
   def write_trace(trace)
     self.reload
     update_attributes(trace: ansi_color_codes(trace))

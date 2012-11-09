@@ -7,6 +7,14 @@ describe Build do
   it { should validate_presence_of :sha }
   it { should validate_presence_of :ref }
   it { should validate_presence_of :status }
+
+  it { should respond_to :success? }
+  it { should respond_to :failed? }
+  it { should respond_to :running? }
+  it { should respond_to :pending? }
+  it { should respond_to :git_author_name }
+  it { should respond_to :short_sha }
+  it { should respond_to :ansi_color_codes }
 end
 
 
