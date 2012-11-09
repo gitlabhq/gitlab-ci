@@ -16,19 +16,24 @@
 
 
     # Copy config file
-    cp config/application.yml.example config/application.yml
+    cp config/database.yml.example config/database.yml
 
     # Setup DB
-    bundle exec rake db:migrate
+    bundle exec rake db:setup
 
 
 ## 2. Run
 
     # For development 
-    bundle exec foreman start -p 5000
+    bundle exec foreman start -p 3000
 
 
     # For production
     bundle exec thin start -p 3000 -d -e production
     bundle exec rake environment resque:work RAILS_ENV=production PIDFILE=./resque.pid BACKGROUND=yes QUEUE=runner 
-    
+
+
+## 3. Login
+
+    admin@local.host # email
+    5iveL!fe # password
