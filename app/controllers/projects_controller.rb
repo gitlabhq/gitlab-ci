@@ -48,6 +48,7 @@ class ProjectsController < ApplicationController
   end
 
   def run
+    #TODO remove or modify this functionality. Now it is broken
     @project = Project.find(params[:id])
     @build = @project.register_build
 

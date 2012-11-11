@@ -15,8 +15,11 @@ class Project < ActiveRecord::Base
   end
 
   def register_build opts={}
-    ref = opts[:ref] || default_ref || 'master'
-    sha = opts[:after] || last_commit(ref).sha
+    ref = opts[:ref].scan(/heads\/(.*)$/).flatten[0]
+
+    return false unless tracked_refs.include?(ref)
+
+    sha = opts[:after]
 
     data = {
       project_id: self.id,
@@ -61,6 +64,10 @@ class Project < ActiveRecord::Base
 
   def last_commit(ref = 'master')
     repo.commits(ref, 1).first
+  end
+
+  def tracked_refs
+    @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
   end
 end
 
