@@ -58,6 +58,7 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'quiet_assets'
 end
 
 

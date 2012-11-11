@@ -114,6 +114,8 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
+    quiet_assets (1.0.1)
+      railties (~> 3.1)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -233,6 +235,7 @@ DEPENDENCIES
   jquery-rails
   mysql2
   pry
+  quiet_assets
   rails (= 3.2.8)
   rake
   rb-fsevent
