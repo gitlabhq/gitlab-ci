@@ -19,9 +19,8 @@
       %span.label{class: build_status_class(build)}= build.status
       &rarr;
       = link_to project_build_path(@project, build) do
-        %strong Build #{build.id}
+        %strong Build ##{build.short_sha}
         %small= "(#{build.ref})"
-        %small= build.sha
       .right
         %span= build.updated_at.stamp('19:00 Aug 27')
 

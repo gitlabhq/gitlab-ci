@@ -10,9 +10,8 @@
 
 .alert{class: build_status_alert_class(@build)}
   %h4
-    Build ##{@build.id}
+    Build ##{@build.short_sha}
     %small= "(#{@build.ref})"
-    %small= @build.sha
   .right
     %span= @build.updated_at.stamp('19:00 Aug 27')
   = @build.status
