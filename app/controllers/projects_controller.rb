@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
-    @builds = @project.builds.order('id DESC').paginate(:page => params[:page], :per_page => 20)
+    @builds = @project.builds.latest_sha.order('id DESC').paginate(:page => params[:page], :per_page => 20)
   end
 
   def new

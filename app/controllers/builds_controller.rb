@@ -3,7 +3,7 @@ class BuildsController < ApplicationController
   before_filter :project
 
   def show
-    @build = @project.builds.find_by_sha(params[:id]) ## TODO: create by 404
+    @build = @project.builds.find_all_by_sha(params[:id]).last
   end
 
   protected
