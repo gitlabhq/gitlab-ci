@@ -52,10 +52,11 @@ class Project < ActiveRecord::Base
     status
   end
 
-  def status_image
-    if last_build.success?
+  def status_image ref = 'master'
+    build = self.builds.where(ref: ref).latest_sha.last
+    if build.success?
       'success.png'
-    elsif last_build.failed?
+    elsif build.failed?
       'failed.png'
     else
       'unknown.png'

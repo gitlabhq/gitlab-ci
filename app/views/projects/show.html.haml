@@ -22,7 +22,7 @@
 - if @ref
   %p
     Paste build status image for #{@ref} with next link
-    %a.btn.btn-small{href: status_project_path(@project)} Status Badge
+    %a.btn.btn-small{href: status_project_path(@project, ref: @ref)} Status Badge
   %p
     You can manually run a build for current branch.
     = link_to run_project_path(@project, ref: @ref), class: 'btn btn-small' do

@@ -7,7 +7,7 @@ class Build < ActiveRecord::Base
   validates :sha, presence: true
   validates :ref, presence: true
   validates :status, presence: true
-  
+
   scope :latest_sha, where("id IN(SELECT MAX(id) FROM #{self.table_name} group by sha)")
 
   state_machine :status, initial: :pending do

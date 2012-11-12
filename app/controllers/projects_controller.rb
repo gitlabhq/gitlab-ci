@@ -78,6 +78,6 @@ class ProjectsController < ApplicationController
   def status
     @project = Project.find(params[:id])
 
-    send_file Rails.root.join('public', @project.status_image), filename: 'success.png', disposition: 'inline'
+    send_file Rails.root.join('public', @project.status_image(params[:ref])), filename: 'success.png', disposition: 'inline'
   end
 end
