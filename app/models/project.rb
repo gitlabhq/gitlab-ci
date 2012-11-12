@@ -15,7 +15,16 @@ class Project < ActiveRecord::Base
   end
 
   def register_build opts={}
-    ref = opts[:ref] || default_ref || 'master'
+    ref = opts[:ref]
+
+    raise 'ref is not defined' unless ref
+
+    if ref.include? 'heads'
+      ref = ref.scan(/heads\/(.*)$/).flatten[0]
+    end
+
+    return false unless tracked_refs.include?(ref)
+
     sha = opts[:after] || last_commit(ref).sha
 
     data = {
@@ -61,6 +70,14 @@ class Project < ActiveRecord::Base
 
   def last_commit(ref = 'master')
     repo.commits(ref, 1).first
+  end
+
+  def tracked_refs
+    @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
+  end
+
+  def several_branches?
+    tracked_refs.size > 1
   end
 end
 

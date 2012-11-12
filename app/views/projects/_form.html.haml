@@ -23,8 +23,8 @@
           = f.label :path
           = f.text_field :path, class: 'input-xlarge', placeholder: '/home/gitlab_ci/projectname'
         .field
-          = f.label :default_ref, "Default branch"
-          = f.text_field :default_ref, class: 'input-xlarge', placeholder: 'master'
+          = f.label :default_ref, "Default branches"
+          = f.text_field :default_ref, class: 'input-xlarge', placeholder: 'master, stable'
 
       %fieldset
         %legend GitLab

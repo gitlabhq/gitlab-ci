@@ -26,6 +26,8 @@ class Runner
 
     build.run!
 
+    prepare_project(path, build.ref)
+
     Dir.chdir(path) do
       commands.each_line do |line|
         status = command(line, path)
@@ -77,5 +79,14 @@ class Runner
   ensure
     @tmp_file.rewind
     @output << @tmp_file.read
+  end
+
+  def prepare_project(path, ref)
+    cmd = []
+    cmd << "cd #{path}"
+    cmd << "git fetch"
+    cmd << "git reset --hard"
+    cmd << "git checkout origin/#{ref}"
+    `#{cmd.join("&&")}`
   end
 end

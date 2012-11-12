@@ -7,7 +7,8 @@ class Build < ActiveRecord::Base
   validates :sha, presence: true
   validates :ref, presence: true
   validates :status, presence: true
-
+  
+  scope :latest_sha, where("id IN(SELECT MAX(id) FROM #{self.table_name} group by sha)")
 
   state_machine :status, initial: :pending do
     event :run do
@@ -50,6 +51,10 @@ class Build < ActiveRecord::Base
   def ansi_color_codes(string)
     string.gsub("\e[0m", '</span>').
       gsub(/\e\[(\d+)m/, "<span class=\"color\\1\">")
+  end
+
+  def to_param
+    sha
   end
 end
 

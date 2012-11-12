@@ -1,52 +1,67 @@
 %h3
   Project: #{@project.name}
   .right
-    %a.btn.btn-small{href: project_path(@project)}  Builds
     - if current_user
-      %a.btn.btn-small{href: run_project_path(@project)}  Run
+      %a.btn.btn-small{href: run_project_path(@project, ref: @build.ref)}  Run
       %a.btn.btn-small{href: edit_project_path(@project)}
         %i.icon-edit.icon-white
         Edit Project
 
-.alert{class: build_status_alert_class(@build)}
-  %h4
-    Build ##{@build.id}
-    %small= @build.sha
-  .right
-    %span= @build.updated_at.stamp('19:00 Aug 27')
-  = @build.status
+%p
+  = link_to project_path(@project) do
+    &larr; Back to project builds
+%hr
+.row-fluid
+  .span9
+    .alert{class: build_status_alert_class(@build)}
+      %h4
+        Build ##{@build.short_sha}
+        %small= "(#{@build.ref})"
+      .right
+        %span= @build.updated_at.stamp('19:00 Aug 27')
+      = @build.status
 
-- if @build.git_author_name
-  %p
-    %b Author:
-    #{@build.git_author_name}
-- if @project.gitlab_url
-  %p
-    %b GitLab:
-    = gitlab_build_compare_link(@build, @project)
-- if @build.success? || @build.failed?
-  - if @build.started_at
-    %p
-      %b Duration:
-      #{distance_of_time_in_words(@build.started_at, @build.updated_at)}
-  %p
-    %b Finished:
-    #{time_ago_in_words(@build.updated_at)} ago
-.clearfix
-%pre.trace#build-trace
-  = preserve do
-    = raw @build.trace
+    - if @build.git_author_name
+      %p
+        %b Author:
+        #{@build.git_author_name}
+    - if @project.gitlab_url
+      %p
+        %b GitLab:
+        = gitlab_build_compare_link(@build, @project)
+    - if @build.success? || @build.failed?
+      - if @build.started_at
+        %p
+          %b Duration:
+          #{distance_of_time_in_words(@build.started_at, @build.updated_at)}
+      %p
+        %b Finished:
+        #{time_ago_in_words(@build.updated_at)} ago
+    .clearfix
+    %pre.trace#build-trace
+      = preserve do
+        = raw @build.trace
+  .span3
+    .builds
+      %h5 Builds for #{@build.short_sha}
+      - @builds.each do |build|
+        .build.alert{class: build_status_alert_class(build)}
+          %span= build.status
+          &rarr;
+          = link_to project_build_path(@project, build, bid: build.id ) do
+            %strong Build ##{build.short_sha}
+      = will_paginate @builds
 %br
 .right
   %a.btn.btn-small{href: project_path(@project)}  Builds
   - if current_user
-    %a.btn.btn-small{href: run_project_path(@project)}  Run
+    %a.btn.btn-small{href: run_project_path(@project, ref: @build.ref)}  Run
     %a.btn.btn-small{href: edit_project_path(@project)}
       %i.icon-edit.icon-white
       Edit Project
 
 
-- if @build.running?
+- if @build.running? || @build.pending?
   :javascript
     $(function(){
       getBuild('#{project_build_path(@project, @build)}');
