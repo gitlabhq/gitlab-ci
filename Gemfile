@@ -34,6 +34,9 @@ gem 'stamp'
 # Git support
 gem 'grit'
 
+# ANSI color
+gem 'ansi2html', git: "git://github.com/vsizov/ansi2html.git"
+
 # Pagination
 gem 'will_paginate', '~> 3.0'
 

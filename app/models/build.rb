@@ -49,8 +49,7 @@ class Build < ActiveRecord::Base
   end
 
   def ansi_color_codes(string)
-    string.gsub("\e[0m", '</span>').
-      gsub(/\e\[(\d+)m/, "<span class=\"color\\1\">")
+    ANSI2HTML::convert(string)
   end
 
   def to_param
