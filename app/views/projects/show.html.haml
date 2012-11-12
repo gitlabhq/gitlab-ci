@@ -3,27 +3,32 @@
   - if @project.gitlab_url
     %small= link_to 'View on GitLab', @project.gitlab_url
   .right
-    %a.btn.btn-small{href: run_project_path(@project)}  Run
     %a.btn.btn-small{href: edit_project_path(@project)}
       %i.icon-edit.icon-white
       Edit
     %a.btn.btn-small{href: status_project_path(@project)} Badge
 
-.alert.alert-info
-  %strong POST
+.token_widget
+  %strong HTTP POST
   = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge'
+  %span Copy this link and add to GitLab web hooks
+
+.nav.nav-tabs
+  %li{class: ref_tab_class}
+    = link_to 'All', project_path(@project)
+  - @project.tracked_refs.each do |ref|
+    %li{class: ref_tab_class(ref)}
+      = link_to ref, project_path(@project, ref: ref)
+
+- if @ref
+  %p
+    You can manually run a build for current branch.
+    = link_to run_project_path(@project, ref: @ref), class: 'btn btn-small' do
+      %i.icon-play.icon-white
+      Run a build
 
 .builds
-  - @builds.each do |build|
-    .build.alert{class: build_status_alert_class(build)}
-      %span.label{class: build_status_class(build)}= build.status
-      &rarr;
-      = link_to project_build_path(@project, build) do
-        %strong Build ##{build.short_sha}
-        %small= "(#{build.ref})"
-      .right
-        %span= build.updated_at.stamp('19:00 Aug 27')
-
+  = render @builds
   = will_paginate @builds
 - if @builds.empty?
   .alert

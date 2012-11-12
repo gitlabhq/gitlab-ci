@@ -15,11 +15,17 @@ class Project < ActiveRecord::Base
   end
 
   def register_build opts={}
-    ref = opts[:ref].scan(/heads\/(.*)$/).flatten[0]
+    ref = opts[:ref]
+
+    raise 'ref is not defined' unless ref
+
+    if ref.include? 'heads'
+      ref = ref.scan(/heads\/(.*)$/).flatten[0]
+    end
 
     return false unless tracked_refs.include?(ref)
 
-    sha = opts[:after]
+    sha = opts[:after] || last_commit(ref).sha
 
     data = {
       project_id: self.id,
@@ -68,6 +74,10 @@ class Project < ActiveRecord::Base
 
   def tracked_refs
     @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
+  end
+
+  def several_branches?
+    tracked_refs.size > 1
   end
 end
 

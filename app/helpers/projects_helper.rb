@@ -9,16 +9,6 @@ module ProjectsHelper
     end
   end
 
-  def build_status_class build
-    if build.success?
-      'label-success'
-    elsif build.failed?
-      'label-important'
-    else
-      'label-inverse'
-    end
-  end
-
   def build_status_alert_class build
     if build.success?
       'alert-success'
@@ -27,5 +17,9 @@ module ProjectsHelper
     else
       ''
     end
+  end
+
+  def ref_tab_class ref = nil
+    'active' if ref == @ref
   end
 end

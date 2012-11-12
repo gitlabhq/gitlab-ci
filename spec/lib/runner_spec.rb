@@ -21,7 +21,7 @@ describe Runner do
 
   def setup_build cmd
     project = FactoryGirl.create :project, scripts: cmd
-    project.register_build
+    project.register_build ref: 'master'
   end
 end
 

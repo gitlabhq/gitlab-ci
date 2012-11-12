@@ -7,13 +7,5 @@ User.create(
 )
 
 if Rails.env == 'development'
-  5.times do
-    Project.create(
-      name: "Test",
-      path: "/tmp",
-      token: "u4asd4u320a",
-      scripts: "ls",
-      default_ref: 'master'
-    )
-  end
+  FactoryGirl.create :project, name: 'Six', scripts: 'bundle exec rspec spec'
 end

@@ -1,0 +1,7 @@
+.build.alert{class: build_status_alert_class(build)}
+  %span= build.status
+  &rarr;
+  = link_to project_build_path(@project, build) do
+    %strong Build ##{build.short_sha}
+  .right
+    %span #{time_ago_in_words build.updated_at} ago

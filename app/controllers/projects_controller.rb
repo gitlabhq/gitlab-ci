@@ -9,7 +9,11 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
-    @builds = @project.builds.latest_sha.order('id DESC').paginate(:page => params[:page], :per_page => 20)
+    @ref = params[:ref]
+
+    @builds = @project.builds
+    @builds = @builds.where(ref: @ref) if @ref
+    @builds = @builds.latest_sha.order('id DESC').paginate(:page => params[:page], :per_page => 20)
   end
 
   def new
@@ -48,13 +52,15 @@ class ProjectsController < ApplicationController
   end
 
   def run
-    #TODO remove or modify this functionality. Now it is broken
     @project = Project.find(params[:id])
-    @build = @project.register_build
+    @build = @project.register_build(ref: params[:ref])
 
-    Resque.enqueue(Runner, @build.id)
-
-    redirect_to project_build_path(@project, @build)
+    if @build
+      Resque.enqueue(Runner, @build.id)
+      redirect_to project_build_path(@project, @build)
+    else
+      redirect_to project_path(@project), notice: 'Branch is not defined for this project'
+    end
   end
 
   def build
@@ -62,7 +68,7 @@ class ProjectsController < ApplicationController
 
     if @project.token && @project.token == params[:token]
       @build = @project.register_build(params)
-      Resque.enqueue(Runner, @build.id)
+      Resque.enqueue(Runner, @build.id) if @build
       head 200
     else
       head 403

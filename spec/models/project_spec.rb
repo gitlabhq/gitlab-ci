@@ -22,7 +22,7 @@ describe Project do
     it { project.repo_present?.should be_true }
 
     describe :register_build do
-      let(:build) { project.register_build }
+      let(:build) { project.register_build(ref: 'master') }
 
       it { build.should be_kind_of(Build) }
       it { build.should be_pending }
@@ -31,7 +31,7 @@ describe Project do
     end
 
     context :project_with_build do
-      before { project.register_build }
+      before { project.register_build ref: 'master' }
 
       it { project.status.should == 'pending' }
       it { project.last_build.should be_kind_of(Build)  }
