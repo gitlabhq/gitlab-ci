@@ -23,8 +23,6 @@ class Project < ActiveRecord::Base
       ref = ref.scan(/heads\/(.*)$/).flatten[0]
     end
 
-    return false unless tracked_refs.include?(ref)
-
     sha = opts[:after] || last_commit(ref).sha
 
     data = {
@@ -74,10 +72,6 @@ class Project < ActiveRecord::Base
 
   def tracked_refs
     @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
-  end
-
-  def several_branches?
-    tracked_refs.size > 1
   end
 end
 

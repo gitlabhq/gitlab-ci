@@ -6,7 +6,6 @@
     %a.btn.btn-small{href: edit_project_path(@project)}
       %i.icon-edit.icon-white
       Edit
-    %a.btn.btn-small{href: status_project_path(@project)} Badge
 
 .token_widget
   %strong HTTP POST
@@ -15,12 +14,15 @@
 
 .nav.nav-tabs
   %li{class: ref_tab_class}
-    = link_to 'All', project_path(@project)
+    = link_to 'All builds', project_path(@project)
   - @project.tracked_refs.each do |ref|
     %li{class: ref_tab_class(ref)}
       = link_to ref, project_path(@project, ref: ref)
 
 - if @ref
+  %p
+    Paste build status image for #{@ref} with next link
+    %a.btn.btn-small{href: status_project_path(@project)} Status Badge
   %p
     You can manually run a build for current branch.
     = link_to run_project_path(@project, ref: @ref), class: 'btn btn-small' do

@@ -3,5 +3,8 @@
   &rarr;
   = link_to project_build_path(@project, build) do
     %strong Build ##{build.short_sha}
+  - unless @ref
+    \|
+    %span= build.ref
   .right
     %span #{time_ago_in_words build.updated_at} ago
