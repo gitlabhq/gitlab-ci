@@ -23,7 +23,7 @@ class Project < ActiveRecord::Base
       ref = ref.scan(/heads\/(.*)$/).flatten[0]
     end
 
-    sha = opts[:after] || last_commit(ref).sha
+    sha = opts[:after] || last_ref_sha(ref)
 
     data = {
       project_id: self.id,
@@ -32,6 +32,10 @@ class Project < ActiveRecord::Base
     }
 
     @build = Build.create(data)
+  end
+
+  def last_ref_sha ref
+    `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`
   end
 
   def status
