@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/vsizov/ansi2html.git
+  revision: 09c1544848940c2887da1908e7530e3983d6f499
+  specs:
+    ansi2html (0.9.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -220,6 +226,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  ansi2html!
   bootstrap-sass
   capybara
   childprocess

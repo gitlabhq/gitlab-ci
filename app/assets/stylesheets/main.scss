@@ -75,18 +75,6 @@ pre.trace {
   margin-bottom: 6px;
 }
 
-.color31 {
-  color: red !important;
-}
-
-.color32 {
-  color: green !important;
-}
-
-.color33 {
-  color: yellow !important;
-}
-
 .btn {
   background: $style_color;
   color: #fff;
@@ -136,3 +124,33 @@ h3.error { color: #B94A48; }
   }
 }
 
+.bold {
+    font-weight: bold;
+}
+.black {
+    color: black;
+}
+.red {
+    color: red;
+}
+.green {
+    color: green;
+}
+.yellow {
+    color: yellow;
+}
+.blue {
+    color: blue;
+}
+.magenta {
+    color: magenta;
+}
+.cyan {
+    color: cyan;
+}
+.white {
+    color: white;
+}
+.grey {
+    color: grey;
+}
