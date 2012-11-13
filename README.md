@@ -1,4 +1,30 @@
-## 1. Setup
+# Setup: 
+
+## 1. Required packages:
+
+    sudo apt-get update
+    sudo apt-get upgrade
+
+    sudo apt-get install -y wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev redis-server openssh-server git-core python-dev python-pip libyaml-dev postfix libpq-dev
+
+    sudo pip install pygments
+
+
+## 2. Install Ruby
+
+    wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
+    tar xfvz ruby-1.9.3-p194.tar.gz
+    cd ruby-1.9.3-p194
+    ./configure
+    make
+    sudo make install
+
+
+## 3. Get code 
+
+    git clone https://github.com/gitlabhq/gitlab-ci.git
+
+## 4. Setup application
 
     # bundle
 
@@ -22,7 +48,7 @@
     bundle exec rake db:setup
 
 
-## 2. Run
+## 5. Run
 
     # For development 
     bundle exec foreman start -p 3000
@@ -33,7 +59,7 @@
     bundle exec rake environment resque:work RAILS_ENV=production PIDFILE=./resque.pid BACKGROUND=yes QUEUE=runner 
 
 
-## 3. Login
+## 6. Login
 
     admin@local.host # email
     5iveL!fe # password
