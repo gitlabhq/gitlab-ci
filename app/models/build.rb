@@ -49,7 +49,7 @@ class Build < ActiveRecord::Base
   end
 
   def ansi_color_codes(string)
-    ANSI2HTML::convert(string)
+    Ansi2html::convert(string)
   end
 
   def to_param
