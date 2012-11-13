@@ -1,3 +1,8 @@
+# GitLab CI is an open-source continuous integration server
+
+![Screen](https://github.com/downloads/gitlabhq/gitlab-ci/gitlab_ci_preview.png)
+
+
 # Setup: 
 
 ## 1. Required packages:
