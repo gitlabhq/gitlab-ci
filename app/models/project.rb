@@ -7,6 +7,8 @@ class Project < ActiveRecord::Base
 
   validate :repo_present?
 
+  validates_uniqueness_of :name
+
   def repo_present?
     repo
   rescue Grit::NoSuchPathError, Grit::InvalidGitRepositoryError

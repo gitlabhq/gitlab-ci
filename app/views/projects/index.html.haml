@@ -20,6 +20,8 @@
           %i.icon-edit.icon-white
           Edit
 
+.clearfix
+= will_paginate @projects
 - if @projects.empty?
   .alert
     No projects yet

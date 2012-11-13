@@ -42,6 +42,10 @@ a {
   float:right;
 }
 
+.light {
+  color: #888;
+}
+
 .project_box {
   color:#777;
   border: 1px solid #ddd;
@@ -153,4 +157,9 @@ h3.error { color: #B94A48; }
 }
 .grey {
     color: grey;
+}
+
+.bordered {
+  border: 1px solid #DDD;
+  @include box-shadow(0 0 0 3px #eee);
 }

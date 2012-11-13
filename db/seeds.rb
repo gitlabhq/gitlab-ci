@@ -7,5 +7,9 @@ User.create(
 )
 
 if Rails.env == 'development'
-  FactoryGirl.create :project, name: 'Six', scripts: 'bundle exec rspec spec'
+  10.times do |i|
+    FactoryGirl.create :project,
+      name: "Six #{i}",
+      scripts: 'bundle exec rspec spec'
+  end
 end

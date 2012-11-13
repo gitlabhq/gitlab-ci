@@ -1,7 +1,7 @@
 GitlabCi::Application.routes.draw do
   # Optionally, enable Resque here
   require 'resque/server'
-  mount Resque::Server => '/resque', as: 'resque'
+  mount Resque::Server => '/ext/resque', as: 'ext_resque'
 
   resources :projects do
     member do
@@ -15,5 +15,6 @@ GitlabCi::Application.routes.draw do
   devise_for :users
 
   resources :users
+  resource :resque, only: 'show'
   root :to => 'projects#index'
 end
