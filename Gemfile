@@ -45,6 +45,7 @@ gem 'rake'
 gem 'foreman'
 gem 'jquery-rails'
 gem 'childprocess'
+gem 'gitlab_ci_meta'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
