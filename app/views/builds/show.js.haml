@@ -1,6 +1,7 @@
 - if @build.running?
   :plain
-    $('#build-trace').html("#{escape_javascript(@build.trace)}");
+    $('#build-trace').html("#{escape_javascript(@build.trace_html)}");
+    $('#build-trace').append('#{loader_html}');
     getBuild('#{project_build_path(@project, @build)}');
 - else
   :plain

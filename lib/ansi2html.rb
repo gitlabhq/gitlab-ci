@@ -15,13 +15,21 @@ module Ansi2html
 
   def self.convert(ansi)
     out = ""
+    tag_open = false
     s = StringScanner.new(ansi.gsub("<", "&lt;"))
     while(!s.eos?)
-      if s.scan(/\e\[(3[0-7]|90|1)m/)
+      if s.scan(/\e\[(3[0-7]|90|1)m/) || s.scan(/\[1;(3[0-7])m/)
+        if tag_open
+          out << %{</span>}
+        end
         out << %{<span class="#{COLOR[s[1]]}">}
+        tag_open = true
       else
         if s.scan(/\e\[0m/)
-          out << %{</span>}
+          if tag_open
+            out << %{</span>}
+          end
+          tag_open = false
         else
           out << s.scan(/./m)
         end

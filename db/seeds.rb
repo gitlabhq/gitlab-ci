@@ -10,7 +10,7 @@ User.create(
 if Rails.env == 'development'
   `cd #{Rails.root.join('tmp')} && git clone https://github.com/randx/six.git test_repo`
 
-  10.times do |i|
+  3.times do |i|
     FactoryGirl.create :project,
       name: "Six #{i}",
       scripts: 'bundle exec rspec spec'

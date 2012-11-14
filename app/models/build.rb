@@ -41,15 +41,19 @@ class Build < ActiveRecord::Base
 
   def write_trace(trace)
     self.reload
-    update_attributes(trace: ansi_color_codes(trace))
+    update_attributes(trace: trace)
   end
 
   def short_sha
     sha[0..8]
   end
 
-  def ansi_color_codes(string)
-    Ansi2html::convert(string)
+  def trace_html
+    if trace.present?
+      Ansi2html::convert(trace)
+    else
+      ''
+    end
   end
 
   def to_param

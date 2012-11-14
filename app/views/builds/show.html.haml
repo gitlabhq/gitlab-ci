@@ -39,7 +39,7 @@
     .clearfix
     %pre.trace#build-trace
       = preserve do
-        = raw @build.trace
+        = raw @build.trace_html
   .span3
     .builds
       %h5 Builds for #{@build.short_sha}
