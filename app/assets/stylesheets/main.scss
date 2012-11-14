@@ -72,7 +72,9 @@ a {
 pre.trace {
   background: #000;
   color:#fff;
+  font-family: 'Menlo', 'Liberation Mono', 'Consolas', 'Courier New', 'andale mono','lucida console',monospace;
 }
+
 .navbar .navbar-inner { border-radius: 0; }
 
 .builds .build.alert{
@@ -138,7 +140,7 @@ h3.error { color: #B94A48; }
     color: red;
 }
 .green {
-    color: green;
+    color: #0E0;
 }
 .yellow {
     color: yellow;
