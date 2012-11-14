@@ -6,7 +6,10 @@ User.create(
   password_confirmation: "5iveL!fe"
 )
 
+
 if Rails.env == 'development'
+  `cd #{Rails.root.join('tmp')} && git clone https://github.com/randx/six.git test_repo`
+
   10.times do |i|
     FactoryGirl.create :project,
       name: "Six #{i}",
