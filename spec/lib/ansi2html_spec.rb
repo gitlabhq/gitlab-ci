@@ -21,7 +21,15 @@ describe Ansi2html do
     Ansi2html::convert("\e[90mHello\e[0m").should == '<span class="grey">Hello</span>'
   end
 
-  it "white bold boys have more fun" do
-    Ansi2html::convert("\e[37m\e[1mHello\e[0m\e[0m").should == '<span class="white"><span class="bold">Hello</span></span>'
+  it "ignore nested bold" do
+    Ansi2html::convert("\e[37m\e[1mHello\e[0m\e[0m").should == '<span class="white">Hello</span>'
+  end
+
+  it "should print cucumber style" do
+    Ansi2html::convert("\e[1;32mScenario:\e[0m").should == '<span class="green">Scenario:</span>'
+  end
+
+  it 'should always close tags' do
+    Ansi2html::convert("\e[1;32mScenario: User sign up").should == '<span class="green">Scenario: User sign up</span>'
   end
 end

@@ -14,7 +14,7 @@ describe Build do
   it { should respond_to :pending? }
   it { should respond_to :git_author_name }
   it { should respond_to :short_sha }
-  it { should respond_to :ansi_color_codes }
+  it { should respond_to :trace_html }
 end
 
 
