@@ -75,7 +75,8 @@ pre.trace {
   font-family: 'Menlo', 'Liberation Mono', 'Consolas', 'Courier New', 'andale mono','lucida console',monospace;
   white-space: pre;
   word-wrap: normal;
-  overflow-x: scroll;
+  overflow: auto;
+  overflow-y: hidden;
 }
 
 .navbar .navbar-inner { border-radius: 0; }
