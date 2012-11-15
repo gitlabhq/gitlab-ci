@@ -27,6 +27,10 @@ class Build < ActiveRecord::Base
       build.update_attributes started_at: Time.now
     end
 
+    after_transition :running => :any do |build, transition|
+      build.update_attributes finished_at: Time.now
+    end
+
     state :pending, value: 'pending'
     state :running, value: 'running'
     state :failed, value: 'failed'

@@ -2,7 +2,7 @@ module BuildsHelper
   def gitlab_build_compare_link build, project
     gitlab_url = project.gitlab_url
 
-    prev_build = project.builds.where("id < #{build.id}").order('id desc').first
+    prev_build = project.builds.where("id < #{build.id}").where(ref: build.ref).order('id desc').first
 
     compare_link = prev_build && prev_build.sha != build.sha
 
@@ -13,5 +13,9 @@ module BuildsHelper
       gitlab_url << "/commit/#{build.short_sha}"
       link_to "#{build.short_sha}", gitlab_url
     end
+  end
+
+  def build_duration build
+    distance_of_time_in_words(build.started_at, build.finished_at || Time.now)
   end
 end

@@ -28,14 +28,14 @@
       %p
         %b GitLab:
         = gitlab_build_compare_link(@build, @project)
-    - if @build.success? || @build.failed?
-      - if @build.started_at
-        %p
-          %b Duration:
-          #{distance_of_time_in_words(@build.started_at, @build.updated_at)}
+    - if @build.started_at
+      %p
+        %b Duration:
+        #{build_duration @build}
+    - if @build.finished_at
       %p
         %b Finished:
-        #{time_ago_in_words(@build.updated_at)} ago
+        #{time_ago_in_words(@build.finished_at)} ago
     .clearfix
     %pre.trace#build-trace
       = preserve do
@@ -61,5 +61,5 @@
 - if @build.running? || @build.pending?
   :javascript
     $(function(){
-      getBuild('#{project_build_path(@project, @build)}');
+      getBuild('#{project_build_path(@project, @build, bid: @build.id )}');
     })
