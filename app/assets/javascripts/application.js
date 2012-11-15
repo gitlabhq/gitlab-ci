@@ -18,6 +18,6 @@ function getBuild(buildPath, buildId) {
   console.log('run');
   setTimeout(function() {
     $.get(buildPath + ".js?bid=" + buildId);
-  }, 1500);
+  }, 3000);
 }
 

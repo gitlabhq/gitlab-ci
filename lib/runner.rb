@@ -73,6 +73,8 @@ class Runner
     @process.environment['BUNDLE_GEMFILE'] = ''
     @process.start
 
+    build.set_file @tmp_file.path
+
     begin
       @process.poll_for_exit(project.timeout)
     rescue ChildProcess::TimeoutError

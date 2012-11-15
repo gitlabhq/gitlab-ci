@@ -59,10 +59,21 @@ class Build < ActiveRecord::Base
 
   def trace_html
     if trace.present?
-      Ansi2html::convert(trace)
+      Ansi2html::convert(compose_output)
     else
       ''
     end
+  end
+
+
+  def compose_output
+    output = trace
+
+    if running? && tmp_file
+      output << File.read(tmp_file)
+    end
+
+    output
   end
 
   def to_param
@@ -71,6 +82,11 @@ class Build < ActiveRecord::Base
 
   def active?
     running? || pending?
+  end
+
+  def set_file path
+    self.tmp_file = path
+    self.save
   end
 end
 
