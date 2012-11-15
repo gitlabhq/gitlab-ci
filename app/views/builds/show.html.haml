@@ -61,5 +61,5 @@
 - if @build.running? || @build.pending?
   :javascript
     $(function(){
-      getBuild('#{project_build_path(@project, @build, bid: @build.id )}');
+      getBuild('#{project_build_path(@project, @build)}', '#{@build.id}');
     })

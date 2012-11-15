@@ -14,10 +14,10 @@
 //= require jquery_ujs
 //= require_tree .
 //
-function getBuild(buildPath) { 
+function getBuild(buildPath, buildId) { 
   console.log('run');
   setTimeout(function() {
-    $.get(buildPath + ".js");
+    $.get(buildPath + ".js?bid=" + buildId);
   }, 1500);
 }
 

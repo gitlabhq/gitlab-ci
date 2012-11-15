@@ -2,7 +2,7 @@
   :plain
     $('#build-trace').html("#{escape_javascript(@build.trace_html)}");
     $('#build-trace').append('#{loader_html}');
-    getBuild('#{project_build_path(@project, @build, bid: @build.id )}');
+    getBuild('#{project_build_path(@project, @build)}', '#{@build.id}');
 - else
   :plain
     location.href = "#{project_build_path(@project, @build)}";
