@@ -20,6 +20,10 @@
         %span= @build.updated_at.stamp('19:00 Aug 27')
       = @build.status
 
+    - if @build.active?
+      .right
+        = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
+
     - if @build.git_author_name
       %p
         %b Author:
@@ -58,7 +62,7 @@
     Edit Project
 
 
-- if @build.running? || @build.pending?
+- if @build.active?
   :javascript
     $(function(){
       getBuild('#{project_build_path(@project, @build)}', '#{@build.id}');

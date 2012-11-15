@@ -12,7 +12,7 @@ module ProjectsHelper
   def build_status_alert_class build
     if build.success?
       'alert-success'
-    elsif build.failed?
+    elsif build.failed? || build.canceled?
       'alert-error'
     else
       ''

@@ -24,6 +24,8 @@ class Runner
     path = project.path
     commands = project.scripts
 
+    return if build.canceled?
+
     build.run!
 
     prepare_project(path, build.ref)
@@ -32,6 +34,8 @@ class Runner
       commands.each_line do |line|
         status = command(line, path)
         build.write_trace(@output)
+
+        return if build.canceled?
 
         unless status
           build.drop!

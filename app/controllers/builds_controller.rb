@@ -15,6 +15,13 @@ class BuildsController < ApplicationController
     @builds = @builds.paginate(:page => params[:page], :per_page => 20)
   end
 
+  def cancel
+    @build = @project.builds.find(params[:id])
+    @build.cancel
+
+    redirect_to project_build_path(@project, @build)
+  end
+
   protected
 
   def project

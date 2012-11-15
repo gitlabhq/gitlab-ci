@@ -9,7 +9,11 @@ GitlabCi::Application.routes.draw do
       get :status
       post :build
     end
-    resources :builds, only: [:show]
+    resources :builds, only: [:show] do
+      member do
+        get :cancel
+      end
+    end
   end
 
   devise_for :users

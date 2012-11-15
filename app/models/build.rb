@@ -23,6 +23,10 @@ class Build < ActiveRecord::Base
       transition running: :success
     end
 
+    event :cancel do
+      transition [:pending, :running] => :canceled
+    end
+
     after_transition :pending => :running do |build, transition|
       build.update_attributes started_at: Time.now
     end
@@ -35,6 +39,7 @@ class Build < ActiveRecord::Base
     state :running, value: 'running'
     state :failed, value: 'failed'
     state :success, value: 'success'
+    state :canceled, value: 'canceled'
   end
 
   def git_author_name
@@ -62,6 +67,10 @@ class Build < ActiveRecord::Base
 
   def to_param
     sha
+  end
+
+  def active?
+    running? || pending?
   end
 end
 
