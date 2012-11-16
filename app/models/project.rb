@@ -25,15 +25,21 @@ class Project < ActiveRecord::Base
       ref = ref.scan(/heads\/(.*)$/).flatten[0]
     end
 
+    before_sha = opts[:before]
     sha = opts[:after] || last_ref_sha(ref)
 
     data = {
       project_id: self.id,
       ref: ref,
-      sha: sha
+      sha: sha,
+      before_sha: before_sha
     }
 
     @build = Build.create(data)
+  end
+
+  def gitlab?
+    gitlab_url.present?
   end
 
   def last_ref_sha ref

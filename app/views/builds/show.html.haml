@@ -45,22 +45,20 @@
           %legend Commit
           %p
             %b ID:
-            #{@build.sha}
+            #{build_commit_link @build}
+          - if @build.compare?
+            %p
+              %b Compare:
+              #{build_compare_link @build}
           %p
             %b Branch:
-            #{@build.ref}
-          - if @build.git_author_name
-            %p
-              %b Author:
-              #{@build.git_author_name}
-          - if @build.git_commit_message
-            %p
-              %b Message:
-              #{@build.git_commit_message}
-          - if @project.gitlab_url
-            %p
-              %b Show on GitLab:
-              = gitlab_build_compare_link(@build, @project)
+            #{build_ref_link @build}
+          %p
+            %b Author:
+            #{@build.git_author_name}
+          %p
+            %b Message:
+            #{@build.git_commit_message}
 
     .clearfix
     %pre.trace#build-trace

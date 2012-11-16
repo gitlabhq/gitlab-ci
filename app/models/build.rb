@@ -42,6 +42,18 @@ class Build < ActiveRecord::Base
     state :canceled, value: 'canceled'
   end
 
+  def before_sha
+    'AAAAAAA'
+  end
+
+  def compare?
+    gitlab? && before_sha
+  end
+
+  def gitlab?
+    project.gitlab?
+  end
+
   def git_author_name
     commit.author.name
   rescue
@@ -61,6 +73,10 @@ class Build < ActiveRecord::Base
   def write_trace(trace)
     self.reload
     update_attributes(trace: trace)
+  end
+
+  def short_before_sha
+    before_sha[0..8]
   end
 
   def short_sha
