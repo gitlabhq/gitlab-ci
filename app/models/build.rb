@@ -1,7 +1,7 @@
 class Build < ActiveRecord::Base
   belongs_to :project
 
-  attr_accessible :project_id, :ref, :sha,
+  attr_accessible :project_id, :ref, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at
 
   validates :sha, presence: true
