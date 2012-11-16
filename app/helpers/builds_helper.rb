@@ -16,6 +16,10 @@ module BuildsHelper
   end
 
   def build_duration build
-    distance_of_time_in_words(build.started_at, build.finished_at || Time.now)
+    if build.started?
+      from = build.started_at
+      to = build.finished_at || Time.now
+      distance_of_time_in_words(from, to)
+    end
   end
 end

@@ -31,7 +31,7 @@ class Build < ActiveRecord::Base
       build.update_attributes started_at: Time.now
     end
 
-    after_transition :running => :any do |build, transition|
+    after_transition any => [:success, :failed, :canceled] do |build, transition|
       build.update_attributes finished_at: Time.now
     end
 
@@ -43,9 +43,19 @@ class Build < ActiveRecord::Base
   end
 
   def git_author_name
-    project.last_commit(self.sha).author.name
+    commit.author.name
   rescue
     nil
+  end
+
+  def git_commit_message
+    commit.message
+  rescue
+    nil
+  end
+
+  def commit
+    @commit ||= project.last_commit(self.sha)
   end
 
   def write_trace(trace)
@@ -78,6 +88,10 @@ class Build < ActiveRecord::Base
 
   def to_param
     sha
+  end
+
+  def started?
+    !pending? && !canceled? && started_at
   end
 
   def active?

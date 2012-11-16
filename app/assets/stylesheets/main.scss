@@ -6,6 +6,7 @@ $style_color: #5bc;
 body {
   color:#666;
   padding: 65px 0;
+  font-size: 13px;
 }
 
 a {
@@ -81,8 +82,14 @@ pre.trace {
 
 .navbar .navbar-inner { border-radius: 0; }
 
-.builds .build.alert{
-  margin-bottom: 6px;
+.builds {
+  @extend .table;
+
+  .build {
+    &.alert{
+      margin-bottom: 6px;
+    }
+  }
 }
 
 .btn {

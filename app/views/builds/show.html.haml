@@ -20,39 +20,68 @@
         %span= @build.updated_at.stamp('19:00 Aug 27')
       = @build.status
 
-    - if @build.active?
-      .right
-        = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
 
-    - if @build.git_author_name
-      %p
-        %b Author:
-        #{@build.git_author_name}
-    - if @project.gitlab_url
-      %p
-        %b GitLab:
-        = gitlab_build_compare_link(@build, @project)
-    - if @build.started_at
-      %p
-        %b Duration:
-        #{build_duration @build}
-    - if @build.finished_at
-      %p
-        %b Finished:
-        #{time_ago_in_words(@build.finished_at)} ago
+    .row-fluid
+      .span6
+        %fieldset
+          %legend
+            Build
+            - if @build.active?
+              .right
+                = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
+          %p
+            %b Status:
+            #{@build.status}
+          - if @build.started_at
+            %p
+              %b Duration:
+              #{build_duration @build}
+          - if @build.finished_at
+            %p
+              %b Finished:
+              #{time_ago_in_words(@build.finished_at)} ago
+      .span6
+        %fieldset
+          %legend Commit
+          %p
+            %b ID:
+            #{@build.sha}
+          %p
+            %b Branch:
+            #{@build.ref}
+          - if @build.git_author_name
+            %p
+              %b Author:
+              #{@build.git_author_name}
+          - if @build.git_commit_message
+            %p
+              %b Message:
+              #{@build.git_commit_message}
+          - if @project.gitlab_url
+            %p
+              %b Show on GitLab:
+              = gitlab_build_compare_link(@build, @project)
+
     .clearfix
     %pre.trace#build-trace
       = preserve do
         = raw @build.trace_html
   .span3
     .builds
-      %h5 Builds for #{@build.short_sha}
-      - @builds.each do |build|
-        .build.alert{class: build_status_alert_class(build)}
-          %span= build.status
-          &rarr;
-          = link_to project_build_path(@project, build, bid: build.id ) do
-            %strong Build ##{build.short_sha}
+      %h5 Builds for #{@build.short_sha}:
+      %table.builds
+        %thead
+          %tr
+            %th Build ID
+            %th Status
+        - @builds.each_with_index do |build, i|
+          %tr.build.alert{class: build_status_alert_class(build)}
+            %td
+              = link_to project_build_path(@project, build, bid: build.id ) do
+                %span #{i+=1} &ndash; #{build.short_sha}
+            %td.status= build.status
+
+
       = will_paginate @builds
 %br
 .right

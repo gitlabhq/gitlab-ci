@@ -29,9 +29,18 @@
       %i.icon-play.icon-white
       Run a build
 
-.builds
+%table.builds
+  %thead
+    %tr
+      %th Status
+      %th Commit
+      %th Branch
+      %th Duration
+      %th Finished at
+
   = render @builds
-  = will_paginate @builds
+
+= will_paginate @builds
 - if @builds.empty?
   .alert
     No builds yet
