@@ -42,10 +42,6 @@ class Build < ActiveRecord::Base
     state :canceled, value: 'canceled'
   end
 
-  def before_sha
-    'AAAAAAA'
-  end
-
   def compare?
     gitlab? && before_sha
   end
