@@ -43,7 +43,7 @@ class Project < ActiveRecord::Base
   end
 
   def last_ref_sha ref
-    `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`
+    `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`.strip
   end
 
   def status
