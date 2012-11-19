@@ -70,7 +70,12 @@ class Runner
     @process.io.stdout = @tmp_file
     @process.io.stderr = @tmp_file
     @process.cwd = path
-    @process.environment['BUNDLE_GEMFILE'] = ''
+
+    # ENV
+    @process.environment['BUNDLE_GEMFILE'] = File.join(path, 'Gemfile')
+    @process.environment['BUNDLE_BIN_PATH'] = ''
+    @process.environment['RUBYOPT'] = ''
+
     @process.start
 
     build.set_file @tmp_file.path
