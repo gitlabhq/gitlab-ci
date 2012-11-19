@@ -36,7 +36,7 @@ describe Project do
       it { project.status.should == 'pending' }
       it { project.last_build.should be_kind_of(Build)  }
       it { project.human_status.should == 'pending' }
-      it { project.status_image.should == 'unknown.png' }
+      it { project.status_image.should == 'running.png' }
       it { project.last_commit.sha.should == 'a26f8df380e56dc79cd74087c8ed4f031eef0460' }
     end
   end

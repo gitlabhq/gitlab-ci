@@ -66,10 +66,27 @@ class Project < ActiveRecord::Base
 
   def status_image ref = 'master'
     build = self.builds.where(ref: ref).latest_sha.last
+    image_for_build build
+  end
+
+  def last_build_for_sha sha
+    builds.where(sha: sha).order('id DESC').limit(1).first
+  end
+
+  def sha_status_image sha
+    build = last_build_for_sha(sha)
+    image_for_build build
+  end
+
+  def image_for_build build
+    return 'unknown.png' unless build
+
     if build.success?
       'success.png'
     elsif build.failed?
       'failed.png'
+    elsif build.active?
+      'running.png'
     else
       'unknown.png'
     end
