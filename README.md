@@ -88,3 +88,38 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
 
     admin@local.host # email
     5iveL!fe # password
+
+## 8. Nginx
+
+
+Setup nginx
+
+   sudo apt-get install nginx
+   sudo vim /etc/nginx/sites-enabled/gitlab_ci
+
+
+Add config
+
+    upstream gitlab_ci {
+      server 127.0.0.1:3000;
+    }
+
+    server {
+      listen 80;
+      server_name ci.gitlabhq.com;
+
+      root /home/gitlab_ci/gitlab-ci/public;
+      try_files $uri $uri/index.html $uri.html @gitlab_ci;
+
+      location @gitlab_ci {
+        # auth_basic "Private Zone";
+        # auth_basic_user_file htpasswd;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Sendfile-Type X-Accel-Redirect;
+
+        proxy_pass http://gitlab_ci;
+      }
+    }
+
