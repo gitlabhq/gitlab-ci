@@ -16,6 +16,10 @@ class ProjectsController < ApplicationController
     @builds = @builds.latest_sha.order('id DESC').paginate(page: params[:page], per_page: 20)
   end
 
+  def details
+    @project = Project.find(params[:id])
+  end
+
   def new
     @project = Project.new
   end

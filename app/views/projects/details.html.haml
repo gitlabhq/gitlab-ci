@@ -1,0 +1,38 @@
+%h3
+  Project: #{@project.name} &rarr; Integration details
+  - if @project.gitlab_url.present?
+    %small= link_to 'View on GitLab', @project.gitlab_url
+  .right
+    = link_to project_path(@project), class: 'btn btn-small' do
+      Builds
+    %a.btn.btn-small{href: edit_project_path(@project)}
+      %i.icon-edit.icon-white
+      Edit
+
+
+%form.form-horizontal
+  %fieldset
+    %legend
+      As Service
+      %small (GitLab 3.1+)
+
+    .control-group
+      = label_tag :url, 'Project URL', class: 'control-label'
+      .controls
+        = text_field_tag :url, project_url(@project), class: 'input-xxlarge'
+
+    .control-group
+      = label_tag :token, 'Project Token', class: 'control-label'
+      .controls
+        = text_field_tag :token, @project.token, class: 'input-xxlarge'
+
+  %fieldset
+    %legend
+      As http hook
+      %small (GitLab 3.0 and earlier)
+    .control-group
+      = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
+      .controls
+        = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge'
+        %p.hint Copy this link and add to GitLab web hooks
+

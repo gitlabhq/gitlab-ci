@@ -7,6 +7,7 @@ GitlabCi::Application.routes.draw do
     member do
       get :run
       get :status
+      get :details
       post :build
     end
     resources :builds, only: [:show] do
