@@ -1,5 +1,5 @@
 %h3
-  Project: #{@project.name} &rarr; Integration details
+  Project: #{@project.name} &rarr; Details
   - if @project.gitlab_url.present?
     %small= link_to 'View on GitLab', @project.gitlab_url
   .right
@@ -10,29 +10,35 @@
       Edit
 
 
+
+%br
+%p.lead Copy provided setting to you GitLab instance for close integration
+
 %form.form-horizontal
   %fieldset
     %legend
-      As Service
-      %small (GitLab 3.1+)
+      GitLab 3.1+
+      .right
+        Copy to GitLab &rarr; Project &rarr; Services
 
     .control-group
       = label_tag :url, 'Project URL', class: 'control-label'
       .controls
-        = text_field_tag :url, project_url(@project), class: 'input-xxlarge'
+        = text_field_tag :url, project_url(@project), class: 'input-xxlarge', disabled: true
 
     .control-group
       = label_tag :token, 'Project Token', class: 'control-label'
       .controls
-        = text_field_tag :token, @project.token, class: 'input-xxlarge'
+        = text_field_tag :token, @project.token, class: 'input-xxlarge', disabled: true
 
   %fieldset
     %legend
-      As http hook
-      %small (GitLab 3.0 and earlier)
+      GitLab 3.0 and earlier
+      .right
+        Copy to GitLab &rarr; Project &rarr; Web Hooks
     .control-group
       = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
       .controls
-        = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge'
+        = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', disabled: true
         %p.hint Copy this link and add to GitLab web hooks
 

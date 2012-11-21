@@ -5,7 +5,8 @@
   .right
     = link_to details_project_path(@project), class: 'btn btn-small' do
       Details
-    %a.btn.btn-small{href: edit_project_path(@project)}
+
+    = link_to edit_project_path(@project), class: 'btn btn-small' do
       %i.icon-edit.icon-white
       Edit
 
