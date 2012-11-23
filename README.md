@@ -61,6 +61,7 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
 
     # Install dependencies
     #
+    sudo gem install bundler
     bundle
 
     # Copy mysql db config
