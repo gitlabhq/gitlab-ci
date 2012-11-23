@@ -116,7 +116,7 @@ Add config
         # auth_basic "Private Zone";
         # auth_basic_user_file htpasswd;
 
-        proxy_set_header Host $host;
+        proxy_set_header Host $host:$server_port;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Sendfile-Type X-Accel-Redirect;
 
