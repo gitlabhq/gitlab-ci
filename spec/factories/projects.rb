@@ -8,4 +8,11 @@ FactoryGirl.define do
     path Rails.root.join('tmp', 'test_repo').to_s
     scripts 'ls'
   end
+
+  factory :project_without_token, class: Project do
+    name Faker::Name.name
+    default_ref 'master'
+    path Rails.root.join('tmp', 'test_repo').to_s
+    scripts 'ls'
+  end
 end

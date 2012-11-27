@@ -9,6 +9,12 @@ class Project < ActiveRecord::Base
 
   validates_uniqueness_of :name
 
+  before_validation :set_default_values
+
+  def set_default_values
+    self.token = SecureRandom.hex(15) if self.token.blank?
+  end
+
   def repo_present?
     repo
   rescue Grit::NoSuchPathError, Grit::InvalidGitRepositoryError

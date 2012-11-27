@@ -10,6 +10,18 @@ describe Project do
     it { should_not allow_value('/tmp').for(:path) }
   end
 
+  describe 'before_validation' do
+    it 'should set an random token if none provided' do
+      project = FactoryGirl.create :project_without_token
+      project.token.should_not == ""
+    end
+
+    it 'should not set an random toke if one provided' do
+      project = FactoryGirl.create :project
+      project.token.should == "iPWx6WM4lhHNedGfBpPJNP"
+    end
+  end
+
   it { should validate_presence_of :name }
   it { should validate_presence_of :scripts }
   it { should validate_presence_of :timeout }
