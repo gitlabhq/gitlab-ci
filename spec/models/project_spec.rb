@@ -25,7 +25,6 @@ describe Project do
   it { should validate_presence_of :name }
   it { should validate_presence_of :scripts }
   it { should validate_presence_of :timeout }
-  it { should validate_presence_of :token }
   it { should validate_presence_of :default_ref }
 
   context :valid_project do
