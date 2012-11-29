@@ -11,8 +11,7 @@
     .navbar.navbar-fixed-top.navbar-ci
       .navbar-inner
         .container-fluid
-          %a.brand{:href => "/"}
-            GitLab CI
+          = link_to 'GitLab CI', root_path, class: "brand"
           %ul.nav
             - if current_user
               %li
