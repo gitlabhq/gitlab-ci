@@ -61,9 +61,14 @@
             #{@build.git_commit_message}
 
     .clearfix
+    - if @build.active?
+      .autoscroll-container.pull-right
+        %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+      .clearfix
     %pre.trace#build-trace
       = preserve do
         = raw @build.trace_html
+
   .span3
     .builds
       %h5 Builds for #{@build.short_sha}:
