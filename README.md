@@ -1,4 +1,5 @@
-# GitLab CI is an open-source continuous integration server [![build status](https://secure.travis-ci.org/gitlabhq/gitlab-ci.png)](https://travis-ci.org/gitlabhq/gitlabhq) [![build status](https://secure.travis-ci.org/gitlabhq/grit.png)](https://travis-ci.org/gitlabhq/grit) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/gitlabhq/gitlab-ci)
+# GitLab CI is an open-source continuous integration server 
+[![build status](https://secure.travis-ci.org/gitlabhq/gitlab-ci.png)](https://travis-ci.org/gitlabhq/gitlab-ci) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/gitlabhq/gitlab-ci)
 
 ![Screen](https://github.com/downloads/gitlabhq/gitlab-ci/gitlab_ci_preview.png)
 
