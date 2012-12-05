@@ -68,7 +68,7 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
     #
     # make sure to update username/password in config/database.yml
     #
-    cp config/database.yml.example config/database.yml
+    cp config/database.yml.mysql config/database.yml
 
     # Setup DB
     #
