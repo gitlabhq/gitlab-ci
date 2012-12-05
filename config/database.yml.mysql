@@ -35,5 +35,5 @@ test: &test
   database: gitlab_ci_test
   pool: 5
   username: root
-  password: "secure password"
+  password:
   # socket: /tmp/mysql.sock
