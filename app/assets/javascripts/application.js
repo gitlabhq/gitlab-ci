@@ -14,15 +14,3 @@
 //= require jquery_ujs
 //= require_tree .
 //
-function getBuild(buildPath, buildId) {
-  console.log('run');
-  setTimeout(function() {
-    $.get(buildPath + ".js?bid=" + buildId);
-  }, 3000);
-}
-
-function checkAutoscroll() {
-  if('enabled' === $("#autoscroll-button").data('state')) {
-    $("html,body").scrollTop($("#build-trace").height());
-  }
-}
