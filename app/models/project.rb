@@ -109,6 +109,10 @@ class Project < ActiveRecord::Base
   def tracked_refs
     @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
   end
+
+  def valid_token? token
+    self.token && self.token == token
+  end
 end
 
 

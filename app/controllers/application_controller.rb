@@ -5,4 +5,10 @@ class ApplicationController < ActionController::Base
     @error = "Project path is not a git repository"
     render "errors/show", status: 500
   end
+
+  def authenticate_token!
+    unless project.valid_token?(params[:token])
+      return head(403)
+    end
+  end
 end

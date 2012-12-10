@@ -2,13 +2,14 @@ require 'runner'
 
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status]
+  before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy]
+  before_filter :authenticate_token!, only: [:build]
 
   def index
     @projects = Project.order('id DESC').paginate(page: params[:page], per_page: 20)
   end
 
   def show
-    @project = Project.find(params[:id])
     @ref = params[:ref]
 
     @builds = @project.builds
@@ -17,7 +18,6 @@ class ProjectsController < ApplicationController
   end
 
   def details
-    @project = Project.find(params[:id])
   end
 
   def new
@@ -25,7 +25,6 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = Project.find(params[:id])
   end
 
   def create
@@ -39,18 +38,15 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project = Project.find(params[:id])
-
-    if @project.update_attributes(params[:project])
-      redirect_to @project, notice: 'Project was successfully updated.'
+    if project.update_attributes(params[:project])
+      redirect_to project, notice: 'Project was successfully updated.'
     else
       render action: "edit"
     end
   end
 
   def destroy
-    @project = Project.find(params[:id])
-    @project.destroy
+    project.destroy
 
     redirect_to projects_url
   end
@@ -68,20 +64,17 @@ class ProjectsController < ApplicationController
   end
 
   def build
-    @project = Project.find(params[:id])
-
-    if @project.token && @project.token == params[:token]
+    if @project.valid_token?(params[:token])
       @build = @project.register_build(params)
       Resque.enqueue(Runner, @build.id) if @build
       head 200
     else
-      head 403
     end
   end
 
+  # Project status badge
+  # Image with build status for sha or ref
   def status
-    @project = Project.find(params[:id])
-
     image_name = if params[:sha]
                    @project.sha_status_image(params[:sha])
                  elsif params[:ref]
@@ -91,5 +84,11 @@ class ProjectsController < ApplicationController
                  end
 
     send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
+  end
+
+  protected
+
+  def project
+    @project ||= Project.find(params[:id])
   end
 end

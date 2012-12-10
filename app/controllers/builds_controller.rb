@@ -1,9 +1,10 @@
 class BuildsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, except: [:status]
   before_filter :project
+  before_filter :authenticate_token!, only: [:build]
 
   def show
-    @builds = @project.builds.where(sha: params[:id]).order('id DESC')
+    @builds = builds
 
     @build = if params[:bid]
                @builds.where(id: params[:bid])
@@ -13,6 +14,12 @@ class BuildsController < ApplicationController
 
 
     @builds = @builds.paginate(:page => params[:page], :per_page => 20)
+  end
+
+  def status
+    @build = builds.limit(1).first
+
+    render json: @build.to_json(only: [:status, :id, :sha])
   end
 
   def cancel
@@ -26,5 +33,9 @@ class BuildsController < ApplicationController
 
   def project
     @project = Project.find(params[:project_id])
+  end
+
+  def builds
+    project.builds.where(sha: params[:id]).order('id DESC')
   end
 end

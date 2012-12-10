@@ -10,9 +10,11 @@ GitlabCi::Application.routes.draw do
       get :details
       post :build
     end
+
     resources :builds, only: [:show] do
       member do
         get :cancel
+        get :status
       end
     end
   end
