@@ -5,7 +5,7 @@ config_file = Rails.root.join('config', 'resque.yml')
 
 if File.exists?(config_file)
   resque_config = YAML.load_file(config_file)
-  Resque.redis = resque_config[rails_env]
+  Resque.redis = resque_config[Rails.env]
 end
 
 Resque.redis.namespace = 'resque:gitlab_ci'
