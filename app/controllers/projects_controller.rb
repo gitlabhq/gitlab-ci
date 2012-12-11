@@ -64,12 +64,17 @@ class ProjectsController < ApplicationController
   end
 
   def build
-    if @project.valid_token?(params[:token])
-      @build = @project.register_build(params)
-      Resque.enqueue(Runner, @build.id) if @build
-      head 200
-    else
-    end
+   # Ignore remove branch push
+   return head(200) if params[:after] =~ /^00000000/
+
+   @build = @project.register_build(params)
+
+   if @build
+     Resque.enqueue(Runner, @build.id)
+     head 200
+   else
+     head 500
+   end
   end
 
   # Project status badge
