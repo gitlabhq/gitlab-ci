@@ -23,15 +23,13 @@ class Runner
   def run
     path = project.path
     commands = project.scripts
-
-    return if build.canceled?
+    commands = commands.lines.to_a
+    commands.unshift(prepare_project_cmd(path, build.sha))
 
     build.run!
 
-    prepare_project(path, build.ref)
-
     Dir.chdir(path) do
-      commands.each_line do |line|
+      commands.each do |line|
         status = command(line, path)
         build.write_trace(@output)
 
@@ -92,12 +90,12 @@ class Runner
     @output << @tmp_file.read
   end
 
-  def prepare_project(path, ref)
+  def prepare_project_cmd(path, ref)
     cmd = []
     cmd << "cd #{path}"
     cmd << "git fetch"
     cmd << "git reset --hard"
-    cmd << "git checkout origin/#{ref}"
-    `#{cmd.join("&&")}`
+    cmd << "git checkout #{ref}"
+    cmd.join(" && ")
   end
 end

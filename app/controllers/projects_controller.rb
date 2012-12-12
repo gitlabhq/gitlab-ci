@@ -55,7 +55,7 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
     @build = @project.register_build(ref: params[:ref])
 
-    if @build
+    if @build and @build.id
       Resque.enqueue(Runner, @build.id)
       redirect_to project_build_path(@project, @build)
     else
