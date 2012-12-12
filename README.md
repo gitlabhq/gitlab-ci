@@ -25,6 +25,7 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
 
     sudo apt-get install -y wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev
     sudo apt-get install redis-server 
+    sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
 
 ## 2. Install Ruby
 
@@ -36,28 +37,12 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
     sudo make install
 
 
-## 3. Prepare MySQL
-
-    sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
-
-    # Login to MySQL
-    $ mysql -u root -p
-
-    # Create the GitLab CI database
-    mysql> CREATE DATABASE IF NOT EXISTS `gitlab_ci_production` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`;
-
-    # Create the MySQL User change $password to a real password
-    mysql> CREATE USER 'gitlab_ci'@'localhost' IDENTIFIED BY '$password';
-
-    # Grant proper permissions to the MySQL User
-    mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
-
-## 4. Get code 
+## 3. Get code 
 
     git clone https://github.com/gitlabhq/gitlab-ci.git
 
 
-## 5. Setup application
+## 4. Setup application
 
 
     # Install dependencies
@@ -76,7 +61,7 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
     bundle exec rake db:setup RAILS_ENV=production
 
 
-## 6. Run
+## 5. Run
 
     # For development 
     bundle exec foreman start -p 3000
@@ -86,12 +71,12 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
     bundle exec rake environment resque:work RAILS_ENV=production PIDFILE=./resque.pid BACKGROUND=yes QUEUE=runner 
 
 
-## 7. Login
+## 6. Login
 
     admin@local.host # email
     5iveL!fe # password
 
-## 8. Nginx
+## 7. Nginx
 
 
 Setup nginx
