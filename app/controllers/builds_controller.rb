@@ -13,6 +13,8 @@ class BuildsController < ApplicationController
              end.limit(1).first
 
 
+    raise ActiveRecord::RecordNotFound unless @build
+
     @builds = @builds.paginate(:page => params[:page], :per_page => 20)
   end
 
