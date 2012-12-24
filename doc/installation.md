@@ -46,7 +46,7 @@ Create a user for GitLab:
 
 ## 5. Setup application
 
-    cd gitlab_ci
+    cd gitlab-ci
 
     # Install dependencies
     #
