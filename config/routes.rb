@@ -1,6 +1,8 @@
 GitlabCi::Application.routes.draw do
   # Optionally, enable Resque here
   require 'resque/server'
+  require 'resque_scheduler'
+  require 'resque_scheduler/server'
   mount Resque::Server => '/ext/resque', as: 'ext_resque'
 
   resources :projects do

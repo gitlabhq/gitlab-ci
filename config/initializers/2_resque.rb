@@ -1,4 +1,6 @@
 require Rails.root.join('lib', 'runner')
+#require Rails.root.join('lib', 'scheduler_job')
+require 'scheduler_job'
 
 # Custom Redis configuration
 config_file = Rails.root.join('config', 'resque.yml')
