@@ -3,6 +3,8 @@ class Project < ActiveRecord::Base
 
   validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
 
+  validates :polling_interval, :format => { :with => /^[1-9]\d{0,7}[s|m|d]$/ }, :unless => Proc.new{|project| project.polling_interval.blank?}
+
   has_many :builds, dependent: :destroy
 
   validate :repo_present?
