@@ -67,7 +67,14 @@ class ProjectsController < ApplicationController
    # Ignore remove branch push
    return head(200) if params[:after] =~ /^00000000/
 
-   @build = @project.register_build(params)
+   # Support payload (like github) push
+   build_params = if params[:payload]
+                    JSON.parse(params[:payload])
+                  else
+                    params
+                  end.dup
+
+   @build = @project.register_build(build_params)
 
    if @build
      Resque.enqueue(Runner, @build.id)
