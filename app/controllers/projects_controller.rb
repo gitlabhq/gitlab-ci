@@ -69,7 +69,7 @@ class ProjectsController < ApplicationController
 
    # Support payload (like github) push
    build_params = if params[:payload]
-                    JSON.parse(params[:payload])
+                    HashWithIndifferentAccess.new(JSON.parse(params[:payload]))
                   else
                     params
                   end.dup
