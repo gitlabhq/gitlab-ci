@@ -7,3 +7,6 @@ tmp/*
 /.bundle
 /db/*.sqlite3
 /log/*.log
+.powrc
+.rvmrc
+config/resque.yml
