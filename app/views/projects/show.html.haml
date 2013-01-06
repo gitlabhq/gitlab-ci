@@ -6,10 +6,13 @@
     = link_to details_project_path(@project), class: 'btn btn-small' do
       Details
 
+    = link_to run_project_path(@project, ref: @project.default_ref), class: 'btn btn-small' do
+      %i.icon-play.icon-white
+      Run a build on #{@project.default_ref}
+
     = link_to edit_project_path(@project), class: 'btn btn-small' do
       %i.icon-edit.icon-white
       Edit
-
 
 .nav.nav-tabs
   %li{class: ref_tab_class}
