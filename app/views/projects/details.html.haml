@@ -10,16 +10,15 @@
       Edit
 
 
-
-%br
-%p.lead Copy provided setting to your GitLab instance for close integration
+%p.lead Integration with GitLab and other services
 
 %form.form-horizontal
   %fieldset
     %legend
       GitLab 3.1+
+      %small build on push, integration with Merge Requests, links to GitLab instance
       .right
-        Copy to GitLab &rarr; Project &rarr; Services
+        %small Copy to GitLab &rarr; Project &rarr; Services
 
     .control-group
       = label_tag :url, 'Project URL', class: 'control-label'
@@ -34,11 +33,24 @@
   %fieldset
     %legend
       GitLab 3.0 and earlier
+      %small build on push, links to GitLab commits
       .right
-        Copy to GitLab &rarr; Project &rarr; Web Hooks
+        %small Copy to GitLab &rarr; Project &rarr; Web Hooks
     .control-group
       = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
       .controls
         = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', readonly: true
         %p.hint Copy this link and add to GitLab web hooks
+
+  %fieldset
+    %legend
+      github
+      %small build on push
+      .right
+        %small Copy to github &rarr; Project &rarr; Service Hooks &rarr; Web Hooks
+    .control-group
+      = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
+      .controls
+        = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', readonly: true
+        %p.hint Copy this link and add to github web hooks
 

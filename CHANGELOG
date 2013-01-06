@@ -1,3 +1,6 @@
+v1.2.0
+  - Added Github web hook support
+  - Added build schedule
 v1.1.0
   - Added JSON response for builds status
   - Compatible with GitLab v4.0.0
