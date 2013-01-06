@@ -17,12 +17,6 @@
         .field
           = f.label :token, "Token (Leave empty to generate random token)"
           = f.text_field :token, class: 'input-xlarge', placeholder: 'xEeFCaDAB89'
-        .field
-          = f.label :always_build, "Always_build"
-          = f.check_box :always_build
-        .field
-          = f.label :polling_interval, "Polling_interval"
-          = f.text_field :polling_interval
 
       %fieldset
         %legend Git
@@ -49,8 +43,20 @@
           = f.number_field :timeout, class: 'input-xlarge'
         .field
           = f.label :scripts
-          = f.text_area :scripts, class: 'input-xxlarge', rows: 18, placeholder: "bundle exec rake spec"
+          = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec"
 
+
+      %fieldset
+        %legend Build Schedule
+        .field
+          = f.label :always_build do
+            = f.check_box :always_build
+            %span Enable automatic build on schedule
+        %br
+        .field
+          = f.label :polling_interval, "Build interval"
+          = f.text_field :polling_interval, placeholder: '30m'
+          %small Ex. 30m means every 30 minutes and 2d - every two days
   .form-actions
     = f.submit 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', projects_path, class: 'btn'

@@ -1,5 +1,4 @@
 require Rails.root.join('lib', 'runner')
-#require Rails.root.join('lib', 'scheduler_job')
 require 'scheduler_job'
 
 # Custom Redis configuration

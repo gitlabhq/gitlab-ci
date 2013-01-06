@@ -1,15 +1,20 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :path, :scripts, :timeout, :token, :default_ref, :gitlab_url, :always_build, :polling_interval
-
-  validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
-
-  validates :polling_interval, :format => { :with => /^[1-9]\d{0,7}[s|m|d]$/ }, :unless => Proc.new{|project| project.polling_interval.blank?}
+  attr_accessible :name, :path, :scripts, :timeout, :token,
+    :default_ref, :gitlab_url, :always_build, :polling_interval
 
   has_many :builds, dependent: :destroy
 
-  validate :repo_present?
 
+  #
+  # Validations
+  #
+  validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
+  validate :repo_present?
   validates_uniqueness_of :name
+
+  validates :polling_interval,
+    format: { with: /^[1-9]\d{0,7}[s|m|d]$/ },
+    if: ->(project) { project.polling_interval.present? }
 
   before_validation :set_default_values
   after_save :set_scheduler
@@ -119,16 +124,20 @@ class Project < ActiveRecord::Base
 
   def set_scheduler
     if self.polling_interval.present?
-      Resque.set_schedule(self.token, {
+      Resque.set_schedule(self.schedule_id, {
                             :class => 'SchedulerJob',
-                            :every => self.polling_interval,
-                            :queue => 'scheduler_task',
-                            :args => [:run, self.id],
-                            :description => self.name
+                            every: self.polling_interval,
+                            queue: 'scheduler_task',
+                            args: [:run, self.id],
+                            description: self.name
                           })
     else
-      Resque.remove_schedule(self.token)
+      Resque.remove_schedule(self.schedule_id)
     end
+  end
+
+  def schedule_id
+    "project-#{id}"
   end
 end
 

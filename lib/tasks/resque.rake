@@ -5,8 +5,6 @@ namespace :resque do
   task :setup => :environment do
     require 'resque'
     require 'resque_scheduler'
-    #require 'resque_scheduler/server'
-    #require 'resque/scheduler'
 
     # you probably already have this somewhere
     #Resque.redis = 'localhost:6379'

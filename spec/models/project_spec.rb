@@ -26,13 +26,13 @@ describe Project do
     it 'should not set schedule if polling_interval is blank' do
       project = FactoryGirl.create :project
       project.update_attribute(:polling_interval, nil)
-      Resque.get_schedule(project.token).should be_nil
+      Resque.get_schedule(project.schedule_id).should be_nil
     end
 
     it 'should set schedule if polling_interval is set' do
       project = FactoryGirl.create :project
       project.update_attribute(:polling_interval, '3m')
-      Resque.get_schedule(project.token).should.to_s == {
+      Resque.get_schedule(project.schedule_id).should.to_s == {
         :class => 'SchedulerJob',
         :every => project.polling_interval,
         :args => [:run, project.id],
@@ -43,9 +43,9 @@ describe Project do
     it 'should cancel schedule if clear polling_interval' do
       project = FactoryGirl.create :project
       project.update_attribute(:polling_interval, '3m')
-      Resque.get_schedule(project.token).should_not be_nil
+      Resque.get_schedule(project.schedule_id).should_not be_nil
       project.update_attribute(:polling_interval, nil)
-      Resque.get_schedule(project.token).should be_nil
+      Resque.get_schedule(project.schedule_id).should be_nil
     end
   end
 
