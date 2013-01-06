@@ -1,7 +1,9 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :path, :scripts, :timeout, :token, :default_ref, :gitlab_url
+  attr_accessible :name, :path, :scripts, :timeout, :token, :default_ref, :gitlab_url, :always_build, :polling_interval
 
   validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
+
+  validates :polling_interval, :format => { :with => /^[1-9]\d{0,7}[s|m|d]$/ }, :unless => Proc.new{|project| project.polling_interval.blank?}
 
   has_many :builds, dependent: :destroy
 
@@ -10,6 +12,7 @@ class Project < ActiveRecord::Base
   validates_uniqueness_of :name
 
   before_validation :set_default_values
+  after_save :set_scheduler
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
@@ -113,6 +116,20 @@ class Project < ActiveRecord::Base
   def valid_token? token
     self.token && self.token == token
   end
+
+  def set_scheduler
+    if self.polling_interval.present?
+      Resque.set_schedule(self.token, {
+                            :class => 'SchedulerJob',
+                            :every => self.polling_interval,
+                            :queue => 'scheduler_task',
+                            :args => [:run, self.id],
+                            :description => self.name
+                          })
+    else
+      Resque.remove_schedule(self.token)
+    end
+  end
 end
 
 
@@ -130,4 +147,3 @@ end
 #  token       :string(255)
 #  default_ref :string(255)
 #
-
