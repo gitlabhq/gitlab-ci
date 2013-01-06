@@ -27,6 +27,7 @@ gem 'haml-rails'
 
 # Jobs
 gem 'resque'
+gem 'resque-scheduler', :require => 'resque_scheduler'
 
 # Format dates
 gem 'stamp'
