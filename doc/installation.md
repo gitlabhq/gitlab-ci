@@ -20,6 +20,9 @@ Create a user for GitLab:
     \curl -L https://get.rvm.io | bash -s stable --ruby
 
 
+    # Add next line to ~/.bashrc
+    source /home/gitlab_ci/.rvm/scripts/rvm
+
 
 ## 3. Prepare MySQL
 
@@ -43,16 +46,20 @@ Create a user for GitLab:
 
     sudo -u gitlab_ci -H git clone https://github.com/gitlabhq/gitlab-ci.git
 
+    sudo -u gitlab_ci -H 
 
 ## 5. Setup application
 
     cd gitlab-ci
 
+    # Create a tmp directory inside application
+    sudo -u gitlab_ci -H mkdir -p tmp/pids
+
     # Install dependencies
     #
     sudo -u gitlab_ci -H gem install bundler
 
-    sudo -u gitlab_ci -H bundle
+    sudo -u gitlab_ci -H bundle --without development test
 
     # Copy mysql db config
     #
@@ -86,9 +93,6 @@ Start your GitLab instance:
 
 # 7. Nginx
 
-**Note:**
-If you can't or don't want to use Nginx as your web server, have a look at the
-"Advanced Setup Tips" section.
 
 ## Installation
     sudo apt-get install nginx
