@@ -1,9 +1,11 @@
+require 'sidekiq/web'
+
 GitlabCi::Application.routes.draw do
   # Optionally, enable Resque here
-  require 'resque/server'
-  require 'resque_scheduler'
-  require 'resque_scheduler/server'
-  mount Resque::Server => '/ext/resque', as: 'ext_resque'
+  constraint = lambda { |request| request.env["warden"].authenticate? and request.env['warden'].user.admin? }
+  constraints constraint do
+    mount Sidekiq::Web, at: "/ext/sidekiq", as: :ext_resque
+  end
 
   resources :projects do
     member do

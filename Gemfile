@@ -26,9 +26,10 @@ gem "unicorn", "~> 4.4.0"
 # Haml
 gem 'haml-rails'
 
-# Jobs
-gem 'resque'
-gem 'resque-scheduler', :require => 'resque_scheduler'
+# Background jobs
+gem 'slim'
+gem 'sinatra', :require => nil
+gem 'sidekiq', '2.6.4'
 
 # Format dates
 gem 'stamp'
