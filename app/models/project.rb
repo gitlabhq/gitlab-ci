@@ -17,7 +17,6 @@ class Project < ActiveRecord::Base
     if: ->(project) { project.always_build.present? }
 
   before_validation :set_default_values
-  after_save :set_scheduler
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
@@ -120,10 +119,6 @@ class Project < ActiveRecord::Base
 
   def valid_token? token
     self.token && self.token == token
-  end
-
-  def set_scheduler
-    true
   end
 
   def schedule_id
