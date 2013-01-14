@@ -13,6 +13,7 @@ class Runner
   def perform(build_id)
     @build = Build.find(build_id)
     @project = @build.project
+    @output = ''
 
     run
   end
@@ -20,8 +21,6 @@ class Runner
   def initialize
     @logger = Logger.new(STDOUT)
     @logger.level = Logger::INFO
-
-    @output = ''
   end
 
   def run

@@ -13,8 +13,8 @@ class Project < ActiveRecord::Base
   validates_uniqueness_of :name
 
   validates :polling_interval,
-    format: { with: /^[1-9]\d{0,7}[m|h|d]$/ },
-    if: ->(project) { project.polling_interval.present? }
+    presence: true,
+    if: ->(project) { project.always_build.present? }
 
   before_validation :set_default_values
   after_save :set_scheduler
@@ -123,17 +123,7 @@ class Project < ActiveRecord::Base
   end
 
   def set_scheduler
-    if self.always_build && self.polling_interval.present?
-      Resque.set_schedule(self.schedule_id, {
-                            :class => 'SchedulerJob',
-                            every: self.polling_interval,
-                            queue: 'scheduler_task',
-                            args: [:run, self.id],
-                            description: self.name
-                          })
-    else
-      Resque.remove_schedule(self.schedule_id)
-    end
+    true
   end
 
   def schedule_id

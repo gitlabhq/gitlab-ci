@@ -31,6 +31,9 @@ gem 'slim'
 gem 'sinatra', :require => nil
 gem 'sidekiq', '2.6.4'
 
+# Scheduled
+gem 'whenever', require: false
+
 # Format dates
 gem 'stamp'
 

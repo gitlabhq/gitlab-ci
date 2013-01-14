@@ -1,3 +1,6 @@
+v1.3.0
+  - Replace resque with sidekiq
+
 v1.2.0
   - Added Github web hook support
   - Added build schedule
