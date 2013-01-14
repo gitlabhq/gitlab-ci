@@ -21,6 +21,7 @@ gem 'devise'
 
 # Web server
 gem 'thin'
+gem "unicorn", "~> 4.4.0"
 
 # Haml
 gem 'haml-rails'
