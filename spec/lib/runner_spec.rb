@@ -6,16 +6,18 @@ describe Runner do
 
   it "should run a success build" do
     build = setup_build 'ls'
-    Runner.new(build).run
+    Runner.new.perform(build.id)
 
+    build.reload
     build.trace.should include 'six.gemspec'
     build.should be_success
   end
 
   it "should run a failed build" do
     build = setup_build 'cat MISSING'
-    Runner.new(build).run
+    Runner.new.perform(build.id)
 
+    build.reload
     build.should be_failed
   end
 

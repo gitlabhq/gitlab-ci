@@ -55,12 +55,8 @@
         %br
         .field
           = f.label :polling_interval, "Build interval"
-          = f.text_field :polling_interval, placeholder: '5h'
-          %ul
-            %li m - minutes
-            %li h - hours
-            %li d - days
-          %p Ex. 30m means every 30 minutes and 2d - every two days
+          = f.number_field :polling_interval, placeholder: '5'
+          %span Hours
   .form-actions
     = f.submit 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', projects_path, class: 'btn'

@@ -2,22 +2,25 @@ require 'open3'
 require 'timeout'
 
 class Runner
+  include Sidekiq::Worker
+
   TIMEOUT = 1800
   attr_accessor :project, :build, :output
 
-  @queue = :runner
 
-  def self.perform(build_id)
-    new(Build.find(build_id)).run
+  sidekiq_options queue: :runner
+
+  def perform(build_id)
+    @build = Build.find(build_id)
+    @project = @build.project
+    @output = ''
+
+    run
   end
 
-  def initialize(build)
+  def initialize
     @logger = Logger.new(STDOUT)
     @logger.level = Logger::INFO
-
-    @build = build
-    @project = build.project
-    @output = ''
   end
 
   def run

@@ -22,33 +22,6 @@ describe Project do
     end
   end
 
-  describe 'after_save_with_schedule' do
-    it 'should not set schedule if polling_interval is blank' do
-      project = FactoryGirl.create :project
-      project.update_attribute(:polling_interval, nil)
-      Resque.get_schedule(project.schedule_id).should be_nil
-    end
-
-    it 'should set schedule if polling_interval is set' do
-      project = FactoryGirl.create :project
-      project.update_attribute(:polling_interval, '3m')
-      Resque.get_schedule(project.schedule_id).should.to_s == {
-        :class => 'SchedulerJob',
-        :every => project.polling_interval,
-        :args => [:run, project.id],
-        :description => project.name
-      }.to_s
-    end
-
-    it 'should cancel schedule if clear polling_interval' do
-      project = FactoryGirl.create :project
-      project.update_attribute(:polling_interval, '3m')
-      Resque.get_schedule(project.schedule_id).should_not be_nil
-      project.update_attribute(:polling_interval, nil)
-      Resque.get_schedule(project.schedule_id).should be_nil
-    end
-  end
-
   it { should validate_presence_of :name }
   it { should validate_presence_of :scripts }
   it { should validate_presence_of :timeout }
@@ -94,3 +67,22 @@ end
 #  token       :string(255)
 #  default_ref :string(255)
 #
+
+# == Schema Information
+#
+# Table name: projects
+#
+#  id               :integer(4)      not null, primary key
+#  name             :string(255)     not null
+#  path             :string(255)     not null
+#  timeout          :integer(4)      default(1800), not null
+#  scripts          :text            default(""), not null
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  token            :string(255)
+#  default_ref      :string(255)
+#  gitlab_url       :string(255)
+#  always_build     :boolean(1)      default(FALSE), not null
+#  polling_interval :integer(4)
+#
+

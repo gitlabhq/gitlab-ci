@@ -13,11 +13,10 @@ class Project < ActiveRecord::Base
   validates_uniqueness_of :name
 
   validates :polling_interval,
-    format: { with: /^[1-9]\d{0,7}[m|h|d]$/ },
-    if: ->(project) { project.polling_interval.present? }
+    presence: true,
+    if: ->(project) { project.always_build.present? }
 
   before_validation :set_default_values
-  after_save :set_scheduler
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
@@ -122,20 +121,6 @@ class Project < ActiveRecord::Base
     self.token && self.token == token
   end
 
-  def set_scheduler
-    if self.always_build && self.polling_interval.present?
-      Resque.set_schedule(self.schedule_id, {
-                            :class => 'SchedulerJob',
-                            every: self.polling_interval,
-                            queue: 'scheduler_task',
-                            args: [:run, self.id],
-                            description: self.name
-                          })
-    else
-      Resque.remove_schedule(self.schedule_id)
-    end
-  end
-
   def schedule_id
     "project-#{id}"
   end
@@ -156,3 +141,22 @@ end
 #  token       :string(255)
 #  default_ref :string(255)
 #
+
+# == Schema Information
+#
+# Table name: projects
+#
+#  id               :integer(4)      not null, primary key
+#  name             :string(255)     not null
+#  path             :string(255)     not null
+#  timeout          :integer(4)      default(1800), not null
+#  scripts          :text            default(""), not null
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  token            :string(255)
+#  default_ref      :string(255)
+#  gitlab_url       :string(255)
+#  always_build     :boolean(1)      default(FALSE), not null
+#  polling_interval :integer(4)
+#
+
