@@ -18,6 +18,7 @@ describe Build do
 end
 
 
+
 # == Schema Information
 #
 # Table name: builds
@@ -27,9 +28,12 @@ end
 #  ref         :string(255)
 #  status      :string(255)
 #  finished_at :datetime
-#  trace       :text
+#  trace       :text(2147483647
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  sha         :string(255)
+#  started_at  :datetime
+#  tmp_file    :string(255)
+#  before_sha  :string(255)
 #
 

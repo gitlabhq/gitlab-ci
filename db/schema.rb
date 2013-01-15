@@ -28,16 +28,16 @@ ActiveRecord::Schema.define(:version => 20130114153451) do
   end
 
   create_table "projects", :force => true do |t|
-    t.string   "name",                               :null => false
-    t.string   "path",                               :null => false
-    t.integer  "timeout",          :default => 1800, :null => false
-    t.text     "scripts",                            :null => false
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.string   "name",                                :null => false
+    t.string   "path",                                :null => false
+    t.integer  "timeout",          :default => 1800,  :null => false
+    t.text     "scripts",                             :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.string   "token"
     t.string   "default_ref"
     t.string   "gitlab_url"
-    t.boolean  "always_build",     :default => true
+    t.boolean  "always_build",     :default => false, :null => false
     t.integer  "polling_interval"
   end
 
