@@ -127,7 +127,7 @@ class Project < ActiveRecord::Base
 
   def no_running_builds?
     # Get running builds not later than 3 days ago to ignore hungs
-    builds.running.where("updated_at < ?", 3.days.ago).empty?
+    builds.running.where("updated_at > ?", 3.days.ago).empty?
   end
 end
 
