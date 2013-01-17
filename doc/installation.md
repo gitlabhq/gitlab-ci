@@ -71,6 +71,10 @@ Create a user for GitLab:
     #
     sudo -u gitlab_ci -H bundle exec rake db:setup RAILS_ENV=production
 
+    # Setup scedules 
+    #
+    sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
+
 
 ## 6. Install Init Script
 
