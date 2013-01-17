@@ -1,9 +1,12 @@
-v1.3.0
+v2.0.0
   - Replace resque with sidekiq
+  - Run only one build at time per project
+  - Added whenever for schedule jobs
 
 v1.2.0
   - Added Github web hook support
   - Added build schedule
+
 v1.1.0
   - Added JSON response for builds status
   - Compatible with GitLab v4.0.0
