@@ -4,9 +4,7 @@ require 'timeout'
 class Runner
   include Sidekiq::Worker
 
-  TIMEOUT = 1800
   attr_accessor :project, :build, :output
-
 
   sidekiq_options queue: :runner
 
@@ -15,7 +13,16 @@ class Runner
     @project = @build.project
     @output = ''
 
-    run
+
+    if @project.no_running_builds?
+      run
+    else
+      run_later
+    end
+  end
+
+  def run_later
+    Runner.perform_in(2.minutes, @build.id)
   end
 
   def initialize

@@ -10,6 +10,9 @@ class Build < ActiveRecord::Base
 
   scope :latest_sha, where("id IN(SELECT MAX(id) FROM #{self.table_name} group by sha)")
 
+  scope :running, where(status: "running")
+  scope :pending, where(status: "pending")
+
   state_machine :status, initial: :pending do
     event :run do
       transition pending: :running
