@@ -13,6 +13,7 @@ class Runner
     @project = @build.project
     @output = ''
 
+    return true if @build.canceled?
 
     if @project.no_running_builds?
       run
