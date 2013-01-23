@@ -45,7 +45,9 @@ Create a user for GitLab:
     cd /home/gitlab_ci/
 
     sudo -u gitlab_ci -H git clone https://github.com/gitlabhq/gitlab-ci.git
-
+    
+    cd /home/gitlab_ci/gitlab-ci/
+    
     # Checkout preferable version
     sudo -u gitlab_ci -H  git checkout 2-0-stable
 
