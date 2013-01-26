@@ -91,7 +91,9 @@ class Build < ActiveRecord::Base
   end
 
   def read_tmp_file
-    File.read(tmp_file).detect_encoding!.encode!('utf-8', invalid: :replace) if tmp_file
+    if tmp_file && File.readable?(tmp_file)
+      File.read(tmp_file).detect_encoding!.encode!('utf-8', invalid: :replace) 
+    end
   end
 
   def compose_output
