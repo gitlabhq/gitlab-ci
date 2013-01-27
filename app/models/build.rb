@@ -71,7 +71,8 @@ class Build < ActiveRecord::Base
 
   def write_trace(trace)
     self.reload
-    update_attributes(trace: trace)
+    sanitized_output = sanitize_build_output(trace)
+    update_attributes(trace: sanitized_output)
   end
 
   def short_before_sha
@@ -90,9 +91,15 @@ class Build < ActiveRecord::Base
     end
   end
 
+  def sanitize_build_output(output)
+    output.detect_encoding!.encode!('utf-8', invalid: :replace)
+  end
+
   def read_tmp_file
     if tmp_file && File.readable?(tmp_file)
-      File.read(tmp_file).detect_encoding!.encode!('utf-8', invalid: :replace) 
+      File.read(tmp_file)
+    else
+      ''
     end
   end
 
@@ -100,7 +107,8 @@ class Build < ActiveRecord::Base
     output = trace
 
     if running?
-      output << read_tmp_file
+      sanitized_output = sanitize_build_output(read_tmp_file)
+      output << sanitized_output
     end
 
     output
