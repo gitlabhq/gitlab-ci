@@ -19,6 +19,10 @@
           %i.icon-edit.icon-white
           Edit
 
+      - if project.public
+        %span.pull-right
+          %i.icon-globe
+          Public
 .clearfix
 = will_paginate @projects
 - if @projects.empty?

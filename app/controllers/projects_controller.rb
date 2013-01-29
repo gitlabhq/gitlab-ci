@@ -1,16 +1,23 @@
 require 'runner'
 
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:build, :status]
+  before_filter :authenticate_user!, except: [:build, :status, :index, :show]
   before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
   before_filter :authenticate_token!, only: [:build]
 
   def index
-    @projects = Project.order('id DESC').paginate(page: params[:page], per_page: 20)
+    @projects = Project.order('id DESC')
+    @projects = @projects.public unless current_user
+    @projects  = @projects.paginate(page: params[:page], per_page: 20)
   end
 
   def show
+    unless @project.public || current_user
+      authenticate_user! and return
+    end
+
     @ref = params[:ref]
+
 
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref

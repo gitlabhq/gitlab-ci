@@ -1,18 +1,23 @@
 %h3
   Project: #{@project.name}
+  - if @project.public
+    %small (Public)
+
   - if @project.gitlab_url.present?
     %small= link_to 'View on GitLab', @project.gitlab_url
-  .pull-right
-    %span
-      = link_to details_project_path(@project), class: 'btn btn-small' do
-        Details
-    %span
-      = link_to stats_project_path(@project), class: 'btn btn-small' do
-        Stats
-    %span
-      = link_to edit_project_path(@project), class: 'btn btn-small' do
-        %i.icon-edit.icon-white
-        Edit
+
+  - if current_user
+    .pull-right
+      %span
+        = link_to details_project_path(@project), class: 'btn btn-small' do
+          Details
+      %span
+        = link_to stats_project_path(@project), class: 'btn btn-small' do
+          Stats
+      %span
+        = link_to edit_project_path(@project), class: 'btn btn-small' do
+          %i.icon-edit.icon-white
+          Edit
 
 
 %ul.nav.nav-tabs
@@ -27,11 +32,12 @@
   %p
     Paste build status image for #{@ref} with next link
     %a.btn.btn-small{href: status_project_path(@project, ref: @ref)} Status Badge
-  %p
-    You can manually run a build for current branch.
-    = link_to run_project_path(@project, ref: @ref), class: 'btn btn-small' do
-      %i.icon-play.icon-white
-      Run a build
+  - if current_user
+    %p
+      You can manually run a build for current branch.
+      = link_to run_project_path(@project, ref: @ref), class: 'btn btn-small' do
+        %i.icon-play.icon-white
+        Run a build
 
 %table.builds
   %thead
