@@ -2,7 +2,7 @@ require 'runner'
 
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status]
-  before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy]
+  before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
   before_filter :authenticate_token!, only: [:build]
 
   def index
@@ -96,6 +96,10 @@ class ProjectsController < ApplicationController
                  end
 
     send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
+  end
+
+  def stats
+
   end
 
   protected

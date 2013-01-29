@@ -12,6 +12,8 @@ class Build < ActiveRecord::Base
 
   scope :running, where(status: "running")
   scope :pending, where(status: "pending")
+  scope :success, where(status: "success")
+  scope :failed, where(status: "failed")
 
   state_machine :status, initial: :pending do
     event :run do

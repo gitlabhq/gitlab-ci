@@ -1,0 +1,26 @@
+%h3
+  Project: #{link_to @project.name, @project} &rarr; Stats
+
+%p.lead Some stats related to the project
+
+%fieldset
+  %legend Builds
+  %p
+    Total:
+    %strong= pluralize @project.builds.count, 'build'
+  %p
+    Successful:
+    %strong= pluralize @project.builds.success.count, 'build'
+  %p
+    Failed:
+    %strong= pluralize @project.builds.failed.count, 'build'
+
+  %p
+    Success ratio:
+    %strong
+      #{success_ratio(@project)}%
+
+  %p
+    Commits covered:
+    %strong
+      = @project.builds.latest_sha.count

@@ -1,5 +1,5 @@
 %h3
-  Project: #{@project.name} &rarr; Details
+  Project: #{link_to @project.name, @project} &rarr; Details
   - if @project.gitlab_url.present?
     %small= link_to 'View on GitLab', @project.gitlab_url
   .right
