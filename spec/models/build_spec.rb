@@ -15,6 +15,20 @@ describe Build do
   it { should respond_to :git_author_name }
   it { should respond_to :short_sha }
   it { should respond_to :trace_html }
+
+  describe "#ci_skip?" do
+    let(:project) { FactoryGirl.create(:project) }
+    let(:build) { project.register_build(ref: 'master') }
+
+    it 'true if commit message contains [ci skip]' do
+      build.commit.stub(:message) { 'Small typo [ci skip]' }
+      build.ci_skip?.should == true
+    end
+
+    it 'false if commit message does not contain [ci skip]' do
+      build.ci_skip?.should == false
+    end
+  end
 end
 
 

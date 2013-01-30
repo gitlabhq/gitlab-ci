@@ -50,6 +50,10 @@ class Build < ActiveRecord::Base
     project.gitlab?
   end
 
+  def ci_skip?
+    commit.message =~ /(\[ci skip\])/ ? true : false
+  end
+
   def git_author_name
     commit.author.name
   rescue
