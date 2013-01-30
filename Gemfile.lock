@@ -116,6 +116,7 @@ GEM
     mysql2 (0.3.11)
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
+    pg (0.14.1)
     polyglot (0.3.3)
     posix-spawn (0.3.6)
     pry (0.9.10)
@@ -255,6 +256,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   mysql2
+  pg
   pry
   quiet_assets
   rails (= 3.2.8)

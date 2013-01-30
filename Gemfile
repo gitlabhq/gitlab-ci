@@ -11,7 +11,8 @@ end
 gem 'rails', '3.2.8'
 
 # DB
-gem 'mysql2'
+gem 'mysql2', group: :mysql
+gem 'pg',     group: :postgres
 
 # Settings
 gem 'settingslogic'
