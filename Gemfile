@@ -10,8 +10,9 @@ end
 
 gem 'rails', '3.2.8'
 
-# DB
-gem 'mysql2'
+# Supported DBs
+gem "mysql2", group: :mysql
+gem "pg", group: :postgres
 
 # Settings
 gem 'settingslogic'
@@ -28,7 +29,7 @@ gem 'haml-rails'
 
 # Background jobs
 gem 'slim'
-gem 'sinatra', :require => nil
+gem 'sinatra', require: nil
 gem 'sidekiq', '2.6.4'
 
 # Scheduled

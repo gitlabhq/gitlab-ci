@@ -1,0 +1,39 @@
+#
+# PRODUCTION
+#
+production:
+  adapter: postgresql
+  encoding: utf8
+  reconnect: false
+  database: gitlab_ci_production
+  pool: 5
+  username: gitlab_ci
+  password: 
+  # host: localhost
+  # socket: /tmp/mysql.sock
+
+#
+# Development specific
+#
+development:
+  adapter: postgresql
+  encoding: utf8
+  reconnect: false
+  database: gitlab_ci_development
+  pool: 5
+  username: gitlab_ci
+  password: 
+  # socket: /tmp/mysql.sock
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test: &test
+  adapter: postgresql
+  encoding: utf8
+  reconnect: false
+  database: gitlab_ci_test
+  pool: 5
+  username: gitlab_ci
+  password:
+  # socket: /tmp/mysql.sock
