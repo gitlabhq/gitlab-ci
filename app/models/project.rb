@@ -73,7 +73,7 @@ class Project < ActiveRecord::Base
   end
 
   def last_build_date
-    last_build.try(:updated_at)
+    last_build.try(:created_at)
   end
 
   def human_status
