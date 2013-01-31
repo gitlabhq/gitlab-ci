@@ -96,7 +96,7 @@ class Build < ActiveRecord::Base
   def compose_output
     output = trace
 
-    if running? && tmp_file
+    if running? && tmp_file && File.exists?(tmp_file)
       output << File.read(tmp_file)
     end
 
