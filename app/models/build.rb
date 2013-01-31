@@ -94,15 +94,15 @@ class Build < ActiveRecord::Base
   end
 
   def sanitize_build_output(output)
-    output.detect_encoding!.encode!('utf-8', invalid: :replace)
+    GitlabCi::Encode.encode!(output)
   end
 
   def read_tmp_file
-    if tmp_file && File.readable?(tmp_file)
-      File.read(tmp_file)
-    else
-      ''
-    end
+    content = if tmp_file && File.readable?(tmp_file)
+                File.read(tmp_file)
+              end
+
+    content ||= ''
   end
 
   def compose_output
@@ -110,7 +110,7 @@ class Build < ActiveRecord::Base
 
     if running?
       sanitized_output = sanitize_build_output(read_tmp_file)
-      output << sanitized_output
+      output << sanitized_output if sanitized_output.present?
     end
 
     output
