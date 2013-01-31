@@ -47,6 +47,9 @@ gem 'will_paginate', '~> 3.0'
 # State machine
 gem 'state_machine'
 
+# Encoding detection
+gem 'charlock_holmes'
+
 # Other
 gem 'rake'
 gem 'foreman'
