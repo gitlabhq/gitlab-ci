@@ -24,7 +24,7 @@
           %i.icon-globe
           Public
 .clearfix
-= will_paginate @projects
+= paginate @projects
 - if @projects.empty?
   .alert
     No projects yet

@@ -85,7 +85,7 @@
             %td.status= build.status
 
 
-      = will_paginate @builds
+      = paginate @builds
 %br
 .right
   %a.btn.btn-small{href: run_project_path(@project, ref: @build.ref)}  Run

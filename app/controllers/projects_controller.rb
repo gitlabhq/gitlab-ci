@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.order('id DESC')
     @projects = @projects.public unless current_user
-    @projects  = @projects.paginate(page: params[:page], per_page: 20)
+    @projects  = @projects.page(params[:page]).per(20)
   end
 
   def show
@@ -21,7 +21,7 @@ class ProjectsController < ApplicationController
 
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
-    @builds = @builds.latest_sha.order('id DESC').paginate(page: params[:page], per_page: 20)
+    @builds = @builds.latest_sha.order('id DESC').page(params[:page]).per(20)
   end
 
   def details

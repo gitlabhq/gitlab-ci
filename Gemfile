@@ -42,7 +42,7 @@ gem 'stamp'
 gem 'grit'
 
 # Pagination
-gem 'will_paginate', '~> 3.0'
+gem 'kaminari'
 
 # State machine
 gem 'state_machine'
