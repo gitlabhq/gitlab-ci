@@ -67,7 +67,7 @@
       .clearfix
     %pre.trace#build-trace
       = preserve do
-        = raw @build.trace_html
+        = raw @build.trace_html.force_encoding('ASCII-8BIT')
 
   .span3
     .builds
