@@ -25,10 +25,10 @@
                   %i.icon-user.icon-white
                   = current_user.email
               %li
-                = link_to 'Logout', destroy_user_session_path, class: "logout", method: :delete
+                = link_to 'Logout', user_logout_path, class: "logout"
             - else
               %li
-                = link_to 'Login', new_user_session_path
+                = link_to 'Login', user_login_path
     .container-fluid
       - if alert || notice
         %small
