@@ -77,7 +77,7 @@ class ProjectsController < ApplicationController
    @build = @project.register_build(build_params)
 
    if @build
-     Resque.enqueue(Runner, @build.id)
+     Resque.enqueue(Runner, @build.id) unless @build.ci_skip?
      head 200
    else
      head 500
