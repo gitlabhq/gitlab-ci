@@ -56,7 +56,7 @@ class ProjectsController < ApplicationController
     @build = @project.register_build(ref: params[:ref])
 
     if @build and @build.id
-      Runner.perform_async(@build.id)
+      Runner.perform_async(@build.id)unless @build.ci_skip?
       redirect_to project_build_path(@project, @build)
     else
       redirect_to project_path(@project), notice: 'Branch is not defined for this project'
