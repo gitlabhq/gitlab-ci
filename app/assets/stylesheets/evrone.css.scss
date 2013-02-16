@@ -1,0 +1,17 @@
+a.sign_in_via_github {
+  position: absolute;
+  margin-left: 40em;
+  margin-top: -1.1em;
+  border: 1px solid white;
+
+  img {
+    margin: 5px;
+    display: block;
+    width: 150px;
+  }
+
+  &:hover {
+    border: 1px solid #ccc !important;
+    background: #eee;
+  }
+}

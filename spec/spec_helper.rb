@@ -18,6 +18,7 @@ end
 
 RSpec.configure do |config|
   config.include LoginHelpers, type: :request
+  config.extend OmniauthHelpers, type: :request
 
   # ## Mock Framework
   #

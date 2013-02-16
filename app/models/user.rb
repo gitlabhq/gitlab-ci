@@ -7,8 +7,18 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
+  has_one :user_oauth_account, :dependent => :destroy
+
   def admin?
     true
+  end
+
+  def to_s
+    (user_oauth_account.present? && "#{user_oauth_account.name} (#{user_oauth_account.provider})") || email
+  end
+
+  def github?
+    user_oauth_account.present? && user_oauth_account.github?
   end
 end
 

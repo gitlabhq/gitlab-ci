@@ -23,7 +23,7 @@
               %li
                 = link_to edit_user_path(current_user) do
                   %i.icon-user.icon-white
-                  = current_user.email
+                  = current_user
               %li
                 = link_to 'Logout', destroy_user_session_path, class: "logout", method: :delete
             - else

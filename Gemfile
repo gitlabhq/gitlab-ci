@@ -53,6 +53,13 @@ gem 'jquery-rails'
 gem 'childprocess'
 gem 'gitlab_ci_meta'
 
+# Configuration managment
+gem 'rails_config'
+
+# Github
+gem 'omniauth-github'
+gem 'octokit', github:'pengwynn/octokit'
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'

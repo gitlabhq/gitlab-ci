@@ -1,25 +1,26 @@
 %h3
-  Edit #{current_user.email}
+  Edit #{current_user}
 %hr
 = form_for(current_user, :html => { :method => :put, class: 'form-horizontal' }) do |f|
   .control-group
     = f.label :email, class: 'control-label'
     .controls
-      = f.email_field :email
+      = f.email_field :email, disabled: user_oauth?
   .control-group
     = f.label :password, class: 'control-label'
     .controls
-      = f.password_field :password, :autocomplete => "off"
+      = f.password_field :password, :autocomplete => "off", disabled: user_oauth?
       %i (leave blank if you don't want to change it)
   .control-group
     = f.label :password_confirmation, class: 'control-label'
     .controls
-      = f.password_field :password_confirmation
+      = f.password_field :password_confirmation, disabled: user_oauth?
   .control-group
     = f.label :current_password, class: 'control-label'
     .controls
-      = f.password_field :current_password
+      = f.password_field :current_password, disabled: user_oauth?
       %i (we need your current password to confirm your changes)
   .form-actions
-    = f.submit "Update", class: 'btn btn-primary'
+    - unless user_oauth?
+      = f.submit "Update", class: 'btn btn-primary'
     = link_to "Remove my account", current_user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-small right'
