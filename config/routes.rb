@@ -8,8 +8,10 @@ GitlabCi::Application.routes.draw do
   end
 
   match "/auth/:provider/callback", to: "omniauth_callbacks#create"
-  match "//auth/failure" => redirect("/users/sign_in")
+  match "/auth/failure" => redirect("/users/sign_in")
+  match "/github_projects/hook" => "github_projects#hook"
 
+  resources :github_projects, only: [:new,:create,:index]
   resources :projects do
     member do
       get :run

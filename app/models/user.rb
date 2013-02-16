@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include User::Github
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -17,9 +19,6 @@ class User < ActiveRecord::Base
     (user_oauth_account.present? && "#{user_oauth_account.name} (#{user_oauth_account.provider})") || email
   end
 
-  def github?
-    user_oauth_account.present? && user_oauth_account.github?
-  end
 end
 
 # == Schema Information

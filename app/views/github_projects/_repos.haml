@@ -1,0 +1,5 @@
+- @repositories.each do |repo|
+  %label[repo]
+    = check_box_tag "github_repositories[]", repo.id, false, data: { github_repo: repo.to_data }
+    = link_to repo, repo.url
+    %small= repo.description

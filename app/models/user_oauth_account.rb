@@ -43,10 +43,9 @@ class UserOauthAccount < ActiveRecord::Base
   def restrict!
     orgs = Settings.github.restrict
     unless orgs.blank?
-      member_ids = orgs.map do |org|
-        GitlabCi.github(self).get("/orgs/#{org}/members").map{|i| i["id"].to_i }
-      end.flatten.uniq
-      member_ids.include?(self.uid) || raise(DenyByRestriction, self.uid)
+      if (orgs & user.github_organization_names).blank?
+        raise(DenyByRestriction, "#{uid} #{orgs.inspect} #{member_ids.inspect}")
+      end
     end
   end
 

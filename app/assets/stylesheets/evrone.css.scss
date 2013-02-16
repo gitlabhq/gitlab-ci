@@ -15,3 +15,26 @@ a.sign_in_via_github {
     background: #eee;
   }
 }
+
+.github_projects {
+  label {
+    font-size: 16px;
+    padding: .5em 0;
+
+    small {
+      display: block;
+      margin-left: 1.5em;
+      color: #999;
+      padding-left: 1em;
+    }
+
+    a {
+      padding-left: 1em;
+    }
+  }
+}
+
+.github_projects_loader {
+  text-align: center;
+  padding-top: 2em;
+}

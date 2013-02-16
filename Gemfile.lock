@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/bensie/sshkey.git
+  revision: 5ba80e91d1a39489dcc4fb4907c3f91fb3a728ac
+  specs:
+    sshkey (1.4.0)
+
+GIT
   remote: git://github.com/pengwynn/octokit.git
   revision: c7ffd05ac8e2e9b514712ebb548c72268a4bc4c1
   specs:
@@ -310,6 +316,7 @@ DEPENDENCIES
   sidekiq (= 2.6.4)
   sinatra
   slim
+  sshkey!
   stamp
   state_machine
   therubyracer

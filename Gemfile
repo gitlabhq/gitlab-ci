@@ -60,6 +60,9 @@ gem 'rails_config'
 gem 'omniauth-github'
 gem 'octokit', github:'pengwynn/octokit'
 
+# Generate ssh key pair
+gem 'sshkey', github:'bensie/sshkey'
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -69,12 +72,10 @@ group :assets do
   gem 'bootstrap-sass'
 end
 
-
 group :development do
   gem 'annotate'
   gem 'quiet_assets'
 end
-
 
 group :development, :test do
   gem 'pry'
