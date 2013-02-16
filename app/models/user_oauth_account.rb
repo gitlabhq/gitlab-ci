@@ -26,7 +26,7 @@ class UserOauthAccount < ActiveRecord::Base
           token: token,
           name: name
         )
-        account.github_restrict!
+        yield account if block_given?
         user
       end
     end
@@ -40,7 +40,7 @@ class UserOauthAccount < ActiveRecord::Base
     provider == 'github'
   end
 
-  def github_restrict!
+  def restrict!
     orgs = Settings.github.restrict
     unless orgs.blank?
       member_ids = orgs.map do |org|
