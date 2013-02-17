@@ -50,3 +50,4 @@ RSpec.configure do |config|
 end
 
 Settings.github.restrict = nil
+Settings.github.store_repo_path = ":rails_root/tmp/repos"

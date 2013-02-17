@@ -6,7 +6,8 @@ class GithubProjectsController < ApplicationController
   end
 
   def create
-    @builder = GithubRepo.build!(current_user, params[:github_repo])
+    @project = GithubProject.build_for_repo(current_user, params[:github_repo])
+    @project.save_with_github_repo!
     head :ok
   end
 

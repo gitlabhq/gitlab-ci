@@ -31,6 +31,7 @@
         = text_field_tag :token, @project.token, class: 'input-xxlarge', readonly: true
 
   %fieldset
+    - hook_url = @project.github? ? @project.hook_url :  build_project_url(@project, token: @project.token)
     %legend
       GitLab 3.0 and earlier
       %small build on push, links to GitLab commits
@@ -51,6 +52,6 @@
     .control-group
       = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
       .controls
-        = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', readonly: true
+        = text_field_tag :url, hook_url, class: 'input-xxlarge', readonly: true
         %p.hint Copy this link and add to github web hooks
 

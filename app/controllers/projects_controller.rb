@@ -46,7 +46,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    project.destroy
+    project.destroy unless project.github?
 
     redirect_to projects_url
   end

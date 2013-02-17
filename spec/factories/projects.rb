@@ -10,6 +10,10 @@ FactoryGirl.define do
 
     factory :github_project, class: GithubProject do
       user
+      github_repo_id{ |n| n }
+      clone_url { |n| "git@github.com:evrone/repo#{n}.git" }
+      public_key { |n| "public_key_#{n}"}
+      private_key { |n| "private_key_#{n}"}
     end
   end
 

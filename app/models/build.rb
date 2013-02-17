@@ -53,6 +53,10 @@ class Build < ActiveRecord::Base
     project.gitlab?
   end
 
+  def github?
+    project.github?
+  end
+
   def git_author_name
     commit.author.name
   rescue

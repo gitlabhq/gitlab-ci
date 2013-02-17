@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130217111357) do
+ActiveRecord::Schema.define(:version => 20130217121150) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -41,6 +41,10 @@ ActiveRecord::Schema.define(:version => 20130217111357) do
     t.integer  "polling_interval"
     t.string   "type"
     t.integer  "user_id"
+    t.string   "clone_url"
+    t.text     "private_key"
+    t.text     "public_key"
+    t.integer  "github_repo_id"
   end
 
   create_table "user_oauth_accounts", :force => true do |t|

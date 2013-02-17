@@ -1,10 +1,38 @@
 require 'spec_helper'
 
 describe GithubProject do
+  let(:account) { FactoryGirl.create(:user_oauth_account, :github) }
+  let(:user) { account.user.reload }
   let(:project) { FactoryGirl.create(:github_project) }
   subject { project }
 
   it { should be_valid }
+
+  context ".store_repo_path" do
+    it { GithubProject.store_repo_path.should == "#{Rails.root.to_s}/tmp/repos" }
+  end
+
+  context ".build_for_repo" do
+    context "should build a new github project with" do
+      let(:repo_params){ {
+        name: "evrone/test",
+        git: "git@github.com:evrone/test.git",
+        id: 777
+      } }
+      subject { GithubProject.build_for_repo(user, repo_params) }
+
+      it { should be_valid }
+      its(:token) { should be }
+      its(:clone_url) { should == repo_params[:git] }
+      its(:name)  { should == repo_params[:name] }
+      its(:github_repo_id) { should == repo_params[:id] }
+    end
+  end
+
+  it "#add_deploy_key!"
+  it "#add_hook!"
+  it "#remove_existing_hooks!"
+  it "#remove_existing_deploy_keys!"
 end
 
 # == Schema Information

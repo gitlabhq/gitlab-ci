@@ -35,6 +35,9 @@ class Runner
     path = project.path
     commands = project.scripts
     commands = commands.lines.to_a
+    if project.github?
+      commands.unshift prepare_github_project_cmd
+    end
     commands.unshift(prepare_project_cmd(path, build.sha))
 
     build.run!
@@ -54,8 +57,7 @@ class Runner
     end
 
     build.success!
-  rescue Errno::ENOENT => ex
-
+  rescue Errno::ENOENT
     @output << "INVALID PROJECT PATH"
     build.drop!
   rescue Timeout::Error
@@ -67,7 +69,6 @@ class Runner
 
   def command(cmd, path)
     cmd = cmd.strip
-    status = 0
 
     @output ||= ""
     @output << "\n"

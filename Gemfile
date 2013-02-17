@@ -77,6 +77,10 @@ group :development do
   gem 'quiet_assets'
 end
 
+group :test do
+  gem 'webmock'
+end
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails'

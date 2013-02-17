@@ -74,6 +74,7 @@ GEM
       execjs
     coffee-script-source (1.4.0)
     connection_pool (1.0.0)
+    crack (0.3.2)
     daemons (1.1.9)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
@@ -273,6 +274,9 @@ GEM
       raindrops (~> 0.7)
     warden (1.2.1)
       rack (>= 1.0)
+    webmock (1.9.0)
+      addressable (>= 2.2.7)
+      crack (>= 0.1.7)
     whenever (0.8.2)
       activesupport (>= 2.3.4)
       chronic (>= 0.6.3)
@@ -323,5 +327,6 @@ DEPENDENCIES
   thin
   uglifier (>= 1.0.3)
   unicorn (~> 4.4.0)
+  webmock
   whenever
   will_paginate (~> 3.0)
