@@ -33,6 +33,7 @@ describe GithubProject do
   it "#add_hook!"
   it "#remove_existing_hooks!"
   it "#remove_existing_deploy_keys!"
+  it "#register_build"
 end
 
 # == Schema Information

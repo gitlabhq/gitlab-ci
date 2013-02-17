@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+unset GEM_PATH
+
+eval "(rbenv init -)" > /dev/null
+
+set -x
+
+ruby --version
+gem --version
+bundle --version
+
+
+test -f config/database.ci.yml && cp config/database.ci.yml config/database.yml
+test -f Gemfile && bundle install
+
+if [ -f Rakefile ]
+then
+  bundle exec rake db:drop db:create db:schema:load RAILS_ENV=test
+  bundle exec rake
+fi
+
+true

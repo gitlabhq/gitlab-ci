@@ -55,7 +55,7 @@ module GithubRepo
       @private     = repo.private
       @description = repo.description
       @url         = repo.html_url
-      @git         = repo.git_url
+      @git         = repo.ssh_url
       @permissions = repo.permissions
     end
 

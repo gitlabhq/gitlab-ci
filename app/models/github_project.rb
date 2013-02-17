@@ -15,13 +15,13 @@ class GithubProject < Project
         p.user           = user
         p.github_repo_id = repo_params[:id]
         p.name           = repo_params[:name]
-        p.path           = store_repo_path + "/#{p.name}"
         p.scripts        = Rails.root.join("script", 'ci_runner').to_s
         p.timeout        = 1800
         p.default_ref    = 'master'
         p.clone_url      = repo_params[:git]
         p.public_key     = ssh_key.ssh_public_key.strip
         p.private_key    = ssh_key.private_key.strip
+        p.path           = p.path
       end
       project
     end
@@ -33,6 +33,25 @@ class GithubProject < Project
     def model_name
       Project.model_name
     end
+  end
+
+  def register_build opts={}
+    if repo_present?
+      super(opts)
+    else
+      ref = default_ref
+      sha = "HEAD"
+      data = {
+        project_id: self.id,
+        ref: ref,
+        sha: sha
+      }
+      @build = Build.create(data)
+    end
+  end
+
+  def path
+    self.class.store_repo_path + "/#{name}"
   end
 
   def save_with_github_repo!
@@ -85,6 +104,41 @@ class GithubProject < Project
 
   def hook_url
     "#{hook_url_prefix}/projects/#{id}/build?token=#{token}"
+  end
+
+  def self.git_ssh_command
+    "#{Rails.root.to_s}/script/ci_git_ssh"
+  end
+
+  def tmp_ssh_key_path
+    @tmp_ssh_key_path ||= Rails.root.join("tmp", "keys", id.to_s)
+  end
+
+  def store_ssh_keys!
+    FileUtils.mkdir_p tmp_ssh_key_path.to_s
+    FileUtils.chmod 0700, tmp_ssh_key_path.to_s
+    pub_path = tmp_ssh_key_path.join("id_rsa.pub")
+    priv_path = tmp_ssh_key_path.join("id_rsa")
+    File.open(pub_path.to_s, "w", 0600) do |io|
+      io.write public_key
+    end
+    File.open(priv_path.to_s, "w", 0600) do |io|
+      io.write private_key
+    end
+    priv_path.to_s
+  end
+
+  def clean_ssh_keys!
+    pub_path = tmp_ssh_key_path.join("id_rsa.pub")
+    priv_path = tmp_ssh_key_path.join("id_rsa")
+    FileUtils.rm_f pub_path.to_s
+    FileUtils.rm_f priv_path.to_s
+  end
+
+  def last_ref_sha ref
+    ENV['GIT_SSH'] = self.class.git_ssh_command
+    ENV['GITLAB_CI_KEY'] = store_ssh_keys!
+    `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`.strip
   end
 
   private

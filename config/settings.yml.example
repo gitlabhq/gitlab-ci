@@ -1,0 +1,7 @@
+hostname: "ci.example.com"
+github:
+  store_repo_path: ":rails_root/var/repos"
+  client_id: "github application id"
+  client_secret: "githbub application secret"
+  restrict:
+  - "you organization name"
