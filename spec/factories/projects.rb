@@ -7,6 +7,10 @@ FactoryGirl.define do
     default_ref 'master'
     path Rails.root.join('tmp', 'test_repo').to_s
     scripts 'ls'
+
+    factory :github_project, class: GithubProject do
+      user
+    end
   end
 
   factory :project_without_token, class: Project do

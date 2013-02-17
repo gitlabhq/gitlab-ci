@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
   has_one :user_oauth_account, :dependent => :destroy
+  has_many :github_projects, :dependent => :destroy
 
   def admin?
     true
