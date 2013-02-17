@@ -1,3 +1,19 @@
+.navbar-ci {
+  .navbar-inner {
+    background-attachment: scroll !important;
+    background-clip: border-box !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    background-image: -webkit-linear-gradient(top, rgb(68, 68, 68), rgb(17, 17, 17)) !important;
+    background-origin: padding-box !important;
+    background-size: auto !important;
+
+    a {
+      color: #ccc !important;
+      text-shadow: none !important;
+    }
+  }
+}
+
 a.sign_in_via_github {
   position: absolute;
   margin-left: 40em;
@@ -38,3 +54,4 @@ a.sign_in_via_github {
   text-align: center;
   padding-top: 2em;
 }
+

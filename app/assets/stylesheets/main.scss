@@ -98,7 +98,7 @@ pre.trace {
     }
   }
 }
-
+/*
 .btn {
   background: $style_color;
   color: #fff;
@@ -121,7 +121,7 @@ pre.trace {
     text-shadow: 0 1px 0 #D44;
   }
 }
-
+*/
 .well {
   border-radius: 0;
 }
@@ -183,7 +183,7 @@ h3.error { color: #B94A48; }
   border: 1px solid #DDD;
   @include box-shadow(0 0 0 3px #eee);
 }
-
+/*
 form {
   input[type="email"],
   input[type="password"],
@@ -192,7 +192,7 @@ form {
     padding: 5px;
   }
 }
-
+*/
 fieldset {
   legend {
     font-size: 18px;
