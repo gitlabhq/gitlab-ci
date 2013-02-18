@@ -1,1 +1,1 @@
-worker: bundle exec sidekiq -q runner,default -e development
+worker: rbenv exec bundle exec sidekiq -q runner,default -e development

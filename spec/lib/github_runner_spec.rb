@@ -36,7 +36,7 @@ describe 'Runner (github project)' do
   context "when repo present" do
     it "should run build" do
       build = setup_build "ls" do |project|
-        `git clone #{project.clone_url} #{project.path}`
+        `git clone #{project.clone_url} #{project.path}` unless project.repo_present?
       end
 
       Runner.new.perform(build.id)
@@ -48,7 +48,7 @@ describe 'Runner (github project)' do
 
     it "should run a failed build" do
       build = setup_build "cat MISSING" do |project|
-        `git clone #{project.clone_url} #{project.path}`
+        `git clone #{project.clone_url} #{project.path}` unless project.repo_present?
       end
 
       Runner.new.perform(build.id)
