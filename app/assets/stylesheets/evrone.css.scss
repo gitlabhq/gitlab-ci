@@ -55,3 +55,10 @@ a.sign_in_via_github {
   padding-top: 2em;
 }
 
+pre.trace {
+  background-color: rgb(51, 51, 51) !important;
+  font-family: monospace !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  white-space: pre-wrap !important;
+}
