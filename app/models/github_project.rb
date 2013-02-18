@@ -10,8 +10,8 @@ class GithubProject < Project
   class << self
     def build_for_repo(user, repo_params)
       project = GithubProject.new.tap do |p|
-        ssh_key = SSHKey.generate(:type => "RSA", :bits => 1024, :comment => p.deploy_key_name)
         p.set_default_values
+        p.generate_ssh_keys
         p.user           = user
         p.github_repo_id = repo_params[:id]
         p.name           = repo_params[:name]
@@ -19,8 +19,6 @@ class GithubProject < Project
         p.timeout        = 1800
         p.default_ref    = 'master'
         p.clone_url      = repo_params[:git]
-        p.public_key     = ssh_key.ssh_public_key.strip
-        p.private_key    = ssh_key.private_key.strip
         p.path           = p.path
       end
       project
@@ -33,6 +31,13 @@ class GithubProject < Project
     def model_name
       Project.model_name
     end
+  end
+
+  def generate_ssh_keys
+    ssh_key = SSHKey.generate(type: "RSA", bits: 1024, comment: deploy_key_name)
+    self.public_key  = ssh_key.ssh_public_key.strip
+    self.private_key = ssh_key.private_key.strip
+    self
   end
 
   def register_build opts={}
@@ -128,10 +133,6 @@ class GithubProject < Project
     ENV['GIT_SSH'] = self.class.git_ssh_command
     ENV['GITLAB_CI_KEY'] = store_ssh_keys!
     `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`.strip
-  end
-
-  def ssh_key_pass
-    Digest::MD5.hexdigest("#{clone_url}#{id}&*^")
   end
 
   private

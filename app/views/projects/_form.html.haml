@@ -61,4 +61,6 @@
     = f.submit 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', projects_path, class: 'btn'
     - unless @project.new_record?
+      - if @project.github?
+        = link_to 'Regenerate keys', regenerate_github_project_path(@project), method: :post, class: "btn regenerate-keys-btn", remote: true, confirm: "Are you sure?"
       = link_to 'Remove Project', project_path(@project), method: :delete, confirm: 'Project will be removed. Are you sure?', class: 'btn btn-danger right'

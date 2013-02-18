@@ -15,7 +15,9 @@ class GithubProjectsController < ApplicationController
     @repositories = GithubRepo.all(current_user)
   end
 
-  def hook
+  def regenerate
+    @project = Project.find(params[:id])
+    @project.generate_ssh_keys.save_with_github_repo!
     head :ok
   end
 

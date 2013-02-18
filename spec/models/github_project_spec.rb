@@ -19,7 +19,6 @@ describe GithubProject do
   it { GithubProject.git_ssh_command.should be_include("ci_git_ssh") }
   it { GithubProject.store_repo_path.should be_include("tmp/repos") }
 
-  its(:ssh_key_pass)    { should be }
   its(:deploy_key_name) { should be }
   its(:hook_url)        { should be }
   its(:path)            { should be }
@@ -73,6 +72,16 @@ describe GithubProject do
     end
 
     it { File.exists?(subject).should_not be }
+  end
+
+  context "#generate_ssh_keys" do
+    subject { project.generate_ssh_keys }
+    it "make a new public key" do
+      expect{ subject }.to change{ project.public_key }
+    end
+    it "make a new private key" do
+      expect{ subject }.to change{ project.private_key }
+    end
   end
 
   def file_mode(file)

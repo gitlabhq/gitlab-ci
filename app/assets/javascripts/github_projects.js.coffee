@@ -33,4 +33,11 @@ $(document).ready ->
     window.githubProjects = new GithubProjects
     window.githubProjects.reload()
 
+  $("form.edit_project .regenerate-keys-btn").each (el) ->
+    $(this)
+    .on "ajax:before", ->
+      $(this).attr("disabled", "disabled")
+    .on "ajax:success", ->
+      $(this).removeAttr("disabled")
+
 
