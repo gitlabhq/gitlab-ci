@@ -17,7 +17,7 @@ describe "Sign in with Github" do
   end
 
   context "when existing user" do
-    let!(:account){ FactoryGirl.create(:user_oauth_account, :github, uid:'123') }
+    let!(:account){ FactoryGirl.create(:user_oauth_account, uid:'123') }
     it "should sign in the user" do
       visit root_path
       expect {

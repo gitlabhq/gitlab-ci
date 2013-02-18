@@ -14,7 +14,7 @@ describe GithubProjectsController do
     end
 
     context "when user with github account" do
-      let(:user) { FactoryGirl.create(:user_oauth_account, :github).user }
+      let(:user) { FactoryGirl.create(:user_oauth_account).user }
       before do
         sign_in user
         get :new

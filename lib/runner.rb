@@ -39,37 +39,44 @@ class Runner
     path = project.path
     commands = nil
 
+    commands = project.scripts
+    commands = commands.lines.to_a
+
     if project.github?
-      commands = github_commands
-    else
-      commands = project.scripts
-      commands = commands.lines.to_a
+      commands.unshift :github_save_build_script!
     end
+
     commands.unshift(prepare_project_cmd(path, build.sha))
 
     github_set_env!
 
     build.run!
 
-    if github_repo_clone?
+    if project.github? && !project.repo_present?
       commands.unshift github_clone_repo_command
     end
 
     commands.each do |line|
-      status = command(line, path)
-      build.write_trace(@output)
+      if line.is_a?(Symbol)
+        self.send(line)
+      else
+        status = command(line, path)
+        build.write_trace(@output)
 
-      return if build.canceled?
+        return if build.canceled?
 
-      unless status
-        build.drop!
-        return
+        unless status
+          build.drop!
+          return
+        end
       end
     end
 
     build.success!
   rescue Exception => e
     @output << "ERROR: #{e.message}"
+    puts @output.inspect
+    pp e.backtrace
     build.drop!
   ensure
     project.clean_ssh_keys! if project.github?
@@ -125,10 +132,6 @@ class Runner
     cmd.join(" && ")
   end
 
-  def github_repo_clone?
-    project.github? && !project.repo_present?
-  end
-
   def github_clone_repo_command
     "rm -rf '#{project.path}' && git clone #{project.clone_url} '#{project.path}'"
   end
@@ -141,7 +144,7 @@ class Runner
     }
   end
 
-  def github_commands
+  def github_save_build_script!
     c = Travis::Config.new(project.path + "/.travis.yml")
     script = "#{project.path}/.ci_runner"
     File.open(script, "w") do |io|

@@ -15,7 +15,7 @@ class GithubProject < Project
         p.user           = user
         p.github_repo_id = repo_params[:id]
         p.name           = repo_params[:name]
-        p.scripts        = Rails.root.join("script", 'ci_runner').to_s
+        p.scripts        = p.path + "/.ci_runner"
         p.timeout        = 1800
         p.default_ref    = 'master'
         p.clone_url      = repo_params[:git]
@@ -40,20 +40,7 @@ class GithubProject < Project
     self
   end
 
-  def register_build opts={}
-    if repo_present?
-      super(opts)
-    else
-      ref = default_ref
-      sha = "HEAD"
-      data = {
-        project_id: self.id,
-        ref: ref,
-        sha: sha
-      }
-      @build = Build.create(data)
-    end
-  end
+
 
   def path
     self.class.store_repo_path + "/#{name}"
@@ -132,7 +119,13 @@ class GithubProject < Project
   def last_ref_sha ref
     ENV['GIT_SSH'] = self.class.git_ssh_command
     ENV['GITLAB_CI_KEY'] = store_ssh_keys!
-    `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`.strip
+    last_ref = if repo_present?
+                 super(ref)
+               else
+                 `git ls-remote --heads #{clone_url} refs/heads/#{ref}`.split(" ").first
+               end
+    clean_ssh_keys!
+    last_ref
   end
 
   private

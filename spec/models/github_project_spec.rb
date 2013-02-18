@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe GithubProject do
-  let(:account) { FactoryGirl.create(:user_oauth_account, :github) }
+  let(:account) { FactoryGirl.create(:user_oauth_account) }
   let(:user) { account.user.reload }
   let(:project) { FactoryGirl.create(:github_project) }
   subject { project }
