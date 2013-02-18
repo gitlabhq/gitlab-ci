@@ -2,6 +2,8 @@ require 'open3'
 require 'timeout'
 require 'fileutils'
 
+require File.expand_path(File.dirname(__FILE__) + "/travis")
+
 class Runner
   include Sidekiq::Worker
 
@@ -35,8 +37,14 @@ class Runner
 
   def run
     path = project.path
-    commands = project.scripts
-    commands = commands.lines.to_a
+    commands = nil
+
+    if project.github?
+      commands = github_commands
+    else
+      commands = project.scripts
+      commands = commands.lines.to_a
+    end
     commands.unshift(prepare_project_cmd(path, build.sha))
 
     github_set_env!
@@ -64,6 +72,7 @@ class Runner
     @output << "ERROR: #{e.message}"
     build.drop!
   ensure
+    project.clean_ssh_keys! if project.github?
     build.write_trace(@output)
   end
 
@@ -130,5 +139,14 @@ class Runner
       'GIT_SSH' => GithubProject.git_ssh_command,
       'GITLAB_CI_KEY' => project.store_ssh_keys!
     }
+  end
+
+  def github_commands
+    c = Travis::Config.new(project.path + "/.travis.yml")
+    script = "#{project.path}/.ci_runner"
+    File.open(script, "w") do |io|
+      io.write c.to_runnable
+    end
+    ["/bin/bash #{script}"]
   end
 end

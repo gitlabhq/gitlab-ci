@@ -18,3 +18,4 @@ config/resque.yml
 var/repos
 config/settings.yml
 config/settings/*
+.ci_runner

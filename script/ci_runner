@@ -1,5 +1,24 @@
-#!/bin/sh
+#!/usr/bin/env ruby
 
+#require File.expand_path('lib/travis')
+require 'yaml'
+
+module Travis
+  def self.get_scripts(file_path)
+    begin
+      yml = YAML.load(File.read file_path.to_s)
+      script = []
+      script << (yml['before_script'] || [])
+      script << (yml['script'] || [])
+      script.flatten
+    end
+  end
+end
+
+cmds = Travis.get_scripts File.expand_path('.travis.yml')
+path = File.expand_path('.ci_runner')
+
+cmd = %{
 set -e
 
 unset GEM_PATH
@@ -12,14 +31,13 @@ ruby --version
 gem --version
 bundle --version
 
-
-test -f config/database.ci.yml && cp config/database.ci.yml config/database.yml
-test -f Gemfile && bundle install
-
-if [ -f Rakefile ]
-then
-  bundle exec rake db:drop db:create db:schema:load RAILS_ENV=test
-  bundle exec rake
-fi
+#{ cmds.join("\n") }
 
 true
+}
+
+File.open(path, 'w') do |io|
+  io.write cmd
+end
+
+exec "/bin/bash", path
