@@ -8,13 +8,13 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.12'
 
 # DB
 gem 'mysql2'
 
 # Settings
-gem 'settingslogic'
+# gem 'settingslogic'
 
 # Auth
 gem 'devise'
