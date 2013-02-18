@@ -6,11 +6,23 @@ describe GithubProject do
   let(:project) { FactoryGirl.create(:github_project) }
   subject { project }
 
+  it "#add_deploy_key!"
+  it "#add_hook!"
+  it "#remove_existing_hooks!"
+  it "#remove_existing_deploy_keys!"
+  it "#register_build"
+  it "#save_with_github_repo!"
+
   it { should be_valid }
 
-  context ".store_repo_path" do
-    it { GithubProject.store_repo_path.should == "#{Rails.root.to_s}/tmp/repos" }
-  end
+  it { GithubProject.store_repo_path.should == "#{Rails.root.to_s}/tmp/repos" }
+  it { GithubProject.git_ssh_command.should be_include("ci_git_ssh") }
+  it { GithubProject.store_repo_path.should be_include("tmp/repos") }
+
+  its(:ssh_key_pass)    { should be }
+  its(:deploy_key_name) { should be }
+  its(:hook_url)        { should be }
+  its(:path)            { should be }
 
   context ".build_for_repo" do
     context "should build a new github project with" do
@@ -29,11 +41,48 @@ describe GithubProject do
     end
   end
 
-  it "#add_deploy_key!"
-  it "#add_hook!"
-  it "#remove_existing_hooks!"
-  it "#remove_existing_deploy_keys!"
-  it "#register_build"
+  context "#store_ssh_keys!" do
+    subject { project.store_ssh_keys! }
+
+    it { File.exists?(subject).should be }
+
+    it "with directory mask 0700" do
+      dir_mode(subject).should == '40700'
+    end
+
+    it "with file mask 0600" do
+      file_mode(subject).should == '100600'
+    end
+
+    it "with content" do
+      File.read(subject).should == project.private_key
+    end
+
+    after do
+      File.unlink(subject) if subject
+    end
+  end
+
+  context "#clean_ssh_keys!" do
+    let(:path) { project.store_ssh_keys! }
+    subject { project.clean_ssh_keys! }
+
+    before do
+      path.should be
+      File.exists?(path).should be
+    end
+
+    it { File.exists?(subject).should_not be }
+  end
+
+  def file_mode(file)
+    sprintf("%o", File.stat(file).mode)
+  end
+
+  def dir_mode(dir)
+    file_mode(File.dirname dir)
+  end
+
 end
 
 # == Schema Information

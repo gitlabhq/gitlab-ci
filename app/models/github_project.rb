@@ -110,29 +110,18 @@ class GithubProject < Project
     "#{Rails.root.to_s}/script/ci_git_ssh"
   end
 
-  def tmp_ssh_key_path
-    @tmp_ssh_key_path ||= Rails.root.join("tmp", "keys", id.to_s)
-  end
-
   def store_ssh_keys!
-    FileUtils.mkdir_p tmp_ssh_key_path.to_s
-    FileUtils.chmod 0700, tmp_ssh_key_path.to_s
-    pub_path = tmp_ssh_key_path.join("id_rsa.pub")
-    priv_path = tmp_ssh_key_path.join("id_rsa")
-    File.open(pub_path.to_s, "w", 0600) do |io|
-      io.write public_key
-    end
-    File.open(priv_path.to_s, "w", 0600) do |io|
+    FileUtils.mkdir_p File.dirname(ssh_key_path)
+    FileUtils.chmod 0700, File.dirname(ssh_key_path)
+    File.open(ssh_key_path, "w", 0600) do |io|
       io.write private_key
     end
-    priv_path.to_s
+    ssh_key_path
   end
 
   def clean_ssh_keys!
-    pub_path = tmp_ssh_key_path.join("id_rsa.pub")
-    priv_path = tmp_ssh_key_path.join("id_rsa")
-    FileUtils.rm_f pub_path.to_s
-    FileUtils.rm_f priv_path.to_s
+    FileUtils.rm_f ssh_key_path
+    ssh_key_path
   end
 
   def last_ref_sha ref
@@ -141,7 +130,15 @@ class GithubProject < Project
     `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`.strip
   end
 
+  def ssh_key_pass
+    Digest::MD5.hexdigest("#{clone_url}#{id}&*^")
+  end
+
   private
+    def ssh_key_path
+      @ssh_key_path ||= Rails.root.join("tmp", "keys", Rails.env, id.to_s).to_s
+    end
+
     def hook_url_prefix
       "http://#{Settings.hostname}"
     end
