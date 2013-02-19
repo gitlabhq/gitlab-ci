@@ -19,9 +19,8 @@ Create a user for GitLab:
 
     \curl -L https://get.rvm.io | bash -s stable --ruby
 
-
     # Add next line to ~/.bashrc
-    source /home/gitlab_ci/.rvm/scripts/rvm
+    echo "source /home/gitlab_ci/.rvm/scripts/rvm" >> ~/.bashrc
 
 
 ## 3. Prepare MySQL
@@ -53,28 +52,36 @@ Create a user for GitLab:
 
 ## 5. Setup application
 
+    # Act as gitlab_ci user
+    #
+    sudo su gitlab_ci
+    cd ~/gitlab-ci
+
     # Create a tmp directory inside application
-    sudo -u gitlab_ci -H mkdir -p tmp/pids
+    #
+    mkdir -p tmp/pids
 
     # Install dependencies
     #
-    sudo -u gitlab_ci -H gem install bundler
-
-    sudo -u gitlab_ci -H bundle --without development test
+    gem install bundler
+    bundle --without development test
 
     # Copy mysql db config
     #
     # make sure to update username/password in config/database.yml
     #
-    sudo -u gitlab_ci -H cp config/database.yml.mysql config/database.yml
+    cp config/database.yml.mysql config/database.yml
 
     # Setup DB
     #
-    sudo -u gitlab_ci -H bundle exec rake db:setup RAILS_ENV=production
+    bundle exec rake db:setup RAILS_ENV=production
 
     # Setup scedules 
     #
-    sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
+    bundle exec whenever -w RAILS_ENV=production
+   
+    # Now exit from gitlab_ci user
+    exit
 
 
 ## 6. Install Init Script
