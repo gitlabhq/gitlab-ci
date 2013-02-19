@@ -1,3 +1,6 @@
+# uncomment and customize to run in non-root path
+# ENV['RAILS_RELATIVE_URL_ROOT'] = "/gitlab-ci"
+
 app_dir = "/home/gitlab_ci/gitlab-ci/"
 worker_processes 2
 working_directory app_dir
