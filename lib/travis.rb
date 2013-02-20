@@ -40,6 +40,8 @@ export HOME='#{File.dirname @path}'
 
 eval "(rbenv init -)" > /dev/null
 
+test -f config/application.rb && mkdir -p tmp # for Rails applications
+
 set -x
 
 #{ "export #{env}" if env }
