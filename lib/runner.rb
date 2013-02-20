@@ -75,8 +75,8 @@ class Runner
     build.success!
   rescue Exception => e
     @output << "ERROR: #{e.message}"
-    puts @output.inspect
-    pp e.backtrace
+    $stderr.puts @output
+    $stderr.puts e.backtrace
     build.drop!
   ensure
     project.clean_ssh_keys! if project.github?
@@ -147,9 +147,10 @@ class Runner
   def github_save_build_script!
     c = Travis::Config.new(project.path + "/.travis.yml")
     script = "#{project.path}/.ci_runner"
-    File.open(script, "w", 0700) do |io|
+    File.open(script, "w") do |io|
       io.write c.to_runnable
     end
+    File.chmod(0700, script)
     ["/bin/bash #{script}"]
   end
 end
