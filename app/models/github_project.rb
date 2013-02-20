@@ -15,7 +15,7 @@ class GithubProject < Project
         p.user           = user
         p.github_repo_id = repo_params[:id]
         p.name           = repo_params[:name]
-        p.scripts        = p.path + "/.ci_runner"
+        p.scripts        = p.scripts
         p.timeout        = 1800
         p.default_ref    = 'master'
         p.clone_url      = repo_params[:git]
@@ -40,7 +40,9 @@ class GithubProject < Project
     self
   end
 
-
+  def scripts
+    "#{path}/.ci_runner"
+  end
 
   def path
     self.class.store_repo_path + "/#{name}"
