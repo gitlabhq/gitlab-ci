@@ -35,14 +35,25 @@ unset GIT_SSH
 unset GITLAB_CI_KEY
 unset RAILS_ENV
 unset RACK_ENV
+unset BUNDLE_GEMFILE
+unset BUNDLE_BIN_PATH
+unset GEM_HOME
+unset RUBYOPT
+unset PORT
+unset _ORIGINAL_GEM_PATH
+
+test -f /etc/environment && . /etc/environment
 
 export HOME='#{File.dirname @path}'
-
-eval "(rbenv init -)" > /dev/null
+export LANG=en_US.UTF-8
+export GEM_HOME=/tmp/.rubygems
+export PATH="/usr/lib/rbenv/shims:${PATH}"
+export RBENV_DIR=$HOME
 
 test -f config/application.rb && mkdir -p tmp # for Rails applications
 
 set -x
+env
 
 #{ "export #{env}" if env }
 

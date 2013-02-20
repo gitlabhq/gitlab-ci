@@ -15,20 +15,8 @@ describe 'Runner (github project)' do
       Runner.new.perform(build.id)
 
       build.reload
-      build.trace.should include 'six.gemspec'
+      build.trace.should include 'bundle install'
       build.should be_success
-      build.project.repo_present?.should be
-    end
-
-    it "should clone repo and run a failed build" do
-      build = setup_build "cat MISSING", true do |project|
-        FileUtils.rm_rf project.path
-        project.repo_present?.should_not be
-      end
-      Runner.new.perform(build.id)
-
-      build.reload
-      build.should be_failed
       build.project.repo_present?.should be
     end
   end
@@ -36,26 +24,16 @@ describe 'Runner (github project)' do
   context "when repo present" do
     it "should run build" do
       build = setup_build "ls" do |project|
+        FileUtils.rm_rf project.path
         `git clone #{project.clone_url} #{project.path}` unless project.repo_present?
+        project.repo_present?.should be
       end
 
       Runner.new.perform(build.id)
 
       build.reload
-      build.trace.should include 'six.gemspec'
+      build.trace.should include 'bundle install'
       build.should be_success
-    end
-
-    it "should run a failed build" do
-      build = setup_build "cat MISSING" do |project|
-        `git clone #{project.clone_url} #{project.path}` unless project.repo_present?
-      end
-
-      Runner.new.perform(build.id)
-
-      build.reload
-      build.should be_failed
-      build.project.repo_present?.should be
     end
   end
 

@@ -151,6 +151,6 @@ class Runner
       io.write c.to_runnable
     end
     File.chmod(0700, script)
-    ["/bin/bash #{script}"]
+    [script]
   end
 end
