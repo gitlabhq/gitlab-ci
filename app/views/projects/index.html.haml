@@ -1,12 +1,13 @@
 %h3 Projects
 - @projects.each do |project|
+  - last_build = project.last_build
   .project_box
     .title
       = link_to project do
         %strong= project.name
     .alert{class: project_statuc_class(project) }
-      - if project.last_build
-        #{project.human_status}
+      - if last_build
+        #{last_build.status} (#{build_link(last_build)})
         .right
           = time_ago_in_words project.last_build_date
           ago

@@ -10,10 +10,14 @@ class Build < ActiveRecord::Base
 
   scope :latest_sha, where("id IN(SELECT MAX(id) FROM #{self.table_name} group by sha)")
 
-  scope :running, where(status: "running")
-  scope :pending, where(status: "pending")
-  scope :success, where(status: "success")
-  scope :failed, where(status: "failed")
+  scope :running, ->() { where(status: "running") }
+  scope :pending, ->() { where(status: "pending") }
+  scope :success, ->() { where(status: "success") }
+  scope :failed,  ->() { where(status: "failed")  }
+
+  def self.last_month
+    where('created_at > ?', Date.today - 1.month)
+  end
 
   state_machine :status, initial: :pending do
     event :run do

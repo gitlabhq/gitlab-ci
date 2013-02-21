@@ -23,14 +23,13 @@ module ProjectsHelper
     'active' if ref == @ref
   end
 
-  def success_ratio(project)
-    failed_builds = project.builds.failed.count
-    success_buids = project.builds.success.count
+  def success_ratio(success_builds, failed_builds)
+    failed_builds = failed_builds.count
+    success_builds = success_builds.count
 
-    if failed_builds.zero?
-      return 100
-    end
+    return 100 if failed_builds.zero?
 
-    (success_buids.to_f / (success_buids + failed_builds)) * 100
+    ratio = (success_builds.to_f / (success_builds + failed_builds)) * 100
+    ratio.to_i
   end
 end

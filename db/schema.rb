@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20130129121754) do
     t.string   "status"
     t.datetime "finished_at"
     t.text     "trace"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "sha"
     t.datetime "started_at"
     t.string   "tmp_file"
