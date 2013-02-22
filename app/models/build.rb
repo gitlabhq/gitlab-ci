@@ -40,6 +40,10 @@ class Build < ActiveRecord::Base
       build.update_attributes started_at: Time.now
     end
 
+    after_transition :running => :success do |build, transition|
+      build.fire_project_webhooks
+    end
+
     after_transition any => [:success, :failed, :canceled] do |build, transition|
       build.update_attributes finished_at: Time.now
     end
@@ -139,6 +143,10 @@ class Build < ActiveRecord::Base
   def set_file path
     self.tmp_file = path
     self.save
+  end
+
+  def fire_project_webhooks
+    self.project.fire_webhooks
   end
 end
 

@@ -50,6 +50,8 @@ gem 'state_machine'
 # Encoding detection
 gem 'charlock_holmes'
 
+gem 'rest-client'
+
 # Other
 gem 'rake'
 gem 'foreman'
