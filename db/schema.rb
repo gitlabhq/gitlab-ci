@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129121754) do
+ActiveRecord::Schema.define(:version => 20130221235726) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20130129121754) do
     t.boolean  "always_build",     :default => false, :null => false
     t.integer  "polling_interval"
     t.boolean  "public",           :default => false, :null => false
+    t.text     "webhooks"
   end
 
   create_table "users", :force => true do |t|

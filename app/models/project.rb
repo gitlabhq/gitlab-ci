@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
-    :default_ref, :gitlab_url, :always_build, :polling_interval, :public
+    :default_ref, :gitlab_url, :always_build, :polling_interval, :public, :webhooks
 
   has_many :builds, dependent: :destroy
 
@@ -131,6 +131,24 @@ class Project < ActiveRecord::Base
   def no_running_builds?
     # Get running builds not later than 3 days ago to ignore hungs
     builds.running.where("updated_at > ?", 3.days.ago).empty?
+  end
+
+  def fire_webhooks
+    return if self.webhooks.empty?
+
+    hooks = self.webhooks
+    hooks = hooks.lines.to_a
+
+    hooks.each do |hook|
+      hook.gsub!("\r\n", "")
+
+      begin
+        p "FIRING WEBHOOK: #{hook}"
+        RestClient.get(hook)
+      rescue
+        next
+      end
+    end
   end
 end
 

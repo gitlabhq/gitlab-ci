@@ -163,6 +163,8 @@ GEM
     redis (3.0.2)
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
       rspec-expectations (~> 2.11.0)
@@ -269,6 +271,7 @@ DEPENDENCIES
   rake
   rb-fsevent
   rb-inotify
+  rest-client
   rspec-rails
   sass-rails (~> 3.2.3)
   settingslogic

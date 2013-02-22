@@ -7,6 +7,7 @@ FactoryGirl.define do
     default_ref 'master'
     path Rails.root.join('tmp', 'test_repo').to_s
     scripts 'ls'
+    webooks 'http://localhost'
   end
 
   factory :project_without_token, class: Project do
@@ -14,5 +15,6 @@ FactoryGirl.define do
     default_ref 'master'
     path Rails.root.join('tmp', 'test_repo').to_s
     scripts 'ls'
+    webooks 'http://localhost'
   end
 end

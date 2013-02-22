@@ -48,6 +48,9 @@
         .field
           = f.label :scripts
           = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec"
+          .field
+          = f.label :webhooks
+          = f.text_area :webhooks, class: 'input-xxlarge', rows: 11, placeholder: "http://webhookurl"
 
 
       %fieldset
