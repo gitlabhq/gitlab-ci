@@ -16,7 +16,7 @@ module Travis
     end
 
     def gem_home
-      dir = Rails.root.join("tmp", '.rubygems', @project.id.to_s).to_s
+      dir = @project.path.to_s + "/.rubygems"
       FileUtils.mkdir_p dir
       dir
     end
