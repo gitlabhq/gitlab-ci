@@ -14,7 +14,9 @@ class ProjectsController < ApplicationController
 
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
-    @builds = @builds.latest_sha.order('id DESC').paginate(page: params[:page], per_page: 20)
+    @builds = @builds.latest_sha.order('id DESC')
+                     .includes(:project)
+                     .paginate(page: params[:page], per_page: 20)
   end
 
   def details

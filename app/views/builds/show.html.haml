@@ -15,7 +15,7 @@
     .alert{class: build_status_alert_class(@build)}
       %h4
         Build ##{@build.short_sha}
-        %small= "(#{@build.ref})"
+        %small= "(#{github_build_title @build})"
       .right
         %span= @build.updated_at.stamp('19:00 Aug 27')
       = @build.status

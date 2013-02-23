@@ -1,7 +1,9 @@
 %h3
   Project: #{@project.name}
   - if @project.gitlab_url.present?
-    %small= link_to 'View on GitLab', @project.gitlab_url
+    %small= link_to 'view on gitlab', @project.gitlab_url
+  - if @project.github?
+    %small= link_to 'view on github', github_project_url(@project)
   .right
     = link_to details_project_path(@project), class: 'btn btn-small' do
       Details
