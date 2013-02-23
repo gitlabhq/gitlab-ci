@@ -165,6 +165,10 @@ class GithubProject < Project
     last_ref
   end
 
+  def session
+    user.github_session
+  end
+
   private
     def ssh_key_path
       @ssh_key_path ||= Rails.root.join("tmp", "keys", Rails.env, id.to_s).to_s
@@ -172,10 +176,6 @@ class GithubProject < Project
 
     def hook_url_prefix
       "http://#{Settings.hostname}"
-    end
-
-    def session
-      user.github_session
     end
 
 end

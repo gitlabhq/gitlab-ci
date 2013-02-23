@@ -12,16 +12,18 @@ class Runner
   sidekiq_options queue: :runner
 
   def perform(build_id)
-    @build = Build.find(build_id)
-    @project = @build.project
-    @output = ''
+    ActiveRecord::Base.connection_pool.with_connection do
+      @build = Build.find(build_id)
+      @project = @build.project
+      @output = ''
 
-    return true if @build.canceled?
+      return true if @build.canceled?
 
-    if @project.no_running_builds?
-      run
-    else
-      run_later
+      if @project.no_running_builds?
+        run
+      else
+        run_later
+      end
     end
   end
 

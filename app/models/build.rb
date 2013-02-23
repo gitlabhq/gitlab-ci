@@ -38,11 +38,24 @@ class Build < ActiveRecord::Base
       build.update_attributes finished_at: Time.now
     end
 
+    after_transition any => [:success, :failed, :canceled] do |build, transition|
+      Notifier.perform_async(build.id, transition.event)
+    end
+
     state :pending, value: 'pending'
     state :running, value: 'running'
     state :failed, value: 'failed'
     state :success, value: 'success'
     state :canceled, value: 'canceled'
+  end
+
+  def previous_build_status
+    project.builds.where(status: [:failed, :success, :canceled])
+                  .where(ref: ref)
+                  .where("id < ?", id)
+                  .order("id DESC")
+                  .select("status")
+                  .first.try(:status)
   end
 
   def compare?
