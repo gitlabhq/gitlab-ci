@@ -84,6 +84,25 @@ describe GithubProject do
     end
   end
 
+  context "#register_build" do
+    let(:attrs) { HashWithIndifferentAccess.new(JSON.parse File.read("spec/fixtures/github.pull_request.json")) }
+    context "when github pull request" do
+      it "create a new build" do
+        expect {
+          project.register_build(attrs).should be
+        }.to change{ project.builds.count }.by(1)
+      end
+      context "a new build" do
+        subject { project.register_build(attrs) }
+        its(:ref)                 { should == 'fixes' }
+        its(:pull_request_ref)    { should == 'evrone' }
+        its(:pull_request_number) { should == 1 }
+        its(:before_sha)          { should == 'e16e29537359d881c3c17a96515dcb8b85ffd980' }
+        its(:sha)                 { should == '73246e0504b236e5b6cab682b57b2a5b5324eea5' }
+      end
+    end
+  end
+
   def file_mode(file)
     sprintf("%o", File.stat(file).mode)
   end

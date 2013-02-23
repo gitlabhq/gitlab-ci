@@ -118,6 +118,30 @@ class GithubProject < Project
     ssh_key_path
   end
 
+  def register_build opts = {}
+    if opts.key?(:pull_request)
+      head   = opts[:pull_request][:head]
+      base   = opts[:pull_request][:base]
+      number = opts[:number]
+      opts = {
+        ref:    head[:ref],
+        before: base[:sha],
+        after:  head[:sha]
+      }
+      transaction do
+        build = super(opts)
+        if build
+          build.pull_request_ref = base[:ref]
+          build.pull_request_number = number
+          build.save!
+        end
+        build
+      end
+    else
+      super(opts)
+    end
+  end
+
   def last_ref_sha ref
     ENV['GIT_SSH'] = self.class.git_ssh_command
     ENV['GITLAB_CI_KEY'] = store_ssh_keys!
