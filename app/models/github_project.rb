@@ -118,6 +118,17 @@ class GithubProject < Project
     ssh_key_path
   end
 
+  def ignore_build?(params)
+    if ref = params[:ref]
+      if ref.include? 'heads'
+        ref = ref.scan(/heads\/(.*)$/).flatten[0]
+      end
+      !tracked_refs.include?(ref)
+    else
+      false
+    end
+  end
+
   def register_build opts = {}
     if opts.key?(:pull_request)
       head   = opts[:pull_request][:head]

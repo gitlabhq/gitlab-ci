@@ -84,6 +84,15 @@ describe GithubProject do
     end
   end
 
+  context "#ignore_build?" do
+    it "ignore unless in tracked_refs" do
+      project.update_attributes!(default_ref: "master, staging")
+      project.ignore_build?(:ref => "master").should_not be
+      project.ignore_build?(:ref => "ignore").should be
+      project.ignore_build?({}).should_not be
+    end
+  end
+
   context "#register_build" do
     let(:attrs) { HashWithIndifferentAccess.new(JSON.parse File.read("spec/fixtures/github.pull_request.json")) }
     context "when github pull request" do

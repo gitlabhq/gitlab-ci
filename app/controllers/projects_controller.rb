@@ -74,6 +74,7 @@ class ProjectsController < ApplicationController
                     params
                   end.dup
 
+   return head(200) if @project.ignore_build?(build_params)
    @build = @project.register_build(build_params)
 
    if @build
