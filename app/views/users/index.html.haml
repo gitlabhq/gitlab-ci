@@ -9,7 +9,8 @@
         %li
           %i.icon-user
           = user
-          = link_to 'Remove', user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-small right'
+          - unless user.github?
+            = link_to 'Remove', user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-small right'
           %hr
   .span5
     .sidebar
