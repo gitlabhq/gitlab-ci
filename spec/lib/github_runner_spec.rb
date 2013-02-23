@@ -21,7 +21,7 @@ describe 'Runner (github project)' do
       runner.perform(build.id)
 
       build.reload
-      build.trace.should include 'ci_runner: No such file or directory'
+      build.trace.should include '.ci_runner:'
       build.should be_failed
       build.project.repo_present?.should be
     end
@@ -44,7 +44,7 @@ describe 'Runner (github project)' do
       runner.perform(build.id)
 
       build.reload
-      build.trace.should include 'ci_runner: No such file or directory'
+      build.trace.should include '.ci_runner:'
       build.should be_failed
       build.project.repo_present?.should be
     end
