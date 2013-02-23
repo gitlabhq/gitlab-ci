@@ -145,7 +145,7 @@ class Runner
   end
 
   def github_save_build_script!
-    c = Travis::Config.new(project.path + "/.travis.yml")
+    c = Travis::Config.new(project, project.path + "/.travis.yml")
     script = "#{project.path}/.ci_runner"
     File.open(script, "w") do |io|
       io.write c.to_runnable

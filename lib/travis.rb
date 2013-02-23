@@ -1,9 +1,11 @@
 require 'yaml'
+require 'fileutils'
 
 module Travis
   class Config
-    def initialize(path)
+    def initialize(project, path)
       @path = path.to_s
+      @project = project
     end
 
     def scripts
@@ -11,6 +13,12 @@ module Travis
       script << (yml['before_script'] || [])
       script << (yml['script'] || [])
       script.flatten
+    end
+
+    def gem_home
+      dir = Rails.root.join("tmp", '.rubygems', @project.id.to_s).to_s
+      FileUtils.mkdir_p dir
+      dir
     end
 
     def env
@@ -46,7 +54,7 @@ test -f /etc/environment && . /etc/environment
 
 export HOME='#{File.dirname @path}'
 export LANG=en_US.UTF-8
-export GEM_HOME=/tmp/.rubygems
+export GEM_HOME=#{gem_home}
 export PATH="/usr/lib/rbenv/shims:${PATH}"
 export RBENV_DIR=$HOME
 
