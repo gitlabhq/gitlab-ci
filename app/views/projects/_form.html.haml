@@ -13,16 +13,16 @@
         %legend Project
         .field
           = f.label :name
-          = f.text_field :name, class: 'input-xlarge', placeholder: 'my-project', disable: @project.github?
+          = f.text_field :name, class: 'input-xlarge', placeholder: 'my-project', readonly: @project.github?
         .field
           = f.label :token, "Token (Leave empty to generate random token)"
-          = f.text_field :token, class: 'input-xlarge', placeholder: 'xEeFCaDAB89', disable: @project.github?
+          = f.text_field :token, class: 'input-xlarge', placeholder: 'xEeFCaDAB89', readonly: @project.github?
 
       %fieldset
         %legend Git
         .field
           = f.label :path
-          = f.text_field :path, class: 'input-xlarge', placeholder: '/home/gitlab_ci/projectname', disable: @project.github?
+          = f.text_field :path, class: 'input-xlarge', placeholder: '/home/gitlab_ci/projectname', readonly: @project.github?
         .field
           = f.label :default_ref, "Follow branches"
           = f.text_field :default_ref, class: 'input-xlarge', placeholder: 'master, stable'
@@ -44,7 +44,7 @@
           = f.number_field :timeout, class: 'input-xlarge'
         .field
           = f.label :scripts
-          = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec", disable: @project.github?
+          = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec", readonly: @project.github?
 
 
       %fieldset
