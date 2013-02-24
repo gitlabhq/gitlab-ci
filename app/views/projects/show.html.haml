@@ -6,6 +6,9 @@
   - if @project.gitlab_url.present?
     %small= link_to 'View on GitLab', @project.gitlab_url
 
+  - if @project.github?
+    %small= link_to 'View on GitHub', github_project_url(@project)
+
   - if current_user
     .pull-right
       %span

@@ -1,7 +1,7 @@
 require 'runner'
 
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:build, :status, :index, :show]
+  before_filter :authenticate_user!, except: [:build, :status]
   before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
   before_filter :authenticate_token!, only: [:build]
 
@@ -21,7 +21,9 @@ class ProjectsController < ApplicationController
 
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
-    @builds = @builds.latest_sha.order('id DESC').page(params[:page]).per(20)
+    @builds = @builds.latest_sha.order('id DESC')
+                     .includes(:project)
+                     .page(params[:page]).per(20)
   end
 
   def details
@@ -53,7 +55,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    project.destroy
+    project.destroy unless project.github?
 
     redirect_to projects_url
   end
@@ -81,6 +83,7 @@ class ProjectsController < ApplicationController
                     params
                   end.dup
 
+   return head(200) if @project.ignore_build?(build_params)
    @build = @project.register_build(build_params)
 
    if @build

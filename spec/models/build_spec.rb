@@ -16,6 +16,25 @@ describe Build do
   it { should respond_to :short_sha }
   it { should respond_to :trace_html }
 
+  context "#previous_build_status" do
+    let(:p1) { FactoryGirl.create(:project, name: 'p1') }
+    let(:p2) { FactoryGirl.create(:project, name: 'p2') }
+
+    let!(:b1) { FactoryGirl.create(:build, project: p1, ref: 'master', status: "success") }
+    let!(:b2) { FactoryGirl.create(:build, project: p1, ref: 'master', status: "failed") }
+    let!(:b3) { FactoryGirl.create(:build, project: p1, ref: 'master', status: 'canceled') }
+    let!(:b4) { FactoryGirl.create(:build, project: p1, ref: 'fixes') }
+
+    let!(:b5) { FactoryGirl.create(:build, project: p2, ref: 'master') }
+
+    it "return previous build status with same project and ref" do
+      b1.previous_build_status.should be_nil
+      b2.previous_build_status.should == 'success'
+      b3.previous_build_status.should == 'failed'
+      b4.previous_build_status.should be_nil
+    end
+  end
+
   describe "#ci_skip?" do
     let(:project) { FactoryGirl.create(:project) }
     let(:build) { project.register_build(ref: 'master') }

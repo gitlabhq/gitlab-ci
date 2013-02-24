@@ -8,7 +8,10 @@
 
   %td.build-branch
     - unless @ref
-      %span= build.ref
+      - if build.project.github?
+        = link_to_github_build build
+      - else
+        %span= build.ref
 
   %td.duration
     = build_duration build

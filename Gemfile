@@ -15,7 +15,7 @@ gem 'mysql2', group: :mysql
 gem 'pg',     group: :postgres
 
 # Settings
-gem 'settingslogic'
+# gem 'settingslogic'
 
 # Auth
 gem 'devise'
@@ -57,6 +57,18 @@ gem 'jquery-rails'
 gem 'childprocess'
 gem 'gitlab_ci_meta'
 
+# Configuration managment
+gem 'rails_config'
+
+# Github
+gem 'omniauth-github'
+gem 'octokit', github:'pengwynn/octokit'
+
+# Generate ssh key pair
+gem 'sshkey', github:'bensie/sshkey'
+
+gem 'capistrano_evrone_recipes', require: false
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -66,12 +78,14 @@ group :assets do
   gem 'bootstrap-sass'
 end
 
-
 group :development do
   gem 'annotate'
   gem 'quiet_assets'
 end
 
+group :test do
+  gem 'webmock'
+end
 
 group :development, :test do
   gem 'pry'

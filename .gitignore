@@ -9,3 +9,14 @@ tmp/*
 /log/*.log
 .powrc
 .rvmrc
+.DS_Store
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml
+config/resque.yml
+var/repos
+config/settings.yml
+config/settings/*
+.ci_runner
+Capfile

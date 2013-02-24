@@ -1,0 +1,10 @@
+%h3
+  Github Project: #{current_user}
+%hr
+
+.row-fluid
+  .span7
+    = form_for github_projects_path do
+      .github_projects_loader
+        = image_tag("loader2.gif")
+      .github_projects{ rel: github_projects_path }

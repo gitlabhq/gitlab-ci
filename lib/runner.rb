@@ -1,5 +1,8 @@
 require 'open3'
 require 'timeout'
+require 'fileutils'
+
+require File.expand_path(File.dirname(__FILE__) + "/travis")
 
 class Runner
   include Sidekiq::Worker
@@ -9,16 +12,18 @@ class Runner
   sidekiq_options queue: :runner
 
   def perform(build_id)
-    @build = Build.find(build_id)
-    @project = @build.project
-    @output = ''
+    ActiveRecord::Base.connection_pool.with_connection do
+      @build = Build.find(build_id)
+      @project = @build.project
+      @output = ''
 
-    return true if @build.canceled?
+      return true if @build.canceled?
 
-    if @project.no_running_builds?
-      run
-    else
-      run_later
+      if @project.no_running_builds?
+        run
+      else
+        run_later
+      end
     end
   end
 
@@ -29,18 +34,34 @@ class Runner
   def initialize
     @logger = Logger.new(STDOUT)
     @logger.level = Logger::INFO
+    @default_env = {}
   end
 
   def run
     path = project.path
+    commands = nil
+
     commands = project.scripts
     commands = commands.lines.to_a
+
+    if project.github?
+      commands.unshift :github_save_build_script!
+    end
+
     commands.unshift(prepare_project_cmd(path, build.sha))
+
+    github_set_env!
 
     build.run!
 
-    Dir.chdir(path) do
-      commands.each do |line|
+    if project.github? && !project.repo_present?
+      commands.unshift github_clone_repo_command
+    end
+
+    commands.each do |line|
+      if line.is_a?(Symbol)
+        self.send(line)
+      else
         status = command(line, path)
         build.write_trace(@output)
 
@@ -54,36 +75,39 @@ class Runner
     end
 
     build.success!
-  rescue Errno::ENOENT => ex
-
-    @output << "INVALID PROJECT PATH"
-    build.drop!
-  rescue Timeout::Error
-    @output << "TIMEOUT"
+  rescue Exception => e
+    @output << "ERROR: #{e.message}"
+    $stderr.puts @output
+    $stderr.puts e.backtrace
     build.drop!
   ensure
+    project.clean_ssh_keys! if project.github?
     build.write_trace(@output)
   end
 
   def command(cmd, path)
     cmd = cmd.strip
-    status = 0
+    path = '/tmp' unless File.exists?(path)
 
     @output ||= ""
     @output << "\n"
     @output << cmd
     @output << "\n"
 
-    @process = ChildProcess.build(cmd)
+    @process = ChildProcess.build('sh', '-c', cmd)
     @tmp_file = Tempfile.new("child-output")
     @process.io.stdout = @tmp_file
     @process.io.stderr = @tmp_file
     @process.cwd = path
 
     # ENV
-    @process.environment['BUNDLE_GEMFILE'] = File.join(path, 'Gemfile')
+    gemfile = File.join(path, 'Gemfile')
+    @process.environment['BUNDLE_GEMFILE'] = gemfile if File.exists?(gemfile)
     @process.environment['BUNDLE_BIN_PATH'] = ''
     @process.environment['RUBYOPT'] = ''
+    @default_env.each_pair do |k,v|
+      @process.environment[k] = v
+    end
 
     @process.start
 
@@ -108,5 +132,27 @@ class Runner
     cmd << "git reset --hard"
     cmd << "git checkout #{ref}"
     cmd.join(" && ")
+  end
+
+  def github_clone_repo_command
+    "rm -rf '#{project.path}' && git clone #{project.clone_url} '#{project.path}'"
+  end
+
+  def github_set_env!
+    return unless project.github?
+    @default_env = {
+      'GIT_SSH' => GithubProject.git_ssh_command,
+      'GITLAB_CI_KEY' => project.store_ssh_keys!
+    }
+  end
+
+  def github_save_build_script!
+    c = Travis::Config.new(project, project.path + "/.travis.yml")
+    script = "#{project.path}/.ci_runner"
+    File.open(script, "w") do |io|
+      io.write c.to_runnable
+    end
+    File.chmod(0700, script)
+    [script]
   end
 end

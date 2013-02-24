@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -e
+
+exec ssh -i "${GITLAB_CI_KEY}" -o "StrictHostKeyChecking no" "$@"

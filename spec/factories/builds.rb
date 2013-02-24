@@ -3,5 +3,6 @@
 FactoryGirl.define do
   factory :build do
     ref 'master'
+    sha 'HEAD'
   end
 end

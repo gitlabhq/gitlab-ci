@@ -1,0 +1,2 @@
+runner: rbenv exec bundle exec sidekiq -q runner,default -e production
+notifier: rbenv exec bundle exec sidekiq -q notifier -e production

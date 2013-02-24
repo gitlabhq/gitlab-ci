@@ -1,0 +1,64 @@
+.navbar-ci {
+  .navbar-inner {
+    background-attachment: scroll !important;
+    background-clip: border-box !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    background-image: -webkit-linear-gradient(top, rgb(68, 68, 68), rgb(17, 17, 17)) !important;
+    background-origin: padding-box !important;
+    background-size: auto !important;
+
+    a {
+      color: #ccc !important;
+      text-shadow: none !important;
+    }
+  }
+}
+
+a.sign_in_via_github {
+  position: absolute;
+  margin-left: 40em;
+  margin-top: -1.1em;
+  border: 1px solid white;
+
+  img {
+    margin: 5px;
+    display: block;
+    width: 150px;
+  }
+
+  &:hover {
+    border: 1px solid #ccc !important;
+    background: #eee;
+  }
+}
+
+.github_projects {
+  label {
+    font-size: 16px;
+    padding: .5em 0;
+
+    small {
+      display: block;
+      margin-left: 1.5em;
+      color: #999;
+      padding-left: 1em;
+    }
+
+    a {
+      padding-left: 1em;
+    }
+  }
+}
+
+.github_projects_loader {
+  text-align: center;
+  padding-top: 2em;
+}
+
+pre.trace {
+  background-color: rgb(51, 51, 51) !important;
+  font-family: monospace !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  white-space: pre-wrap !important;
+}

@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+#require File.expand_path('lib/travis')
+require 'yaml'
+
+module Travis
+  def self.get_scripts(file_path)
+    begin
+      yml = YAML.load(File.read file_path.to_s)
+      script = []
+      script << (yml['before_script'] || [])
+      script << (yml['script'] || [])
+      script.flatten
+    end
+  end
+end
+
+cmds = Travis.get_scripts File.expand_path('.travis.yml')
+path = File.expand_path('.ci_runner')
+
+cmd = %{
+set -e
+
+unset GEM_PATH
+
+eval "(rbenv init -)" > /dev/null
+
+set -x
+
+ruby --version
+gem --version
+bundle --version
+
+#{ cmds.join("\n") }
+
+true
+}
+
+File.open(path, 'w') do |io|
+  io.write cmd
+end
+
+exec "/bin/bash", path

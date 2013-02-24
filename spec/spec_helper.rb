@@ -3,7 +3,8 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
-require 'sidekiq/testing/inline'
+require 'sidekiq/testing'
+require 'webmock/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -18,6 +19,8 @@ end
 
 RSpec.configure do |config|
   config.include LoginHelpers, type: :request
+  config.extend OmniauthHelpers, type: :request
+  config.include Devise::TestHelpers, :type => :controller
 
   # ## Mock Framework
   #
@@ -46,3 +49,6 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 end
+
+Settings.github.restrict = nil
+Settings.github.store_repo_path = ":rails_root/tmp/repos"

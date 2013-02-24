@@ -6,7 +6,7 @@ production:
   encoding: utf8
   reconnect: false
   database: gitlab_ci_production
-  pool: 5
+  pool: 50
   username: root
   password: "secure password"
   # host: localhost
@@ -20,9 +20,9 @@ development:
   encoding: utf8
   reconnect: false
   database: gitlab_ci_development
-  pool: 5
-  username: root
-  password: "secure password"
+  pool: 50
+  username: ci
+  password: ci
   # socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
@@ -33,7 +33,7 @@ test: &test
   encoding: utf8
   reconnect: false
   database: gitlab_ci_test
-  pool: 5
-  username: root
-  password:
+  pool: 50
+  username: ci
+  password: ci
   # socket: /tmp/mysql.sock

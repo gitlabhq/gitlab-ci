@@ -60,3 +60,8 @@ module GitlabCi
     config.assets.version = '1.0'
   end
 end
+
+# force load
+%w{ github_repo }.each do |m|
+  require Rails.root.join('app', 'models', m).to_s
+end

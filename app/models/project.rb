@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
   # Validations
   #
   validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
-  validate :repo_present?
+  validate :repo_present?, unless: :github?
   validates_uniqueness_of :name
 
   validates :polling_interval,
@@ -56,6 +56,10 @@ class Project < ActiveRecord::Base
 
   def gitlab?
     gitlab_url.present?
+  end
+
+  def github?
+    type == 'GithubProject'
   end
 
   def last_ref_sha ref
@@ -120,6 +124,10 @@ class Project < ActiveRecord::Base
     @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
   end
 
+  def ignore_build?(params)
+    false
+  end
+
   def valid_token? token
     self.token && self.token == token
   end
@@ -166,6 +174,8 @@ end
 #  gitlab_url       :string(255)
 #  always_build     :boolean(1)      default(FALSE), not null
 #  polling_interval :integer(4)
+#  type             :string(255)
+#  user_id          :integer(4)
 #  public           :boolean(1)      default(FALSE), not null
 #
 

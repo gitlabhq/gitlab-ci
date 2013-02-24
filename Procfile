@@ -1,2 +1,3 @@
-web: bundle exec rails s -p $PORT
-worker: bundle exec sidekiq -q runner,default
+runner: bundle exec sidekiq -q runner,default
+notifier: bundle exec sidekiq -q notifier
+
