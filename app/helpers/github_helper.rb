@@ -11,7 +11,7 @@ module GithubHelper
       link = "https://github.com/#{build.project.name}/pull/#{build.pull_request_number}/files"
       ico = "icon-share-alt"
     end
-    raw("#{title} " + link_to(%{ <i class="#{ico}"></i> }.html_safe, link))
+    raw("#{title} " + link_to(%{ <i class="#{ico}" style="opacity:0.5"></i> }.html_safe, link))
   end
 
   def github_build_title(build)
