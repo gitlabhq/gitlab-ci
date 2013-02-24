@@ -60,6 +60,7 @@ describe 'Runner (github project)' do
   end
 
   def setup_build_for_new_repo
+    stub_commit_request
     build = setup_build true do |project|
       FileUtils.rm_rf project.path
       project.repo_present?.should_not be
@@ -76,6 +77,14 @@ describe 'Runner (github project)' do
     project.path.scan(Rails.root.to_s).should be # GUARD
     yield project if block_given?
     project.register_build ref: 'master'
+  end
+
+  def stub_commit_request
+    stub_request(:get, "https://api.github.com/repos/evrone/test_repo/commits?per_page=100&sha=master").
+      with(:headers => {'Accept'=>'application/vnd.github.beta+json',
+                        'Authorization'=>'token MyString'}).
+      to_return(:status => 200, :body => %{[{"sha": "HEAD"}]},
+                :headers => {'Content-Type' => 'application/json'})
   end
 end
 

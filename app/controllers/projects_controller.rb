@@ -1,7 +1,7 @@
 require 'runner'
 
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:build, :status, :index, :show]
+  before_filter :authenticate_user!, except: [:build, :status]
   before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
   before_filter :authenticate_token!, only: [:build]
 
@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
     @builds = @builds.where(ref: @ref) if @ref
     @builds = @builds.latest_sha.order('id DESC')
                      .includes(:project)
-                     .paginate(page: params[:page], per_page: 20)
+                     .page(params[:page]).per(20)
   end
 
   def details

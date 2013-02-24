@@ -77,7 +77,11 @@ class Build < ActiveRecord::Base
   end
 
   def ci_skip?
-    !!(commit.message =~ /(\[ci skip\])/)
+    if project.repo_present?
+      !!(commit.message =~ /(\[ci skip\])/)
+    else
+      false
+    end
   end
 
   def git_author_name

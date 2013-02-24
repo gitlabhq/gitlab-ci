@@ -1,7 +1,7 @@
-hostname: "ci.example.com"
+hostname: "gitlab-ci.dev"
 github:
   store_repo_path: ":rails_root/var/repos"
-  client_id: "github application id"
-  client_secret: "githbub application secret"
+  client_id: "ad432f8f87446b244ac5"
+  client_secret: "61df13aa9688babb93ce97983bb453a39fe644e0"
   restrict:
-  - "you organization name"
+  - "evrone"

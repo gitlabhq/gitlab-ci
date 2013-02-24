@@ -74,9 +74,9 @@ GEM
     celluloid (0.12.4)
       facter (>= 1.6.12)
       timers (>= 1.0.0)
+    charlock_holmes (0.6.9)
     childprocess (0.3.8)
       ffi (~> 1.0, >= 1.0.11)
-    charlock_holmes (0.6.9)
     chronic (0.9.0)
     coderay (1.0.8)
     coffee-rails (3.2.2)
@@ -336,14 +336,11 @@ DEPENDENCIES
   mysql2
   octokit!
   omniauth-github
-  pry
-  quiet_assets
-  rails (= 3.2.12)
-  rails_config
   pg
   pry
   quiet_assets
   rails (= 3.2.12)
+  rails_config
   rake
   rb-fsevent
   rb-inotify

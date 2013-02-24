@@ -115,6 +115,8 @@ class GithubProject < Project
 
   def clean_ssh_keys!
     FileUtils.rm_f ssh_key_path
+    ENV.delete("GIT_SSH")
+    ENV.delete("GITLAB_CI_KEY")
     ssh_key_path
   end
 
@@ -154,15 +156,11 @@ class GithubProject < Project
   end
 
   def last_ref_sha ref
-    ENV['GIT_SSH'] = self.class.git_ssh_command
-    ENV['GITLAB_CI_KEY'] = store_ssh_keys!
-    last_ref = if repo_present?
-                 super(ref)
-               else
-                 `git ls-remote --heads #{clone_url} refs/heads/#{ref}`.split(" ").first
-               end
-    clean_ssh_keys!
-    last_ref
+    if repo_present?
+      super(ref)
+    else
+      session.commits(name, ref, per_page:1).first[:sha]
+    end
   end
 
   def session
@@ -177,7 +175,6 @@ class GithubProject < Project
     def hook_url_prefix
       "http://#{Settings.hostname}"
     end
-
 end
 
 # == Schema Information
