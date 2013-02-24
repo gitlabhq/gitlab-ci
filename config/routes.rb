@@ -19,6 +19,7 @@ GitlabCi::Application.routes.draw do
     member do
       get :run
       get :status
+      get :stats
       get :details
       post :build
     end

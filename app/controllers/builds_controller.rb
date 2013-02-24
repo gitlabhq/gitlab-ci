@@ -15,7 +15,7 @@ class BuildsController < ApplicationController
 
     raise ActiveRecord::RecordNotFound unless @build
 
-    @builds = @builds.paginate(:page => params[:page], :per_page => 20)
+    @builds = @builds.page(params[:page]).per(20)
   end
 
   def status

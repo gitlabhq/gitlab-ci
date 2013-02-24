@@ -11,7 +11,8 @@ end
 gem 'rails', '3.2.12'
 
 # DB
-gem 'mysql2'
+gem 'mysql2', group: :mysql
+gem 'pg',     group: :postgres
 
 # Settings
 # gem 'settingslogic'
@@ -41,10 +42,13 @@ gem 'stamp'
 gem 'grit'
 
 # Pagination
-gem 'will_paginate', '~> 3.0'
+gem 'kaminari'
 
 # State machine
 gem 'state_machine'
+
+# Encoding detection
+gem 'charlock_holmes'
 
 # Other
 gem 'rake'

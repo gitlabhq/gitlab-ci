@@ -1,16 +1,23 @@
 require 'runner'
 
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:build, :status]
-  before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy]
+  before_filter :authenticate_user!, except: [:build, :status, :index, :show]
+  before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
   before_filter :authenticate_token!, only: [:build]
 
   def index
-    @projects = Project.order('id DESC').paginate(page: params[:page], per_page: 20)
+    @projects = Project.order('id DESC')
+    @projects = @projects.public unless current_user
+    @projects  = @projects.page(params[:page]).per(20)
   end
 
   def show
+    unless @project.public || current_user
+      authenticate_user! and return
+    end
+
     @ref = params[:ref]
+
 
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
@@ -58,7 +65,7 @@ class ProjectsController < ApplicationController
     @build = @project.register_build(ref: params[:ref])
 
     if @build and @build.id
-      Runner.perform_async(@build.id)
+      Runner.perform_async(@build.id) unless @build.ci_skip?
       redirect_to project_build_path(@project, @build)
     else
       redirect_to project_path(@project), notice: 'Branch is not defined for this project'
@@ -99,6 +106,10 @@ class ProjectsController < ApplicationController
                  end
 
     send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
+  end
+
+  def stats
+
   end
 
   protected

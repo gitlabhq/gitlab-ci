@@ -10,8 +10,14 @@ class Build < ActiveRecord::Base
 
   scope :latest_sha, where("id IN(SELECT MAX(id) FROM #{self.table_name} group by sha)")
 
-  scope :running, where(status: "running")
-  scope :pending, where(status: "pending")
+  scope :running, ->() { where(status: "running") }
+  scope :pending, ->() { where(status: "pending") }
+  scope :success, ->() { where(status: "success") }
+  scope :failed,  ->() { where(status: "failed")  }
+
+  def self.last_month
+    where('created_at > ?', Date.today - 1.month)
+  end
 
   state_machine :status, initial: :pending do
     event :run do
@@ -70,6 +76,10 @@ class Build < ActiveRecord::Base
     project.github?
   end
 
+  def ci_skip?
+    !!(commit.message =~ /(\[ci skip\])/)
+  end
+
   def git_author_name
     commit.author.name
   rescue
@@ -88,7 +98,8 @@ class Build < ActiveRecord::Base
 
   def write_trace(trace)
     self.reload
-    update_attributes(trace: trace)
+    sanitized_output = sanitize_build_output(trace)
+    update_attributes(trace: sanitized_output)
   end
 
   def short_before_sha
@@ -107,12 +118,24 @@ class Build < ActiveRecord::Base
     end
   end
 
+  def sanitize_build_output(output)
+    GitlabCi::Encode.encode!(output)
+  end
+
+  def read_tmp_file
+    content = if tmp_file && File.readable?(tmp_file)
+                File.read(tmp_file)
+              end
+
+    content ||= ''
+  end
 
   def compose_output
     output = trace
 
-    if running? && tmp_file
-      output << File.read(tmp_file)
+    if running?
+      sanitized_output = sanitize_build_output(read_tmp_file)
+      output << sanitized_output if sanitized_output.present?
     end
 
     output

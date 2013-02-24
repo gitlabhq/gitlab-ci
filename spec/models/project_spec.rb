@@ -90,5 +90,6 @@ end
 #  polling_interval :integer(4)
 #  type             :string(255)
 #  user_id          :integer(4)
+#  public           :boolean(1)      default(FALSE), not null
 #
 

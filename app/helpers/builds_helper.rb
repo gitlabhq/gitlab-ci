@@ -28,4 +28,8 @@ module BuildsHelper
       build.short_sha
     end
   end
+
+  def build_link build
+    link_to(build.short_sha, project_build_path(build.project, build))
+  end
 end

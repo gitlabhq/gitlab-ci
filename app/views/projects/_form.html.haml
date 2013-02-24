@@ -17,6 +17,10 @@
         .field
           = f.label :token, "Token (Leave empty to generate random token)"
           = f.text_field :token, class: 'input-xlarge', placeholder: 'xEeFCaDAB89', readonly: @project.github?
+        .field
+          = f.label :public do
+            = f.check_box :public, class: 'input-xlarge'
+            %span Public (Anyone can see project and builds list)
 
       %fieldset
         %legend Git

@@ -1,0 +1,51 @@
+%h3
+  Project: #{link_to @project.name, @project} &rarr; Stats
+
+%p.lead Some stats related to the project
+
+.row-fluid
+  .span6
+    %fieldset
+      %legend Last month
+      %p
+        Total:
+        %strong= pluralize @project.builds.last_month.count, 'build'
+      %p
+        Successful:
+        %strong= pluralize @project.builds.last_month.success.count, 'build'
+      %p
+        Failed:
+        %strong= pluralize @project.builds.last_month.failed.count, 'build'
+
+      %p
+        Success ratio:
+        %strong
+          #{success_ratio(@project.builds.last_month.success, @project.builds.last_month.failed)}%
+      %p
+        Commits covered:
+        %strong
+          = @project.builds.last_month.latest_sha.count
+
+  .span6
+    %fieldset
+      %legend Overall
+      %p
+        Total:
+        %strong= pluralize @project.builds.count, 'build'
+      %p
+        Successful:
+        %strong= pluralize @project.builds.success.count, 'build'
+      %p
+        Failed:
+        %strong= pluralize @project.builds.failed.count, 'build'
+
+      %p
+        Success ratio:
+        %strong
+          #{success_ratio(@project.builds.success, @project.builds.failed)}%
+
+      %p
+        Commits covered:
+        %strong
+          = @project.builds.latest_sha.count
+

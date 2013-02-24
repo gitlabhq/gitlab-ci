@@ -10,7 +10,7 @@ Create a user for GitLab:
     sudo apt-get update
     sudo apt-get upgrade
 
-    sudo apt-get install -y wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev
+    sudo apt-get install -y wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev libicu-dev
     sudo apt-get install redis-server 
 
 ## 2. Install Ruby (RVM) for gitlab_ci
@@ -19,9 +19,8 @@ Create a user for GitLab:
 
     \curl -L https://get.rvm.io | bash -s stable --ruby
 
-
     # Add next line to ~/.bashrc
-    source /home/gitlab_ci/.rvm/scripts/rvm
+    echo "source /home/gitlab_ci/.rvm/scripts/rvm" >> ~/.bashrc
 
 
 ## 3. Prepare MySQL
@@ -46,35 +45,43 @@ Create a user for GitLab:
 
     sudo -u gitlab_ci -H git clone https://github.com/gitlabhq/gitlab-ci.git
 
+    cd gitlab-ci
+
     # Checkout preferable version
     sudo -u gitlab_ci -H  git checkout 2-0-stable
 
 ## 5. Setup application
 
-    cd gitlab-ci
+    # Act as gitlab_ci user
+    #
+    sudo su gitlab_ci
+    cd ~/gitlab-ci
 
     # Create a tmp directory inside application
-    sudo -u gitlab_ci -H mkdir -p tmp/pids
+    #
+    mkdir -p tmp/pids
 
     # Install dependencies
     #
-    sudo -u gitlab_ci -H gem install bundler
-
-    sudo -u gitlab_ci -H bundle --without development test
+    gem install bundler
+    bundle --without development test
 
     # Copy mysql db config
     #
     # make sure to update username/password in config/database.yml
     #
-    sudo -u gitlab_ci -H cp config/database.yml.mysql config/database.yml
+    cp config/database.yml.mysql config/database.yml
 
     # Setup DB
     #
-    sudo -u gitlab_ci -H bundle exec rake db:setup RAILS_ENV=production
+    bundle exec rake db:setup RAILS_ENV=production
 
     # Setup scedules 
     #
-    sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
+    bundle exec whenever -w RAILS_ENV=production
+   
+    # Now exit from gitlab_ci user
+    exit
 
 
 ## 6. Install Init Script
@@ -131,7 +138,7 @@ The setup has created an admin account for you. You can use it to log in:
     5iveL!fe
 
 **Important Note:**
-Please go over to your profile page and immediately chage the password, so
+Please go over to your profile page and immediately change the password, so
 nobody can access your GitLab CI by using this login information later on.
 
 **Enjoy!**

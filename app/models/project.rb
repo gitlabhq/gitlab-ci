@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
-    :default_ref, :gitlab_url, :always_build, :polling_interval
+    :default_ref, :gitlab_url, :always_build, :polling_interval, :public
 
   has_many :builds, dependent: :destroy
 
@@ -15,6 +15,9 @@ class Project < ActiveRecord::Base
   validates :polling_interval,
     presence: true,
     if: ->(project) { project.always_build.present? }
+
+
+  scope :public, where(public: true)
 
   before_validation :set_default_values
 
@@ -74,7 +77,7 @@ class Project < ActiveRecord::Base
   end
 
   def last_build_date
-    last_build.try(:updated_at)
+    last_build.try(:created_at)
   end
 
   def human_status
@@ -173,5 +176,6 @@ end
 #  polling_interval :integer(4)
 #  type             :string(255)
 #  user_id          :integer(4)
+#  public           :boolean(1)      default(FALSE), not null
 #
 

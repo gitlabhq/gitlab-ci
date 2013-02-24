@@ -22,4 +22,14 @@ module ProjectsHelper
   def ref_tab_class ref = nil
     'active' if ref == @ref
   end
+
+  def success_ratio(success_builds, failed_builds)
+    failed_builds = failed_builds.count
+    success_builds = success_builds.count
+
+    return 100 if failed_builds.zero?
+
+    ratio = (success_builds.to_f / (success_builds + failed_builds)) * 100
+    ratio.to_i
+  end
 end
