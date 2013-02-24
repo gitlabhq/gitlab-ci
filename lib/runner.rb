@@ -84,7 +84,8 @@ class Runner
     @process.environment['BUNDLE_GEMFILE'] = File.join(path, 'Gemfile')
     @process.environment['BUNDLE_BIN_PATH'] = ''
     @process.environment['RUBYOPT'] = ''
-
+    @process.environment['CI_BUILD_REF'] = build.ref
+    
     @process.start
 
     build.set_file @tmp_file.path
