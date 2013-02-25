@@ -11,7 +11,7 @@
     .navbar.navbar-fixed-top.navbar-ci
       .navbar-inner
         .container-fluid
-          = link_to GitlabCi::Name, root_path, class: "brand"
+          = link_to 'GitLab CI', root_path, class: "brand"
           %ul.nav
             - if current_user
               %li
@@ -38,7 +38,7 @@
     .right
       .padded
         %p.light
-          = GitlabCi::Name
+          GitLab CI
           %span= GitlabCi::Version
           %small= GitlabCi::Revision
 

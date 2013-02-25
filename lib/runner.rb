@@ -86,7 +86,7 @@ class Runner
     @process.environment['RUBYOPT'] = ''
 
     @process.environment['CI_SERVER'] = 'yes'
-    @process.environment['CI_SERVER_NAME'] = GitlabCi::Name
+    @process.environment['CI_SERVER_NAME'] = 'GitLab CI'
     @process.environment['CI_SERVER_VERSION'] = GitlabCi::Version
     @process.environment['CI_SERVER_REVISION'] = GitlabCi::Revision
 
