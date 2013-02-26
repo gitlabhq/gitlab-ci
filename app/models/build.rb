@@ -81,8 +81,7 @@ class Build < ActiveRecord::Base
 
   def write_trace(trace)
     self.reload
-    sanitized_output = sanitize_build_output(trace)
-    update_attributes(trace: sanitized_output)
+    update_attributes(trace: trace)
   end
 
   def short_before_sha
@@ -94,22 +93,12 @@ class Build < ActiveRecord::Base
   end
 
   def trace_html
-    if trace.present?
-      Ansi2html::convert(compose_output)
-    else
-      ''
-    end
-  end
-
-  def sanitize_build_output(output)
-    GitlabCi::Encode.encode!(output)
+    html = Ansi2html::convert(compose_output) if trace.present?
+    html ||= ''
   end
 
   def read_tmp_file
-    content = if tmp_file && File.readable?(tmp_file)
-                File.read(tmp_file)
-              end
-
+    content = GitlabCi::Encode.encode!(File.binread(tmp_file)) if tmp_file && File.readable?(tmp_file)
     content ||= ''
   end
 
@@ -117,8 +106,7 @@ class Build < ActiveRecord::Base
     output = trace
 
     if running?
-      sanitized_output = sanitize_build_output(read_tmp_file)
-      output << sanitized_output if sanitized_output.present?
+      output << read_tmp_file
     end
 
     output

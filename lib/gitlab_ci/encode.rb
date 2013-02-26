@@ -1,3 +1,5 @@
+require 'charlock_holmes/string'
+
 module GitlabCi
   module Encode
     extend self
