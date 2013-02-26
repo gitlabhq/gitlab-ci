@@ -75,7 +75,7 @@ class Runner
     @output << "\n"
 
     @process = ChildProcess.build(cmd)
-    @tmp_file = Tempfile.new("child-output")
+    @tmp_file = Tempfile.new("child-output", binmode: true)
     @process.io.stdout = @tmp_file
     @process.io.stderr = @tmp_file
     @process.cwd = path
@@ -99,7 +99,9 @@ class Runner
     @process.exit_code == 0
   ensure
     @tmp_file.rewind
-    @output << @tmp_file.read
+    @output << GitlabCi::Encode.encode!(@tmp_file.read)
+    @tmp_file.close
+    @tmp_file.unlink
   end
 
   def prepare_project_cmd(path, ref)
