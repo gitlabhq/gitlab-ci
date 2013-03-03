@@ -84,6 +84,12 @@ class Runner
     @process.environment['BUNDLE_GEMFILE'] = File.join(path, 'Gemfile')
     @process.environment['BUNDLE_BIN_PATH'] = ''
     @process.environment['RUBYOPT'] = ''
+
+    @process.environment['CI_SERVER'] = 'yes'
+    @process.environment['CI_SERVER_NAME'] = 'GitLab CI'
+    @process.environment['CI_SERVER_VERSION'] = GitlabCi::Version
+    @process.environment['CI_SERVER_REVISION'] = GitlabCi::Revision
+
     @process.environment['CI_BUILD_REF'] = build.ref
     
     @process.start
