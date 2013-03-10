@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
 
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
-    @builds = @builds.latest_sha.order('id DESC').page(params[:page]).per(20)
+    @builds = @builds.order('id DESC').page(params[:page]).per(20)
   end
 
   def details
