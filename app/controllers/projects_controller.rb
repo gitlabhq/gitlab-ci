@@ -4,6 +4,7 @@ class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status, :index, :show]
   before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
   before_filter :authenticate_token!, only: [:build]
+  before_filter :no_cache, only: [:status]
 
   def index
     @projects = Project.order('id DESC')
@@ -113,5 +114,11 @@ class ProjectsController < ApplicationController
 
   def project
     @project ||= Project.find(params[:id])
+  end
+
+  def no_cache
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 end
