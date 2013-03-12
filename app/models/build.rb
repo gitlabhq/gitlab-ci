@@ -4,6 +4,8 @@ class Build < ActiveRecord::Base
   attr_accessible :project_id, :ref, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at
 
+  OUTPUT_LENGTH = 100
+
   validates :sha, presence: true
   validates :ref, presence: true
   validates :status, presence: true
@@ -94,6 +96,17 @@ class Build < ActiveRecord::Base
 
   def trace_html
     html = Ansi2html::convert(compose_output) if trace.present?
+
+    if html.present?
+      html = html.split("\n").map do |line|
+        if line.length > OUTPUT_LENGTH
+          line.scan(/.{1,#{OUTPUT_LENGTH}}/).join("\n")
+        else
+          line
+        end
+      end.join("\n")
+    end
+
     html ||= ''
   end
 
