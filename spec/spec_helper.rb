@@ -9,13 +9,6 @@ require 'sidekiq/testing/inline'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-
-test_repo_path = Rails.root.join('tmp', 'test_repo')
-
-unless File.exists?(test_repo_path)
-  `git clone https://github.com/randx/six.git #{test_repo_path}`
-end
-
 RSpec.configure do |config|
   config.include LoginHelpers, type: :request
 

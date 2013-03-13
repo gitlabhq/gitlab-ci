@@ -1,3 +1,5 @@
+require 'fileutils'
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 User.create(
@@ -7,9 +9,32 @@ User.create(
 )
 
 
+if %w(development test).include?(Rails.env)
+  print "Unpacking seed repository..."
+
+  SEED_REPO = 'six.tar.gz'
+  REPO_PATH = Rails.root.join('tmp', 'repositories')
+
+  # Make whatever directories we need to make
+  FileUtils.mkdir_p(REPO_PATH)
+
+  # Copy the archive to the repo path
+  FileUtils.cp(Rails.root.join('spec', SEED_REPO), REPO_PATH)
+
+  # chdir to the repo path
+  FileUtils.cd(REPO_PATH) do
+    # Extract the archive
+    `tar -xf #{SEED_REPO}`
+
+    # Remove the copy
+    FileUtils.rm(SEED_REPO)
+  end
+
+  puts ' done.'
+end
+
 if Rails.env == 'development'
-  `rm -rf #{Rails.root.join('tmp', 'test_repo')}`
-  `cd #{Rails.root.join('tmp')} && git clone https://github.com/randx/six.git test_repo`
+  puts 'Creating projets with builds '
 
   project = FactoryGirl.create :project,
     name: "Six",
