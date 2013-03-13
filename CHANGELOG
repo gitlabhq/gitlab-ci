@@ -1,3 +1,9 @@
+v2.1.0
+  - Removed horizontal scroll for build trace
+  - new status badges
+  - better encode
+  - added several CI_* env variables
+
 v2.0.0
   - Replace resque with sidekiq
   - Run only one build at time per project
