@@ -27,6 +27,28 @@ describe Build do
       build.ci_skip?.should == false
     end
   end
+
+  describe '#trace_html' do
+    context 'splitting' do
+      let(:build) { Build.new(trace: 'trace') }
+
+      it 'returns empty line' do
+        Ansi2html.stub(convert: '')
+        expect(build.trace_html).to eql('')
+      end
+
+      it "returns line less #{Build::OUTPUT_LENGTH} chars" do
+        Ansi2html.stub(convert: 'output')
+        expect(build.trace_html).to eql('output')
+      end
+
+      it "returns splitted line for length more #{Build::OUTPUT_LENGTH} chars" do
+        output = 'a' * (Build::OUTPUT_LENGTH + 10)
+        Ansi2html.stub(convert: output)
+        expect(build.trace_html).to eql("#{'a' * Build::OUTPUT_LENGTH}\n#{'a' * 10}")
+      end
+    end
+  end
 end
 
 
