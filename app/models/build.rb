@@ -10,11 +10,6 @@ class Build < ActiveRecord::Base
 
   scope :latest_sha, where("id IN(SELECT MAX(id) FROM #{self.table_name} group by sha)")
 
-  scope :running, ->() { where(status: "running") }
-  scope :pending, ->() { where(status: "pending") }
-  scope :success, ->() { where(status: "success") }
-  scope :failed,  ->() { where(status: "failed")  }
-
   def self.last_month
     where('created_at > ?', Date.today - 1.month)
   end
@@ -43,12 +38,14 @@ class Build < ActiveRecord::Base
     after_transition any => [:success, :failed, :canceled] do |build, transition|
       build.update_attributes finished_at: Time.now
     end
+  end
 
-    state :pending, value: 'pending'
-    state :running, value: 'running'
-    state :failed, value: 'failed'
-    state :success, value: 'success'
-    state :canceled, value: 'canceled'
+  def self.statuses
+    state_machines[:status].states.map(&:name)
+  end
+
+  statuses.each do |status|
+    scope status, ->() { where(status: status.to_s) }
   end
 
   def compare?
