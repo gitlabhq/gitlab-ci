@@ -85,4 +85,6 @@ group :development, :test do
   gem 'rb-fsevent', require: darwin_only('rb-fsevent')
   gem 'growl',      require: darwin_only('growl')
   gem 'rb-inotify', require: linux_only('rb-inotify')
+
+  gem 'coveralls', require: false
 end

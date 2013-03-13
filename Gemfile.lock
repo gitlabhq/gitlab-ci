@@ -56,7 +56,14 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    colorize (0.5.8)
     connection_pool (1.0.0)
+    coveralls (0.6.2)
+      colorize
+      multi_json (~> 1.3)
+      rest-client
+      simplecov (>= 0.7)
+      thor
     daemons (1.1.9)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
@@ -163,6 +170,8 @@ GEM
     redis (3.0.2)
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
       rspec-expectations (~> 2.11.0)
@@ -196,6 +205,10 @@ GEM
       multi_json (~> 1)
       redis (~> 3)
       redis-namespace
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
     sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -250,6 +263,7 @@ DEPENDENCIES
   charlock_holmes
   childprocess
   coffee-rails (~> 3.2.1)
+  coveralls
   devise
   factory_girl_rails
   ffaker
