@@ -200,7 +200,7 @@ Devise.setup do |config|
   # config.navigational_formats = ["*/*", :html]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
-  config.sign_out_via = :delete
+  config.sign_out_via = :get
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
@@ -215,6 +215,23 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
+  class CustomFailure < Devise::FailureApp
+    def redirect_url
+      user_login_url
+    end
+
+    def respond
+      if http_auth?
+        http_auth
+      else
+        redirect
+      end
+    end
+  end
+  
+  config.warden do |manager|
+    manager.failure_app = CustomFailure
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

@@ -25,8 +25,13 @@ GitlabCi::Application.routes.draw do
   end
 
   devise_for :users
+  devise_scope :user do
+    get '/login'    => 'devise/sessions#new',        as: 'user_login'
+    get '/logout'   => 'devise/sessions#destroy',    as: 'user_logout'
+    get '/forgot'   => 'devise/passwords#new',       as: 'user_forgot_password'
+  end
 
   resources :users
   resource :resque, only: 'show'
-  root :to => 'projects#index'
+  root to: 'projects#index'
 end
