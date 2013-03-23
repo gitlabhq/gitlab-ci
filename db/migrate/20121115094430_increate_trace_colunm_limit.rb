@@ -1,6 +1,10 @@
 class IncreateTraceColunmLimit < ActiveRecord::Migration
   def up
-    change_column :builds, :trace, :text, :limit => 4294967295
+    if ActiveRecord::Base.connection.instance_of?(AtiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+      change_column :builds, :trace, :text
+    else
+      change_column :builds, :trace, :text, :limit => 4294967295
+    end
   end
 
   def down
