@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
-    :default_ref, :gitlab_url, :always_build, :polling_interval, :public
+    :default_ref, :gitlab_url, :always_build, :polling_interval, :public,
+    :ssh_clone_path
 
   has_many :builds, dependent: :destroy
 
@@ -23,6 +24,21 @@ class Project < ActiveRecord::Base
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
+    sanitize_ssh_clone_path
+    clone_repo
+  end
+
+  def sanitize_ssh_clone_path
+    unless ssh_clone_path.nil?
+      self.ssh_clone_path = ssh_clone_path.gsub(/.*?@/, "")
+    end
+  end
+
+  def clone_repo
+    unless repo_present? && ssh_clone_path.nil?
+      git = Grit::Git.new(path)
+      git.clone({:quiet => false, :timeout => false, :progress => false}, ssh_clone_path, path) rescue false
+    end
   end
 
   def repo_present?
@@ -131,6 +147,10 @@ class Project < ActiveRecord::Base
   def no_running_builds?
     # Get running builds not later than 3 days ago to ignore hungs
     builds.running.where("updated_at > ?", 3.days.ago).empty?
+  end
+
+  def saved?
+    id && persisted?
   end
 end
 

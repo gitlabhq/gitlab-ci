@@ -9,8 +9,8 @@ GitlabCi::Application.routes.draw do
 
   # API
   require 'api'
-  Gitlab::API.logger Rails.logger
-  mount Gitlab::API => '/api'
+  GitlabCi::API.logger Rails.logger
+  mount GitlabCi::API => '/api'
 
   resources :projects do
     member do

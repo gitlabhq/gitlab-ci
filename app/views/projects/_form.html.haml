@@ -28,9 +28,14 @@
           = f.label :path
           = f.text_field :path, class: 'input-xlarge', placeholder: '/home/gitlab_ci/projectname'
         .field
+          = f.label :ssh_clone_path, "SSH path used when cloning the repository"
+          = f.text_field :ssh_clone_path, class: 'input-xlarge', placeholder: 'ssh://gitlab/projectname'
+        .field
           = f.label :default_ref, "Follow branches"
           = f.text_field :default_ref, class: 'input-xlarge', placeholder: 'master, stable'
           %small You will be able to filter builds by following branches
+
+
 
       %fieldset
         %legend GitLab
