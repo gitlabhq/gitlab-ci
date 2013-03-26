@@ -19,6 +19,10 @@ gem 'settingslogic'
 
 # Auth
 gem 'devise'
+gem 'omniauth', "~> 1.1.3"
+
+# LDAP Auth
+gem 'gitlab_omniauth-ldap', '1.0.2', require: "omniauth-ldap"
 
 # Web server
 gem 'thin'
