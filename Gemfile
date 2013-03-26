@@ -92,3 +92,10 @@ group :development, :test do
 
   gem 'coveralls', require: false
 end
+
+# API
+gem "grape", "~> 0.3.1"
+gem "grape-entity", "~> 0.2.0"
+
+# Git clone
+gem "gitlab-grit", '~> 1.0.0', require: 'grit'

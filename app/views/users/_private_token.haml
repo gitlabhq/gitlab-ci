@@ -1,0 +1,14 @@
+%h3
+  Private token
+%br
+Private token used to access application resources without authentication.
+%hr
+= form_for(current_user, :url => reset_private_token_user_path, :html => { :method => :put, class: 'form-horizontal' }) do |f|
+  - if current_user.private_token
+    .control-group
+      .controls
+        = text_field_tag "token", current_user.private_token
+    .form-actions
+    = f.submit "Reset", confirm: "Are you sure?", class: 'btn btn-primary'
+  - else
+    = f.submit "Generate", confirm: "Are you sure?", class: 'btn btn-primary'

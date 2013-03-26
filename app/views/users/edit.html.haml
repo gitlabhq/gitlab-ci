@@ -23,3 +23,4 @@
   .form-actions
     = f.submit "Update", class: 'btn btn-primary'
     = link_to "Remove my account", current_user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-small right'
+= render partial: 'users/private_token'
