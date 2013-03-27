@@ -13,6 +13,7 @@ services:
   - mysql
   - postgresql
 before_script:
+  - "cp config/gitlab-ci.yml.example config/gitlab-ci.yml"
   - "cp config/database.yml.$DB config/database.yml"
   - "bundle exec rake db:create"
   - "bundle exec rake db:setup"
