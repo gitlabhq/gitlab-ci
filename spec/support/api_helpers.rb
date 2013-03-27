@@ -8,13 +8,13 @@ module ApiHelpers
   # Examples
   #
   #   >> api('/issues')
-  #   => "/api/v2/issues"
+  #   => "/api/v1/issues"
   #
   #   >> api('/issues', User.last)
-  #   => "/api/v2/issues?private_token=..."
+  #   => "/api/v1/issues?private_token=..."
   #
   #   >> api('/issues?foo=bar', User.last)
-  #   => "/api/v2/issues?foo=bar&private_token=..."
+  #   => "/api/v1/issues?foo=bar&private_token=..."
   #
   # Returns the relative path to the requested API resource
   def api(path, user = nil)

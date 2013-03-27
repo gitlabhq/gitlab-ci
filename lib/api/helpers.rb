@@ -20,6 +20,10 @@ module GitlabCi
       end
     end
 
+    def authenticate!
+      unauthorized! unless current_user
+    end    
+
     # Checks the occurrences of required attributes, each attribute must be present in the params hash
     # or a Bad Request error is invoked.
     #

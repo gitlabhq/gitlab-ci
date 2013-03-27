@@ -5,8 +5,7 @@ module GitlabCi
 
     resource :projects do
       get do
-        @projects = Project.order('id DESC')
-        @projects = paginate @projects.public
+        @projects = paginate Project.order("id DESC")
         present @projects, with: Entities::Project
       end
 
@@ -15,7 +14,7 @@ module GitlabCi
       end
 
       post do
-        required_attributes! [:name, :path, :scripts, :timeout, :default_ref, :gitlab_url]
+        required_attributes! [:name, :path, :scripts, :timeout, :default_ref]
         attrs = attributes_for_keys [:name,
                                     :path,
                                     :scripts,
@@ -27,7 +26,6 @@ module GitlabCi
         if @project.saved?
           present @project, with: Entities::Project
         else
-	  raise @project.errors.full_messages.join("\n")
           not_found!
         end
       end

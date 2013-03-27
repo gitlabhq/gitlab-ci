@@ -84,6 +84,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem "ffaker"
 
+  gem "database_cleaner"
   gem 'shoulda-matchers'
   gem 'guard-rspec'
   gem 'rb-fsevent', require: darwin_only('rb-fsevent')
