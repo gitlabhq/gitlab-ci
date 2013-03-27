@@ -24,7 +24,7 @@ GitlabCi::Application.routes.draw do
     end
   end
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: :omniauth_callbacks }
 
   resources :users
   resource :resque, only: 'show'

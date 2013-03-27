@@ -1,0 +1,17 @@
+%h3 Sign in
+%hr
+= form_tag(user_omniauth_callback_path(:ldap), html: { class: 'form-horizontal'}) do
+  %div.control-group
+    = label :username, "LDAP Login"
+    .controls= text_field_tag :username, nil, { :placeholder => "LDAP Login", :autofocus => "autofocus"}
+  %div.control-group
+    = label :password, "Password"
+    .controls= password_field_tag :password, nil, { :placeholder => "Password"}
+  - if devise_mapping.rememberable?
+    %div.control-group
+      = label :remember_me, "Remember me"
+      .controls= check_box_tag :remember_me
+  .form-actions
+    = submit_tag "LDAP Sign in", class: 'btn btn-primary'
+    &nbsp;
+    = render "devise/shared/links"

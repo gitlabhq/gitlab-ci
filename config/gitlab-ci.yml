@@ -1,0 +1,71 @@
+# # # # # # # # # # # # # # # # # # # 
+# GitLab Ci application config file #
+# # # # # # # # # # # # # # # # # # #
+#
+# How to use:
+# 1. copy file as gitlabci.yml
+# 2. Replace gitlab-ci -> host with your domain
+# 3. Replace gitlab-ci -> email_from
+
+production: &base
+  #
+  # 1. GitLab app settings
+  # ==========================
+
+  ## GitLab settings
+  gitlabci:
+    # Uncomment and customize if you can't use the default user to run GitLab (default: 'git')
+    # user: git
+
+  #
+  # 2. Auth settings
+  # ==========================
+
+  ## LDAP settings
+  ldap:
+    enabled: true
+    host: '10.205.18.85'
+    base: dc=ITSERVICES, dc=LAN
+    port: 389
+    uid: 'sAMAccountName'
+    method: 'plain' # "ssl" or "plain"
+    bind_dn: 'Teleright Ad Check (Menno Heijerman)'
+    password: 'security'
+
+  ## OmniAuth settings
+  omniauth:
+    # Allow login via Twitter, Google, etc. using OmniAuth providers
+    enabled: false
+
+    # CAUTION!
+    # This allows users to login without having a user account first (default: false).
+    # User accounts will be created automatically when authentication was successful.
+    allow_single_sign_on: false
+    # Locks down those users until they have been cleared by the admin (default: true).
+    block_auto_created_users: true
+
+    ## Auth providers
+    # Uncomment the following lines and fill in the data of the auth provider you want to use
+    # If your favorite auth provider is not listed you can use others:
+    # see https://github.com/gitlabhq/gitlabhq/wiki/Using-Custom-Omniauth-Providers
+    # The 'app_id' and 'app_secret' parameters are always passed as the first two
+    # arguments, followed by optional 'args' which can be either a hash or an array.
+    providers:
+      # - { name: 'google_oauth2', app_id: 'YOUR APP ID',
+      #     app_secret: 'YOUR APP SECRET',
+      #     args: { access_type: 'offline', approval_prompt: '' } }
+      # - { name: 'twitter', app_id: 'YOUR APP ID',
+      #     app_secret: 'YOUR APP SECRET'}
+      # - { name: 'github', app_id: 'YOUR APP ID',
+      #     app_secret: 'YOUR APP SECRET' }
+
+development:
+  <<: *base
+
+test:
+  <<: *base
+  ldap:
+    enabled: false
+
+staging:
+  <<: *base
