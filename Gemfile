@@ -19,6 +19,10 @@ gem 'settingslogic'
 
 # Auth
 gem 'devise'
+gem 'omniauth', "~> 1.1.3"
+
+# LDAP Auth
+gem 'gitlab_omniauth-ldap', '1.0.2', require: "omniauth-ldap"
 
 # Web server
 gem 'thin'
@@ -80,6 +84,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem "ffaker"
 
+  gem "database_cleaner"
   gem 'shoulda-matchers'
   gem 'guard-rspec'
   gem 'rb-fsevent', require: darwin_only('rb-fsevent')
@@ -88,3 +93,10 @@ group :development, :test do
 
   gem 'coveralls', require: false
 end
+
+# API
+gem "grape", "~> 0.3.1"
+gem "grape-entity", "~> 0.2.0"
+
+# Git clone
+gem "gitlab-grit", '~> 1.0.0', require: 'grit'

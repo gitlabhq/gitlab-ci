@@ -7,6 +7,11 @@ GitlabCi::Application.routes.draw do
     mount Sidekiq::Web, at: "/ext/sidekiq", as: :ext_resque
   end
 
+  # API
+  require 'api'
+  GitlabCi::API.logger Rails.logger
+  mount GitlabCi::API => '/api'
+
   resources :projects do
     member do
       get :run
@@ -24,9 +29,13 @@ GitlabCi::Application.routes.draw do
     end
   end
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: :omniauth_callbacks }
 
-  resources :users
+  resources :users do
+    member do
+      put :reset_private_token
+    end
+  end
   resource :resque, only: 'show'
   root :to => 'projects#index'
 end
