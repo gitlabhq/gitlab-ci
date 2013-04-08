@@ -2,7 +2,7 @@
 
 # GITLAB CI
 # Maintainer: @randx
-# App Version: 2.0
+# App Version: 2.2
 
 ### BEGIN INIT INFO
 # Provides:          gitlab-ci
@@ -16,18 +16,18 @@
 
 
 APP_ROOT="/home/gitlab_ci/gitlab-ci"
-DAEMON_OPTS="-c $APP_ROOT/config/unicorn.rb -E production"
+DAEMON_OPTS="-C $APP_ROOT/config/puma.rb -e production"
 PID_PATH="$APP_ROOT/tmp/pids"
-UNICORN_PID="$PID_PATH/unicorn.pid"
+WEB_SERVER_PID="$PID_PATH/puma.pid"
 SIDEKIQ_PID="$PID_PATH/sidekiq.pid"
 STOP_SIDEKIQ="RAILS_ENV=production bundle exec rake sidekiq:stop"
 START_SIDEKIQ="RAILS_ENV=production bundle exec rake sidekiq:start"
-NAME="unicorn"
+NAME="GitLab CI"
 DESC="Gitlab CI service"
 
 check_pid(){
-  if [ -f $UNICORN_PID ]; then
-    PID=`cat $UNICORN_PID`
+  if [ -f $WEB_SERVER_PID ]; then
+    PID=`cat $WEB_SERVER_PID`
     SPID=`cat $SIDEKIQ_PID`
     STATUS=`ps aux | grep $PID | grep -v grep | wc -l`
   else
@@ -41,11 +41,11 @@ start() {
   check_pid
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     # Program is running, exit with error code 1.
-    echo "Error! $DESC $NAME is currently running!"
+    echo "Error! $DESC is currently running!"
     exit 1
   else
     if [ `whoami` = root ]; then
-      sudo -u gitlab_ci -H bash -l -c "nohup bundle exec unicorn_rails $DAEMON_OPTS  > /dev/null  2>&1 &"
+      sudo -u gitlab_ci -H bash -l -c "RAILS_ENV=production bundle exec puma $DAEMON_OPTS"
       sudo -u gitlab_ci -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
       echo "$DESC started"
     fi
@@ -57,9 +57,9 @@ stop() {
   check_pid
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     ## Program is running, stop it.
-    kill -QUIT `cat $UNICORN_PID`
+    kill -QUIT `cat $WEB_SERVER_PID`
     sudo -u gitlab_ci -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1 &"
-    rm "$UNICORN_PID" >> /dev/null
+    rm "$WEB_SERVER_PID" >> /dev/null
     echo "$DESC stopped"
   else
     ## Program is not running, exit with error.
@@ -73,7 +73,7 @@ restart() {
   check_pid
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     echo "Restarting $DESC..."
-    kill -USR2 `cat $UNICORN_PID`
+    kill -USR2 `cat $WEB_SERVER_PID`
     sudo -u gitlab_ci -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1 &"
     if [ `whoami` = root ]; then
       sudo -u gitlab_ci -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
