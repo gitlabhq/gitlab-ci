@@ -29,7 +29,7 @@ gem 'haml-rails'
 # Background jobs
 gem 'slim'
 gem 'sinatra', :require => nil
-gem 'sidekiq', '2.6.4'
+gem 'sidekiq'
 
 # Scheduled
 gem 'whenever', require: false
