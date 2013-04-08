@@ -103,6 +103,12 @@ class Runner
     end
 
     @process.exit_code == 0
+
+  rescue => e
+    # return false if any exception occurs
+    @output << e.message
+    false
+
   ensure
     @tmp_file.rewind
     @output << GitlabCi::Encode.encode!(@tmp_file.read)
