@@ -1,5 +1,5 @@
 @import "bootstrap";
-
+@import "font-awesome";
 
 $style_color: #5bc;
 
@@ -25,7 +25,7 @@ a {
 .navbar-ci {
   .navbar-inner {
     padding: 4px;
-    background: $style_color;
+    background: #2AB;
 
     .brand,
     .nav > li > a {

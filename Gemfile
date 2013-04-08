@@ -63,6 +63,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem "therubyracer"
   gem 'bootstrap-sass'
+  gem "font-awesome-sass-rails", "~> 3.0.0"
 end
 
 
