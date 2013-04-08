@@ -15,7 +15,7 @@ require 'sidekiq/testing/inline'
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
-  config.include LoginHelpers, type: :request
+  config.include LoginHelpers, type: :feature
 
   # ## Mock Framework
   #
