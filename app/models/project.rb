@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
 
   def repo_present?
     repo
-  rescue Grit::NoSuchPathError, Grit::InvalidGitRepositoryError
+  rescue
     errors.add(:path, 'Project path is not a git repository')
     false
   end
@@ -109,11 +109,21 @@ class Project < ActiveRecord::Base
   end
 
   def repo
-    @repo ||= Grit::Repo.new(path)
+    @repo ||= Rugged::Repository.new(path)
   end
 
   def last_commit(ref = 'master')
-    repo.commits(ref, 1).first
+    branch = find_branch_by_name(ref)
+
+    if branch
+      repo.lookup(branch.target)
+    else
+      repo.lookup(ref)
+    end
+  end
+
+  def find_branch_by_name(name)
+    repo.branches.find { |branch| branch.name == name }
   end
 
   def tracked_refs
@@ -149,23 +159,3 @@ end
 #  token       :string(255)
 #  default_ref :string(255)
 #
-
-# == Schema Information
-#
-# Table name: projects
-#
-#  id               :integer(4)      not null, primary key
-#  name             :string(255)     not null
-#  path             :string(255)     not null
-#  timeout          :integer(4)      default(1800), not null
-#  scripts          :text            default(""), not null
-#  created_at       :datetime        not null
-#  updated_at       :datetime        not null
-#  token            :string(255)
-#  default_ref      :string(255)
-#  gitlab_url       :string(255)
-#  always_build     :boolean(1)      default(FALSE), not null
-#  polling_interval :integer(4)
-#  public           :boolean(1)      default(FALSE), not null
-#
-

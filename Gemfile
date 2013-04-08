@@ -38,7 +38,7 @@ gem 'whenever', require: false
 gem 'stamp'
 
 # Git support
-gem 'grit'
+gem 'rugged', '~> 0.17.0.b7'
 
 # Pagination
 gem 'kaminari'

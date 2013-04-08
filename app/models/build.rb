@@ -64,7 +64,7 @@ class Build < ActiveRecord::Base
   end
 
   def git_author_name
-    commit.author.name
+    commit.author[:name]
   rescue
     nil
   end
