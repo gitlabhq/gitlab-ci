@@ -38,7 +38,7 @@ gem 'whenever', require: false
 gem 'stamp'
 
 # Git support
-gem 'grit'
+gem 'gitlab-grit', require: 'grit'
 
 # Pagination
 gem 'kaminari'
