@@ -15,10 +15,12 @@ class Runner
 
     return true if @build.canceled?
 
-    if @project.no_running_builds?
-      run
-    else
-      run_later
+    run_in_transaction ? run : run_later
+  end
+
+  def run_in_transaction
+    ActiveRecord::Base.transaction do
+      build.run! if project.no_running_builds?
     end
   end
 
@@ -36,8 +38,6 @@ class Runner
     commands = project.scripts
     commands = commands.lines.to_a
     commands.unshift(prepare_project_cmd(path, build.sha))
-
-    build.run!
 
     Dir.chdir(path) do
       commands.each do |line|
@@ -91,7 +91,7 @@ class Runner
     @process.environment['CI_SERVER_REVISION'] = GitlabCi::Revision
 
     @process.environment['CI_BUILD_REF'] = build.ref
-    
+
     @process.start
 
     build.set_file @tmp_file.path
