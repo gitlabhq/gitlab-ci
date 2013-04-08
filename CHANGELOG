@@ -1,3 +1,10 @@
+v2.2.0
+  - replaced unicorn with puma
+  - replaced grit with rugged
+  - Runner.rb more transactional safe now (see https://github.com/gitlabhq/gitlab-ci/pull/142)
+  - updated rails to 3.2.13
+  - updated devise to 2.2
+ 
 v2.1.0
   - Removed horizontal scroll for build trace
   - new status badges
