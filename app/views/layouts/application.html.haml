@@ -20,20 +20,26 @@
                 = link_to 'Users', users_path
               %li
                 = link_to 'Background Jobs', resque_path
+          %ul.nav.pull-right
+            - if current_user
               %li
                 = link_to edit_user_path(current_user) do
-                  %i.icon-user.icon-white
-                  = current_user.email
+                  .profile-holder
+                    = image_tag gravatar_icon(current_user.email, 24)
+                    %span= current_user.email
               %li
-                = link_to 'Logout', destroy_user_session_path, class: "logout", method: :delete
+                = link_to destroy_user_session_path, class: "logout", method: :delete do
+                  %i.icon-signout
+                  Logout
             - else
               %li
                 = link_to 'Login', new_user_session_path
     .container-fluid
-      - if alert || notice
-        %small
-          = alert || notice
-          %hr
+      - if alert
+        .alert= alert
+      - if notice
+        .alert.alert-info= notice
+
       = yield
     .right
       .padded
