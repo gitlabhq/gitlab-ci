@@ -40,11 +40,11 @@ if Rails.env == 'development'
     name: "Six",
     scripts: 'bundle exec rspec spec'
 
-  project.repo.commits('master', 20).each_with_index do |commit, index|
+  project.repo.walk('1c8a9df45').first(10).each_with_index do |commit, index|
     build = project.register_build(
       ref: 'master',
-      before: commit.parents.first.id,
-      after: commit.id
+      before: commit.parents.first.oid,
+      after: commit.oid
     )
 
     Runner.perform_in(index.minutes, build.id)

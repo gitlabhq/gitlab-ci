@@ -53,7 +53,7 @@ gem 'charlock_holmes'
 gem 'rake'
 gem 'foreman'
 gem 'jquery-rails'
-gem 'childprocess'
+gem 'childprocess', '0.3.6'
 gem 'gitlab_ci_meta'
 
 group :assets do
