@@ -6,6 +6,9 @@
     = link_to project_build_path(@project, build) do
       %strong #{build.short_sha}
 
+  %td.build-message
+    %span= truncate(build.git_commit_message, length: 50)
+
   %td.build-branch
     - unless @ref
       %span= build.ref

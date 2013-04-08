@@ -21,6 +21,7 @@ describe "Projects" do
     end
 
     it { page.should have_content @project.name }
+    it { page.should have_content 'All builds' }
   end
 end
 
