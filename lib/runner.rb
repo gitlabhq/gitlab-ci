@@ -39,17 +39,15 @@ class Runner
     commands = commands.lines.to_a
     commands.unshift(prepare_project_cmd(path, build.sha))
 
-    Dir.chdir(path) do
-      commands.each do |line|
-        status = command(line, path)
-        build.write_trace(@output)
+    commands.each do |line|
+      status = command(line, path)
+      build.write_trace(@output)
 
-        return if build.canceled?
+      return if build.canceled?
 
-        unless status
-          build.drop!
-          return
-        end
+      unless status
+        build.drop!
+        return
       end
     end
 

@@ -7,7 +7,7 @@
     %ul.unstyled
       - @users.each do |user|
         %li
-          %i.icon-user
+          = image_tag gravatar_icon(user.email, 24)
           = user.email
           = link_to 'Remove', user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-small right'
           %hr
