@@ -31,7 +31,16 @@
 - if @ref
   %p
     Paste build status image for #{@ref} with next link
-    %a.btn.btn-small{href: status_project_path(@project, ref: @ref)} Status Badge
+    = link_to '#', class: 'badge-codes-toggle btn btn-small ' do
+      Status Badge
+    .badge-codes-block.well.well-small.hide
+      %label Markdown:
+      = text_field_tag 'badge_md', markdown_badge_code(@project, @ref), readonly: true, class: 'input-xxlarge'
+      %label Html:
+      = text_field_tag 'badge_html', html_badge_code(@project, @ref), readonly: true, class: 'input-xxlarge'
+
+
+
   - if current_user
     %p
       You can manually run a build for current branch.
