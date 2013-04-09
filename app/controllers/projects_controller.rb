@@ -90,6 +90,8 @@ class ProjectsController < ApplicationController
    else
      head 500
    end
+  rescue
+    head 500
   end
 
   # Project status badge
