@@ -1,6 +1,3 @@
-require 'open3'
-require 'timeout'
-
 class Runner
   include Sidekiq::Worker
 
@@ -52,13 +49,6 @@ class Runner
     end
 
     build.success!
-  rescue Errno::ENOENT => ex
-
-    @output << "INVALID PROJECT PATH"
-    build.drop!
-  rescue Timeout::Error
-    @output << "TIMEOUT"
-    build.drop!
   ensure
     build.write_trace(@output)
   end
@@ -97,7 +87,9 @@ class Runner
     begin
       @process.poll_for_exit(project.timeout)
     rescue ChildProcess::TimeoutError
+      @output << "TIMEOUT"
       @process.stop # tries increasingly harsher methods to kill the process.
+      return false
     end
 
     @process.exit_code == 0
