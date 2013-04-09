@@ -4,6 +4,9 @@ v2.2.0
   - Runner.rb more transactional safe now (see https://github.com/gitlabhq/gitlab-ci/pull/142)
   - updated rails to 3.2.13
   - updated devise to 2.2
+  - fixed issue when build left in running status if exception triggered
+  - rescue timeout correctly
+  - badge helper with markdown & html
  
 v2.1.0
   - Removed horizontal scroll for build trace
