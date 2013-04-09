@@ -5,8 +5,9 @@ v2.2.0
   - updated rails to 3.2.13
   - updated devise to 2.2
   - fixed issue when build left in running status if exception triggered
-  - rescue timeout correctly
+  - rescue build timeout correctly
   - badge helper with markdown & html
+  - increased test coverage to 85%
  
 v2.1.0
   - Removed horizontal scroll for build trace
