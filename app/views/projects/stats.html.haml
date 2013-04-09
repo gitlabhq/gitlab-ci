@@ -24,7 +24,7 @@
       %p
         Commits covered:
         %strong
-          = @project.builds.last_month.latest_sha.count
+          = @project.builds.last_month.uniq_sha.count
 
   .span6
     %fieldset
@@ -47,5 +47,5 @@
       %p
         Commits covered:
         %strong
-          = @project.builds.latest_sha.count
+          = @project.builds.uniq_sha.count
 

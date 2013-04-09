@@ -81,7 +81,7 @@ class Project < ActiveRecord::Base
   end
 
   def status_image ref = 'master'
-    build = self.builds.where(ref: ref).latest_sha.last
+    build = self.builds.where(ref: ref).last
     image_for_build build
   end
 
