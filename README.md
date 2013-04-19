@@ -21,3 +21,7 @@ __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
 ### Installation
 
 * [Installation and setup guide](https://github.com/gitlabhq/gitlab-ci/blob/master/doc/installation.md)
+
+### Getting help
+
+* [Feedback and suggestions forum](http://feedback.gitlab.com/forums/176466-general/category/64310-gitlab-ci) is the place to propose and discuss new features for GitLab CI.
