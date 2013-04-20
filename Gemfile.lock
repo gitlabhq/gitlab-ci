@@ -180,7 +180,7 @@ GEM
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
     rubyzip (0.9.9)
-    rugged (0.17.0.b7)
+    rugged (0.18.0.gh.de28323)
     sass (3.2.7)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -274,7 +274,7 @@ DEPENDENCIES
   rb-fsevent
   rb-inotify
   rspec-rails
-  rugged (~> 0.17.0.b7)
+  rugged (~> 0.18.0.b1)
   sass-rails (~> 3.2.3)
   settingslogic
   shoulda-matchers
