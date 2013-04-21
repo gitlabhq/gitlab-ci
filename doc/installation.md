@@ -60,7 +60,7 @@ Create a user for GitLab:
     template1=# \q
 
     # Try connecting to the new database with the new user
-    sudo -u gitlab_ci -H psql -d gitlab_ci
+    sudo -u gitlab_ci -H psql -d gitlab_ci_production
 
 ## 4. Get code 
 
