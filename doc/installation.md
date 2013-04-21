@@ -10,21 +10,24 @@ Create a user for GitLab:
     sudo apt-get update
     sudo apt-get upgrade
 
-    sudo apt-get install -y wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev libicu-dev
+    sudo apt-get install -y wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev libicu-dev libsqlite3-dev sqlite3 bison
     sudo apt-get install redis-server 
 
 ## 2. Install Ruby (RVM) for gitlab_ci
 
     sudo su gitlab_ci
 
-    \curl -L https://get.rvm.io | bash -s stable --ruby
+    curl -L https://get.rvm.io | bash -s stable --ruby
 
     # Add next line to ~/.bashrc
     echo "source /home/gitlab_ci/.rvm/scripts/rvm" >> ~/.bashrc
 
 
-## 3. Prepare MySQL
+## 3. Prepare Database
 
+### MySQL
+
+    # Install the database packages
     sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
 
     # Login to MySQL
@@ -39,6 +42,26 @@ Create a user for GitLab:
     # Grant proper permissions to the MySQL User
     mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
 
+### PostgreSQL
+
+    # Install the database packages
+    sudo apt-get install -y postgresql-9.1 libpq-dev
+
+    # Login to PostgreSQL
+    $ sudo -u postgres psql -d template1
+
+    # Create a user for GitLab. (change $password to a real password)
+    template1=# CREATE USER gitlab_ci WITH PASSWORD '$password';
+
+    # Create the GitLab CI production database & grant all privileges on database
+    template1=# CREATE DATABASE gitlab_ci_production OWNER gitlab_ci;
+
+    # Quit the database session
+    template1=# \q
+
+    # Try connecting to the new database with the new user
+    sudo -u gitlab_ci -H psql -d gitlab_ci
+
 ## 4. Get code 
 
     cd /home/gitlab_ci/
@@ -48,7 +71,7 @@ Create a user for GitLab:
     cd gitlab-ci
 
     # Checkout preferable version
-    sudo -u gitlab_ci -H  git checkout 2-0-stable
+    sudo -u gitlab_ci -H  git checkout 2-2-stable
 
 ## 5. Setup application
 
@@ -60,23 +83,33 @@ Create a user for GitLab:
     # Create a tmp directory inside application
     #
     mkdir -p tmp/pids
+    mkdir tmp/sockets
 
     # Install dependencies
     #
     gem install bundler
-    bundle --without development test
+    
+    # For MySQL
+    bundle --without development test postgres
+    
+    # For PostgreSQL
+    bundle --without development test mysql
 
-    # Copy mysql db config
+    # Copy database config
     #
     # make sure to update username/password in config/database.yml
     #
+    # For MySQL
     cp config/database.yml.mysql config/database.yml
+
+    # PostgreSQL
+    cp config/database.yml.postgresql config/database.yml
 
     # Setup DB
     #
     bundle exec rake db:setup RAILS_ENV=production
 
-    # Setup scedules 
+    # Setup schedules 
     #
     bundle exec whenever -w RAILS_ENV=production
    
