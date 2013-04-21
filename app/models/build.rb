@@ -69,7 +69,7 @@ class Build < ActiveRecord::Base
   end
 
   def git_commit_message
-    commit.message
+    GitlabCi::Encode.encode!(commit.message)
   rescue
     nil
   end
