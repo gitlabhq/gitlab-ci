@@ -1,4 +1,4 @@
-# Setup: 
+# Setup:
 
 Create a user for GitLab:
 
@@ -82,16 +82,15 @@ Create a user for GitLab:
 
     # Create a tmp directory inside application
     #
-    mkdir -p tmp/pids
-    mkdir tmp/sockets
+    mkdir -p tmp/pids tmp/sockets
 
     # Install dependencies
     #
     gem install bundler
-    
+
     # For MySQL
     bundle --without development test postgres
-    
+
     # For PostgreSQL
     bundle --without development test mysql
 
@@ -109,10 +108,10 @@ Create a user for GitLab:
     #
     bundle exec rake db:setup RAILS_ENV=production
 
-    # Setup schedules 
+    # Setup schedules
     #
     bundle exec whenever -w RAILS_ENV=production
-   
+
     # Now exit from gitlab_ci user
     exit
 
@@ -121,7 +120,7 @@ Create a user for GitLab:
 
 Download the init script (will be /etc/init.d/gitlab_ci):
 
-    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/master/lib/support/init.d/gitlab_ci -P /etc/init.d/
+    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/2-2-stable/lib/support/init.d/gitlab_ci -P /etc/init.d/
     sudo chmod +x /etc/init.d/gitlab_ci
 
 Make GitLab start on boot:
@@ -146,7 +145,7 @@ Start your GitLab instance:
 
 Download an example site config:
 
-    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/master/lib/support/nginx/gitlab_ci -P /etc/nginx/sites-available/
+    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/2-2-stable/lib/support/nginx/gitlab_ci -P /etc/nginx/sites-available/
     sudo ln -s /etc/nginx/sites-available/gitlab_ci /etc/nginx/sites-enabled/gitlab_ci
 
 Make sure to edit the config file to match your setup:
