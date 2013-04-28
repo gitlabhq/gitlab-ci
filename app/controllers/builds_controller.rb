@@ -1,5 +1,5 @@
 class BuildsController < ApplicationController
-  before_filter :authenticate_user!, except: [:status]
+  before_filter :authenticate_user!, except: [:status, :show]
   before_filter :project
   before_filter :authenticate_token!, only: [:build]
 

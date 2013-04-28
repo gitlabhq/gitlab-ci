@@ -1,10 +1,11 @@
 %h3
   Project: #{@project.name}
-  .right
-    %a.btn.btn-small{href: run_project_path(@project, ref: @build.ref)}  Run
-    %a.btn.btn-small{href: edit_project_path(@project)}
-      %i.icon-edit.icon-white
-      Edit Project
+  - if current_user
+    .right
+      %a.btn.btn-small{href: run_project_path(@project, ref: @build.ref)}  Run
+      %a.btn.btn-small{href: edit_project_path(@project)}
+        %i.icon-edit.icon-white
+        Edit Project
 
 %p
   = link_to project_path(@project) do
@@ -26,9 +27,10 @@
         %fieldset
           %legend
             Build
-            - if @build.active?
-              .right
-                = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
+            - if current_user
+              - if @build.active?
+                .right
+                  = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
           %p
             %b Status:
             #{@build.status}
@@ -87,11 +89,12 @@
 
       = paginate @builds
 %br
-.right
-  %a.btn.btn-small{href: run_project_path(@project, ref: @build.ref)}  Run
-  %a.btn.btn-small{href: edit_project_path(@project)}
-    %i.icon-edit.icon-white
-    Edit Project
+- if current_user
+  .right
+    %a.btn.btn-small{href: run_project_path(@project, ref: @build.ref)}  Run
+    %a.btn.btn-small{href: edit_project_path(@project)}
+      %i.icon-edit.icon-white
+      Edit Project
 
 
 - if @build.active?
