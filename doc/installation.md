@@ -48,7 +48,7 @@ Create a user for GitLab:
     cd gitlab-ci
 
     # Checkout preferable version
-    sudo -u gitlab_ci -H  git checkout 2-0-stable
+    sudo -u gitlab_ci -H  git checkout 2-2-stable
 
 ## 5. Setup application
 
