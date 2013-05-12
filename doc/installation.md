@@ -16,6 +16,7 @@ Create a user for GitLab:
 ## 2. Install Ruby (RVM) for gitlab_ci
 
     sudo su gitlab_ci
+    cd /home/gitlab_ci/
 
     \curl -L https://get.rvm.io | bash -s stable --ruby
 
@@ -48,7 +49,7 @@ Create a user for GitLab:
     cd gitlab-ci
 
     # Checkout preferable version
-    sudo -u gitlab_ci -H  git checkout 2-0-stable
+    sudo -u gitlab_ci -H  git checkout 2-2-stable
 
 ## 5. Setup application
 
@@ -60,6 +61,7 @@ Create a user for GitLab:
     # Create a tmp directory inside application
     #
     mkdir -p tmp/pids
+    mkdir tmp/sockets
 
     # Install dependencies
     #
