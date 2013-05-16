@@ -4,6 +4,9 @@ class BuildsController < ApplicationController
   before_filter :authenticate_token!, only: [:build]
 
   def show
+    unless @project.public || current_user
+      authenticate_user! and return
+    end
     @builds = builds
 
     @build = if params[:bid]
