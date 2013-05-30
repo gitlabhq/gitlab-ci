@@ -46,7 +46,5 @@ if Rails.env == 'development'
       before: commit.parents.first.oid,
       after: commit.oid
     )
-
-    Runner.perform_in(index.minutes, build.id)
   end
 end
