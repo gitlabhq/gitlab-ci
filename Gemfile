@@ -49,11 +49,14 @@ gem 'state_machine'
 # Encoding detection
 gem 'charlock_holmes'
 
+# API
+gem 'grape'
+gem 'grape-entity'
+
 # Other
 gem 'rake'
 gem 'foreman'
 gem 'jquery-rails'
-gem 'childprocess', '0.3.6'
 gem 'gitlab_ci_meta'
 
 group :assets do

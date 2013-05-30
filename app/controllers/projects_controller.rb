@@ -1,5 +1,3 @@
-require 'runner'
-
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status, :index, :show]
   before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
@@ -64,7 +62,6 @@ class ProjectsController < ApplicationController
     @build = @project.register_build(ref: params[:ref])
 
     if @build and @build.id
-      Runner.perform_async(@build.id) unless @build.ci_skip?
       redirect_to project_build_path(@project, @build)
     else
       redirect_to project_path(@project), notice: 'Branch is not defined for this project'
@@ -85,7 +82,6 @@ class ProjectsController < ApplicationController
    @build = @project.register_build(build_params)
 
    if @build
-     Runner.perform_async(@build.id)
      head 200
    else
      head 500

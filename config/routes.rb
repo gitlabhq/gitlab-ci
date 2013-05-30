@@ -7,6 +7,10 @@ GitlabCi::Application.routes.draw do
     mount Sidekiq::Web, at: "/ext/sidekiq", as: :ext_resque
   end
 
+  # API
+  API::API.logger Rails.logger
+  mount API::API => '/api'
+
   resources :projects do
     member do
       get :run

@@ -31,6 +31,7 @@ GEM
     annotate (2.5.0)
       rake
     arel (3.0.2)
+    backports (2.6.7)
     bcrypt-ruby (3.0.1)
     bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
@@ -65,6 +66,7 @@ GEM
       rest-client
       simplecov (>= 0.7)
       thor
+    descendants_tracker (0.0.1)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -88,6 +90,19 @@ GEM
     foreman (0.62.0)
       thor (>= 0.13.6)
     gitlab_ci_meta (1.0)
+    grape (0.4.1)
+      activesupport
+      builder
+      hashie (>= 1.2.0)
+      multi_json (>= 1.3.2)
+      multi_xml (>= 0.5.2)
+      rack (>= 1.3.0)
+      rack-accept
+      rack-mount
+      virtus
+    grape-entity (0.3.0)
+      activesupport
+      multi_json (>= 1.3.2)
     growl (1.0.3)
     guard (1.3.2)
       listen (>= 0.4.2)
@@ -100,6 +115,7 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (~> 3.1)
       railties (>= 3.1, < 4.1)
+    hashie (2.0.5)
     hike (1.2.2)
     i18n (0.6.1)
     journey (1.0.4)
@@ -119,6 +135,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.22)
     multi_json (1.7.2)
+    multi_xml (0.5.3)
     mysql2 (0.3.11)
     nokogiri (1.5.9)
     orm_adapter (0.4.0)
@@ -133,8 +150,12 @@ GEM
     quiet_assets (1.0.1)
       railties (~> 3.1)
     rack (1.4.5)
+    rack-accept (0.4.5)
+      rack (>= 0.4)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-mount (0.8.3)
+      rack (>= 1.0.0)
     rack-protection (1.2.0)
       rack
     rack-ssl (1.3.3)
@@ -233,6 +254,9 @@ GEM
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    virtus (0.5.4)
+      backports (~> 2.6.1)
+      descendants_tracker (~> 0.0.1)
     warden (1.2.1)
       rack (>= 1.0)
     websocket (1.0.7)
@@ -250,7 +274,6 @@ DEPENDENCIES
   bootstrap-sass
   capybara
   charlock_holmes
-  childprocess (= 0.3.6)
   coffee-rails (~> 3.2.1)
   coveralls
   devise
@@ -259,6 +282,8 @@ DEPENDENCIES
   font-awesome-sass-rails (~> 3.0.0)
   foreman
   gitlab_ci_meta
+  grape
+  grape-entity
   growl
   guard-rspec
   haml-rails

@@ -78,11 +78,6 @@ class Build < ActiveRecord::Base
     @commit ||= project.last_commit(self.sha)
   end
 
-  def write_trace(trace)
-    self.reload
-    update_attributes(trace: trace)
-  end
-
   def short_before_sha
     before_sha[0..8]
   end
@@ -92,23 +87,8 @@ class Build < ActiveRecord::Base
   end
 
   def trace_html
-    html = Ansi2html::convert(compose_output) if trace.present?
+    html = Ansi2html::convert(trace) if trace.present?
     html ||= ''
-  end
-
-  def read_tmp_file
-    content = GitlabCi::Encode.encode!(File.binread(tmp_file)) if tmp_file && File.readable?(tmp_file)
-    content ||= ''
-  end
-
-  def compose_output
-    output = trace
-
-    if running?
-      output << read_tmp_file
-    end
-
-    output
   end
 
   def to_param
@@ -123,9 +103,12 @@ class Build < ActiveRecord::Base
     running? || pending?
   end
 
-  def set_file path
-    self.tmp_file = path
-    self.save
+  def commands
+    project.scripts
+  end
+
+  def path
+    project.path
   end
 end
 

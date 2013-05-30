@@ -6,9 +6,6 @@ class Scheduler
       interval = project.polling_interval
       if (last_build_time + interval.hours) < Time.now
         build = project.register_build(ref: project.tracked_refs.first)
-        if build and build.id
-          Runner.perform_async(build.id)
-        end
       end
     end
   end
