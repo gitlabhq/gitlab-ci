@@ -11,6 +11,7 @@
     %th ID
     %th Token
     %th Last build
+    %th Builds Stats
     %th Registered
     %th
 
@@ -26,6 +27,12 @@
           = link_to last_build.short_sha, [last_build.project, last_build]
         - else
           unknown
+      %td
+        %span.badge.badge-success
+          #{runner.builds.success.count}
+        %span /
+        %span.badge.badge-important
+          #{runner.builds.failed.count}
       %td
         #{time_ago_in_words(runner.created_at)} ago
       %td
