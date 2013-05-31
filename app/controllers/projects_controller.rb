@@ -57,17 +57,6 @@ class ProjectsController < ApplicationController
     redirect_to projects_url
   end
 
-  def run
-    @project = Project.find(params[:id])
-    @build = @project.register_build(ref: params[:ref])
-
-    if @build and @build.id
-      redirect_to project_build_path(@project, @build)
-    else
-      redirect_to project_path(@project), notice: 'Branch is not defined for this project'
-    end
-  end
-
   def build
    # Ignore remove branch push
    return head(200) if params[:after] =~ /^00000000/

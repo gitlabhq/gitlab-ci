@@ -13,7 +13,6 @@ GitlabCi::Application.routes.draw do
 
   resources :projects do
     member do
-      get :run
       get :status
       get :stats
       get :details

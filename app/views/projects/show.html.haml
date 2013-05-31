@@ -41,12 +41,6 @@
 
 
 
-  - if current_user
-    %p
-      You can manually run a build for current branch.
-      = link_to run_project_path(@project, ref: @ref), class: 'btn btn-small' do
-        %i.icon-play.icon-white
-        Run a build
 
 %table.builds
   %thead
