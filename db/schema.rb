@@ -11,25 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129121754) do
+ActiveRecord::Schema.define(:version => 20130531122131) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "trace",       :limit => 2147483647
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.string   "sha"
     t.datetime "started_at"
     t.string   "tmp_file"
     t.string   "before_sha"
+    t.text     "push_data"
   end
 
   create_table "projects", :force => true do |t|
     t.string   "name",                                :null => false
-    t.string   "path",                                :null => false
     t.integer  "timeout",          :default => 1800,  :null => false
     t.text     "scripts",                             :null => false
     t.datetime "created_at",                          :null => false

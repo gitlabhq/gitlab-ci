@@ -1,8 +1,10 @@
 class Build < ActiveRecord::Base
   belongs_to :project
 
+  serialize :push_data
+
   attr_accessible :project_id, :ref, :sha, :before_sha,
-    :status, :finished_at, :trace, :started_at
+    :status, :finished_at, :trace, :started_at, :push_data
 
   validates :sha, presence: true
   validates :ref, presence: true
@@ -63,19 +65,11 @@ class Build < ActiveRecord::Base
   end
 
   def git_author_name
-    commit.author[:name]
-  rescue
-    nil
+    commit_data[:author][:name] if commit_data && commit_data[:author]
   end
 
   def git_commit_message
-    commit.message
-  rescue
-    nil
-  end
-
-  def commit
-    @commit ||= project.last_commit(self.sha)
+    commit_data[:message] if commit_data
   end
 
   def short_before_sha
@@ -107,8 +101,16 @@ class Build < ActiveRecord::Base
     project.scripts
   end
 
-  def path
-    project.path
+  def commit_data
+    push_data[:commits].each do |commit|
+      return commit if commit[:id] == sha
+    end
+  rescue
+    nil
+  end
+
+  def repo_url
+    project.gitlab_url + '.git'
   end
 end
 

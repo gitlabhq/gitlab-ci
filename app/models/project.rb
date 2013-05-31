@@ -8,8 +8,7 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :path, :scripts, :timeout, :token, :default_ref
-  validate :repo_present?
+  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url
   validates_uniqueness_of :name
 
   validates :polling_interval,
@@ -25,14 +24,7 @@ class Project < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
 
-  def repo_present?
-    repo
-  rescue
-    errors.add(:path, 'Project path is not a git repository')
-    false
-  end
-
-  def register_build opts={}
+  def register_build(opts={})
     ref = opts[:ref]
 
     raise 'ref is not defined' unless ref
@@ -42,13 +34,14 @@ class Project < ActiveRecord::Base
     end
 
     before_sha = opts[:before]
-    sha = opts[:after] || last_ref_sha(ref)
+    sha = opts[:after]
 
     data = {
       project_id: self.id,
       ref: ref,
       sha: sha,
-      before_sha: before_sha
+      before_sha: before_sha,
+      push_data: opts
     }
 
     @build = Build.create(data)
@@ -58,14 +51,8 @@ class Project < ActiveRecord::Base
     gitlab_url.present?
   end
 
-  def last_ref_sha ref
-    `cd #{self.path} && git fetch && git log remotes/origin/#{ref} -1 --format=oneline | grep -e '^[a-z0-9]*' -o`.strip
-  end
-
   def status
-    if last_build
-      last_build.status
-    end
+    last_build.status if last_build
   end
 
   def last_build
@@ -108,34 +95,12 @@ class Project < ActiveRecord::Base
     end
   end
 
-  def repo
-    @repo ||= Rugged::Repository.new(path)
-  end
-
-  def last_commit(ref = 'master')
-    branch = find_branch_by_name(ref)
-
-    if branch
-      repo.lookup(branch.target)
-    else
-      repo.lookup(ref)
-    end
-  end
-
-  def find_branch_by_name(name)
-    repo.branches.find { |branch| branch.name == name }
-  end
-
   def tracked_refs
     @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
   end
 
   def valid_token? token
     self.token && self.token == token
-  end
-
-  def schedule_id
-    "project-#{id}"
   end
 
   def no_running_builds?

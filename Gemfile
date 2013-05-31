@@ -37,17 +37,11 @@ gem 'whenever', require: false
 # Format dates
 gem 'stamp'
 
-# Git support
-gem 'rugged', '~> 0.18.0.b1'
-
 # Pagination
 gem 'kaminari'
 
 # State machine
 gem 'state_machine'
-
-# Encoding detection
-gem 'charlock_holmes'
 
 # API
 gem 'grape'
