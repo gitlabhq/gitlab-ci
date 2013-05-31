@@ -69,7 +69,7 @@ class Build < ActiveRecord::Base
   end
 
   def git_commit_message
-    commit.message
+    commit.message.encode('UTF-16le', :invalid => :replace, :replace => '?').encode('UTF-8')
   rescue
     nil
   end
