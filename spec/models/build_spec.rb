@@ -19,10 +19,12 @@ describe Build do
   describe "#ci_skip?" do
     let(:project) { FactoryGirl.create(:project) }
     let(:build) { project.register_build(ref: 'master') }
+
     it 'true if commit message contains [ci skip]' do
-      build.commit.stub(:message) { 'Small typo [ci skip]' }
+      build.stub(:git_commit_message) { 'Small typo [ci skip]' }
       build.ci_skip?.should == true
     end
+
     it 'false if commit message does not contain [ci skip]' do
       build.ci_skip?.should == false
     end

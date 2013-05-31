@@ -50,13 +50,4 @@ describe "Projects" do
     it { page.should have_content @project.name }
     it { page.should have_content 'Integration with GitLab and other services' }
   end
-
-  describe "GET /projects/:id/run" do
-    before do
-      visit run_project_path(@project, ref: 'master')
-    end
-
-    it { current_path.should == project_build_path(@project, @project.builds.last) }
-    it { page.should have_content @project.builds.last.git_commit_message }
-  end
 end

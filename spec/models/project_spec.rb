@@ -5,11 +5,6 @@ describe Project do
 
   it { should have_many(:builds) }
 
-  describe :path do
-    it { should allow_value(Rails.root.join('tmp', 'repositories', 'six').to_s).for(:path) }
-    it { should_not allow_value('/tmp').for(:path) }
-  end
-
   describe 'before_validation' do
     it 'should set an random token if none provided' do
       project = FactoryGirl.create :project_without_token
@@ -30,10 +25,8 @@ describe Project do
   context :valid_project do
     let(:project) { FactoryGirl.create :project }
 
-    it { project.repo_present?.should be_true }
-
     describe :register_build do
-      let(:build) { project.register_build(ref: 'master') }
+      let(:build) { project.register_build(ref: 'master', after: '31das312') }
 
       it { build.should be_kind_of(Build) }
       it { build.should be_pending }
@@ -42,13 +35,12 @@ describe Project do
     end
 
     context :project_with_build do
-      before { project.register_build ref: 'master' }
+      before { project.register_build ref: 'master', after: '31das312' }
 
       it { project.status.should == 'pending' }
       it { project.last_build.should be_kind_of(Build)  }
       it { project.human_status.should == 'pending' }
       it { project.status_image.should == 'running.png' }
-      it { project.last_commit.oid.should == '1c8a9df454ef68c22c2a33cca8232bb50849e5c5' }
     end
   end
 end
