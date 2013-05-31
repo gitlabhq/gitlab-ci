@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130531122131) do
+ActiveRecord::Schema.define(:version => 20130531133603) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20130531122131) do
     t.string   "tmp_file"
     t.string   "before_sha"
     t.text     "push_data"
+    t.integer  "runner_id"
   end
 
   create_table "projects", :force => true do |t|
@@ -40,6 +41,13 @@ ActiveRecord::Schema.define(:version => 20130531122131) do
     t.boolean  "always_build",     :default => false, :null => false
     t.integer  "polling_interval"
     t.boolean  "public",           :default => false, :null => false
+  end
+
+  create_table "runners", :force => true do |t|
+    t.string   "token"
+    t.text     "public_key"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

@@ -22,7 +22,10 @@ module API
     end
 
     format :json
+
     helpers Helpers
+
     mount Builds
+    mount Runners
   end
 end

@@ -1,44 +1,11 @@
 module API
   module Helpers
-    def current_user
-      @current_user ||= User.find_by_authentication_token(params[:private_token] || env["HTTP_PRIVATE_TOKEN"])
+    def authenticate_runners!
+      forbidden! unless params[:token] == GitlabCi::RunnersToken
     end
 
-    def user_project
-      @project ||= find_project
-      @project || not_found!
-    end
-
-    def find_project
-      project = Project.find_by_id(params[:id]) || Project.find_with_namespace(params[:id])
-
-      if project && can?(current_user, :read_project, project)
-        project
-      else
-        nil
-      end
-    end
-
-    def paginate(object)
-      object.page(params[:page]).per(params[:per_page].to_i)
-    end
-
-    def authenticate!
-      unauthorized! unless current_user
-    end
-
-    def authenticated_as_admin!
-      forbidden! unless current_user.is_admin?
-    end
-
-    def authorize! action, subject
-      unless abilities.allowed?(current_user, action, subject)
-        forbidden!
-      end
-    end
-
-    def can?(object, action, subject)
-      abilities.allowed?(object, action, subject)
+    def authenticate_runner!
+      forbidden! unless Runner.find_by_token(params[:token])
     end
 
     # Checks the occurrences of required attributes, each attribute must be present in the params hash

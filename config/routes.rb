@@ -30,6 +30,8 @@ GitlabCi::Application.routes.draw do
   devise_for :users
 
   resources :users
+  resources :runners, only: [:index, :destroy]
+
   resource :resque, only: 'show'
   root :to => 'projects#index'
 end

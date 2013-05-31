@@ -2,6 +2,8 @@ module API
   # Issues API
   class Builds < Grape::API
     resource :builds do
+      before { authenticate_runner!}
+
       # Register a build by runner
       #
       # Parameters:
@@ -31,7 +33,9 @@ module API
       #   PUT /builds/:id
       put ":id" do
         build = Build.find(params[:id])
-        build.update_attributes trace: params[:trace]
+        runner = Runner.find_by_token(params[:token])
+
+        build.update_attributes trace: params[:trace], runner_id: runner.id
 
         case params[:state].to_s
         when 'success'
