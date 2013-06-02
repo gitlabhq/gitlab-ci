@@ -21,6 +21,10 @@ class Build < ActiveRecord::Base
     where('created_at > ?', Date.today - 1.month)
   end
 
+  def self.create_from(build)
+    build.dup.save
+  end
+
   state_machine :status, initial: :pending do
     event :run do
       transition pending: :running
