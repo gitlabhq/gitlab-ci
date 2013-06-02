@@ -22,7 +22,9 @@ class Build < ActiveRecord::Base
   end
 
   def self.create_from(build)
-    build.dup.save
+    new_build = build.dup
+    new_build.status = :pending
+    new_build.save
   end
 
   state_machine :status, initial: :pending do
