@@ -1,11 +1,7 @@
 class UserSessionsController < ApplicationController
   def show
-    @user_session = UserSession.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user_session }
-    end
+    @user = current_user
+    @projects = Project.fetch(@user)
   end
 
   def new
@@ -24,12 +20,8 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    @user_session = UserSession.find(params[:id])
-    @user_session.destroy
+    sign_out
 
-    respond_to do |format|
-      format.html { redirect_to user_sessions_url }
-      format.json { head :no_content }
-    end
+    redirect_to new_user_sessions_path
   end
 end

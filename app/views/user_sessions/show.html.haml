@@ -1,15 +1,34 @@
-%p#notice= notice
+%h3 Hi, #{@user.name}
+
 
 %p
   %b Email:
-  = @user_session.email
-%p
-  %b Password:
-  = @user_session.password
-%p
-  %b Url:
-  = @user_session.url
+  = @user.email
 
-= link_to 'Edit', edit_user_session_path(@user_session)
-\|
-= link_to 'Back', user_sessions_path
+%p
+  %b GitLab profile:
+  = link_to @user.username, @user.url + '/u/' + @user.username
+
+
+%h5 Owned projects:
+
+%table.table
+  %tr
+    %th ID
+    %th Name
+    %th Repo
+    %th
+
+  - @projects.each do |project|
+    %tr
+      %td
+        = project.id
+      %td
+        = project.name_with_namespace
+      %td
+        - url = URI.join(@user.url, project.path_with_namespace).to_s
+        = link_to url, url
+      %td
+        = form_tag add_projects_path do
+          = hidden_field_tag :project, project.to_h.to_yaml
+          = submit_tag 'Add', class: 'btn btn-small'

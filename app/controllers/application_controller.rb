@@ -5,6 +5,13 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def authenticate_user!
+    unless current_user
+      redirect_to new_user_sessions_path
+      return
+    end
+  end
+
   def authenticate_token!
     unless project.valid_token?(params[:token])
       return head(403)
@@ -16,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sign_in(user)
-    session[:current_user] = OpenStruct.new(user)
+    session[:current_user] = user
   end
 
   def sign_out

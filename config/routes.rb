@@ -6,6 +6,10 @@ GitlabCi::Application.routes.draw do
   mount API::API => '/api'
 
   resources :projects do
+    collection do
+      post :add
+    end
+
     member do
       get :status
       get :stats

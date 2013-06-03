@@ -103,6 +103,8 @@ pre.trace {
   color: #fff;
   text-shadow: 0 1px 0 #29b;
   border-radius:0;
+  border: none;
+
   &:hover {
     background: #6cd;
     color: #fff;
@@ -220,4 +222,8 @@ h3 {
   span {
     margin-left: 35px;
   }
+}
+
+td form {
+ margin: 0;
 }

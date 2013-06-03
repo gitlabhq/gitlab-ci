@@ -97,6 +97,17 @@ class ProjectsController < ApplicationController
 
   end
 
+  def add
+    project_hash = YAML.load(params[:project])
+
+    params = {
+      name: project_hash[:name_with_namespace],
+      gitlab_url: project_hash[:ssh_url_to_repo]
+    }
+
+    Project.new
+  end
+
   protected
 
   def project

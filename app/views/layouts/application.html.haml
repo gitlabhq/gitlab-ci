@@ -25,7 +25,7 @@
           %ul.nav.pull-right
             - if current_user
               %li
-                = link_to user_path(current_user.username) do
+                = link_to user_sessions_path do
                   .profile-holder
                     = image_tag gravatar_icon(current_user.email, 24)
                     %span= current_user.email
