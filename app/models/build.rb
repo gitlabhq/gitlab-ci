@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: builds
+#
+#  id          :integer          not null, primary key
+#  project_id  :integer
+#  ref         :string(255)
+#  status      :string(255)
+#  finished_at :datetime
+#  trace       :text(2147483647)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  sha         :string(255)
+#  started_at  :datetime
+#  tmp_file    :string(255)
+#  before_sha  :string(255)
+#  push_data   :text
+#  runner_id   :integer
+#
+
 class Build < ActiveRecord::Base
   belongs_to :project
   belongs_to :runner
@@ -117,27 +137,8 @@ class Build < ActiveRecord::Base
   end
 
   def repo_url
-    project.gitlab_url + '.git'
+    project.ssh_url_to_repo
   end
 end
 
-
-
-# == Schema Information
-#
-# Table name: builds
-#
-#  id          :integer(4)      not null, primary key
-#  project_id  :integer(4)
-#  ref         :string(255)
-#  status      :string(255)
-#  finished_at :datetime
-#  trace       :text(2147483647
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
-#  sha         :string(255)
-#  started_at  :datetime
-#  tmp_file    :string(255)
-#  before_sha  :string(255)
-#
 

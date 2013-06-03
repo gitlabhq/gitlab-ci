@@ -9,6 +9,8 @@
   - if current_user
     .pull-right
       %span
+        = link_to 'Runners', project_runner_projects_path(@project), class: 'btn btn-small'
+      %span
         = link_to details_project_path(@project), class: 'btn btn-small' do
           Details
       %span

@@ -24,6 +24,8 @@ GitlabCi::Application.routes.draw do
         get :status
       end
     end
+
+    resources :runner_projects
   end
 
   resource :user_sessions

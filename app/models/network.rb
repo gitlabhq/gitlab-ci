@@ -31,6 +31,21 @@ class Network
     end
   end
 
+  def add_deploy_key(url, project_id, api_opts)
+    opts = {
+      body: api_opts.to_json,
+      headers: {"Content-Type" => "application/json"},
+    }
+
+    response = self.class.post(url + api_prefix + "projects/#{project_id}/keys.json", opts)
+
+    if response.code == 201
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
   private
 
   def api_prefix

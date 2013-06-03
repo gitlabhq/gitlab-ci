@@ -106,6 +106,7 @@ class ProjectsController < ApplicationController
 
     params = {
       name: project.name_with_namespace,
+      gitlab_id: project.id,
       gitlab_url: project.web_url,
       scripts: 'ls -la',
       default_ref: project.default_branch,

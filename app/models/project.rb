@@ -1,15 +1,36 @@
+# == Schema Information
+#
+# Table name: projects
+#
+#  id               :integer          not null, primary key
+#  name             :string(255)      not null
+#  timeout          :integer          default(1800), not null
+#  scripts          :text             default(""), not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  token            :string(255)
+#  default_ref      :string(255)
+#  gitlab_url       :string(255)
+#  always_build     :boolean          default(FALSE), not null
+#  polling_interval :integer
+#  public           :boolean          default(FALSE), not null
+#  ssh_url_to_repo  :string(255)
+#
+
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
-    :public, :ssh_url_to_repo
+    :public, :ssh_url_to_repo, :gitlab_id
 
   has_many :builds, dependent: :destroy
+  has_many :runner_projects, dependent: :destroy
+  has_many :runners, through: :runner_projects
 
 
   #
   # Validations
   #
-  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo
+  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
 
   validates_uniqueness_of :name
 

@@ -46,29 +46,6 @@ a {
   color: #888;
 }
 
-.project_box {
-  color:#777;
-  border: 1px solid #ddd;
-  margin-right:20px;
-  margin-bottom:20px;
-  float:left;
-  width:330px;
-
-  .title {
-    font-size:16px;
-    line-height:28px;
-    padding: 10px;
-  }
-
-  .alert {
-    border-radius: 0;
-  }
-
-  .body {
-    padding:10px;
-  }
-}
-
 pre.trace {
   background: #000;
   color:#fff;
@@ -226,4 +203,8 @@ h3 {
 
 td form {
  margin: 0;
+}
+
+.cred {
+  color: #900;
 }

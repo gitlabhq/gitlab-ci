@@ -5,7 +5,11 @@ module API
     end
 
     def authenticate_runner!
-      forbidden! unless Runner.find_by_token(params[:token])
+      forbidden! unless current_runner
+    end
+
+    def current_runner
+      @runner ||= Runner.find_by_token(params[:token])
     end
 
     # Checks the occurrences of required attributes, each attribute must be present in the params hash

@@ -15,7 +15,7 @@ module API
         required_attributes! [:token]
 
         ActiveRecord::Base.transaction do
-          build = Build.pending.order('created_at ASC').first
+          build = Build.where(project_id: current_runner.projects).pending.order('created_at ASC').first
           not_found! and return unless build
 
           build.run!
@@ -32,10 +32,8 @@ module API
       # Example Request:
       #   PUT /builds/:id
       put ":id" do
-        build = Build.find(params[:id])
-        runner = Runner.find_by_token(params[:token])
-
-        build.update_attributes trace: params[:trace], runner_id: runner.id
+        build = Build.where(project_id: current_runner.projects).find(params[:id])
+        build.update_attributes(trace: params[:trace], runner_id: current_runner.id)
 
         case params[:state].to_s
         when 'success'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603144030) do
+ActiveRecord::Schema.define(:version => 20130603161449) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -42,6 +42,14 @@ ActiveRecord::Schema.define(:version => 20130603144030) do
     t.integer  "polling_interval"
     t.boolean  "public",           :default => false, :null => false
     t.string   "ssh_url_to_repo"
+    t.integer  "gitlab_id"
+  end
+
+  create_table "runner_projects", :force => true do |t|
+    t.integer  "runner_id",  :null => false
+    t.integer  "project_id", :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "runners", :force => true do |t|
