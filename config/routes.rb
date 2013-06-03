@@ -1,17 +1,16 @@
 require 'sidekiq/web'
 
 GitlabCi::Application.routes.draw do
-  # Optionally, enable Resque here
-  constraint = lambda { |request| request.env["warden"].authenticate? and request.env['warden'].user.admin? }
-  constraints constraint do
-    mount Sidekiq::Web, at: "/ext/sidekiq", as: :ext_resque
-  end
-
   # API
   API::API.logger Rails.logger
   mount API::API => '/api'
 
   resources :projects do
+    collection do
+      post :add
+      get :gitlab
+    end
+
     member do
       get :status
       get :stats
@@ -27,11 +26,9 @@ GitlabCi::Application.routes.draw do
     end
   end
 
-  devise_for :users
-
   resources :users
+  resource :user_sessions
   resources :runners, only: [:index, :destroy]
 
-  resource :resque, only: 'show'
   root :to => 'projects#index'
 end

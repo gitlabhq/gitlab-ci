@@ -20,6 +20,24 @@ class Project < ActiveRecord::Base
 
   before_validation :set_default_values
 
+  def self.fetch(user)
+    opts = {
+      private_token: user.private_token
+    }
+
+    projects = Network.new.projects(user.url, opts)
+
+    if projects
+      projects.map { |pr| OpenStruct.new(pr) }
+    else
+      []
+    end
+  end
+
+  def self.already_added?(project)
+    where(gitlab_url: project.web_url).any?
+  end
+
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
