@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
-    :default_ref, :gitlab_url, :always_build, :polling_interval, :public
+    :default_ref, :gitlab_url, :always_build, :polling_interval,
+    :public, :ssh_url_to_repo
 
   has_many :builds, dependent: :destroy
 
@@ -8,7 +9,8 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url
+  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo
+
   validates_uniqueness_of :name
 
   validates :polling_interval,

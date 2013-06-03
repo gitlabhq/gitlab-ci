@@ -26,7 +26,6 @@ GitlabCi::Application.routes.draw do
     end
   end
 
-  resources :users
   resource :user_sessions
   resources :runners, only: [:index, :destroy]
 

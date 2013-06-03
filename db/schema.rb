@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603130920) do
+ActiveRecord::Schema.define(:version => 20130603144030) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20130603130920) do
     t.boolean  "always_build",     :default => false, :null => false
     t.integer  "polling_interval"
     t.boolean  "public",           :default => false, :null => false
+    t.string   "ssh_url_to_repo"
   end
 
   create_table "runners", :force => true do |t|

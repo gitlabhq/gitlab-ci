@@ -108,7 +108,8 @@ class ProjectsController < ApplicationController
       name: project.name_with_namespace,
       gitlab_url: project.web_url,
       scripts: 'ls -la',
-      default_ref: project.default_branch
+      default_ref: project.default_branch,
+      ssh_url_to_repo: project.ssh_url_to_repo
     }
 
     @project = Project.new(params)
