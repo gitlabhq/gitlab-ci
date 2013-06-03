@@ -1,5 +1,3 @@
-require 'runner'
-
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status, :index, :show]
   before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
@@ -59,18 +57,6 @@ class ProjectsController < ApplicationController
     redirect_to projects_url
   end
 
-  def run
-    @project = Project.find(params[:id])
-    @build = @project.register_build(ref: params[:ref])
-
-    if @build and @build.id
-      Runner.perform_async(@build.id) unless @build.ci_skip?
-      redirect_to project_build_path(@project, @build)
-    else
-      redirect_to project_path(@project), notice: 'Branch is not defined for this project'
-    end
-  end
-
   def build
    # Ignore remove branch push
    return head(200) if params[:after] =~ /^00000000/
@@ -85,7 +71,6 @@ class ProjectsController < ApplicationController
    @build = @project.register_build(build_params)
 
    if @build
-     Runner.perform_async(@build.id)
      head 200
    else
      head 500
@@ -110,6 +95,31 @@ class ProjectsController < ApplicationController
 
   def stats
 
+  end
+
+  def gitlab
+    @projects = Project.fetch(current_user)
+  end
+
+  def add
+    project = YAML.load(params[:project])
+
+    params = {
+      name: project.name_with_namespace,
+      gitlab_id: project.id,
+      gitlab_url: project.web_url,
+      scripts: 'ls -la',
+      default_ref: project.default_branch,
+      ssh_url_to_repo: project.ssh_url_to_repo
+    }
+
+    @project = Project.new(params)
+
+    if @project.save
+      redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
+    else
+      redirect_to :back, alert: 'Cannot save project'
+    end
   end
 
   protected

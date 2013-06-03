@@ -46,29 +46,6 @@ a {
   color: #888;
 }
 
-.project_box {
-  color:#777;
-  border: 1px solid #ddd;
-  margin-right:20px;
-  margin-bottom:20px;
-  float:left;
-  width:330px;
-
-  .title {
-    font-size:16px;
-    line-height:28px;
-    padding: 10px;
-  }
-
-  .alert {
-    border-radius: 0;
-  }
-
-  .body {
-    padding:10px;
-  }
-}
-
 pre.trace {
   background: #000;
   color:#fff;
@@ -103,6 +80,8 @@ pre.trace {
   color: #fff;
   text-shadow: 0 1px 0 #29b;
   border-radius:0;
+  border: none;
+
   &:hover {
     background: #6cd;
     color: #fff;
@@ -220,4 +199,12 @@ h3 {
   span {
     margin-left: 35px;
   }
+}
+
+td form {
+ margin: 0;
+}
+
+.cred {
+  color: #900;
 }

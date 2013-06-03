@@ -11,25 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129121754) do
+ActiveRecord::Schema.define(:version => 20130603161449) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "trace",       :limit => 2147483647
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.string   "sha"
     t.datetime "started_at"
     t.string   "tmp_file"
     t.string   "before_sha"
+    t.text     "push_data"
+    t.integer  "runner_id"
   end
 
   create_table "projects", :force => true do |t|
     t.string   "name",                                :null => false
-    t.string   "path",                                :null => false
     t.integer  "timeout",          :default => 1800,  :null => false
     t.text     "scripts",                             :null => false
     t.datetime "created_at",                          :null => false
@@ -40,24 +41,22 @@ ActiveRecord::Schema.define(:version => 20130129121754) do
     t.boolean  "always_build",     :default => false, :null => false
     t.integer  "polling_interval"
     t.boolean  "public",           :default => false, :null => false
+    t.string   "ssh_url_to_repo"
+    t.integer  "gitlab_id"
   end
 
-  create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+  create_table "runner_projects", :force => true do |t|
+    t.integer  "runner_id",  :null => false
+    t.integer  "project_id", :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  create_table "runners", :force => true do |t|
+    t.string   "token"
+    t.text     "public_key"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
 end

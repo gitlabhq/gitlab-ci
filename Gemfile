@@ -17,9 +17,6 @@ gem 'pg',     group: :postgres
 # Settings
 gem 'settingslogic'
 
-# Auth
-gem 'devise'
-
 # Web server
 gem "puma", "~> 2.0.0.b7"
 
@@ -37,23 +34,23 @@ gem 'whenever', require: false
 # Format dates
 gem 'stamp'
 
-# Git support
-gem 'rugged', '~> 0.18.0.b1'
-
 # Pagination
 gem 'kaminari'
 
 # State machine
 gem 'state_machine'
 
-# Encoding detection
-gem 'charlock_holmes'
+# For API calls
+gem 'httparty', '0.11.0'
+
+# API
+gem 'grape'
+gem 'grape-entity'
 
 # Other
 gem 'rake'
 gem 'foreman'
 gem 'jquery-rails'
-gem 'childprocess', '0.3.6'
 gem 'gitlab_ci_meta'
 
 group :assets do

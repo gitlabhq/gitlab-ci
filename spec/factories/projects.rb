@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :project_without_token, class: Project do
     name Faker::Name.name
     default_ref 'master'
-    path Rails.root.join('tmp', 'repositories', 'six').to_s
+    gitlab_url 'https://dev.gitlab.org/gitlab/six.git'
     scripts 'ls'
 
     factory :project do

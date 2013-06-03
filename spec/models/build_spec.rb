@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: builds
+#
+#  id          :integer          not null, primary key
+#  project_id  :integer
+#  ref         :string(255)
+#  status      :string(255)
+#  finished_at :datetime
+#  trace       :text(2147483647)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  sha         :string(255)
+#  started_at  :datetime
+#  tmp_file    :string(255)
+#  before_sha  :string(255)
+#  push_data   :text
+#  runner_id   :integer
+#
+
 require 'spec_helper'
 
 describe Build do
@@ -19,33 +39,16 @@ describe Build do
   describe "#ci_skip?" do
     let(:project) { FactoryGirl.create(:project) }
     let(:build) { project.register_build(ref: 'master') }
+
     it 'true if commit message contains [ci skip]' do
-      build.commit.stub(:message) { 'Small typo [ci skip]' }
+      build.stub(:git_commit_message) { 'Small typo [ci skip]' }
       build.ci_skip?.should == true
     end
+
     it 'false if commit message does not contain [ci skip]' do
       build.ci_skip?.should == false
     end
   end
 end
 
-
-
-# == Schema Information
-#
-# Table name: builds
-#
-#  id          :integer(4)      not null, primary key
-#  project_id  :integer(4)
-#  ref         :string(255)
-#  status      :string(255)
-#  finished_at :datetime
-#  trace       :text(2147483647
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
-#  sha         :string(255)
-#  started_at  :datetime
-#  tmp_file    :string(255)
-#  before_sha  :string(255)
-#
 

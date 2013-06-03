@@ -1,0 +1,11 @@
+%h3 Hi, #{@user.name}
+
+
+%p
+  %b Email:
+  = @user.email
+
+%p
+  %b GitLab profile:
+  = link_to @user.username, @user.url + '/u/' + @user.username
+

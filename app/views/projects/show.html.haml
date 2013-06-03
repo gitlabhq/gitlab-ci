@@ -1,3 +1,5 @@
+= render 'shared/guide' if params[:show_guide].present?
+
 %h3
   Project: #{@project.name}
   - if @project.public
@@ -8,6 +10,8 @@
 
   - if current_user
     .pull-right
+      %span
+        = link_to 'Runners', project_runner_projects_path(@project), class: 'btn btn-small'
       %span
         = link_to details_project_path(@project), class: 'btn btn-small' do
           Details
@@ -41,12 +45,6 @@
 
 
 
-  - if current_user
-    %p
-      You can manually run a build for current branch.
-      = link_to run_project_path(@project, ref: @ref), class: 'btn btn-small' do
-        %i.icon-play.icon-white
-        Run a build
 
 %table.builds
   %thead

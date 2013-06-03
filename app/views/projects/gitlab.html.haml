@@ -1,0 +1,25 @@
+%h3 GitLab Owned projects:
+%table.table
+  %tr
+    %th ID
+    %th Name
+    %th Repo
+    %th
+
+  - @projects.each do |project|
+    %tr
+      %td
+        = project.id
+      %td
+        = project.name_with_namespace
+      %td
+        = link_to project.web_url, project.web_url
+      %td
+        - if Project.already_added?(project)
+          %strong
+            Added
+        - else
+          = form_tag add_projects_path do
+            = hidden_field_tag :project, project.to_yaml
+            = submit_tag 'Add', class: 'btn btn-small'
+

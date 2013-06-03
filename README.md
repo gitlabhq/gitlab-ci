@@ -18,9 +18,13 @@ We officially support (recent versions of) these Linux distributions:
 
 __We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
 
+
+__master branch contains unstable 3.0. Use 2-2-stable branch__
+
+
 ### Installation
 
-* [Installation and setup guide](https://github.com/gitlabhq/gitlab-ci/blob/master/doc/installation.md)
+* [Installation and setup guide for v2.2](https://github.com/gitlabhq/gitlab-ci/blob/2-2-stable/doc/installation.md)
 
 ### Getting help
 
