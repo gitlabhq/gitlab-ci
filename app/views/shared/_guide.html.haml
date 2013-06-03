@@ -1,0 +1,11 @@
+.well
+  %h3 Setup guide:
+  %ol
+    %li
+      Activate at least one runner for project #{link_to 'here', project_runner_projects_path(@project), target: :blank}
+    %li
+      Activate GitLab CI service for project inside GitLab. #{link_to 'Sample screenshot', image_path('service_sample.png'), target: :blank}
+    %li
+      Try test settings to confirm everything is working
+    %li
+      Customize script section to run own test command  #{link_to 'here', edit_project_path(@project), target: :blank}

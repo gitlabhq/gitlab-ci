@@ -116,7 +116,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params)
 
     if @project.save
-      redirect_to @project, notice: 'Project was successfully created.'
+      redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
     else
       redirect_to :back, alert: 'Cannot save project'
     end

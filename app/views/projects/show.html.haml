@@ -1,3 +1,5 @@
+= render 'shared/guide' if params[:show_guide].present?
+
 %h3
   Project: #{@project.name}
   - if @project.public
