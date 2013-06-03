@@ -25,17 +25,17 @@
           %ul.nav.pull-right
             - if current_user
               %li
-                = link_to edit_user_path(current_user) do
+                = link_to user_path(current_user.username) do
                   .profile-holder
                     = image_tag gravatar_icon(current_user.email, 24)
                     %span= current_user.email
               %li
-                = link_to destroy_user_session_path, class: "logout", method: :delete do
+                = link_to user_sessions_path, class: "logout", method: :delete do
                   %i.icon-signout
                   Logout
             - else
               %li
-                = link_to 'Login', new_user_session_path
+                = link_to 'Login', new_user_sessions_path
     .container-fluid
       - if alert
         .alert= alert

@@ -17,9 +17,6 @@ gem 'pg',     group: :postgres
 # Settings
 gem 'settingslogic'
 
-# Auth
-gem 'devise'
-
 # Web server
 gem "puma", "~> 2.0.0.b7"
 
@@ -42,6 +39,9 @@ gem 'kaminari'
 
 # State machine
 gem 'state_machine'
+
+# For API calls
+gem 'httparty', '0.11.0'
 
 # API
 gem 'grape'
