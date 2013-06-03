@@ -15,13 +15,9 @@
           %ul.nav
             - if current_user
               %li
-                = link_to 'Add Project', new_project_path
-              %li
-                = link_to 'Users', users_path
+                = link_to 'GitLab Projects', gitlab_projects_path
               %li
                 = link_to 'Runners', runners_path
-              -#%li
-                = link_to 'Background Jobs', resque_path
           %ul.nav.pull-right
             - if current_user
               %li
@@ -37,10 +33,12 @@
               %li
                 = link_to 'Login', new_user_sessions_path
     .container-fluid
-      - if alert
-        .alert= alert
-      - if notice
-        .alert.alert-info= notice
+      - if alert || notice
+        %br
+        - if alert
+          .alert= alert
+        - if notice
+          .alert.alert-info= notice
 
       = yield
     .pull-left

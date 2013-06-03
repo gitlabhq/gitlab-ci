@@ -34,6 +34,10 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def self.already_added?(project)
+    where(gitlab_url: project.web_url).any?
+  end
+
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
   end

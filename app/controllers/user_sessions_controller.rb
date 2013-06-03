@@ -1,7 +1,6 @@
 class UserSessionsController < ApplicationController
   def show
     @user = current_user
-    @projects = Project.fetch(@user)
   end
 
   def new

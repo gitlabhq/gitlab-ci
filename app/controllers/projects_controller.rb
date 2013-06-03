@@ -97,15 +97,27 @@ class ProjectsController < ApplicationController
 
   end
 
+  def gitlab
+    @projects = Project.fetch(current_user)
+  end
+
   def add
-    project_hash = YAML.load(params[:project])
+    project = YAML.load(params[:project])
 
     params = {
-      name: project_hash[:name_with_namespace],
-      gitlab_url: project_hash[:ssh_url_to_repo]
+      name: project.name_with_namespace,
+      gitlab_url: project.web_url,
+      scripts: 'ls -la',
+      default_ref: project.default_branch
     }
 
-    Project.new
+    @project = Project.new(params)
+
+    if @project.save
+      redirect_to @project, notice: 'Project was successfully created.'
+    else
+      redirect_to :back, alert: 'Cannot save project'
+    end
   end
 
   protected

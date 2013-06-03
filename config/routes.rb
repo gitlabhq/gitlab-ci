@@ -8,6 +8,7 @@ GitlabCi::Application.routes.draw do
   resources :projects do
     collection do
       post :add
+      get :gitlab
     end
 
     member do
@@ -27,9 +28,7 @@ GitlabCi::Application.routes.draw do
 
   resources :users
   resource :user_sessions
-
   resources :runners, only: [:index, :destroy]
 
-  resource :resque, only: 'show'
   root :to => 'projects#index'
 end
