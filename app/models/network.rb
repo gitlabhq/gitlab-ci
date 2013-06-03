@@ -18,7 +18,7 @@ class Network
 
   def projects url, api_opts
     opts = {
-      query: api_opts,
+      query: api_opts.merge(per_page: 1000),
       headers: {"Content-Type" => "application/json"},
     }
 
