@@ -15,42 +15,20 @@
 %form.form-horizontal
   %fieldset
     %legend
-      GitLab 3.1+
+      GitLab 5.3+
       %small build on push, integration with Merge Requests, links to GitLab instance
       .right
         %small Copy to GitLab &rarr; Project &rarr; Services
 
     .control-group
+      = label_tag :token, 'Project Token', class: 'control-label'
+      .controls
+        = text_field_tag :token, @project.token, class: 'input-xxlarge', readonly: true
+    .control-group
       = label_tag :url, 'Project URL', class: 'control-label'
       .controls
         = text_field_tag :url, project_url(@project), class: 'input-xxlarge', readonly: true
 
-    .control-group
-      = label_tag :token, 'Project Token', class: 'control-label'
-      .controls
-        = text_field_tag :token, @project.token, class: 'input-xxlarge', readonly: true
-
-  %fieldset
-    %legend
-      GitLab 3.0 and earlier
-      %small build on push, links to GitLab commits
-      .right
-        %small Copy to GitLab &rarr; Project &rarr; Web Hooks
-    .control-group
-      = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
-      .controls
-        = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', readonly: true
-        %p.hint Copy this link and add to GitLab web hooks
-
-  %fieldset
-    %legend
-      github
-      %small build on push
-      .right
-        %small Copy to github &rarr; Project &rarr; Service Hooks &rarr; Web Hooks
-    .control-group
-      = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
-      .controls
-        = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', readonly: true
-        %p.hint Copy this link and add to github web hooks
-
+    %h5 Sample screenshot:
+    .thumbnail.screenshot
+      = image_tag image_path('service_sample.png')
