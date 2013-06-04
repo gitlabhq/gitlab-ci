@@ -7,6 +7,9 @@ class UserSession
 
   def authenticate auth_opts
     url = auth_opts.delete(:url)
+
+    return nil unless GitlabCi.config.allowed_gitlab_urls.include?(url)
+
     user = Network.new.authenticate(url, auth_opts)
 
     if user

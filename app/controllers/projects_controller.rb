@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   before_filter :no_cache, only: [:status]
 
   def index
-    @projects = Project.order('id DESC')
+    @projects = Project.order('name ASC')
     @projects = @projects.public unless current_user
     @projects  = @projects.page(params[:page]).per(20)
   end
@@ -98,7 +98,7 @@ class ProjectsController < ApplicationController
   end
 
   def gitlab
-    @projects = Project.fetch(current_user)
+    @projects = Project.from_gitlab(current_user)
   end
 
   def add

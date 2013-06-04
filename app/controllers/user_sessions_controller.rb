@@ -1,4 +1,6 @@
 class UserSessionsController < ApplicationController
+  before_filter :authenticate_user!, except: [:new, :create]
+
   def show
     @user = current_user
   end

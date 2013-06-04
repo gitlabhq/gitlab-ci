@@ -1,7 +1,7 @@
 class Network
   include HTTParty
 
-  def authenticate url, api_opts
+  def authenticate(url, api_opts)
     opts = {
       body: api_opts.to_json,
       headers: {"Content-Type" => "application/json"},
@@ -16,13 +16,19 @@ class Network
     end
   end
 
-  def projects url, api_opts
+  def projects(url, api_opts, scope = :owned)
     opts = {
       query: api_opts.merge(per_page: 1000),
       headers: {"Content-Type" => "application/json"},
     }
 
-    response = self.class.get(url + api_prefix + 'projects/owned.json', opts)
+    query = if scope == :owned
+             'projects/owned.json'
+            else
+             'projects.json'
+            end
+
+    response = self.class.get(url + api_prefix + query, opts)
 
     if response.code == 200
       response.parsed_response

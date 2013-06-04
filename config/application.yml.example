@@ -1,0 +1,14 @@
+defaults: &defaults
+  allowed_gitlab_urls: 
+    - 'https://dev.gitlab.org/'
+    - 'https://staging.gitlab.org/'
+
+development:
+  <<: *defaults
+  neat_setting: 800
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

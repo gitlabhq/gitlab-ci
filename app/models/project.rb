@@ -43,12 +43,12 @@ class Project < ActiveRecord::Base
 
   before_validation :set_default_values
 
-  def self.fetch(user)
+  def self.from_gitlab(user, scope = :owned)
     opts = {
       private_token: user.private_token
     }
 
-    projects = Network.new.projects(user.url, opts)
+    projects = Network.new.projects(user.url, opts, scope)
 
     if projects
       projects.map { |pr| OpenStruct.new(pr) }
