@@ -72,6 +72,10 @@ Create a user for GitLab:
     #
     cp config/database.yml.mysql config/database.yml
 
+    # Copy application config
+    #
+    cp config/application.yml.example config/application.yml
+
     # Setup DB
     #
     bundle exec rake db:setup RAILS_ENV=production
@@ -127,6 +131,13 @@ Make sure to edit the config file to match your setup:
 
     sudo /etc/init.d/nginx restart
 
+
+
+# 8. Runners
+
+
+Now you need Runners to process your builds.
+Checkout [runner repository](https://github.com/gitlabhq/gitlab-ci-runner#installation) for setup info.
 
 # Done!
 
