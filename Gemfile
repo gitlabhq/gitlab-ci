@@ -18,7 +18,7 @@ gem 'pg',     group: :postgres
 gem 'settingslogic'
 
 # Web server
-gem "puma", "~> 2.0.0.b7"
+gem "puma", "~> 2.0.1"
 
 # Haml
 gem 'haml-rails'
@@ -26,7 +26,7 @@ gem 'haml-rails'
 # Background jobs
 gem 'slim'
 gem 'sinatra', :require => nil
-gem 'sidekiq', '2.8.0'
+gem 'sidekiq'
 
 # Scheduled
 gem 'whenever', require: false
