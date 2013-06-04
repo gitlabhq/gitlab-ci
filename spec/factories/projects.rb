@@ -5,6 +5,8 @@ FactoryGirl.define do
     name Faker::Name.name
     default_ref 'master'
     gitlab_url 'https://dev.gitlab.org/gitlab/six.git'
+    ssh_url_to_repo 'git@dev.gitlab.org:gitlab/six.git'
+    gitlab_id 45
     scripts 'ls'
 
     factory :project do

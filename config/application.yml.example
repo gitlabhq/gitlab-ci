@@ -9,6 +9,8 @@ development:
 
 test:
   <<: *defaults
+  allowed_gitlab_urls: 
+    - 'http://demo.gitlab.com/'
 
 production:
   <<: *defaults
