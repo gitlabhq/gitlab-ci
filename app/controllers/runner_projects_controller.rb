@@ -22,8 +22,9 @@ class RunnerProjectsController < ApplicationController
       raise "Can't add deploy key" unless result
     end
 
-  ensure
     redirect_to project_runner_projects_path
+  rescue
+    redirect_to project_runner_projects_path, alert: 'Failed adding runner deploy key to GitLab project'
   end
 
   def destroy
