@@ -16,6 +16,7 @@ class UserSessionsController < ApplicationController
     if user && sign_in(user)
       redirect_to root_path
     else
+      @error = 'Invalid credentials'
       render :new
     end
   end

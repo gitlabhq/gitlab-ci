@@ -1,4 +1,7 @@
 = form_for @user_session do |f|
+  - if @error.present?
+    .alert.alert-error
+      = @error
   %div.control-group
     = f.label :email, class: 'control-label'
     .controls= f.email_field :email
