@@ -15,6 +15,7 @@
 #  polling_interval :integer
 #  public           :boolean          default(FALSE), not null
 #  ssh_url_to_repo  :string(255)
+#  gitlab_id        :integer
 #
 
 require 'spec_helper'
