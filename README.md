@@ -32,7 +32,7 @@ __GitLab CI Runner__ is a pure ruby application which process builds.
 It can be deployed separately and work with GitLab CI through API.
 
 In order to run tests you need at least 1 __GitLab CI__ instance and 1 __GitLab CI Runner__.
-Hovewer for running several builds at same time you may want to setup more then one __GitLab CI Runner__.
+However, for running several builds at the same time you may want to setup more than one __GitLab CI Runner__.
 
 Possible Cases: 
 
