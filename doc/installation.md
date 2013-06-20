@@ -59,7 +59,7 @@ Create a user for GitLab:
 
     # Create a tmp directory inside application
     #
-    mkdir -p tmp/pids
+    mkdir -p tmp/pids tmp/sockets
 
     # Install dependencies
     #
