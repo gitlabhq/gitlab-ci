@@ -23,8 +23,13 @@ Create a user for GitLab:
     echo "source /home/gitlab_ci/.rvm/scripts/rvm" >> ~/.bashrc
 
 
-## 3. Prepare MySQL
+## 3. Prepare the database
 
+You can use either MySQL or PostgreSQL.
+
+## MySQL
+
+    # Install the database packages
     sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
 
     # Login to MySQL
@@ -38,6 +43,27 @@ Create a user for GitLab:
 
     # Grant proper permissions to the MySQL User
     mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
+
+## PostgreSQL
+
+    # Install the database packages
+    sudo apt-get install -y postgresql-9.1 libpq-dev
+
+    # Login to PostgreSQL
+    sudo -u postgres psql -d template1
+
+    # Create a user for GitLab. (change $password to a real password)
+    template1=# CREATE USER gitlab_ci WITH PASSWORD '$password';
+
+    # Create the GitLab production database & grant all privileges on database
+    template1=# CREATE DATABASE gitlab_ci_production OWNER gitlab_ci;
+
+    # Quit the database session
+    template1=# \q
+
+    # Try connecting to the new database with the new user
+    sudo -u git -H psql -d gitlab_ci_production
+
 
 ## 4. Get code 
 
@@ -66,11 +92,13 @@ Create a user for GitLab:
     gem install bundler
     bundle --without development test
 
-    # Copy mysql db config
-    #
-    # make sure to update username/password in config/database.yml
+    # Copy database configuration
+    # choose one of the two example files based what database you prepared earlier
+    # after copying make sure to update username/password in config/database.yml
     #
     cp config/database.yml.mysql config/database.yml
+or
+    cp config/database.yml.postgresql config/database.yml
 
     # Copy application config
     #

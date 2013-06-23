@@ -9,17 +9,21 @@
 
 ### Requirements
 
-**The project is designed for the Linux operating system.**
+GitLab CI is designed for the Linux operating system.
 
-We officially support (recent versions of) these Linux distributions:
+GitLab CI officially supports (recent versions of) these Linux distributions:
 
-- Ubuntu Linux
-- Debian/GNU Linux
+* Ubuntu Linux
+* Debian/GNU Linux
 
-__We recommend to use server with at least 756MB RAM for gitlab-ci instance.__
+Additionally GitLab CI requires:
 
+* ruby 1.9.3
+* MySQL or PostgreSQL
 
-__master branch contains unstable 3.0. Use 2-2-stable branch__
+__We recommend to use a server with at least 756MB RAM for a gitlab-ci instance.__
+
+__The master branch contains the unstable 3.0. Please use the 2-2-stable branch__
 
 
 ### How it works
