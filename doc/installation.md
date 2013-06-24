@@ -1,3 +1,7 @@
+# Requirements:
+
+* GitLab 5.3
+
 # Setup: 
 
 Create a user for GitLab:
