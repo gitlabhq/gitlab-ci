@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603161449) do
+ActiveRecord::Schema.define(:version => 20130628142321) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20130603161449) do
     t.text     "push_data"
     t.integer  "runner_id"
   end
+
+  add_index "builds", ["project_id"], :name => "index_builds_on_project_id"
 
   create_table "projects", :force => true do |t|
     t.string   "name",                                :null => false
