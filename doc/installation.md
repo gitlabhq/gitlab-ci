@@ -89,7 +89,7 @@ You can use either MySQL or PostgreSQL.
 
     # Create a tmp directory inside application
     #
-    mkdir -p tmp/pids
+    mkdir -p tmp/pids tmp/sockets
 
     # Install dependencies
     #
