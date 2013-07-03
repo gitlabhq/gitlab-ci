@@ -1,0 +1,13 @@
+.container-fluid
+  - if alert || notice
+    - if alert
+      .alert= alert
+    - if notice
+      .alert.alert-info= notice
+
+  - if current_user
+    - if @project && @project.runners.count.zero? && !params[:show_guide]
+      .alert.alert-error
+        %span You should assign at least one runner to project for processing project builds. Visit #{link_to 'this page', project_runner_projects_path(@project)} to assign runner
+    - elsif Runner.count.zero?
+      = render 'shared/no_runners'

@@ -1,15 +1,3 @@
-%h3
-  Project: #{link_to @project.name, @project} &rarr; Details
-  - if @project.gitlab_url.present?
-    %small= link_to 'View on GitLab', @project.gitlab_url
-  .right
-    = link_to project_path(@project), class: 'btn btn-small' do
-      Builds
-    %a.btn.btn-small{href: edit_project_path(@project)}
-      %i.icon-edit.icon-white
-      Edit
-
-
 %p.lead Integration with GitLab and other services
 
 %form.form-horizontal

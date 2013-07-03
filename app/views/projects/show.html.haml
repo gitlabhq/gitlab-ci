@@ -1,28 +1,5 @@
 = render 'shared/guide' if params[:show_guide].present?
 
-%h3
-  Project: #{@project.name}
-  - if @project.public
-    %small (Public)
-
-  - if @project.gitlab_url.present?
-    %small= link_to 'View on GitLab', @project.gitlab_url
-
-  - if current_user
-    .pull-right
-      %span
-        = link_to 'Runners', project_runner_projects_path(@project), class: 'btn btn-small'
-      %span
-        = link_to details_project_path(@project), class: 'btn btn-small' do
-          Details
-      %span
-        = link_to stats_project_path(@project), class: 'btn btn-small' do
-          Stats
-      %span
-        = link_to edit_project_path(@project), class: 'btn btn-small' do
-          %i.icon-edit.icon-white
-          Edit
-
 
 %ul.nav.nav-tabs
   %li{class: ref_tab_class}

@@ -1,5 +1,6 @@
 class RunnerProjectsController < ApplicationController
   before_filter :authenticate_user!
+  layout 'project'
 
   def index
     @runner_projects = project.runner_projects.all

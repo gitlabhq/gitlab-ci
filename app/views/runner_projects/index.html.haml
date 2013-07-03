@@ -1,64 +1,57 @@
-%h3
-  Project: #{link_to @project.name, @project} &rarr; Runners
-%br
-
-%p
+%p.lead
   To register new runner visit #{link_to 'this page ', runners_path}
 
-%h5 Activated:
+.row-fluid
+  .span7
+    %h5 Activated:
+    %table.table
+      %tr
+        %th Runner ID
+        %th Runner Token
+        %th Last build
+        %th Builds Stats
+        %th Registered
+        %th
 
-%table.table
-  %tr
-    %th Runner ID
-    %th Runner Token
-    %th Last build
-    %th Builds Stats
-    %th Registered
-    %th
+      - @runner_projects.each do |runner_project|
+        - runner = runner_project.runner
+        - builds = runner.builds.where(project_id: @project.id)
+        %tr
+          %td
+            %span.badge.badge-info= runner.id
+          %td
+            = runner.token
+          %td
+            - last_build = builds.last
+            - if last_build
+              = link_to last_build.short_sha, [last_build.project, last_build]
+            - else
+              unknown
+          %td
+            %span.badge.badge-success
+              #{builds.success.count}
+            %span /
+            %span.badge.badge-important
+              #{builds.failed.count}
+          %td
+            #{time_ago_in_words(runner_project.created_at)} ago
+          %td
+            = link_to 'Disable', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small right'
+  .span5
+    %h5 Available
+    %table.table
+      %tr
+        %th ID
+        %th Token
+        %th
 
-  - @runner_projects.each do |runner_project|
-    - runner = runner_project.runner
-    - builds = runner.builds.where(project_id: @project.id)
-    %tr
-      %td
-        %span.badge.badge-info= runner.id
-      %td
-        = runner.token
-      %td
-        - last_build = builds.last
-        - if last_build
-          = link_to last_build.short_sha, [last_build.project, last_build]
-        - else
-          unknown
-      %td
-        %span.badge.badge-success
-          #{builds.success.count}
-        %span /
-        %span.badge.badge-important
-          #{builds.failed.count}
-      %td
-        #{time_ago_in_words(runner_project.created_at)} ago
-      %td
-        = link_to 'Disable', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small right'
-
-- if @runner_projects.blank?
-  .alert.alert-error
-    %h5 You should add at least one runner to process project builds
-
-%h5 Available
-%table.table
-  %tr
-    %th ID
-    %th Token
-    %th
-
-  - (Runner.all - @project.runners).each do |runner|
-    %tr
-      %td
-        = runner.id
-      %td
-        = runner.token
-      %td
-        = form_for [@project, @runner_project] do |f|
-          = f.hidden_field :runner_id, value: runner.id
-          = f.submit 'Add', class: 'btn btn-small'
+      - (Runner.all - @project.runners).each do |runner|
+        %tr
+          %td
+            = runner.id
+          %td
+            = runner.token
+          %td
+            = form_for [@project, @runner_project] do |f|
+              = f.hidden_field :runner_id, value: runner.id
+              = f.submit 'Add', class: 'btn btn-small'

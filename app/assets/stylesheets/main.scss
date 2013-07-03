@@ -1,7 +1,11 @@
 @import "bootstrap";
 @import "font-awesome";
 
-$style_color: #5bc;
+$style_color: #289;
+
+.navbar-static-top {
+  margin-bottom: 20px;
+}
 
 body {
   color:#666;
@@ -9,10 +13,10 @@ body {
 }
 
 a {
-  color: #3ab;
+  color: $style_color;
 
   &:hover {
-    color: #278;
+    color: #3AB;
   }
 }
 
@@ -24,12 +28,12 @@ a {
 .navbar-ci {
   .navbar-inner {
     padding: 4px;
-    background: #2AB;
+    background: $style_color;
 
     .brand,
     .nav > li > a {
       color: #fff;
-      text-shadow: 0 1px 0 #29b;
+      text-shadow: 0 1px 0 #167;
     }
   }
 }
@@ -60,8 +64,6 @@ pre.trace {
   margin-bottom: 5px;
 }
 
-.navbar .navbar-inner { border-radius: 0; }
-
 .builds {
   @extend .table;
 
@@ -76,21 +78,10 @@ pre.trace {
 }
 
 .btn {
-  background: $style_color;
-  color: #fff;
-  text-shadow: 0 1px 0 #29b;
-  border-radius:0;
-  border: none;
-
-  &:hover {
-    background: #6cd;
-    color: #fff;
-    text-shadow: 0 1px 0 #29b;
-  }
-
   &.btn-primary {
     background: #29a;
     border:1px solid #279;
+    padding: 4px 20px;
   }
 
   &.btn-danger {
@@ -100,16 +91,8 @@ pre.trace {
   }
 }
 
-.well {
-  border-radius: 0;
-}
-
 .form-actions {
   background: none;
-}
-
-.alert {
-  border-radius: 0;
 }
 
 h3.error { color: #B94A48; }
@@ -162,15 +145,6 @@ h3.error { color: #B94A48; }
   @include box-shadow(0 0 0 3px #eee);
 }
 
-form {
-  input[type="email"],
-  input[type="password"],
-  input[type="text"] {
-    border-radius: 0;
-    padding: 5px;
-  }
-}
-
 fieldset {
   legend {
     font-size: 18px;
@@ -212,4 +186,36 @@ td form {
 .thumbnail.screenshot {
   padding: 20px;
   background: #AAA;
+}
+
+.login-box {
+  width: 400px;
+  position: relative;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  margin: auto;
+  padding: 20px;
+  background: white;
+
+  input[type="email"], input[type="password"], input[type="text"], select {
+    width: 250px;
+  }
+}
+
+.table {
+  th {
+    background: #eee;
+    background-image: -webkit-gradient(linear, 0 0, 0 30, color-stop(0.066, #eee), to(#dfdfdf));
+    background-image: -webkit-linear-gradient(#eee 6.6%, #dfdfdf);
+    background-image: -moz-linear-gradient(#eee 6.6%, #dfdfdf);
+    background-image: -o-linear-gradient(#eee 6.6%, #dfdfdf);
+    border-bottom: 1px solid #CCC;
+  }
+}
+
+.project-title {
+  margin: 0;
 }

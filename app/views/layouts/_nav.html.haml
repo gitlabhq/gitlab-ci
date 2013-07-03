@@ -1,0 +1,27 @@
+.navbar.navbar-static-top.navbar-ci
+  .navbar-inner
+    .container-fluid
+      = link_to 'GitLab CI', root_path, class: "brand"
+      %ul.nav
+        - if current_user
+          %li
+            = link_to 'GitLab Projects', gitlab_projects_path
+          %li
+            = link_to runners_path do
+              Runners
+      %ul.nav.pull-right
+        - if current_user
+          %li
+            = link_to user_sessions_path do
+              .profile-holder
+                = image_tag gravatar_icon(current_user.email, 24)
+                %span= current_user.email
+          %li
+            = link_to user_sessions_path, class: "logout", method: :delete do
+              %i.icon-signout
+              Logout
+        - else
+          %li
+            = link_to 'Login', new_user_sessions_path
+
+

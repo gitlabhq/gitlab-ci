@@ -4,6 +4,8 @@ class ProjectsController < ApplicationController
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:status]
 
+  layout 'project', except: [:index, :gitlab]
+
   def index
     @projects = Project.order('name ASC')
     @projects = @projects.public unless current_user
@@ -26,21 +28,28 @@ class ProjectsController < ApplicationController
   def details
   end
 
-  def new
-    @project = Project.new
+  def create
+    project = YAML.load(params[:project])
+
+    params = {
+      name: project.name_with_namespace,
+      gitlab_id: project.id,
+      gitlab_url: project.web_url,
+      scripts: 'ls -la',
+      default_ref: project.default_branch || 'master',
+      ssh_url_to_repo: project.ssh_url_to_repo
+    }
+
+    @project = Project.new(params)
+
+    if @project.save
+      redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
+    else
+      redirect_to :back, alert: 'Cannot save project'
+    end
   end
 
   def edit
-  end
-
-  def create
-    @project = Project.new(params[:project])
-
-    if @project.save
-      redirect_to @project, notice: 'Project was successfully created.'
-    else
-      render action: "new"
-    end
   end
 
   def update
@@ -99,27 +108,8 @@ class ProjectsController < ApplicationController
 
   def gitlab
     @projects = Project.from_gitlab(current_user)
-  end
-
-  def add
-    project = YAML.load(params[:project])
-
-    params = {
-      name: project.name_with_namespace,
-      gitlab_id: project.id,
-      gitlab_url: project.web_url,
-      scripts: 'ls -la',
-      default_ref: project.default_branch,
-      ssh_url_to_repo: project.ssh_url_to_repo
-    }
-
-    @project = Project.new(params)
-
-    if @project.save
-      redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
-    else
-      redirect_to :back, alert: 'Cannot save project'
-    end
+  rescue
+    @error = 'Failed to fetch GitLab projects'
   end
 
   protected
