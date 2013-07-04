@@ -1,29 +1,27 @@
-%h3 GitLab Owned projects:
-
+%h3
+  GitLab Owned projects:
+%p Fetched from #{current_user.url}
 - if @error
   .alert.alert-error
     %h5
       %i.icon-exclamation
       = @error
 - else
-  %table.table
+  %table.table.table-striped.table-bordered
     %tr
-      %th ID
       %th Name
       %th Repo
       %th
 
-    - @projects.each do |project|
+    - @projects.sort_by(&:name_with_namespace).each do |project|
       %tr
-        %td
-          = project.id
         %td
           = project.name_with_namespace
         %td
           = link_to project.web_url, project.web_url
         %td
           - if Project.already_added?(project)
-            %strong
+            %strong.cgreen
               Added
           - else
             = form_tag projects_path do
