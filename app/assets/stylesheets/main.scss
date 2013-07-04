@@ -8,7 +8,7 @@ $style_color: #289;
 }
 
 body {
-  color:#666;
+  color:#444;
   font-size: 13px;
 }
 
@@ -218,4 +218,21 @@ td form {
 
 .project-title {
   margin: 0;
+}
+
+.nav-stacked {
+  li.active a {
+    font-weight: bold;
+    background: $style_color;
+    color: #FFF;
+
+    &:hover {
+      background: $style_color;
+      color: #FFF;
+    }
+  }
+
+  a {
+    background: #f9f9f9;
+  }
 }

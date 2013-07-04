@@ -103,7 +103,26 @@ class ProjectsController < ApplicationController
   end
 
   def stats
+    first_build, last_build = @project.builds.first, @project.builds.last
 
+    labels = []
+    total = []
+    success = []
+
+    13.times do |i|
+      start_month = (Date.today.years_ago(1) + i.month).beginning_of_month
+      end_month = start_month.end_of_month
+
+      labels << start_month.strftime("%d %B %Y")
+      total << @project.builds.where("? > created_at AND created_at > ?", end_month, start_month).count
+      success << @project.builds.where("? > created_at AND created_at > ?", end_month, start_month).success.count
+    end
+
+    @stats = {
+      labels: labels,
+      total: total,
+      success: success
+    }
   end
 
   def gitlab

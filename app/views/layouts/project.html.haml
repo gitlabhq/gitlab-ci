@@ -21,21 +21,21 @@
         - if current_user
           .span2
             %ul.nav.nav-tabs.nav-stacked
-              %li
+              = nav_link path: 'projects#show' do
                 = link_to project_path(@project) do
                   Builds
                   %small.pull-right= @project.builds.count
-              %li
+              = nav_link controller: :runner_projects do
                 = link_to project_runner_projects_path(@project) do
                   Runners
                   %small.pull-right= @project.runner_projects.count
-              %li
+              = nav_link path: 'projects#details' do
                 = link_to details_project_path(@project) do
-                  Details
-              %li
+                  Integration
+              = nav_link path: 'projects#stats' do
                 = link_to stats_project_path(@project) do
-                  Stats
-              %li
+                  Charts
+              = nav_link path: 'projects#edit' do
                 = link_to edit_project_path(@project) do
                   Settings
         .span10

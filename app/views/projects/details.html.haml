@@ -1,22 +1,44 @@
-%p.lead Integration with GitLab and other services
+%p.lead Integration with GitLab:
 
 %form.form-horizontal
   %fieldset
-    %legend
-      GitLab 5.3+
-      %small build on push, integration with Merge Requests, links to GitLab instance
-      .right
-        %small Copy to GitLab &rarr; Project &rarr; Services
+    .alert.alert-success
+      %legend
+        Complete (as service)
+        %small
+      %p
+        Copy to GitLab &rarr; Project &rarr; Services
+        (#{link_to 'screenshot', image_path('service_sample.png'), target: '_blank'})
+      %ul
+        %li build on push
+        %li integration with Merge Requests
+        %li links to GitLab instance
 
-    .control-group
-      = label_tag :token, 'Project Token', class: 'control-label'
-      .controls
-        = text_field_tag :token, @project.token, class: 'input-xxlarge', readonly: true
-    .control-group
-      = label_tag :url, 'Project URL', class: 'control-label'
-      .controls
-        = text_field_tag :url, project_url(@project), class: 'input-xxlarge', readonly: true
 
-    %h5 Sample screenshot:
-    .thumbnail.screenshot
-      = image_tag image_path('service_sample.png')
+      .control-group
+        = label_tag :token, 'Project Token', class: 'control-label'
+        .controls
+          = text_field_tag :token, @project.token, class: 'input-xxlarge', readonly: true
+      .control-group
+        = label_tag :url, 'Project URL', class: 'control-label'
+        .controls
+          = text_field_tag :url, project_url(@project), class: 'input-xxlarge', readonly: true
+
+
+
+  %br
+  %fieldset
+    .alert.alert-info
+      %legend
+        Partial (as web hook)
+        %small build on push, links to GitLab commits
+
+      %p Copy to GitLab &rarr; Project &rarr; Web Hooks
+      %ul
+        %li build on push
+        %li links to GitLab instance
+
+      .control-group
+        = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
+        .controls
+          = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', readonly: true
