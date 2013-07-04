@@ -38,7 +38,7 @@ describe "Projects" do
     end
 
     it { page.should have_content @project.name }
-    it { page.should have_content 'Some stats related to the project' }
+    it { page.should have_content 'Builds chart for last year' }
   end
 
   describe "GET /projects/:id/details" do
@@ -47,6 +47,6 @@ describe "Projects" do
     end
 
     it { page.should have_content @project.name }
-    it { page.should have_content 'Integration with GitLab and other services' }
+    it { page.should have_content 'Integration with GitLab' }
   end
 end
