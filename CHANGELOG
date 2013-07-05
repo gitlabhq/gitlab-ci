@@ -1,3 +1,11 @@
+v3.0.0
+  - Build running functionality extracted in gitlab-ci-runner
+  - Added API for runners and builds
+  - Redesigned application
+  - Added charts
+  - Use GitLab auth
+  - Add projects via UI with few clicks
+
 v2.2.0
   - replaced unicorn with puma
   - replaced grit with rugged
