@@ -23,7 +23,7 @@ Additionally GitLab CI requires:
 
 This version (3.x) is designed for GitLab 5.3+.
 
-If you want to use GitLab CI without GitLab or with older versions you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)
+__If you want to use GitLab CI without GitLab or with older versions you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)__
 
 ### How it works
 
