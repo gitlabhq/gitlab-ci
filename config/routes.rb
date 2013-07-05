@@ -29,7 +29,11 @@ GitlabCi::Application.routes.draw do
   end
 
   resource :user_sessions
-  resources :runners, only: [:index, :destroy]
+  resources :runners, only: [:index, :update, :destroy] do
+    member do
+      put :assign_all
+    end
+  end
 
   root :to => 'projects#index'
 end

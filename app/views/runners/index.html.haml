@@ -16,35 +16,12 @@
   %tr
     %th ID
     %th Token
+    %th Description
     %th Last build
     %th Projects
     %th Builds Stats
     %th Registered
     %th
 
-  - @runners.each do |runner|
-    %tr
-      %td
-        %span.badge.badge-info= runner.id
-      %td
-        = runner.token
-      %td
-        - last_build = runner.last_build
-        - if last_build
-          = link_to last_build.short_sha, [last_build.project, last_build]
-        - else
-          unknown
-      %td
-        = runner.projects.count
-      %td
-        %span.badge.badge-success
-          #{runner.builds.success.count}
-        %span /
-        %span.badge.badge-important
-          #{runner.builds.failed.count}
-      %td
-        #{time_ago_in_words(runner.created_at)} ago
-      %td
-        = link_to 'Block', runner, data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small right'
-
-
+  = render @runners
+  = paginate @runners

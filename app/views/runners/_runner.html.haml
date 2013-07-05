@@ -1,0 +1,34 @@
+%tr{id: dom_id(runner)}
+  %td
+    %span.badge.badge-info= runner.id
+  %td
+    = runner.token
+  %td
+    .runner-description
+      = runner.description
+      %span (#{link_to 'edit', '#', class: 'edit-runner-link'})
+    .runner-description-form.hide
+      = form_for runner, remote: true do |f|
+        = f.text_field :description, class: 'pull-left'
+        = f.submit 'Save', class: 'btn'
+  %td
+    - last_build = runner.last_build
+    - if last_build
+      = link_to last_build.short_sha, [last_build.project, last_build]
+    - else
+      unknown
+  %td
+    = runner.projects.count
+  %td
+    %span.badge.badge-success
+      #{runner.builds.success.count}
+    %span /
+    %span.badge.badge-important
+      #{runner.builds.failed.count}
+  %td
+    #{time_ago_in_words(runner.created_at)} ago
+  %td
+    .pull-right
+      = link_to 'Assign to all', assign_all_runner_path(runner), class: 'btn btn-small assign-all-runner', title: 'Assign runner to all projects', method: :put, remote: true
+      = link_to 'Remove', runner, data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+

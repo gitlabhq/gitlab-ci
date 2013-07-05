@@ -8,24 +8,13 @@ class RunnerProjectsController < ApplicationController
   end
 
   def create
-    ActiveRecord::Base.transaction do
-      @runner_project = project.runner_projects.create!(params[:runner_project])
+    @runner = Runner.find(params[:runner_project][:runner_id])
 
-      runner = @runner_project.runner
-
-      opts = {
-        key: runner.public_key,
-        title: "gitlab-ci-runner-#{runner.id}",
-        private_token: current_user.private_token
-      }
-
-      result = Network.new.add_deploy_key(current_user.url, project.gitlab_id, opts)
-      raise "Can't add deploy key" unless result
+    if @runner.assign_to(@project, current_user)
+      redirect_to project_runner_projects_path
+    else
+      redirect_to project_runner_projects_path, alert: 'Failed adding runner deploy key to GitLab project'
     end
-
-    redirect_to project_runner_projects_path
-  rescue
-    redirect_to project_runner_projects_path, alert: 'Failed adding runner deploy key to GitLab project'
   end
 
   def destroy
