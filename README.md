@@ -21,10 +21,9 @@ Additionally GitLab CI requires:
 * ruby 1.9.3
 * MySQL or PostgreSQL
 
-__We recommend to use a server with at least 756MB RAM for a gitlab-ci instance.__
+This version (3.x) is designed for GitLab 5.3+.
 
-__The master branch contains the unstable 3.0. Please use the 2-2-stable branch__
-
+If you want to use GitLab CI without GitLab or with older versions you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)
 
 ### How it works
 
@@ -45,9 +44,11 @@ Possible Cases:
 * 1 __GitLab CI__ and N __GitLab CI Runner__ instances on local machines
 
 
+![screen](https://raw.github.com/gitlabhq/gitlab-ci/master/app/assets/images/arch.jpg)
+
 ### Installation
 
-* [Installation and setup guide for v2.2](https://github.com/gitlabhq/gitlab-ci/blob/2-2-stable/doc/installation.md)
+* [Installation and setup guide](https://github.com/gitlabhq/gitlab-ci/blob/master/doc/installation.md)
 
 ### Getting help
 

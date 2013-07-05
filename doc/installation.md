@@ -1,37 +1,50 @@
 # Requirements:
 
-* GitLab 5.3
+* GitLab 5.3+
 
 # Setup: 
 
-Create a user for GitLab:
+## 1. Packages / Dependencies
 
-    sudo adduser --disabled-login --gecos 'GitLab CI' gitlab_ci
-
-
-## 1. Required packages:
+`sudo` is not installed on Debian by default. Make sure your system is
+up-to-date and install it.
 
     sudo apt-get update
     sudo apt-get upgrade
 
+**Note:**
+Vim is an editor that is used here whenever there are files that need to be
+edited by hand. But, you can use any editor you like instead.
+
+    # Install vim
+    sudo apt-get install -y vim
+
+Install the required packages:
+
     sudo apt-get install -y wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev libicu-dev
     sudo apt-get install redis-server 
 
-## 2. Install Ruby (RVM) for gitlab_ci
+# 2. Ruby
 
-    sudo su gitlab_ci
+Download Ruby and compile it:
 
-    \curl -L https://get.rvm.io | bash -s stable --ruby
+    mkdir /tmp/ruby && cd /tmp/ruby
+    curl --progress http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p392.tar.gz | tar xz
+    cd ruby-1.9.3-p392
+    ./configure
+    make
+    sudo make install
 
-    # Add next line to ~/.bashrc
-    echo "source /home/gitlab_ci/.rvm/scripts/rvm" >> ~/.bashrc
+Install the Bundler Gem:
+
+    sudo gem install bundler --no-ri --no-rdoc
 
 
 ## 3. Prepare the database
 
 You can use either MySQL or PostgreSQL.
 
-## MySQL
+### MySQL
 
     # Install the database packages
     sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
@@ -48,7 +61,7 @@ You can use either MySQL or PostgreSQL.
     # Grant proper permissions to the MySQL User
     mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
 
-## PostgreSQL
+### PostgreSQL
 
     # Install the database packages
     sudo apt-get install -y postgresql-9.1 libpq-dev
@@ -69,7 +82,13 @@ You can use either MySQL or PostgreSQL.
     sudo -u git -H psql -d gitlab_ci_production
 
 
-## 4. Get code 
+
+## 4. GitLab CI user:
+
+    sudo adduser --disabled-login --gecos 'GitLab CI' gitlab_ci
+
+
+## 5. Get code 
 
     cd /home/gitlab_ci/
 
@@ -77,54 +96,41 @@ You can use either MySQL or PostgreSQL.
 
     cd gitlab-ci
 
-    # Checkout preferable version
-    sudo -u gitlab_ci -H  git checkout 2-2-stable
+## 6. Setup application
 
-## 5. Setup application
+    # Edit application settings
+    sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
+    sudo -u gitlab_ci -H vim config/application.yml
 
-    # Act as gitlab_ci user
-    #
-    sudo su gitlab_ci
-    cd ~/gitlab-ci
+### Install gems
+ 
+    sudo -u gitlab_ci -H bundle --without development test postgres --deployment
+    sudo -u gitlab_ci -H bundle --without development test postgres --deployment
 
-    # Create a tmp directory inside application
-    #
-    mkdir -p tmp/pids
+### Setup db
 
-    # Install dependencies
-    #
-    gem install bundler
-    bundle --without development test
+    # mysql
+    sudo -u gitlab_ci -H cp config/database.yml.mysql config/database.yml
 
-    # Copy database configuration
-    # choose one of the two example files based what database you prepared earlier
-    # after copying make sure to update username/password in config/database.yml
-    #
-    cp config/database.yml.mysql config/database.yml
-or
-    cp config/database.yml.postgresql config/database.yml
+    # postgres
+    sudo -u gitlab_ci -H cp config/database.yml.postgres config/database.yml
+ 
+    # Edit user/password
+    sudo -u gitlab_ci -H vim config/database.yml
 
-    # Copy application config
-    #
-    cp config/application.yml.example config/application.yml
-
-    # Setup DB
-    #
-    bundle exec rake db:setup RAILS_ENV=production
+    # Setup tables
+    sudo -u gitlab_ci -H bundle exec rake db:create RAILS_ENV=production
 
     # Setup scedules 
     #
-    bundle exec whenever -w RAILS_ENV=production
+    sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
    
-    # Now exit from gitlab_ci user
-    exit
 
-
-## 6. Install Init Script
+## 7. Install Init Script
 
 Download the init script (will be /etc/init.d/gitlab_ci):
 
-    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/2-2-stable/lib/support/init.d/gitlab_ci -P /etc/init.d/
+    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/master/lib/support/init.d/gitlab_ci -P /etc/init.d/
     sudo chmod +x /etc/init.d/gitlab_ci
 
 Make GitLab start on boot:
@@ -139,7 +145,7 @@ Start your GitLab instance:
     sudo /etc/init.d/gitlab_ci restart
 
 
-# 7. Nginx
+# 8. Nginx
 
 
 ## Installation
@@ -149,7 +155,7 @@ Start your GitLab instance:
 
 Download an example site config:
 
-    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/2-2-stable/lib/support/nginx/gitlab_ci -P /etc/nginx/sites-available/
+    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/master/lib/support/nginx/gitlab_ci -P /etc/nginx/sites-available/
     sudo ln -s /etc/nginx/sites-available/gitlab_ci /etc/nginx/sites-enabled/gitlab_ci
 
 Make sure to edit the config file to match your setup:
@@ -165,7 +171,7 @@ Make sure to edit the config file to match your setup:
 
 
 
-# 8. Runners
+# 9. Runners
 
 
 Now you need Runners to process your builds.
@@ -175,13 +181,6 @@ Checkout [runner repository](https://github.com/gitlabhq/gitlab-ci-runner#instal
 
 
 Visit YOUR_SERVER for your first GitLab CI login.
-The setup has created an admin account for you. You can use it to log in:
-
-    admin@local.host
-    5iveL!fe
-
-**Important Note:**
-Please go over to your profile page and immediately change the password, so
-nobody can access your GitLab CI by using this login information later on.
+You should use your GitLab credentials in orider to login
 
 **Enjoy!**
