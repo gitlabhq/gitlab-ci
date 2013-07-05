@@ -109,4 +109,8 @@ module ApplicationHelper
   def current_action?(*args)
     args.any? { |v| v.to_s.downcase == action_name }
   end
+
+  def date_from_to(from, to)
+    "#{from.to_s(:short)} - #{to.to_s(:short)}"
+  end
 end

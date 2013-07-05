@@ -34,7 +34,7 @@ describe "Projects" do
 
   describe "GET /projects/:id/stats" do
     before do
-      visit stats_project_path(@project)
+      visit charts_project_path(@project)
     end
 
     it { page.should have_content @project.name }
@@ -43,7 +43,7 @@ describe "Projects" do
 
   describe "GET /projects/:id/details" do
     before do
-      visit details_project_path(@project)
+      visit integration_project_path(@project)
     end
 
     it { page.should have_content @project.name }

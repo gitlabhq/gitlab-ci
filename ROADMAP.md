@@ -1,5 +1,6 @@
 ## ROADMAP: 
 
-1. Email notification
-2. Authorization. 2 types of users (admin and user)
-3. API
+1. Auth to GitLab with username, email, ldap
+2. Email notification
+3. API documentation
+4. Test coverage > 85%

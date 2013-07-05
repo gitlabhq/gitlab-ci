@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status, :index, :show]
-  before_filter :project, only: [:build, :details, :show, :status, :edit, :update, :destroy, :stats]
+  before_filter :project, only: [:build, :integration, :show, :status, :edit, :update, :destroy, :charts]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:status]
 
@@ -25,7 +25,7 @@ class ProjectsController < ApplicationController
     @builds = @builds.order('id DESC').page(params[:page]).per(20)
   end
 
-  def details
+  def integration
   end
 
   def create
@@ -102,27 +102,11 @@ class ProjectsController < ApplicationController
     send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
   end
 
-  def stats
-    first_build, last_build = @project.builds.first, @project.builds.last
-
-    labels = []
-    total = []
-    success = []
-
-    13.times do |i|
-      start_month = (Date.today.years_ago(1) + i.month).beginning_of_month
-      end_month = start_month.end_of_month
-
-      labels << start_month.strftime("%d %B %Y")
-      total << @project.builds.where("? > created_at AND created_at > ?", end_month, start_month).count
-      success << @project.builds.where("? > created_at AND created_at > ?", end_month, start_month).success.count
-    end
-
-    @stats = {
-      labels: labels,
-      total: total,
-      success: success
-    }
+  def charts
+    @charts = {}
+    @charts[:week] = Charts::WeekChart.new(@project)
+    @charts[:month] = Charts::MonthChart.new(@project)
+    @charts[:year] = Charts::YearChart.new(@project)
   end
 
   def gitlab

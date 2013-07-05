@@ -13,8 +13,8 @@ GitlabCi::Application.routes.draw do
 
     member do
       get :status
-      get :stats
-      get :details
+      get :charts
+      get :integration
       post :build
     end
 

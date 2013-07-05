@@ -26,17 +26,17 @@
                   %i.icon-list-alt
                   Builds
                   %small.pull-right= @project.builds.count
+              = nav_link path: 'projects#charts' do
+                = link_to charts_project_path(@project) do
+                  %i.icon-bar-chart
+                  Charts
               = nav_link controller: :runner_projects do
                 = link_to project_runner_projects_path(@project) do
                   %i.icon-cog
                   Runners
                   %small.pull-right= @project.runner_projects.count
-              = nav_link path: 'projects#stats' do
-                = link_to stats_project_path(@project) do
-                  %i.icon-bar-chart
-                  Charts
-              = nav_link path: 'projects#details' do
-                = link_to details_project_path(@project) do
+              = nav_link path: 'projects#integration' do
+                = link_to integration_project_path(@project) do
                   %i.icon-wrench
                   Integration
               = nav_link path: 'projects#edit' do
