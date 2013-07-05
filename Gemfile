@@ -83,5 +83,6 @@ group :development, :test do
   gem 'growl',      require: darwin_only('growl')
   gem 'rb-inotify', require: linux_only('rb-inotify')
 
+  gem "simplecov", require: false
   gem 'coveralls', require: false
 end

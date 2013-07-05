@@ -9,3 +9,4 @@ tmp/*
 /log/*.log
 .powrc
 .rvmrc
+coverage/*

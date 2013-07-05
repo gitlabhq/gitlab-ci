@@ -299,6 +299,7 @@ DEPENDENCIES
   settingslogic
   shoulda-matchers
   sidekiq
+  simplecov
   sinatra
   slim
   stamp
