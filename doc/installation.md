@@ -101,6 +101,10 @@ You can use either MySQL or PostgreSQL.
     # Edit application settings
     sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
     sudo -u gitlab_ci -H vim config/application.yml
+    
+    # Create a sockets directory
+    sudo -u git -H mkdir tmp/sockets/
+    sudo chmod -R u+rwX  tmp/sockets/
 
 ### Install gems
  
@@ -120,6 +124,8 @@ You can use either MySQL or PostgreSQL.
 
     # Setup tables
     sudo -u gitlab_ci -H bundle exec rake db:create RAILS_ENV=production
+    # If you receive a message that the database already exists run "migrate" instead of "create":
+    
 
     # Setup scedules 
     #
