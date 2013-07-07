@@ -103,7 +103,7 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H vim config/application.yml
     
     # Create a sockets directory
-    sudo -u git -H mkdir tmp/sockets/
+    sudo -u gitlab_ci -H mkdir tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/
 
 ### Install gems
