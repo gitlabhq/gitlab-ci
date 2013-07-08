@@ -123,8 +123,7 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H vim config/database.yml
 
     # Setup tables
-    sudo -u gitlab_ci -H bundle exec rake db:create RAILS_ENV=production
-    # If you receive a message that the database already exists run "migrate" instead of "create":
+    sudo -u gitlab_ci -H bundle exec rake db:setup RAILS_ENV=production
     
 
     # Setup scedules 
