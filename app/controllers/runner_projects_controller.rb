@@ -10,7 +10,7 @@ class RunnerProjectsController < ApplicationController
   def create
     @runner = Runner.find(params[:runner_project][:runner_id])
 
-    if @runner.assign_to(@project, current_user)
+    if @runner.assign_to(project, current_user)
       redirect_to project_runner_projects_path
     else
       redirect_to project_runner_projects_path, alert: 'Failed adding runner deploy key to GitLab project'

@@ -101,6 +101,10 @@ You can use either MySQL or PostgreSQL.
     # Edit application settings
     sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
     sudo -u gitlab_ci -H vim config/application.yml
+    
+    # Create a sockets directory
+    sudo -u gitlab_ci -H mkdir tmp/sockets/
+    sudo chmod -R u+rwX  tmp/sockets/
 
 ### Install gems
  
