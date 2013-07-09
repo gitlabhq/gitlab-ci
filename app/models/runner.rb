@@ -38,6 +38,7 @@ class Runner < ActiveRecord::Base
       raise "Can't add deploy key" unless result
     end
   rescue => ex
+    logger.warn "Assign runner to project failed: #{ex}"
     false
   end
 end
