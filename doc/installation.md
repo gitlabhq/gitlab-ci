@@ -108,8 +108,11 @@ You can use either MySQL or PostgreSQL.
 
 ### Install gems
  
+    # mysql
     sudo -u gitlab_ci -H bundle --without development test postgres --deployment
-    sudo -u gitlab_ci -H bundle --without development test postgres --deployment
+
+    # postgres
+    sudo -u gitlab_ci -H bundle --without development test mysql --deployment
 
 ### Setup db
 
@@ -117,7 +120,7 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H cp config/database.yml.mysql config/database.yml
 
     # postgres
-    sudo -u gitlab_ci -H cp config/database.yml.postgres config/database.yml
+    sudo -u gitlab_ci -H cp config/database.yml.postgresql config/database.yml
  
     # Edit user/password
     sudo -u gitlab_ci -H vim config/database.yml
