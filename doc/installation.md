@@ -126,6 +126,13 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H bundle exec rake db:setup RAILS_ENV=production
     
 
+    # fixing build trace output being cut off too early (after 2^16 bytes)
+    # ruby does not support longtext (2^32 bytes), so we have to do it here
+    #
+    $ mysql -u root -p
+    mysql> USE gitlab_ci_production;
+    mysql> ALTER TABLE builds MODIFY trace LONGTEXT;
+
     # Setup scedules 
     #
     sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
