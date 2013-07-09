@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
 
   before_validation :set_default_values
 
-  def self.from_gitlab(user, scope = :owned)
+  def self.from_gitlab(user, scope = :public)
     opts = {
       private_token: user.private_token
     }
