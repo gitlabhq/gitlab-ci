@@ -36,6 +36,7 @@ class Runner < ActiveRecord::Base
 
       result = Network.new.add_deploy_key(current_user.url, project.gitlab_id, opts)
       raise "Can't add deploy key" unless result
+      true
     end
   rescue => ex
     logger.warn "Assign runner to project failed: #{ex}"
