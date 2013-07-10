@@ -39,6 +39,10 @@
             %p
               %b Finished:
               #{time_ago_in_words(@build.finished_at)} ago
+          %p
+            %b Runner:
+            - if @build.runner
+              = @build.runner.token
       .span6
         %fieldset
           %legend Commit
