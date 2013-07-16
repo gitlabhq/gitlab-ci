@@ -26,7 +26,7 @@ module Ansi2html
       elsif s.scan(/\e\[1m/)
         # Just ignore bold style
       else
-        if s.scan(/\e\[0m/)
+        if s.scan(/\e\[0m/) || s.scan(/\e\[39m/)
           if tag_open
             out << %{</span>}
           end
