@@ -66,11 +66,16 @@
     .clearfix
     - if @build.active?
       .autoscroll-container.pull-right
-        %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+        %button.btn.btn-mini#autoscroll-button_top{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
       .clearfix
     %pre.trace#build-trace
       = preserve do
         = raw @build.trace_html
+    .clearfix
+    - if @build.active?
+      .autoscroll-container.pull-right
+        %button.btn.btn-mini#autoscroll-button_bot{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+      .clearfix
 
   .span3
     .builds
