@@ -38,7 +38,7 @@ def self.convert(ansi)
           out << %{</span>}
           tag_open = false
         end
-      elsif s.scan(/\e\[\d{0,2}[GJKcghln]/)
+      elsif s.scan(/\e\[\d{0,2}[GJKcghlmn]/)
         # Ignore other terminal control escape sequences
       else
         out << s.scan(/./m)
