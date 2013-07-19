@@ -15,6 +15,7 @@ module Ansi2html
 def self.convert(ansi)
     out = ""
     tag_open = false
+    bold_tag_open = false
     s = StringScanner.new(ansi.gsub("<", "&lt;"))
     while(!s.eos?)
       if s.bol? && s.check(/.*\e\[2K/)
@@ -28,16 +29,23 @@ def self.convert(ansi)
         tag_open = true
       elsif s.scan(/\e\[1m/)
         out << %{<span style="font-weight:bold">}
+        bold_tag_open = true
       elsif s.scan(/\e\[0m/) || s.scan(/\e\[39m/)
-        if tag_open
+        if bold_tag_open
           out << %{</span>}
+          bold_tag_open = false
+        elsif tag_open
+          out << %{</span>}
+          tag_open = false
         end
-        tag_open = false
       elsif s.scan(/\e\[\d{0,2}[GJKcghln]/)
         # Ignore other terminal control escape sequences
       else
         out << s.scan(/./m)
       end
+    end
+    if bold_tag_open
+      out << %{</span>}
     end
     if tag_open
       out << %{</span>}
