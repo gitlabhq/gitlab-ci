@@ -60,7 +60,10 @@ You can use either MySQL or PostgreSQL.
 
     # Grant proper permissions to the MySQL User
     mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
-
+    
+    # Exit MYSQL
+    mysql> exit;
+    
 ### PostgreSQL
 
     # Install the database packages
