@@ -12,7 +12,7 @@ module Ansi2html
     '90' => 'grey'
   }
 
-def self.convert(ansi)
+  def self.convert(ansi)
     out = ""
     tag_open = false
     bold_tag_open = false
