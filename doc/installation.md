@@ -192,6 +192,6 @@ Checkout [runner repository](https://github.com/gitlabhq/gitlab-ci-runner#instal
 
 
 Visit YOUR_SERVER for your first GitLab CI login.
-You should use your GitLab credentials in orider to login
+You should use your GitLab credentials in order to login
 
 **Enjoy!**
