@@ -95,6 +95,8 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H git clone https://github.com/gitlabhq/gitlab-ci.git
 
     cd gitlab-ci
+    
+    sudo -u gitlab_ci -H git checkout 3-0-stable
 
 ## 6. Setup application
 
@@ -103,7 +105,7 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H vim config/application.yml
     
     # Create a sockets directory
-    sudo -u gitlab_ci -H mkdir tmp/sockets/
+    sudo -u gitlab_ci -H mkdir -p tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/
 
 ### Install gems
