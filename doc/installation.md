@@ -104,10 +104,12 @@ You can use either MySQL or PostgreSQL.
     # Edit application settings
     sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
     sudo -u gitlab_ci -H vim config/application.yml
-    
-    # Create a sockets directory
+
+    # Create socket and pid directories
     sudo -u gitlab_ci -H mkdir tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/
+    sudo -u gitlab_ci -H mkdir tmp/pids/
+    sudo chmod -R u+rwX  tmp/pids/
 
 ### Install gems
  
@@ -192,6 +194,6 @@ Checkout [runner repository](https://github.com/gitlabhq/gitlab-ci-runner#instal
 
 
 Visit YOUR_SERVER for your first GitLab CI login.
-You should use your GitLab credentials in orider to login
+You should use your GitLab credentials in order to login
 
 **Enjoy!**
