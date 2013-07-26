@@ -21,8 +21,8 @@ describe Ansi2html do
     Ansi2html::convert("\e[90mHello\e[0m").should == '<span class="grey">Hello</span>'
   end
 
-  it "ignore nested bold" do
-    Ansi2html::convert("\e[37m\e[1mHello\e[0m\e[0m").should == '<span class="white">Hello</span>'
+  it "dont ignore nested bold" do
+    Ansi2html::convert("\e[37m\e[1mHello\e[0m\e[0m").should == '<span class="white"><span style="font-weight:bold">Hello</span></span>'
   end
 
   it "should print cucumber style" do
