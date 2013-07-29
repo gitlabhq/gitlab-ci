@@ -23,4 +23,4 @@ $ ->
     descr.next('.runner-description-form').show()
 
   $('.assign-all-runner').on 'click', ->
-    $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progres..')
+    $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')

@@ -134,7 +134,7 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H bundle exec rake db:setup RAILS_ENV=production
     
 
-    # Setup scedules 
+    # Setup schedules
     #
     sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
    
