@@ -1,6 +1,7 @@
 ci.db
 config/application.yml
 config/database.yml
+config/puma.rb
 log/*
 tmp/*
 *.pid

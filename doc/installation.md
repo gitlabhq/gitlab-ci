@@ -105,6 +105,10 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
     sudo -u gitlab_ci -H vim config/application.yml
 
+    # Edit web server settings
+    sudo -u gitlab_ci -H cp config/puma.rb.example config/puma.rb
+    sudo -u gitlab_ci -H vim config/puma.rb
+
     # Create socket and pid directories
     sudo -u gitlab_ci -H mkdir tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/
