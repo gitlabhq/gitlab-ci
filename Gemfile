@@ -8,7 +8,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.14'
 
 # DB
 gem 'mysql2', group: :mysql
@@ -18,7 +18,7 @@ gem 'pg',     group: :postgres
 gem 'settingslogic'
 
 # Web server
-gem "puma", "~> 2.0.1"
+gem "puma", "~> 2.3.2"
 
 # Haml
 gem 'haml-rails'
