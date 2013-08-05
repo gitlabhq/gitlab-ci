@@ -2,7 +2,7 @@
   To register new runner visit #{link_to 'this page ', runners_path}
 
 .row-fluid
-  .span7
+  .span8
     %h5 Activated:
     %table.table
       %tr
@@ -37,7 +37,7 @@
             #{time_ago_in_words(runner_project.created_at)} ago
           %td
             = link_to 'Disable', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small right'
-  .span5
+  .span4
     %h5 Available
     %table.table
       %tr

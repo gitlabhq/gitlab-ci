@@ -8,7 +8,7 @@
             %li= msg
 
   .row-fluid
-    .span6
+    .span7
       %fieldset
         %legend Build
         .field
@@ -30,14 +30,14 @@
           = f.label :polling_interval, "Build interval"
           = f.number_field :polling_interval, placeholder: '5'
           %span Hours
-    .span6
+    .span5
       %fieldset
         %legend Project settings
         .field
           = f.label :default_ref, "Make tabs for next branches"
           = f.text_field :default_ref, class: 'input-xlarge', placeholder: 'master, stable'
-          %small You will be able to filter builds by following branches
-        .field
+          %p You will be able to filter builds by following branches
+        .field.alert
           = f.label :public do
             = f.check_box :public, class: 'input-xlarge'
             %span Public (Anyone can see project and builds list)
