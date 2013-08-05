@@ -1,3 +1,8 @@
+v3.1.0
+  - Login with both username, email or LDAP credentials (if GitLab 6.0+)
+  - Retry build button functionality
+  - UI fixes for resolution 1366px and lower
+
 v3.0.0
   - Build running functionality extracted in gitlab-ci-runner
   - Added API for runners and builds
