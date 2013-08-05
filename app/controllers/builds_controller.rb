@@ -18,6 +18,19 @@ class BuildsController < ApplicationController
     @builds = @builds.page(params[:page]).per(20)
   end
 
+  def retry
+    @build = builds.limit(1).first
+
+    build = project.builds.create(
+      sha: @build.sha,
+      before_sha: @build.before_sha,
+      push_data: @build.push_data,
+      ref: @build.ref
+    )
+
+    redirect_to project_build_path(project, build)
+  end
+
   def status
     @build = builds.limit(1).first
 

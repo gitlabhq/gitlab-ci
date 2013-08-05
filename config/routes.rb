@@ -22,6 +22,7 @@ GitlabCi::Application.routes.draw do
       member do
         get :cancel
         get :status
+        post :retry
       end
     end
 
