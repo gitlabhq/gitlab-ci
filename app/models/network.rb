@@ -16,7 +16,7 @@ class Network
     end
   end
 
-  def projects(url, api_opts, scope = :owned)
+  def projects(url, api_opts, scope = :public)
     opts = {
       query: api_opts.merge(per_page: 1000),
       headers: {"Content-Type" => "application/json"},
