@@ -18,7 +18,7 @@ class Network
 
   def projects(url, api_opts, scope = :owned)
     opts = {
-      query: api_opts.merge(per_page: 1000),
+      query: api_opts,
       headers: {"Content-Type" => "application/json"},
     }
 

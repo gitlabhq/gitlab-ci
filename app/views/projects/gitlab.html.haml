@@ -28,3 +28,14 @@
               = hidden_field_tag :project, project.to_yaml
               = submit_tag 'Add', class: 'btn btn-small'
 
+  %center
+    - if @page > 1
+      = link_to gitlab_projects_path(page: @page - 1), class: 'btn' do
+        %i.icon-angle-left
+        prev
+    &nbsp;
+    - if @projects.size == @per_page
+      = link_to gitlab_projects_path(page: @page + 1), class: 'btn' do
+        next
+        %i.icon-angle-right
+

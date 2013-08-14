@@ -44,9 +44,11 @@ class Project < ActiveRecord::Base
 
   before_validation :set_default_values
 
-  def self.from_gitlab(user, scope = :owned)
+  def self.from_gitlab(user, page, per_page, scope = :owned)
     opts = {
-      private_token: user.private_token
+      private_token: user.private_token,
+      per_page: per_page,
+      page: page,
     }
 
     projects = Network.new.projects(user.url, opts, scope)

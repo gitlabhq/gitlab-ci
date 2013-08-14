@@ -110,7 +110,13 @@ class ProjectsController < ApplicationController
   end
 
   def gitlab
-    @projects = Project.from_gitlab(current_user)
+    @per_page = 100
+    @page = if params[:page].present?
+              params[:page].to_i
+            else
+              1
+            end
+    @projects = Project.from_gitlab(current_user, @page, @per_page)
   rescue
     @error = 'Failed to fetch GitLab projects'
   end
