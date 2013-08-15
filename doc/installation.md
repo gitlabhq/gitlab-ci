@@ -110,9 +110,9 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H vim config/puma.rb
 
     # Create socket and pid directories
-    sudo -u gitlab_ci -H mkdir tmp/sockets/
+    sudo -u gitlab_ci -H mkdir -p tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/
-    sudo -u gitlab_ci -H mkdir tmp/pids/
+    sudo -u gitlab_ci -H -p mkdir tmp/pids/
     sudo chmod -R u+rwX  tmp/pids/
 
 ### Install gems
