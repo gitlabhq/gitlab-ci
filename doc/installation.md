@@ -116,10 +116,10 @@ You can use either MySQL or PostgreSQL.
 ### Install gems
  
     # For MySQL (note, the option says "without ... postgres")
-    sudo -u gitlab_ci -H bundle --without development test postgres --deployment
+    sudo -u gitlab_ci -H bundle install --without development test postgres --deployment
 
     # Or for PostgreSQL (note, the option says "without ... mysql")
-    sudo -u gitlab_ci -H bundle --without development test mysql --deployment
+    sudo -u gitlab_ci -H bundle install --without development test mysql --deployment
 
 ### Setup db
 
