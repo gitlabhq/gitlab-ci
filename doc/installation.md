@@ -40,7 +40,12 @@ Install the Bundler Gem:
     sudo gem install bundler --no-ri --no-rdoc
 
 
-## 3. Prepare the database
+## 3. GitLab CI user:
+
+    sudo adduser --disabled-login --gecos 'GitLab CI' gitlab_ci
+
+
+## 4. Prepare the database
 
 You can use either MySQL or PostgreSQL.
 
@@ -82,14 +87,7 @@ You can use either MySQL or PostgreSQL.
     template1=# \q
 
     # Try connecting to the new database with the new user
-    sudo -u git -H psql -d gitlab_ci_production
-
-
-
-## 4. GitLab CI user:
-
-    sudo adduser --disabled-login --gecos 'GitLab CI' gitlab_ci
-
+    sudo -u gitlab_ci -H psql -d gitlab_ci_production
 
 ## 5. Get code 
 
@@ -110,9 +108,9 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H vim config/puma.rb
 
     # Create socket and pid directories
-    sudo -u gitlab_ci -H mkdir tmp/sockets/
+    sudo -u gitlab_ci -H mkdir -p tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/
-    sudo -u gitlab_ci -H mkdir tmp/pids/
+    sudo -u gitlab_ci -H mkdir -p tmp/pids/
     sudo chmod -R u+rwX  tmp/pids/
 
 ### Install gems
