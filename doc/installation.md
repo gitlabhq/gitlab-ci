@@ -109,9 +109,12 @@ You can use either MySQL or PostgreSQL.
     sudo chmod -R u+rwX  tmp/sockets/
 
 ### Install gems
- 
+
+    # mysql
     sudo -u gitlab_ci -H bundle --without development test postgres --deployment
-    sudo -u gitlab_ci -H bundle --without development test postgres --deployment
+    
+    # postgres
+    sudo -u gitlab_ci -H bundle --without development test mysql --deployment
 
 ### Setup db
 
