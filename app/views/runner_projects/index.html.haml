@@ -7,7 +7,7 @@
     %table.table
       %tr
         %th Runner ID
-        %th Runner Token
+        %th Runner Description
         %th Last build
         %th Builds Stats
         %th Registered
@@ -20,7 +20,7 @@
           %td
             %span.badge.badge-info= runner.id
           %td
-            = runner.token
+            = runner.display_name
           %td
             - last_build = builds.last
             - if last_build
