@@ -2,11 +2,12 @@
 #
 # Table name: runners
 #
-#  id         :integer          not null, primary key
-#  token      :string(255)
-#  public_key :text
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  token       :string(255)
+#  public_key  :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  description :string(255)
 #
 
 class Runner < ActiveRecord::Base
@@ -41,5 +42,11 @@ class Runner < ActiveRecord::Base
   rescue => ex
     logger.warn "Assign runner to project failed: #{ex}"
     false
+  end
+
+  def display_name
+    return token unless !description.blank?
+
+    description
   end
 end
