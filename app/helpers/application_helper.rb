@@ -3,12 +3,18 @@ module ApplicationHelper
     image_tag 'loader.gif'
   end
 
-  def gravatar_icon(user_email = '', size = 40)
-    gravatar_url = 'https://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm'
-    user_email.strip!
-    sprintf gravatar_url, hash: Digest::MD5.hexdigest(user_email.downcase), size: size
-  end
+  def gravatar_icon(user_email = '', size = nil)
+    size = 40 if size.nil? || size <= 0
 
+    if !GitlabCi.config.gravatar.enabled || user_email.blank?
+      'no_avatar.png'
+    else
+      gravatar_url = request.ssl? || GitlabCi.config.gitlab_ci.https.enabled ? GitlabCi.config.gravatar.ssl_url : GitlabCi.config.gravatar.plain_url
+
+      user_email.strip!
+      sprintf gravatar_url, hash: Digest::MD5.hexdigest(user_email.downcase), size: size
+    end
+  end
   # Navigation link helper
   #
   # Returns an `li` element with an 'active' class if the supplied
