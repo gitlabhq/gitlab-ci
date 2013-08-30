@@ -85,4 +85,5 @@ group :development, :test do
 
   gem "simplecov", require: false
   gem 'coveralls', require: false
+  gem 'minitest', '4.3.2'
 end
