@@ -136,6 +136,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.1)
     mime-types (1.23)
+    minitest (4.3.2)
     multi_json (1.7.8)
     multi_xml (0.5.3)
     mysql2 (0.3.11)
@@ -285,6 +286,7 @@ DEPENDENCIES
   httparty (= 0.11.0)
   jquery-rails
   kaminari
+  minitest (= 4.3.2)
   mysql2
   pg
   pry
