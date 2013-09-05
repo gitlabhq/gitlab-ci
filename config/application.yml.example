@@ -2,6 +2,13 @@ defaults: &defaults
   allowed_gitlab_urls: 
     - 'https://dev.gitlab.org/'
     - 'https://staging.gitlab.org/'
+  gitlab_ci:
+    https:
+      enabled: false
+  gravatar:
+    enabled: true
+    plain_url: "http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
+    ssl_url:   "https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
 
 development:
   <<: *defaults
