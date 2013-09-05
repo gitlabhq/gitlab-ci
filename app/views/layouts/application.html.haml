@@ -4,6 +4,11 @@
   %body
     = render 'layouts/nav'
     = render 'layouts/info'
-    .container-fluid
+    - if content_for?(:title)
+      .container-fluid.container-title
+        = yield(:title)
+      %hr
+
+    .container-fluid.container-body
       = yield
     = render 'layouts/foot'
