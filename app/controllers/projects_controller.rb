@@ -19,7 +19,6 @@ class ProjectsController < ApplicationController
 
     @ref = params[:ref]
 
-
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
     @builds = @builds.order('id DESC').page(params[:page]).per(20)
@@ -110,13 +109,9 @@ class ProjectsController < ApplicationController
   end
 
   def gitlab
+    @page = (params[:page] || 1).to_i
     @per_page = 100
-    @page = if params[:page].present?
-              params[:page].to_i
-            else
-              1
-            end
-    @projects = Project.from_gitlab(current_user, @page, @per_page, :authorized)
+    @projects = current_user.gitlab_projects(@page, @per_page)
   rescue
     @error = 'Failed to fetch GitLab projects'
   end
