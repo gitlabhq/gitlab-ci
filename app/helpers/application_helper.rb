@@ -9,7 +9,7 @@ module ApplicationHelper
     if !GitlabCi.config.gravatar.enabled || user_email.blank?
       'no_avatar.png'
     else
-      gravatar_url = request.ssl? || GitlabCi.config.gitlab_ci.https.enabled ? GitlabCi.config.gravatar.ssl_url : GitlabCi.config.gravatar.plain_url
+      gravatar_url = request.ssl? || GitlabCi.config.gitlab_ci.https ? GitlabCi.config.gravatar.ssl_url : GitlabCi.config.gravatar.plain_url
 
       user_email.strip!
       sprintf gravatar_url, hash: Digest::MD5.hexdigest(user_email.downcase), size: size
