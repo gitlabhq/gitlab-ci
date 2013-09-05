@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-GitlabCi::Application.config.secret_token = '78140d64a8cee2937e883d9ff91a5a554c01e30c0e0042b470cd574d19462da8a607abdc23fa501c4580c74655742990a1da88ef03485c3cf9ac370f12e9397a'
+GitlabCi::Application.config.secret_token = '41cff934d5a788409310b2b4dc931ca9be9c5113ede94f41d44bf71b403f007d8031efa855d6d111393d33ca839722db98445a1a6f020331a3f43bd29a50c93e'

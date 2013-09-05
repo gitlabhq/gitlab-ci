@@ -13,8 +13,7 @@ class UserSession
     user = Network.new.authenticate(url, auth_opts)
 
     if user
-      user[:url] = url
-      OpenStruct.new(user)
+      User.new(user.merge("url" => url))
     else
       nil
     end
