@@ -6,12 +6,12 @@ describe "Projects" do
     @project = FactoryGirl.create :project
   end
 
-  describe "GET /projects" do
+  describe "GET /projects", js: true do
     before do
       visit projects_path
     end
 
-    it { page.should have_content @project.name }
+    it { page.should have_content 'GitLab / gitlabhq' }
   end
 
   describe "GET /projects/:id" do
