@@ -116,7 +116,7 @@ class ProjectsController < ApplicationController
             else
               1
             end
-    @projects = Project.from_gitlab(current_user, @page, @per_page)
+    @projects = Project.from_gitlab(current_user, @page, @per_page, :authorized)
   rescue
     @error = 'Failed to fetch GitLab projects'
   end
