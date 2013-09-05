@@ -1,0 +1,35 @@
+- last_build = project.last_build
+%tr.alert{class: project_statuc_class(project) }
+  %td
+    = project.id
+  %td
+    = link_to project do
+      %strong= project.name
+  %td
+    - if last_build
+      #{last_build.status} (#{build_link(last_build)})
+      = time_ago_in_words project.last_build_date
+      ago
+    - else
+      No builds yet
+  %td
+    - if project.public
+      %i.icon-globe
+      Public
+    - else
+      %i.icon-lock
+      Private
+  %td
+    = project.builds.count
+  %td
+    - count = project.runners.count
+    - if count.zero?
+      %span.badge.badge-important= count
+    - else
+      %span.badge.badge-success= count
+  -#%td
+    - if current_user
+      %a{href: edit_project_path(project)}
+        %i.icon-edit.icon-white
+        Edit
+
