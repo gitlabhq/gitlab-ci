@@ -11,7 +11,7 @@ describe "Projects" do
       visit projects_path
     end
 
-    it { page.should have_content 'GitLab / gitlabhq' }
+    it { page.should have_content @project.name }
   end
 
   describe "GET /projects/:id" do

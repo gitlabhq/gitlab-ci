@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_token!
     unless project.valid_token?(params[:token])
-      return page_404
+      return head(403)
     end
   end
 
