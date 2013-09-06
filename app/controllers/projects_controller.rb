@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status, :index, :show]
   before_filter :project, only: [:build, :integration, :show, :status, :edit, :update, :destroy, :charts]
+  before_filter :authorize_access_project!, except: [:build, :gitlab, :status, :index, :show, :new, :create]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:status]
 
@@ -23,8 +24,9 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    unless @project.public || current_user
-      authenticate_user! and return
+    unless @project.public
+      authenticate_user!
+      authorize_access_project!
     end
 
     @ref = params[:ref]

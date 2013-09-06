@@ -31,4 +31,20 @@ class User
   def reset_cache
     @sync_at = Time.now
   end
+
+  def can_access_project?(project_gitlab_id)
+    opts = {
+      private_token: self.private_token,
+    }
+
+    #Rails.cache.fetch(cache_key(project_gitlab_id, (Time.zone.now.to_i.round(-2)))) do
+      #Network.new.project(self.url, opts, project_gitlab_id)
+    #end
+
+    authorized_projects[project_gitlab_id] ||= !!Network.new.project(self.url, opts, project_gitlab_id)
+  end
+
+  def authorized_projects
+    @authorized_projects ||= {}
+  end
 end

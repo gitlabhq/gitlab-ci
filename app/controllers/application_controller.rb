@@ -5,19 +5,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def authenticate_user!
-    unless current_user
-      redirect_to new_user_sessions_path
-      return
-    end
-  end
-
-  def authenticate_token!
-    unless project.valid_token?(params[:token])
-      return head(403)
-    end
-  end
-
   def current_user
     @current_user ||= session[:current_user]
   end
@@ -28,5 +15,28 @@ class ApplicationController < ActionController::Base
 
   def sign_out
     @current_user = session[:current_user] = nil
+  end
+
+  def authenticate_user!
+    unless current_user
+      redirect_to new_user_sessions_path
+      return
+    end
+  end
+
+  def authenticate_token!
+    unless project.valid_token?(params[:token])
+      return page_404
+    end
+  end
+
+  def authorize_access_project!
+    unless current_user.can_access_project?(@project.gitlab_id)
+      return page_404
+    end
+  end
+
+  def page_404
+    render file: "#{Rails.root}/public/404.html", status: 404, layout: false
   end
 end

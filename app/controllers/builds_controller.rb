@@ -1,7 +1,7 @@
 class BuildsController < ApplicationController
   before_filter :authenticate_user!, except: [:status]
   before_filter :project
-  before_filter :authenticate_token!, only: [:build]
+  before_filter :authorize_access_project!, except: [:status]
 
   def show
     @builds = builds
