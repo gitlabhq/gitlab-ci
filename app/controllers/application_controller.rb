@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   helper_method :current_user
+  before_filter :reset_cache
 
   private
 
@@ -14,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sign_out
-    @current_user = session[:current_user] = nil
+    reset_session
   end
 
   def authenticate_user!
@@ -38,5 +39,12 @@ class ApplicationController < ActionController::Base
 
   def page_404
     render file: "#{Rails.root}/public/404.html", status: 404, layout: false
+  end
+
+  # Reset user cache every day for security purposes
+  def reset_cache
+    if current_user && current_user.sync_at < (Time.zone.now - 24.hours)
+      current_user.reset_cache
+    end
   end
 end
