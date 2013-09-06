@@ -11,6 +11,7 @@ class ProjectsController < ApplicationController
   end
 
   def gitlab
+    current_user.reset_cache if params[:reset_cache]
     @page = (params[:page] || 1).to_i
     @per_page = 100
     @gl_projects = current_user.gitlab_projects(@page, @per_page)

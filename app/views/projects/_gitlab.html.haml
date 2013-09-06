@@ -1,5 +1,14 @@
-%p.fetch-status.light
-  Fetched from #{link_to current_user.url, current_user.url}. #{@total_count} projects, #{@projects.size} with CI
+.clearfix.light
+  .pull-left.fetch-status
+    Fetched from GitLab (#{link_to current_user.url, current_user.url}) #{time_ago_in_words(current_user.sync_at)} ago.
+    = link_to gitlab_projects_path(reset_cache: true), remote: true, class: 'sync-now btn btn-mini' do
+      %i.icon-refresh
+      Sync now
+    %br
+
+  .pull-right
+    #{@total_count} projects, #{@projects.size} of them added to CI
+%br
 
 %table.table
   %tr
@@ -18,8 +27,9 @@
         \-
       %td
         = project.name_with_namespace
+        -#= link_to project.web_url, project.web_url
       %td
-        = link_to project.web_url, project.web_url
+        %small Not added to CI
       %td
       %td
       %td
