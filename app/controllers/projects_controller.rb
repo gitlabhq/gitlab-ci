@@ -1,20 +1,32 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status, :index, :show]
   before_filter :project, only: [:build, :integration, :show, :status, :edit, :update, :destroy, :charts]
+  before_filter :authorize_access_project!, except: [:build, :gitlab, :status, :index, :show, :new, :create]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:status]
 
   layout 'project', except: [:index, :gitlab]
 
   def index
-    @projects = Project.order('name ASC')
-    @projects = @projects.public unless current_user
-    @projects  = @projects.page(params[:page]).per(20)
+    @projects = Project.public.page(params[:page]) unless current_user
+  end
+
+  def gitlab
+    current_user.reset_cache if params[:reset_cache]
+    @page = (params[:page] || 1).to_i
+    @per_page = 100
+    @gl_projects = current_user.gitlab_projects(@page, @per_page)
+    @projects = Project.where(gitlab_id: @gl_projects.map(&:id)).order('name ASC')
+    @total_count = @gl_projects.size
+    @gl_projects.reject! { |gl_project| @projects.map(&:gitlab_id).include?(gl_project.id) }
+  rescue
+    @error = 'Failed to fetch GitLab projects'
   end
 
   def show
-    unless @project.public || current_user
-      authenticate_user! and return
+    unless @project.public
+      authenticate_user!
+      authorize_access_project!
     end
 
     @ref = params[:ref]
@@ -108,13 +120,6 @@ class ProjectsController < ApplicationController
     @charts[:year] = Charts::YearChart.new(@project)
   end
 
-  def gitlab
-    @page = (params[:page] || 1).to_i
-    @per_page = 100
-    @projects = current_user.gitlab_projects(@page, @per_page)
-  rescue
-    @error = 'Failed to fetch GitLab projects'
-  end
 
   protected
 

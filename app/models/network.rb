@@ -37,6 +37,23 @@ class Network
     end
   end
 
+  def project(url, api_opts, project_id)
+    opts = {
+      query: api_opts,
+      headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}.json"
+
+    response = self.class.get(url + api_prefix + query, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
   def add_deploy_key(url, project_id, api_opts)
     opts = {
       body: api_opts.to_json,

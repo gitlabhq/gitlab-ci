@@ -64,6 +64,7 @@ GEM
     diff-lcs (1.2.4)
     dotenv (0.7.0)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.2.0)
@@ -71,6 +72,8 @@ GEM
     factory_girl_rails (4.2.1)
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
+    faye-websocket (0.4.7)
+      eventmachine (>= 0.12.0)
     ffaker (1.16.1)
     ffi (1.8.1)
     font-awesome-sass-rails (3.0.2.2)
@@ -113,6 +116,7 @@ GEM
       railties (>= 3.1, < 4.1)
     hashie (2.0.5)
     hike (1.2.3)
+    http_parser.rb (0.5.3)
     httparty (0.11.0)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
@@ -142,6 +146,10 @@ GEM
     mysql2 (0.3.11)
     nokogiri (1.5.9)
     pg (0.15.1)
+    poltergeist (1.3.0)
+      capybara (~> 2.1.0)
+      faye-websocket (>= 0.4.4, < 0.5.0)
+      http_parser.rb (~> 0.5.3)
     polyglot (0.3.3)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
@@ -289,6 +297,7 @@ DEPENDENCIES
   minitest (= 4.3.2)
   mysql2
   pg
+  poltergeist
   pry
   puma (~> 2.3.2)
   quiet_assets

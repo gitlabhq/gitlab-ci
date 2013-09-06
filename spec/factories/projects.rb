@@ -2,11 +2,11 @@
 
 FactoryGirl.define do
   factory :project_without_token, class: Project do
-    name Faker::Name.name
+    name 'GitLab / gitlab-shell'
     default_ref 'master'
-    gitlab_url 'https://dev.gitlab.org/gitlab/six.git'
-    ssh_url_to_repo 'git@dev.gitlab.org:gitlab/six.git'
-    gitlab_id 45
+    gitlab_url 'http://demo.gitlabhq.com/gitlab/gitlab-shell'
+    ssh_url_to_repo 'git@demo.gitlab.com:gitlab/gitlab-shell.git'
+    gitlab_id 8
     scripts 'ls'
 
     factory :project do

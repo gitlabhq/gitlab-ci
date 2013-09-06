@@ -161,9 +161,10 @@ fieldset {
   font-size: 18px;
 }
 
-h3 {
-  font-weight: normal;
-  color: #666;
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  line-height: 1.1;
+  color: #555;
 }
 
 .profile-holder {
@@ -244,5 +245,23 @@ td form {
 
   a {
     background: #f9f9f9;
+  }
+}
+
+.well-list {
+  @extend .unstyled;
+  li {
+    padding: 6px 0;
+    border-bottom: 1px solid #EEE;
+
+    form {
+      margin: 0;
+    }
+  }
+}
+
+.sync-now {
+  &:hover {
+    text-decoration: none;
   }
 }

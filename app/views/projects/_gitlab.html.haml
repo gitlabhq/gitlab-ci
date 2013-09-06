@@ -1,0 +1,53 @@
+.clearfix.light
+  .pull-left.fetch-status
+    Fetched from GitLab (#{link_to current_user.url, current_user.url}) #{time_ago_in_words(current_user.sync_at)} ago.
+    = link_to gitlab_projects_path(reset_cache: true), remote: true, class: 'sync-now btn btn-mini' do
+      %i.icon-refresh
+      Sync now
+    %br
+
+  .pull-right
+    #{@total_count} projects, #{@projects.size} of them added to CI
+%br
+
+%table.table
+  %tr
+    %th ID
+    %th Name
+    %th Last build
+    %th Access
+    %th Builds
+    %th Runners
+
+  = render @projects
+
+  - @gl_projects.sort_by(&:name_with_namespace).each do |project|
+    %tr.light
+      %td
+        \-
+      %td
+        = project.name_with_namespace
+        -#= link_to project.web_url, project.web_url
+      %td
+        %small Not added to CI
+      %td
+      %td
+      %td
+        - if Project.already_added?(project)
+          %strong.cgreen
+            Added
+        - else
+          = form_tag projects_path do
+            = hidden_field_tag :project, project.to_yaml
+            = submit_tag 'Add', class: 'btn btn-small'
+
+%center
+  - if @page > 1
+    = link_to gitlab_projects_path(page: @page - 1), class: 'btn', remote: true do
+      %i.icon-angle-left
+      prev
+  &nbsp;
+  - if @total_count == @per_page
+    = link_to gitlab_projects_path(page: @page + 1), class: 'btn', remote: true do
+      next
+      %i.icon-angle-right
