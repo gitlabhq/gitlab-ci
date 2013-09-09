@@ -17,7 +17,5 @@ class UserSession
     else
       nil
     end
-  rescue
-    nil
   end
 end
