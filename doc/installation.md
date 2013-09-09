@@ -143,9 +143,9 @@ You can use either MySQL or PostgreSQL.
 
 ## 7. Install Init Script
 
-Download the init script (will be /etc/init.d/gitlab_ci):
+Copy the init script (will be /etc/init.d/gitlab_ci):
 
-    sudo wget https://raw.github.com/gitlabhq/gitlab-ci/master/lib/support/init.d/gitlab_ci -P /etc/init.d/
+    sudo cp /home/gitlab_ci/gitlab-ci/lib/support/init.d/gitlab_ci /etc/init.d/gitlab_ci
     sudo chmod +x /etc/init.d/gitlab_ci
 
 Make GitLab start on boot:
