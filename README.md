@@ -50,6 +50,7 @@ cd /gitlab-ci-runner/tmp/builds && git clone git@gitlab_server_fqdn:group/projec
 
 For more information see:
 [Announcing GitLab CI 3.0](http://blog.gitlab.org/announcing-gitlab-ci-3.0/)
+and
 [Integrating GitLab CI With GitLab to Enable Distributed Builds](http://blog.gitlab.org/integrating-gitlab-ci-with-gitlab/)
 
 ### Installation
