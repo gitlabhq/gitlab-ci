@@ -46,7 +46,8 @@ Possible Cases:
 ![screen](https://raw.github.com/gitlabhq/gitlab-ci/master/app/assets/images/arch.jpg)
 
 The runner runs the line below and then runs the commands in your projects settings
-cd /gitlab-ci-runner/tmp/builds && git clone git@gitlab_server_fqdn:group/project.git project-1 && cd project-1 && git checkout master
+
+    cd /gitlab-ci-runner/tmp/builds && git clone git@gitlab_server_fqdn:group/project.git project-1 && cd project-1 && git checkout master
 
 For more information see:
 [Announcing GitLab CI 3.0](http://blog.gitlab.org/announcing-gitlab-ci-3.0/)
