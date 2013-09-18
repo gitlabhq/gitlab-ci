@@ -52,7 +52,7 @@ You can use either MySQL or PostgreSQL.
 ### MySQL
 
     # Install the database packages
-    sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
+    sudo apt-get install mysql-server mysql-client libmysqlclient-dev
 
     # Login to MySQL
     $ mysql -u root -p
@@ -72,7 +72,7 @@ You can use either MySQL or PostgreSQL.
 ### PostgreSQL
 
     # Install the database packages
-    sudo apt-get install -y postgresql-9.1 libpq-dev
+    sudo apt-get install postgresql-9.1 libpq-dev
 
     # Login to PostgreSQL
     sudo -u postgres psql -d template1
