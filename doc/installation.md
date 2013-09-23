@@ -1,7 +1,3 @@
-# Requirements:
-
-* GitLab 5.3+
-
 # Setup: 
 
 ## 1. Packages / Dependencies
