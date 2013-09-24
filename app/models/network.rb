@@ -26,10 +26,6 @@ class Network
     }
 
     endpoint = File.join(url, API_PREFIX, 'user.json')
-
-    require 'byebug'
-    byebug
-
     response = self.class.get(endpoint, opts)
 
     if response.code == 200

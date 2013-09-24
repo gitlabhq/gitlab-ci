@@ -11,7 +11,7 @@ module API
       # Example Request:
       #   GET /projects/:id
       get ":id" do
-        project = Project.where(id: params[:id])
+        project = Project.find(params[:id])
         present project, with: Entities::Project
       end
     end
