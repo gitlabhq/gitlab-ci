@@ -22,6 +22,16 @@ Additionally GitLab CI requires:
 
 __If you want to use GitLab CI without GitLab or with older versions of GitLab you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)__
 
+### Limitations
+
+The following features are not in GitLab CI but merge requests are very welcome:
+
+* Email notification
+* API documentation
+* Increase test coverage (the goal is to be above 85%)
+* Build artifacts access
+* Build pipeline / build promotion actions
+
 ### Architecture
 
 __GitLab CI__ is a web application with an API and it connect to the db.
@@ -53,16 +63,16 @@ and
 
 ### How to add a new project to GitLab CI
 
-1) Log in the GitLab CI web interface
-2) Press the 'Sync now' button
-3) Select your project with the 'Add' button
-4) Go the the Integration page and do the 'Complete (as service)' steps
-5) Go to the settings page to add a build script (see below for an example)
-6) Push a new commit to the project
-7) If the build fails then adjust the build script and press the 'Retry' button on the build page
-8) If the build is green you are done, all new commits will be tested and you see the status of merge requests builds within GitLab
+1. Log in the GitLab CI web interface
+2. Press the 'Sync now' button
+3. Select your project with the 'Add' button
+4. Go the the Integration page and do the 'Complete (as service)' steps
+5. Go to the settings page to add a build script (see below for an example)
+6. Push a new commit to the project
+7. If the build fails then adjust the build script and press the 'Retry' button on the build page
+8. If the build is green you are done, all new commits will be tested and you see the status of merge requests builds within GitLab
 
-For your information, the runner runs the line below and then runs the commands in your build script:
+For your information, the runner runs the line below before it runs the commands in your build script:
 
     cd /gitlab-ci-runner/tmp/builds && git clone git@gitlab_server_fqdn:group/project.git project-1 && cd project-1 && git checkout master
 
