@@ -1,3 +1,7 @@
+v3.2.0
+  - Limit visibility of projects by gitlab authorized projects
+  - Use one page for both gitlab and gitlab-ci projects
+
 v3.1.0
   - Login with both username, email or LDAP credentials (if GitLab 6.0+)
   - Retry build button functionality
