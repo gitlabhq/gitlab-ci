@@ -30,9 +30,16 @@ class RunnersController < ApplicationController
     end
   end
 
+  def show
+  end
+
   private
 
   def runner
-    @runner ||= Runner.find(params[:id])
+    begin
+      @runner ||= Runner.find(params[:id])
+    rescue_from ActiveRecord::RecordNotFound do
+      render :status => 404
+    end
   end
 end
