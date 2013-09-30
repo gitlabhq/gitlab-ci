@@ -31,6 +31,7 @@ The following features are not in GitLab CI but merge requests are very welcome:
 * Increase test coverage (the goal is to be above 85%)
 * Build artifacts access
 * Build pipeline / build promotion actions
+* [GitLab CI Runner](https://github.com/gitlabhq/gitlab-ci-runner#requirements) supports a limited set of operating systems
 
 ### Architecture
 
@@ -38,7 +39,7 @@ __GitLab CI__ is a web application with an API and it connect to the db.
 It manage projects/builds and provides a nice user interface.
 It uses the GitLab application API to authenticate users.
 
-__GitLab CI Runner__ is a pure ruby application which processes builds.
+[GitLab CI Runner](https://github.com/gitlabhq/gitlab-ci-runner) is a pure ruby application which processes builds.
 It can be deployed separately and works with GitLab CI through an API.
 
 In order to run tests you need at least 1 __GitLab CI__ instance and 1 __GitLab CI Runner__.
