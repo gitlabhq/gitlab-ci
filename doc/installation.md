@@ -9,11 +9,14 @@ up-to-date and install it.
     sudo apt-get upgrade
 
 **Note:**
-Vim is an editor that is used here whenever there are files that need to be
-edited by hand. But, you can use any editor you like instead.
+During this installation some files will need to be edited manually. If 
+you are familiar with vim set it as default editor with the commands 
+below. If you are not familiar with vim please skip this and keep using 
+the default editor.
 
     # Install vim
     sudo apt-get install -y vim
+    sudo update-alternatives --set editor /usr/bin/vim.basic
 
 Install the required packages:
 
@@ -99,11 +102,11 @@ You can use either MySQL or PostgreSQL.
 
     # Edit application settings
     sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
-    sudo -u gitlab_ci -H vim config/application.yml
+    sudo -u gitlab_ci -H editor config/application.yml
 
     # Edit web server settings
     sudo -u gitlab_ci -H cp config/puma.rb.example config/puma.rb
-    sudo -u gitlab_ci -H vim config/puma.rb
+    sudo -u gitlab_ci -H editor config/puma.rb
 
     # Create socket and pid directories
     sudo -u gitlab_ci -H mkdir -p tmp/sockets/
@@ -128,7 +131,7 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H cp config/database.yml.postgresql config/database.yml
  
     # Edit user/password
-    sudo -u gitlab_ci -H vim config/database.yml
+    sudo -u gitlab_ci -H editor config/database.yml
 
     # Setup tables
     sudo -u gitlab_ci -H bundle exec rake db:setup RAILS_ENV=production
@@ -176,7 +179,7 @@ Make sure to edit the config file to match your setup:
     # Change **YOUR_SERVER_IP** and **YOUR_SERVER_FQDN**
     # to the IP address and fully-qualified domain name
     # of your host serving GitLab CI
-    sudo vim /etc/nginx/sites-enabled/gitlab_ci
+    sudo editor /etc/nginx/sites-enabled/gitlab_ci
 
 ## Reload configuration
 
