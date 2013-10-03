@@ -26,10 +26,13 @@ describe API::API do
   describe "GET /projects" do
     let(:project) { FactoryGirl.create(:project) }
 
+    before { project }
+
     it "should return all projects on the CI instance" do
       get api("/projects"), options
       response.status.should == 200
-      json_response.should == {}
+      json_response.count.should == 1
+      json_response.first["id"].should == project.id
     end
   end
 
@@ -53,7 +56,15 @@ describe API::API do
   end
 
   describe "POST /projects" do
-    let(:project_info) { {} }
+    let(:project_info) {
+      {
+        :name => "My project",
+        :gitlab_id => 1,
+        :gitlab_url => "http://example.com/testing/testing",
+        :ssh_url_to_repo => "ssh://example.com/testing/testing.git"
+      }
+    }
+
     let(:invalid_project_info) { {} }
 
     context "with valid project info" do
@@ -82,7 +93,7 @@ describe API::API do
 
   describe "PUT /projects/:id" do
     let(:project) { FactoryGirl.create(:project) }
-    let(:project_info) { {} }
+    let(:project_info) { {:name => "An updated name!" } }
 
     before do
       options.merge!(project_info)
@@ -96,20 +107,20 @@ describe API::API do
 
     it "fails to update a non-existing project" do
       put api("/projects/non-existant-id"), options
-      response.status.should == 400
+      response.status.should == 404
     end
   end
 
   describe "DELETE /projects/:id" do
     let(:project) { FactoryGirl.create(:project) }
 
-    before do
-      project
-    end
+    before { project }
 
     it "should delete a specific project" do
       delete api("/projects/#{project.id}"), options
-      response.status.should == 201 #?
+      response.status.should == 200
+
+      expect { project.reload }.to raise_error
     end
   end
 
@@ -124,6 +135,14 @@ describe API::API do
       project.reload
       project.runners.first.id.should == runner.id
     end
+
+    it "should fail if it tries to link a non-existing project or runner" do
+      post api("/projects/#{project.id}/runners/non-existing"), options
+      response.status.should == 404
+
+      post api("/projects/non-existing/runners/#{runner.id}"), options
+      response.status.should == 404
+    end
   end
 
   describe "DELETE /projects/:id/runners/:id" do
@@ -137,7 +156,7 @@ describe API::API do
     it "should remove the project from the runner" do
       project.runners.should be_present
       delete api("/projects/#{project.id}/runners/#{runner.id}"), options
-      response.status.should == 201 #?
+      response.status.should == 200
 
       project.reload
       project.runners.should be_empty
