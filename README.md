@@ -66,9 +66,9 @@ and
 1. Log in the GitLab CI web interface
 2. Press the 'Sync now' button
 3. Select your project with the 'Add' button
-4. Go the the Integration page and do the 'Complete (as service)' steps
-5. Go to the settings page to add a build script (see below for an example)
-6. Push a new commit to the project
+4. Go to the settings page of the project and add a build script (example given below)
+5. Go the the Integration page and do the 'Complete (as service)' steps, the press 'Test settings'
+6. A new build should become visible on the project page of GitLab CI
 7. If the build fails then adjust the build script and press the 'Retry' button on the build page
 8. If the build is green you are done, all new commits will be tested and you see the status of merge requests builds within GitLab
 
