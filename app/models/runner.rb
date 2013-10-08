@@ -15,7 +15,7 @@ class Runner < ActiveRecord::Base
   has_many :runner_projects, dependent: :destroy
   has_many :projects, through: :runner_projects
 
-  has_one :last_build, class_name: 'Build'
+  has_one :last_build, class_name: 'Build', order: 'id DESC'
 
   attr_accessible :token, :public_key, :description
 
