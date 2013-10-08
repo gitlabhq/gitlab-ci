@@ -4,22 +4,6 @@ module API
     before { authenticate! }
 
     resource :projects do
-      # Retrieve info for a Gitlab CI project
-      #
-      # Parameters:
-      #   id (required) - The ID of a project
-      # Example Request:
-      #   GET /projects/:id
-      get ":id" do
-        project = Project.find(params[:id])
-
-        if current_user.can_access_project?(project.gitlab_id)
-          present project, with: Entities::Project
-        else
-          unauthorized!
-        end
-      end
-
       # Retrieve all Gitlab CI projects that the user has access to
       #
       # Example Request:
@@ -37,12 +21,27 @@ module API
       # Example Request:
       #   GET /projects/owned
       get "owned" do
-        byebug
         gitlab_projects = Project.from_gitlab(current_user, nil, nil, :owned)
         ids = gitlab_projects.map { |project| project.id }
 
         projects = Project.where("gitlab_id IN (?)", ids).all
         present projects, with: Entities::Project
+      end
+
+      # Retrieve info for a Gitlab CI project
+      #
+      # Parameters:
+      #   id (required) - The ID of a project
+      # Example Request:
+      #   GET /projects/:id
+      get ":id" do
+        project = Project.find(params[:id])
+
+        if current_user.can_access_project?(project.gitlab_id)
+          present project, with: Entities::Project
+        else
+          unauthorized!
+        end
       end
 
       # Create Gitlab CI project using Gitlab project info
@@ -131,16 +130,16 @@ module API
       # Example Request:
       #   POST /projects/:id/runners/:runner_id
       post ":id/runners/:runner_id" do
-        unauthorized! unless current_user.can_access_project?(params[:id])
+        project = Project.find_by_id(params[:id])
+        runner  = Runner.find_by_id(params[:runner_id])
 
-        project_exists = Project.exists?(params[:id])
-        runner_exists = Runner.exists?(params[:runner_id])
+        not_found! if project.blank? or runner.blank?
 
-        not_found! if project_exists.blank? or runner_exists.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
         options = {
-          :project_id => params[:id],
-          :runner_id  => params[:runner_id]
+          :project_id => project.id,
+          :runner_id  => runner.id
         }
 
         runner_project = RunnerProject.new(options)
@@ -161,16 +160,15 @@ module API
       # Example Request:
       #   DELETE /projects/:id/runners/:runner_id
       delete ":id/runners/:runner_id" do
-        unauthorized! unless current_user.can_access_project?(params[:id])
+        project = Project.find_by_id(params[:id])
+        runner  = Runner.find_by_id(params[:runner_id])
 
-        project_exists = Project.exists?(params[:id])
-        runner_exists = Runner.exists?(params[:runner_id])
-
-        not_found! if project_exists.blank? or runner_exists.blank?
+        not_found! if project.blank? or runner.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
         options = {
-          :project_id => params[:id],
-          :runner_id  => params[:runner_id]
+          :project_id => project.id,
+          :runner_id  => runner.id
         }
 
         runner_project = RunnerProject.where(options).first
