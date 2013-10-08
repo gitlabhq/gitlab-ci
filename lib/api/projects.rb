@@ -12,15 +12,36 @@ module API
       #   GET /projects/:id
       get ":id" do
         project = Project.find(params[:id])
-        present project, with: Entities::Project
+
+        if current_user.can_access_project?(project.gitlab_id)
+          present project, with: Entities::Project
+        else
+          unauthorized!
+        end
       end
 
-      # Retrieve info for aall Gitlab CI projects
+      # Retrieve all Gitlab CI projects that the user has access to
       #
       # Example Request:
       #   GET /projects
       get do
-        projects = Project.all
+        gitlab_projects = Project.from_gitlab(current_user, nil, nil, :authorized)
+        ids = gitlab_projects.map { |project| project.id }
+
+        projects = Project.where("gitlab_id IN (?)", ids).all
+        present projects, with: Entities::Project
+      end
+
+      # Retrieve all Gitlab CI projects that the user owns
+      #
+      # Example Request:
+      #   GET /projects/owned
+      get "owned" do
+        byebug
+        gitlab_projects = Project.from_gitlab(current_user, nil, nil, :owned)
+        ids = gitlab_projects.map { |project| project.id }
+
+        projects = Project.where("gitlab_id IN (?)", ids).all
         present projects, with: Entities::Project
       end
 
@@ -37,9 +58,6 @@ module API
       #   POST /projects
       post do
         required_attributes! [:name, :gitlab_id, :gitlab_url, :ssh_url_to_repo]
-
-        # TODO: Check if this has automatic filtering of attributes
-        # via the Grape API
 
         filtered_params = {
           :name            => params[:name],
@@ -75,7 +93,7 @@ module API
       put ":id" do
         project = Project.find(params[:id])
 
-        if project.present?
+        if project.present? && current_user.can_access_project?(project.gitlab_id)
           attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :scripts, :default_ref, :ssh_url_to_repo]
 
           if project.update_attributes(attrs)
@@ -98,7 +116,7 @@ module API
       delete ":id" do
         project = Project.find(params[:id])
 
-        if project.present?
+        if project.present? && current_user.can_access_project?(project.gitlab_id)
           project.destroy
         else
           not_found!
@@ -113,6 +131,8 @@ module API
       # Example Request:
       #   POST /projects/:id/runners/:runner_id
       post ":id/runners/:runner_id" do
+        unauthorized! unless current_user.can_access_project?(params[:id])
+
         project_exists = Project.exists?(params[:id])
         runner_exists = Runner.exists?(params[:runner_id])
 
@@ -141,6 +161,8 @@ module API
       # Example Request:
       #   DELETE /projects/:id/runners/:runner_id
       delete ":id/runners/:runner_id" do
+        unauthorized! unless current_user.can_access_project?(params[:id])
+
         project_exists = Project.exists?(params[:id])
         runner_exists = Runner.exists?(params[:runner_id])
 

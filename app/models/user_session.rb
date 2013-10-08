@@ -29,7 +29,12 @@ class UserSession
     user = block.call(url, Network.new, options)
 
     if user
-      return User.new(user.merge("url" => url))
+      verified_options = user.merge({
+        "url" => url,
+        "private_token" => options[:private_token]
+      })
+
+      return User.new(verified_options)
     else
       nil
     end

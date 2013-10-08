@@ -6,6 +6,8 @@ describe API::API do
   let(:private_token) { "A" }
   let(:gitlab_url) { GitlabCi.config.allowed_gitlab_urls.first }
   let(:auth_url) { File.join(gitlab_url, Network::API_PREFIX, "user.json") }
+  let(:projects_authorized_url) { File.join(gitlab_url, Network::API_PREFIX, "projects.json") }
+  let(:projects_owned_url) { File.join(gitlab_url, Network::API_PREFIX, "projects/owned.json") }
   let(:options) {
     {
       :private_token => private_token,
@@ -23,16 +25,57 @@ describe API::API do
       :body => { :url => "http://myurl" }.to_json)
   end
 
-  describe "GET /projects" do
-    let(:project) { FactoryGirl.create(:project) }
+  context "requests for scoped projects" do
+    let(:project1) { FactoryGirl.create(:project, :name => "Project 1") }
+    let(:project2) { FactoryGirl.create(:project, :name => "Project 2") }
 
-    before { project }
+    before do
+      # NOTE: Making project ids the same as the gitlab id for ease of matching
+      projects.map { |project| project.update_attribute(:gitlab_id, project.id) }
+    end
 
-    it "should return all projects on the CI instance" do
-      get api("/projects"), options
-      response.status.should == 200
-      json_response.count.should == 1
-      json_response.first["id"].should == project.id
+    describe "GET /projects" do
+      let(:projects) { [project1, project2] }
+
+      before do
+        # stub authentication endpoint for authorized projects
+        stub_request(:get, projects_authorized_url).
+          with(:query => { :private_token => private_token }).
+          to_return(
+          :status => 200,
+          :headers => {"Content-Type" => "application/json"},
+          :body => projects.to_json)
+      end
+
+      it "should return all projects on the CI instance" do
+        byebug
+        get api("/projects"), options
+        response.status.should == 200
+        json_response.count.should == 2
+        json_response.first["id"].should == project1.id
+        json_response.last["id"].should == project2.id
+      end
+    end
+
+    describe "GET /projects/owned" do
+      let(:projects) { [project2] }
+
+      before do
+        # stub authentication endpoint for owned projects
+        stub_request(:get, projects_owned_url).
+          with(:query => { :private_token => private_token }).
+          to_return(
+          :status => 200,
+          :headers => {"Content-Type" => "application/json"},
+          :body => projects.to_json)
+      end
+
+      it "should return all projects on the CI instance" do
+        get api("/projects/owned"), options
+        response.status.should == 200
+        json_response.count.should == 1
+        json_response.first["id"].should == project2.id
+      end
     end
   end
 
