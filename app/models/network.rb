@@ -21,7 +21,7 @@ class Network
 
   def authenticate_by_token(url, api_opts)
     opts = {
-      body: api_opts.to_json,
+      query: api_opts,
       headers: {"Content-Type" => "application/json"},
     }
 

@@ -85,7 +85,6 @@ group :development, :test do
   gem 'rb-inotify', require: linux_only('rb-inotify')
 
   gem 'byebug'
-  gem 'webmock',   require: false
   gem "simplecov", require: false
   gem 'coveralls', require: false
   gem 'minitest', '4.3.2'

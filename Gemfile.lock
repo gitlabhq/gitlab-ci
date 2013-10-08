@@ -28,7 +28,6 @@ GEM
     activesupport (3.2.14)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    addressable (2.3.5)
     annotate (2.5.0)
       rake
     arel (3.0.2)
@@ -65,8 +64,6 @@ GEM
       simplecov (>= 0.7)
       term-ansicolor
       thor
-    crack (0.4.1)
-      safe_yaml (~> 0.9.0)
     debugger-linecache (1.2.0)
     descendants_tracker (0.0.1)
     diff-lcs (1.2.4)
@@ -222,7 +219,6 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    safe_yaml (0.9.7)
     sass (3.2.10)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -276,9 +272,6 @@ GEM
     virtus (0.5.5)
       backports (~> 3.3)
       descendants_tracker (~> 0.0.1)
-    webmock (1.13.0)
-      addressable (>= 2.2.7)
-      crack (>= 0.3.2)
     websocket-driver (0.3.0)
     whenever (0.8.4)
       activesupport (>= 2.3.4)
@@ -332,5 +325,4 @@ DEPENDENCIES
   state_machine
   therubyracer
   uglifier (>= 1.0.3)
-  webmock
   whenever
