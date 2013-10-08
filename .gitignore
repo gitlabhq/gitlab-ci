@@ -11,3 +11,4 @@ tmp/*
 .powrc
 .rvmrc
 coverage/*
+.ruby-version
