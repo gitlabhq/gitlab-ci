@@ -1,15 +1,32 @@
 module API
   module Helpers
+    PRIVATE_TOKEN_PARAM = :private_token
+    PRIVATE_TOKEN_HEADER = "HTTP_PRIVATE_TOKEN"
+
+    def current_user
+      @current_user ||= begin
+        options = {
+          :private_token => (params[PRIVATE_TOKEN_PARAM] || env[PRIVATE_TOKEN_HEADER]),
+          :url => params[:url]
+        }
+        UserSession.new.authenticate_by_token(options)
+      end
+    end
+
+    def current_runner
+      @runner ||= Runner.find_by_token(params[:token])
+    end
+
+    def authenticate!
+      forbidden! unless current_user
+    end
+
     def authenticate_runners!
       forbidden! unless params[:token] == GitlabCi::RunnersToken
     end
 
     def authenticate_runner!
       forbidden! unless current_runner
-    end
-
-    def current_runner
-      @runner ||= Runner.find_by_token(params[:token])
     end
 
     # Checks the occurrences of required attributes, each attribute must be present in the params hash
