@@ -27,7 +27,6 @@ class Project < ActiveRecord::Base
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
 
-
   #
   # Validations
   #
@@ -45,11 +44,9 @@ class Project < ActiveRecord::Base
   before_validation :set_default_values
 
   def self.from_gitlab(user, page, per_page, scope = :owned)
-    opts = {
-      private_token: user.private_token,
-      per_page: per_page,
-      page: page,
-    }
+    opts = { private_token: user.private_token }
+    opts[:per_page] = per_page if per_page.present?
+    opts[:page]     = page     if page.present?
 
     projects = Network.new.projects(user.url, opts, scope)
 

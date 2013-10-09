@@ -27,5 +27,6 @@ module API
 
     mount Builds
     mount Runners
+    mount Projects
   end
 end

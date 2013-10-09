@@ -1,10 +1,10 @@
 module API
-  # Issues API
+  # Builds API
   class Builds < Grape::API
     resource :builds do
-      before { authenticate_runner!}
+      before { authenticate_runner! }
 
-      # Register a build by runner
+      # Runs oldest pending build by runner
       #
       # Parameters:
       #   token (required) - The uniq token of runner
@@ -28,7 +28,7 @@ module API
       # Parameters:
       #   id (required) - The ID of a project
       #   state (optional) - The state of a build
-      #   output (optional) - The trace of a build
+      #   trace (optional) - The trace of a build
       # Example Request:
       #   PUT /builds/:id
       put ":id" do
