@@ -30,6 +30,8 @@ Lists all projects that the authenticated user has access to.
 GET /projects
 ```
 
+Returns:
+
 ```json
     [
   {
@@ -70,6 +72,8 @@ Lists all projects that the authenticated user owns.
 ```
 GET /projects/owned
 ```
+
+Returns:
 
 ```json
 [
@@ -168,8 +172,58 @@ Parameters:
 
 ## Runners
 
-TBA
+### Register a new runner
+
+Used to make Gitlab CI aware of available runners.
+
+    POST /runners/register
+
+Parameters:
+
+  * `token` (required) - The unique token of runner
+  * `public_key` (required) - Deploy key used to get projects
+
+Returns:
+
+```json
+{
+  "id" : 85,
+  "token" : "12b68e90394084703135"
+}
+```
 
 ## Builds
 
-TBA
+### Runs oldest pending build by runner
+
+    POST /builds/register
+
+Parameters:
+
+  * `token` (required) - The unique token of runner
+
+Returns:
+
+```json
+{
+  "id" : 79,
+  "commands" : "",
+  "path" : "",
+  "ref" : "",
+  "sha" : "",
+  "project_id" : 6,
+  "repo_url" : "git@demo.gitlab.com:gitlab/gitlab-shell.git",
+  "before_sha" : ""
+}
+```
+
+
+### Update details of an existing build
+
+    PUT /builds/:id
+
+Parameters:
+
+  * `id` (required) - The ID of a project
+  * `state` (optional) - The state of a build
+  * `trace` (optional) - The trace of a build

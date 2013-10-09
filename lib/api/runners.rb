@@ -1,16 +1,17 @@
 module API
-  # Issues API
+  # Runners API
   class Runners < Grape::API
     resource :runners do
-      before { authenticate_runners!}
+      before { authenticate_runners! }
 
-      # Register a build by runner
+      # Register a new runner
       #
       # Parameters:
-      #   token (required) - The uniq token of runner
+      #   token (required) - The unique token of runner
+      #   public_key (required) - Deploy key used to get projects
       #
       # Example Request:
-      #   POST /builds/register
+      #   POST /runners/register
       post "register" do
         required_attributes! [:token, :public_key]
 
