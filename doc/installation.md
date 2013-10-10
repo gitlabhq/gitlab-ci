@@ -139,7 +139,7 @@ You can use either MySQL or PostgreSQL.
 
     # Setup schedules
     #
-    sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
+    sudo bundle exec whenever -w RAILS_ENV=production
    
 
 ## 7. Install Init Script
