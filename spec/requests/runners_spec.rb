@@ -3,6 +3,36 @@ require 'spec_helper'
 describe API::API do
   include ApiHelpers
 
+  describe "GET /runners" do
+    let(:gitlab_url) { GitlabCi.config.allowed_gitlab_urls.first }
+    let(:auth_opts) {
+      {
+        :email => "test@test.com",
+        :password => "123456"
+      }
+    }
+
+    let(:private_token) { Network.new.authenticate(gitlab_url, auth_opts)["private_token"] }
+    let(:options) {
+      {
+        :private_token => private_token,
+        :url => gitlab_url
+      }
+    }
+
+    before do
+      5.times { FactoryGirl.create(:runner) }
+    end
+
+    it "should retrieve a list of all runners" do
+      get api("/runners"), options
+      response.status.should == 200
+      json_response.count.should == 5
+      json_response.last.should have_key("id")
+      json_response.last.should have_key("token")
+    end
+  end
+
   describe "POST /runners/register" do
     it "should create a runner if token provided" do
       post api("/runners/register"), token: GitlabCi::RunnersToken, public_key: 'sha-rsa ....'

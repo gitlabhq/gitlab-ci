@@ -172,6 +172,28 @@ Parameters:
 
 ## Runners
 
+### Retrieve all runners
+
+Used to get information about all runners registered on the Gitlab CI
+instance.
+
+    GET /runners
+
+Returns:
+
+```json
+[
+  {
+    "id" : 85,
+    "token" : "12b68e90394084703135"
+  },
+  {
+    "id" : 86,
+    "token" : "76bf894e969364709864"
+  },
+]
+```
+
 ### Register a new runner
 
 Used to make Gitlab CI aware of available runners.
