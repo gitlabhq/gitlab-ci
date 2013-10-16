@@ -3,7 +3,7 @@
 
 ## Register Runner
 
-Before we start we need to get a token from the server. Go to your gitlab ci
+Before we start we need to get a registration token from the server. Go to your gitlab ci
 instance and get it from the runners page. 
 
 Then we send in with a public key and if it's valid we'll get 
@@ -15,7 +15,7 @@ Send this:
 
 ```
 {
-    public_key: "<your public key>", # one that you've registered with gitlab
+    public_key: "<the runner's ssh public key>", # GitLab CI will actually add this key to GitLab for you.
     token: "<token from gitlab-ci>"
 }
 ```
@@ -25,11 +25,11 @@ You get this back if successful:
 ```
 {
     id: "<runner id>",
-    token: "<use this token>"
+    token: "<runner token>"
 }
 ```
 
-## Register a new build
+## Request a new build
 
 ```POST /builds/register.json```
 
@@ -41,7 +41,7 @@ You need to send your token:
 }
 ```
 
-You will get back your new build info:
+If there ia a pending build available, you will get back information about it:
 
 ```
 {
@@ -54,6 +54,15 @@ You will get back your new build info:
 }
 ```
 
+Otherwise you will get
+
+```
+{
+    'message': '404 Not Found'
+}
+```
+
+
 ## Update build
 
 ```PUT /builds/:id.json```
@@ -63,7 +72,7 @@ Send updated info
 ```
 {
     token: "<your token>",
-    state: "<valid state>", # "success" | "fail"
-    trace: "extra tracing info..."
+    state: "<valid state>", # waiting, running, failed and success 
+    trace: "log or output of build (UTF-8 encoded)..."
 }
 ```
