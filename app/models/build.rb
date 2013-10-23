@@ -59,7 +59,8 @@ class Build < ActiveRecord::Base
     end
 
     event :drop do
-      transition running: :failed
+      transition running: :failed, :if => lambda { |build| build.action=='build' }
+      transition :running => :success, :if => lambda { |build| build.action=='deploy' }
     end
 
     event :success do
