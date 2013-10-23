@@ -142,7 +142,7 @@ class Build < ActiveRecord::Base
   end
 
   def deployable?
-    success? and @project.last_build_for_sha(build.sha) == build
+    success? and project.last_build_for_sha(sha) == self
   end
 
   def commands
