@@ -1,7 +1,9 @@
 module ProjectsHelper
-  def project_statuc_class(project)
+  def project_status_class(project)
     if project.last_build.try :success?
       'alert-success'
+    elsif project.last_build.try :deployed?
+      'alert-info'
     elsif project.last_build.try :failed?
       'alert-error'
     else
@@ -12,6 +14,8 @@ module ProjectsHelper
   def build_status_alert_class build
     if build.success?
       'alert-success'
+    elsif build.deployed?
+      'alert-info'
     elsif build.failed? || build.canceled?
       'alert-error'
     else

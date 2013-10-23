@@ -22,13 +22,30 @@ class BuildsController < ApplicationController
     @build = builds.limit(1).first
 
     build = project.builds.create(
-      sha: @build.sha,
-      before_sha: @build.before_sha,
-      push_data: @build.push_data,
-      ref: @build.ref
+        sha: @build.sha,
+        before_sha: @build.before_sha,
+        push_data: @build.push_data,
+        ref: @build.ref,
+        action: 'build',
+        status: 'pending'
     )
 
     redirect_to project_build_path(project, build)
+  end
+
+  def deploy
+    @build = builds.limit(1).first
+
+    build = project.builds.create(
+        sha: @build.sha,
+        before_sha: @build.before_sha,
+        push_data: @build.push_data,
+        ref: @build.ref,
+        action: 'deploy',
+        status: 'pending'
+    )
+
+    redirect_to project_build_path(project, @build)
   end
 
   def status

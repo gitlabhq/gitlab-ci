@@ -6,6 +6,7 @@
 #  name             :string(255)      not null
 #  timeout          :integer          default(1800), not null
 #  scripts          :text             default(""), not null
+#  deployment_script :text            default("")
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  token            :string(255)
@@ -20,7 +21,7 @@
 #
 
 class Project < ActiveRecord::Base
-  attr_accessible :name, :path, :scripts, :timeout, :token,
+  attr_accessible :name, :path, :scripts, :deployment_script, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch
 
@@ -31,13 +32,13 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
+  validates_presence_of :name, :scripts, :deployment_script, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
 
   validates_uniqueness_of :name
 
   validates :polling_interval,
-    presence: true,
-    if: ->(project) { project.always_build.present? }
+            presence: true,
+            if: ->(project) { project.always_build.present? }
 
 
   scope :public, where(public: true)
@@ -53,6 +54,7 @@ class Project < ActiveRecord::Base
         gitlab_id: project.id,
         gitlab_url: project.web_url,
         scripts: 'ls -la',
+        deployment_script: 'ls -la',
         default_ref: project.default_branch || 'master',
         ssh_url_to_repo: project.ssh_url_to_repo
       }
@@ -96,11 +98,11 @@ class Project < ActiveRecord::Base
     sha = opts[:after]
 
     data = {
-      project_id: self.id,
-      ref: ref,
-      sha: sha,
-      before_sha: before_sha,
-      push_data: opts
+        project_id: self.id,
+        ref: ref,
+        sha: sha,
+        before_sha: before_sha,
+        push_data: opts
     }
 
     @build = Build.create(data)
@@ -155,7 +157,7 @@ class Project < ActiveRecord::Base
   end
 
   def tracked_refs
-    @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
+    @tracked_refs ||= default_ref.split(",").map { |ref| ref.strip }
   end
 
   def valid_token? token
@@ -178,6 +180,7 @@ end
 #  path        :string(255)     not null
 #  timeout     :integer(4)      default(1800), not null
 #  scripts     :text            default(""), not null
+#  deployment_script :text      default("")
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  token       :string(255)

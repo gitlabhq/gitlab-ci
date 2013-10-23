@@ -16,6 +16,7 @@
 #  before_sha  :string(255)
 #  push_data   :text
 #  runner_id   :integer
+#  action      :string
 #
 
 class Build < ActiveRecord::Base
@@ -24,7 +25,7 @@ class Build < ActiveRecord::Base
 
   serialize :push_data
 
-  attr_accessible :project_id, :ref, :sha, :before_sha,
+  attr_accessible :project_id, :ref, :sha, :before_sha, :action,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name
 
   validates :sha, presence: true
@@ -34,7 +35,8 @@ class Build < ActiveRecord::Base
   scope :running, ->() { where(status: "running") }
   scope :pending, ->() { where(status: "pending") }
   scope :success, ->() { where(status: "success") }
-  scope :failed, ->() { where(status: "failed")  }
+  scope :failed, ->() { where(status: "failed") }
+  scope :deployed, ->() { where(status: "deployed") }
   scope :uniq_sha, ->() { select('DISTINCT(sha)') }
 
   def self.last_month
@@ -61,7 +63,12 @@ class Build < ActiveRecord::Base
     end
 
     event :success do
-      transition running: :success
+      transition :running => :success, :if => lambda { |build| build.action=='build' }
+      transition :running => :deployed, :if => lambda { |build| build.action=='deploy' }
+    end
+
+    event :deploy do
+      transition success: :pending
     end
 
     event :cancel do
@@ -72,7 +79,7 @@ class Build < ActiveRecord::Base
       build.update_attributes started_at: Time.now
     end
 
-    after_transition any => [:success, :failed, :canceled] do |build, transition|
+    after_transition any => [:success, :failed, :canceled, :deployed] do |build, transition|
       build.update_attributes finished_at: Time.now
     end
 
@@ -81,6 +88,7 @@ class Build < ActiveRecord::Base
     state :failed, value: 'failed'
     state :success, value: 'success'
     state :canceled, value: 'canceled'
+    state :deployed, value: 'deployed'
   end
 
   def compare?
@@ -129,7 +137,7 @@ class Build < ActiveRecord::Base
   end
 
   def commands
-    project.scripts
+    action == 'deploy' ? project.deployment_script : project.scripts
   end
 
   def commit_data

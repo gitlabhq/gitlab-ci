@@ -26,8 +26,6 @@
         .pull-right
           = @build.updated_at.stamp('19:00 Aug 27')
 
-
-
     .clearfix
     - if @build.active?
       .autoscroll-container.pull-right
@@ -42,10 +40,12 @@
       %h4.title
         Build
         .pull-right
-          - if @build.active?
-            = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
-          - else
-            = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-small btn-info', method: :post
+		  - if @build.active?
+			= link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
+		  - elsif @build.deployed?
+			= link_to "Redeploy", deploy_project_build_path(@project, @build.sha), class: 'btn btn-small', method: :post
+		  - else
+			= link_to "Rebuild", retry_project_build_path(@project, @build.sha), class: 'btn btn-small', method: :post
 
       - if @build.started_at
         %p
@@ -62,6 +62,9 @@
         %span.attr-name Runner:
         - if @build.runner
           \##{@build.runner.id}
+	  %p
+		%b Action:
+		#{@build.action}
 
     .build-widget
       %h4.title
