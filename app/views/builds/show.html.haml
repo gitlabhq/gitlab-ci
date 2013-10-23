@@ -42,7 +42,7 @@
         .pull-right
 		  - if @build.active?
 			= link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
-		  - elsif @build.deployed?
+		  - elsif @build.deployed? || @build.deployable?
 			= link_to "Redeploy", deploy_project_build_path(@project, @build.sha), class: 'btn btn-small', method: :post
 		  - else
 			= link_to "Rebuild", retry_project_build_path(@project, @build.sha), class: 'btn btn-small', method: :post

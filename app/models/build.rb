@@ -141,6 +141,10 @@ class Build < ActiveRecord::Base
     running? || pending?
   end
 
+  def deployable?
+    success? and @project.last_build_for_sha(build.sha) == build
+  end
+
   def commands
     action == 'deploy' ? project.deployment_script : project.scripts
   end
