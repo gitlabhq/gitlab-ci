@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130906175737) do
+ActiveRecord::Schema.define(:version => 20131023103430) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20130906175737) do
     t.boolean  "public",           :default => false, :null => false
     t.string   "ssh_url_to_repo"
     t.integer  "gitlab_id"
+    t.boolean  "allow_git_fetch",  :default => true,  :null => false
   end
 
   create_table "runner_projects", :force => true do |t|

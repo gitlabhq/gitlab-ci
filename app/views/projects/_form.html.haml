@@ -18,6 +18,17 @@
           = f.label :scripts
           = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec"
 
+        .field
+          %p Get recent application code by next command:
+          = label_tag do
+            = f.radio_button :allow_git_fetch, 'false'
+            %span git clone
+            %span.light (slower but makes sure you have clean dir before every build)
+          = label_tag do
+            = f.radio_button :allow_git_fetch, 'true'
+            %span git fetch
+            %span.light (faster)
+
 
       %fieldset
         %legend Build Schedule

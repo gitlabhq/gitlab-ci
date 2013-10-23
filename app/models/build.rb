@@ -139,6 +139,12 @@ class Build < ActiveRecord::Base
   def repo_url
     project.ssh_url_to_repo
   end
+
+  def timeout
+    project.timeout
+  end
+
+  def allow_git_fetch
+    project.allow_git_fetch
+  end
 end
-
-
