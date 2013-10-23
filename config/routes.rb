@@ -30,7 +30,7 @@ GitlabCi::Application.routes.draw do
   end
 
   resource :user_sessions
-  resources :runners, only: [:index, :update, :destroy] do
+  resources :runners, only: [:index, :show, :update, :destroy] do
     member do
       put :assign_all
     end

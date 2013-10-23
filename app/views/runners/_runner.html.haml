@@ -2,7 +2,8 @@
   %td
     %span.badge.badge-info= runner.id
   %td
-    = runner.token
+    = link_to runner_path(runner) do
+      = runner.token
   %td
     .runner-description
       = runner.description

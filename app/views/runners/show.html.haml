@@ -1,0 +1,23 @@
+%h3
+  Runner: #{@runner.token}
+
+%p
+  = link_to runners_path do
+    &larr; Back to runners list
+%hr
+
+%h5 Recent builds server by this runner:
+
+%table.builds
+  %thead
+    %tr
+      %th Status
+      %th Commit
+      %th Message
+      %th Branch
+      %th Duration
+      %th Finished at
+
+  = render @builds
+
+= paginate @builds

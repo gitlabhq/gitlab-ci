@@ -6,6 +6,11 @@ class RunnersController < ApplicationController
     @runners = Runner.page(params[:page]).per(30)
   end
 
+  def show
+    @runner = Runner.find(params[:id])
+    @builds = @runner.builds.order('id DESC').page(params[:page]).per(30)
+  end
+
   def update
     @runner.update_attributes(description: params[:runner][:description])
 
