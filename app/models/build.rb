@@ -83,6 +83,10 @@ class Build < ActiveRecord::Base
       build.update_attributes finished_at: Time.now
     end
 
+    before_transition any => :deployed do |build, transition|
+      Build.find_all_by_project_id(:build.project_id).where(:status => :deployed).update_attributes status: :success
+    end
+
     state :pending, value: 'pending'
     state :running, value: 'running'
     state :failed, value: 'failed'
