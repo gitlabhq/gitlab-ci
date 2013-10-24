@@ -21,6 +21,8 @@ module API
 
           not_found! and return unless build
 
+          build.runner_id = current_runner.id
+          build.save!
           build.run!
           present build, with: Entities::Build
         end
@@ -35,8 +37,8 @@ module API
       # Example Request:
       #   PUT /builds/:id
       put ":id" do
-        build = Build.where(runner_id: current_runner.id).find(params[:id])
-        build.update_attributes(trace: params[:trace], runner_id: current_runner.id)
+        build = Build.where(runner_id: current_runner.id).running.find(params[:id])
+        build.update_attributes(trace: params[:trace])
 
         case params[:state].to_s
         when 'success'
