@@ -21,15 +21,3 @@
       Private
   %td
     = project.builds.count
-  %td
-    - count = project.runners.count
-    - if count.zero?
-      %span.badge.badge-important= count
-    - else
-      %span.badge.badge-success= count
-  -#%td
-    - if current_user
-      %a{href: edit_project_path(project)}
-        %i.icon-edit.icon-white
-        Edit
-
