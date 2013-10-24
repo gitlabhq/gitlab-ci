@@ -23,7 +23,7 @@
           %h5
             = project.name
             .pull-right
-              = link_to 'Disable', [:admin, project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+              = link_to 'Disable', [:admin, project, runner_project], method: :delete, class: 'btn btn-danger btn-small'
 
       - (Project.all - @runner.projects).each do |project|
         %li

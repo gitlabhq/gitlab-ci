@@ -13,7 +13,7 @@ class Admin::RunnerProjectsController < Admin::ApplicationController
     if @runner.assign_to(project, current_user)
       redirect_to admin_runner_path(@runner)
     else
-      redirect_to admin_runner_path(@runner), alert: 'Failed adding runner deploy key to GitLab project'
+      redirect_to admin_runner_path(@runner), alert: 'Failed adding runner to project'
     end
   end
 
