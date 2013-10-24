@@ -1,6 +1,7 @@
 = content_for :title do
   %h3.project-title
-    Admin / Runners
+    %span.light Admin /
+    Runners (#{@runners.total_count})
 
 %p.lead
   %span To register new runner you should use next token

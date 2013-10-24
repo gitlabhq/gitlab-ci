@@ -1,6 +1,7 @@
 = content_for :title do
   %h3.project-title
-    Admin / Projects
+    %span.light Admin /
+    Projects (#{@projects.total_count})
 
 %table.table
   %tr

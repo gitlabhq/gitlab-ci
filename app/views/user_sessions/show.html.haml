@@ -1,11 +1,15 @@
-%h3 Hi, #{@user.name}
+= image_tag gravatar_icon(current_user.email, 120), class: 'img-polaroid'
+%h3
+  Hi, #{@user.name}
 
+  - if @user.is_admin
+    %span.label.label-success Admin
 
-%p
-  %b Email:
-  = @user.email
+.profile-block
+  %p
+    %span.light Email:
+    %strong= @user.email
 
-%p
-  %b GitLab profile:
-  = link_to @user.username, @user.url + '/u/' + @user.username
-
+  %p
+    %span.light GitLab profile:
+    %strong= link_to @user.username, @user.url + '/u/' + @user.username, target: "_blank"

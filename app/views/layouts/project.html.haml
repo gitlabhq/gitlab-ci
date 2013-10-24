@@ -21,7 +21,7 @@
       .row-fluid
         - if current_user
           .span2
-            %ul.nav.nav-tabs.nav-stacked
+            %ul.nav.nav-tabs.nav-stacked.project-menu
               = nav_link path: 'projects#show' do
                 = link_to project_path(@project) do
                   %i.icon-list-alt
