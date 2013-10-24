@@ -31,11 +31,6 @@
                 = link_to charts_project_path(@project) do
                   %i.icon-bar-chart
                   Charts
-              = nav_link controller: :runner_projects do
-                = link_to project_runner_projects_path(@project) do
-                  %i.icon-cog
-                  Runners
-                  %small.pull-right= @project.runner_projects.count
               = nav_link path: 'projects#integration' do
                 = link_to integration_project_path(@project) do
                   %i.icon-wrench
