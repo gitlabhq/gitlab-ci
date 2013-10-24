@@ -41,6 +41,10 @@ class Build < ActiveRecord::Base
     where('created_at > ?', Date.today - 1.month)
   end
 
+  def self.first_pending
+    pending.order('created_at ASC').first
+  end
+
   def self.create_from(build)
     new_build = build.dup
     new_build.status = :pending

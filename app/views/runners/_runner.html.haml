@@ -1,6 +1,10 @@
 %tr{id: dom_id(runner)}
   %td
-    %span.badge.badge-info= runner.id
+    - if runner.shared?
+      %span.label.label-success shared
+    - else
+      %span.label.label-info private
+
   %td
     = link_to runner_path(runner) do
       = runner.token
@@ -13,13 +17,10 @@
         = f.text_field :description, class: 'pull-left'
         = f.submit 'Save', class: 'btn'
   %td
-    - last_build = runner.last_build
-    - if last_build
-      = link_to last_build.short_sha, [last_build.project, last_build]
+    - if runner.shared?
+      \-
     - else
-      unknown
-  %td
-    = runner.projects.count
+      = runner.projects.count
   %td
     %span.badge.badge-success
       #{runner.builds.success.count}

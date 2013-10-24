@@ -49,4 +49,8 @@ class Runner < ActiveRecord::Base
 
     description
   end
+
+  def shared?
+    runner_projects.blank?
+  end
 end
