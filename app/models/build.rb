@@ -42,7 +42,7 @@ class Build < ActiveRecord::Base
   end
 
   def self.first_pending
-    pending.order('created_at ASC').first
+    pending.where(runner_id: nil).order('created_at ASC').first
   end
 
   def self.create_from(build)

@@ -28,9 +28,10 @@ describe API::API do
   end
 
   describe "PUT /builds/:id" do
-    let(:build) { FactoryGirl.create(:build, project_id: project.id) }
+    let(:build) { FactoryGirl.create(:build, project_id: project.id, runner_id: runner.id) }
 
-    it "should update a build" do
+    it "should update a running build" do
+      build.run!
       put api("/builds/#{build.id}"), token: runner.token
       response.status.should == 200
     end
