@@ -25,14 +25,19 @@ GitlabCi::Application.routes.draw do
         post :retry
       end
     end
-
-    resources :runner_projects
   end
 
   resource :user_sessions
-  resources :runners, only: [:index, :show, :update, :destroy] do
-    member do
-      put :assign_all
+
+  namespace :admin do
+    resources :runners, only: [:index, :show, :update, :destroy] do
+      member do
+        put :assign_all
+      end
+    end
+
+    resources :projects do
+      resources :runner_projects
     end
   end
 

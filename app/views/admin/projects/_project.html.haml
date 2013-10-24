@@ -3,7 +3,7 @@
   %td
     = project.id
   %td
-    = link_to project do
+    = link_to [:admin, project] do
       %strong= project.name
   %td
     - if last_build
@@ -21,3 +21,7 @@
       Private
   %td
     = project.builds.count
+  %td
+    = link_to [:admin, project], method: :delete do
+      %i.icon-remove
+      Remove

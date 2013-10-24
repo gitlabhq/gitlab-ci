@@ -3,10 +3,13 @@
     .container-fluid
       = link_to 'GitLab CI', root_path, class: "brand"
       %ul.nav
-        - if current_user
+        - if current_user && current_user.is_admin
           %li
-            = link_to runners_path do
+            = link_to admin_runners_path do
               Runners
+          %li
+            = link_to admin_projects_path do
+              Projects
       %ul.nav.pull-right
         - if current_user
           %li

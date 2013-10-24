@@ -1,4 +1,4 @@
-class RunnerProjectsController < ApplicationController
+class Admin::RunnerProjectsController < Admin::ApplicationController
   before_filter :authenticate_user!
   layout 'project'
 
@@ -11,16 +11,18 @@ class RunnerProjectsController < ApplicationController
     @runner = Runner.find(params[:runner_project][:runner_id])
 
     if @runner.assign_to(project, current_user)
-      redirect_to project_runner_projects_path
+      redirect_to admin_runner_path(@runner)
     else
-      redirect_to project_runner_projects_path, alert: 'Failed adding runner deploy key to GitLab project'
+      redirect_to admin_runner_path(@runner), alert: 'Failed adding runner to project'
     end
   end
 
   def destroy
-    RunnerProject.find(params[:id]).destroy
+    rp = RunnerProject.find(params[:id])
+    runner = rp.runner
+    rp.destroy
 
-    redirect_to project_runner_projects_path
+    redirect_to admin_runner_path(runner)
   end
 
   private

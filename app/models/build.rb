@@ -41,6 +41,10 @@ class Build < ActiveRecord::Base
     where('created_at > ?', Date.today - 1.month)
   end
 
+  def self.first_pending
+    pending.where(runner_id: nil).order('created_at ASC').first
+  end
+
   def self.create_from(build)
     new_build = build.dup
     new_build.status = :pending
@@ -136,8 +140,14 @@ class Build < ActiveRecord::Base
     nil
   end
 
+  # Build a clone-able repo url
+  # using http and basic auth
   def repo_url
-    project.ssh_url_to_repo
+    auth = "gitlab-ci-token:#{project.token}@"
+    url = project.gitlab_url + ".git"
+    url.sub(/^https?:\/\//) do |prefix|
+      prefix + auth
+    end
   end
 
   def timeout

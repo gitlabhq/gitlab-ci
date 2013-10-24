@@ -1,0 +1,61 @@
+%h3
+  Runner: #{@runner.token}
+
+%p.light= @runner.description
+%p
+  = link_to admin_runners_path do
+    &larr; Back to runners list
+%hr
+
+- if @runner.shared?
+  .alert.alert-success
+    %h4 This runner will process build from ALL projects
+- else
+  .alert.alert-info
+    %h4 This runner will process build only from ASSIGNED projects
+.row-fluid
+  .span6
+    %h5 Restrict projects for this runner
+    %ul.restrict-projects-list
+      - @runner.runner_projects.each do |runner_project|
+        - project = runner_project.project
+        %li
+          %h5
+            = project.name
+            .pull-right
+              = link_to 'Disable', [:admin, project, runner_project], method: :delete, class: 'btn btn-danger btn-small'
+
+      - (Project.all - @runner.projects).each do |project|
+        %li
+          %h5
+            = project.name
+            .pull-right
+              = form_for [:admin, project, project.runner_projects.new] do |f|
+                = f.hidden_field :runner_id, value: @runner.id
+                = f.submit 'Enable', class: 'btn btn-small'
+
+  .span6
+    %h5 Recent builds served by this runner
+    %table.builds.runner-builds
+      %thead
+        %tr
+          %th Status
+          %th Project
+          %th Commit
+          %th Finished at
+
+      - @builds.each do |build|
+        %tr.build.alert{class: build_status_alert_class(build)}
+          %td.status
+            = build.status
+
+          %td.status
+            = build.project.name
+
+          %td.build-link
+            = link_to project_build_path(build.project, build) do
+              %strong #{build.short_sha}
+
+          %td.timestamp
+            - if build.finished_at
+              %span #{time_ago_in_words build.finished_at} ago

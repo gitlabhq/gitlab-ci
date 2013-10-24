@@ -26,27 +26,16 @@ class Runner < ActiveRecord::Base
   end
 
   def assign_to(project, current_user)
-    ActiveRecord::Base.transaction do
-      runner_project = project.runner_projects.create!(runner_id: self.id)
-
-      opts = {
-        key: self.public_key,
-        title: "gitlab-ci-runner-#{self.id}",
-        private_token: current_user.private_token
-      }
-
-      result = Network.new.add_deploy_key(current_user.url, project.gitlab_id, opts)
-      raise "Can't add deploy key" unless result
-      true
-    end
-  rescue => ex
-    logger.warn "Assign runner to project failed: #{ex}"
-    false
+    project.runner_projects.create!(runner_id: self.id)
   end
 
   def display_name
     return token unless !description.blank?
 
     description
+  end
+
+  def shared?
+    runner_projects.blank?
   end
 end

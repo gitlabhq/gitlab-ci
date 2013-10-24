@@ -265,3 +265,20 @@ td form {
     text-decoration: none;
   }
 }
+
+.label {
+  font-weight: normal;
+  padding: 2px 5px;
+}
+
+.runner-builds {
+  .build-message {
+    display: none;
+  }
+}
+
+.restrict-projects-list {
+  form {
+    margin: 0;
+  }
+}
