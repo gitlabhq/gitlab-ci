@@ -1,11 +1,8 @@
-%p.lead Integration with GitLab:
-
 %form.form-horizontal
   %fieldset
     .alert.alert-success
       %legend
-        Complete (as service)
-        %small
+        Integration with GitLab. Requires GitLab 6.3+
       %p
         Copy to GitLab &rarr; Project &rarr; Services
         (#{link_to 'screenshot', image_path('service_sample.png'), target: '_blank'})
@@ -23,22 +20,3 @@
         = label_tag :url, 'Project URL', class: 'control-label'
         .controls
           = text_field_tag :url, project_url(@project), class: 'input-xxlarge', readonly: true
-
-
-
-  %br
-  %fieldset
-    .alert.alert-info
-      %legend
-        Partial (as web hook)
-        %small build on push, links to GitLab commits
-
-      %p Copy to GitLab &rarr; Project &rarr; Web Hooks
-      %ul
-        %li build on push
-        %li links to GitLab instance
-
-      .control-group
-        = label_tag :hook_url, 'HTTP POST Hook url', class: 'control-label'
-        .controls
-          = text_field_tag :url, build_project_url(@project, token: @project.token), class: 'input-xxlarge', readonly: true
