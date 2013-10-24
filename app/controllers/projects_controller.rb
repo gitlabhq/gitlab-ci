@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
 
     @ref = params[:ref]
 
-    @builds = @project.builds.group(:sha).order('created_at DESC')
+    @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
     @builds = @builds.order('id DESC').page(params[:page]).per(20)
   end
