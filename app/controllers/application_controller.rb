@@ -25,6 +25,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def authenticate_admin!
+    unless current_user && current_user.is_admin
+      redirect_to new_user_sessions_path
+      return
+    end
+  end
+
   def authenticate_token!
     unless project.valid_token?(params[:token])
       return head(403)
