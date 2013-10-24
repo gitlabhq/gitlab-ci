@@ -140,8 +140,14 @@ class Build < ActiveRecord::Base
     nil
   end
 
+  # Build a clone-able repo url
+  # using http and basic auth
   def repo_url
-    project.ssh_url_to_repo
+    auth = "gitlab-ci-token:#{project.token}@"
+    url = project.gitlab_url + ".git"
+    url.sub(/^https?:\/\//) do |prefix|
+      prefix + auth
+    end
   end
 
   def timeout
