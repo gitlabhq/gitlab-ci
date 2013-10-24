@@ -292,3 +292,14 @@ td form {
 .profile-block {
   font-size: 14px;
 }
+
+.login-form {
+  .btn-success {
+    padding: 10px 20px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    padding: 8px 14px;
+  }
+}

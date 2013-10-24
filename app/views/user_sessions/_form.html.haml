@@ -9,7 +9,7 @@
     = f.label :password, class: 'control-label'
     .controls= f.password_field :password
   .field
-    = f.label :url
+    = f.label :url, 'GitLab Server'
     = f.select :url, GitlabCi.config.allowed_gitlab_urls.map {|url| [url, url] }, placeholder: 'http://gitlab.company.com'
   .form-actions
-    = f.submit "Sign in", class: 'btn btn-primary'
+    = f.submit "Sign in", class: 'btn btn-success'
