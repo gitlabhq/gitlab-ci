@@ -59,12 +59,12 @@ class Build < ActiveRecord::Base
     end
 
     event :drop do
-      transition :running => :failed, :if => lambda { |build| ['build','',nil].include? build.action.to_s }
+      transition :running => :failed, :unless => lambda { |build| build.action=='deploy' }
       transition :running => :success, :if => lambda { |build| build.action=='deploy' }
     end
 
     event :success do
-      transition :running => :success, :if => lambda { |build| ['build','',nil].include? build.action.to_s }
+      transition :running => :success, :unless => lambda { |build| build.action=='deploy' }
       transition :running => :deployed, :if => lambda { |build| build.action=='deploy' }
     end
 

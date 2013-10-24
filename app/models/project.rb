@@ -102,7 +102,8 @@ class Project < ActiveRecord::Base
         ref: ref,
         sha: sha,
         before_sha: before_sha,
-        push_data: opts
+        push_data: opts,
+        action: 'build'
     }
 
     @build = Build.create(data)
