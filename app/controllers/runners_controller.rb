@@ -8,7 +8,7 @@ class RunnersController < ApplicationController
 
   def show
     @runner = Runner.find(params[:id])
-    @builds = @runner.builds.order('id DESC').page(params[:page]).per(30)
+    @builds = @runner.builds.order('id DESC').last(30)
   end
 
   def update

@@ -6,7 +6,8 @@
     = render 'layouts/info'
     .container-fluid
       %h3.project-title
-        Project: #{@project.name}
+        %span.light Project:
+        = @project.name
         - if @project.public
           %small
             %i.icon-globe
