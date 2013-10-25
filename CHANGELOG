@@ -1,3 +1,11 @@
+v4.0.0
+  - Shared runners (no need to add runner to every project)
+  - Admin area (only available for GitLab admins)
+  - Hide all runners management into admin area
+  - Use http cloning for builds instead of deploy keys
+  - Allow choose between git clone and git fetch when get code for build
+  - Make build timeout actually works
+
 v3.2.0
   - Limit visibility of projects by gitlab authorized projects
   - Use one page for both gitlab and gitlab-ci projects

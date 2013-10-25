@@ -61,6 +61,11 @@ and
 
 * [Installation guide](https://github.com/gitlabhq/gitlab-ci/blob/master/doc/installation.md)
 
+
+### Docs
+
+* [API](doc/api.md)
+
 ### How to add a new project to GitLab CI
 
 1. Log in the GitLab CI web interface
