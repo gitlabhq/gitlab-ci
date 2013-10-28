@@ -15,6 +15,13 @@
   %canvas#monthChart.padded{width: 800, height: 300}
 
 %fieldset
+  %legend
+    Builds chart for last month
+    (#{date_from_to(Date.today - 30.days, Date.today)})
+
+  %canvas#monthChart.padded{width: 800, height: 300}
+
+%fieldset
   %legend Builds chart for last year
   %canvas#yearChart.padded{width: 800, height: 400}
 
