@@ -103,13 +103,23 @@ class ProjectsController < ApplicationController
   # Image with build status for sha or ref
   def status
     image_name = 'unknown.png'
-    build_status = 'unknown'
+    build_status = { status: "unknown" }
     if params[:sha]
-      image_name = @project.sha_status_image(params[:sha])
-      build_status = @project.last_build_for_sha(params[:sha])
+      sha_status_image = @project.sha_status_image(params[:sha])
+      last_build_for_sha = @project.last_build_for_sha(params[:sha])
+      image_name = sha_status_image if sha_status_image
+      build_status = last_build_for_sha if last_build_for_sha
     elsif params[:ref]
-      image_name = @project.status_image(params[:ref])
-      build_status = @project.builds.where(ref: params[:ref]).last
+      status_image = @project.status_image(params[:ref])
+      last_build = @project.builds.where(ref: params[:ref]).last
+      image_name = status_image if status_image
+      build_status = last_build if last_build
+    else
+      build = @project.builds.last
+      if build
+        image_name = @project.image_for_build(build)
+        build_status = build
+      end
     end
 
     respond_to do |format|

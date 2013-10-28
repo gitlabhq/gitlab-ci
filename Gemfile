@@ -72,6 +72,7 @@ end
 
 group :development, :test do
   gem 'pry'
+  gem 'chunky_png'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'poltergeist'
