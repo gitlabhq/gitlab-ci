@@ -28,7 +28,7 @@
                   Builds
                   %small.pull-right= @project.builds.count
               = nav_link path: 'projects#charts' do
-                = link_to charts_project_path(@project) do
+                = link_to project_charts_path(@project) do
                   %i.icon-bar-chart
                   Charts
               = nav_link path: 'projects#integration' do

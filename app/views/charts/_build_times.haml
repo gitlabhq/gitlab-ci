@@ -1,0 +1,25 @@
+
+%fieldset
+  %legend
+    Builds duration chart for last 30 builds
+
+  %canvas#build_timesChart.padded{width: 800, height: 200}
+
+=render :partial => 'overall'
+
+- [:build_times].each do |scope|
+  :javascript
+    var data = {
+      labels : #{@charts[scope].labels.to_json},
+      datasets : [
+        {
+          fillColor : "#4A3",
+          strokeColor : "rgba(151,187,205,1)",
+          pointColor : "rgba(151,187,205,1)",
+          pointStrokeColor : "#fff",
+          data : #{@charts[scope].build_times.to_json}
+        }
+      ]
+    }
+    var ctx = $("##{scope}Chart").get(0).getContext("2d");
+    new Chart(ctx).Line(data,{"scaleOverlay": true});

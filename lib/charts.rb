@@ -1,11 +1,12 @@
 module Charts
   class Chart
-    attr_reader :labels, :total, :success, :project
+    attr_reader :labels, :total, :success, :project, :build_times
 
     def initialize(project)
       @labels = []
       @total = []
       @success = []
+      @build_times = []
       @project = project
 
       collect
@@ -48,6 +49,15 @@ module Charts
         end_day = Date.today - 7.days + i.day + 1.day
 
         push(start_day, end_day, "%d %B")
+      end
+    end
+  end
+
+  class BuildTime < Chart
+    def collect
+      30.times do |i|
+        @labels << i
+        @build << project.builds.select('DATEDIFF(second, started_at, finished_at) as duration').all
       end
     end
   end
