@@ -43,22 +43,39 @@ class Project < ActiveRecord::Base
 
   before_validation :set_default_values
 
-  def self.from_gitlab(user, page, per_page, scope = :owned)
-    opts = { private_token: user.private_token }
-    opts[:per_page] = per_page if per_page.present?
-    opts[:page]     = page     if page.present?
+  class << self
+    def parse(project_yaml)
+      project = YAML.load(project_yaml)
 
-    projects = Network.new.projects(user.url, opts, scope)
+      params = {
+        name: project.name_with_namespace,
+        gitlab_id: project.id,
+        gitlab_url: project.web_url,
+        scripts: 'ls -la',
+        default_ref: project.default_branch || 'master',
+        ssh_url_to_repo: project.ssh_url_to_repo
+      }
 
-    if projects
-      projects.map { |pr| OpenStruct.new(pr) }
-    else
-      []
+      Project.new(params)
     end
-  end
 
-  def self.already_added?(project)
-    where(gitlab_url: project.web_url).any?
+    def from_gitlab(user, page, per_page, scope = :owned)
+      opts = { private_token: user.private_token }
+      opts[:per_page] = per_page if per_page.present?
+      opts[:page]     = page     if page.present?
+
+      projects = Network.new.projects(user.url, opts, scope)
+
+      if projects
+        projects.map { |pr| OpenStruct.new(pr) }
+      else
+        []
+      end
+    end
+
+    def already_added?(project)
+      where(gitlab_url: project.web_url).any?
+    end
   end
 
   def set_default_values

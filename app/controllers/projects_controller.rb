@@ -40,18 +40,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = YAML.load(params[:project])
-
-    params = {
-      name: project.name_with_namespace,
-      gitlab_id: project.id,
-      gitlab_url: project.web_url,
-      scripts: 'ls -la',
-      default_ref: project.default_branch || 'master',
-      ssh_url_to_repo: project.ssh_url_to_repo
-    }
-
-    @project = Project.new(params)
+    @project = Project.parse(params[:project])
 
     if @project.save
       redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
@@ -77,17 +66,14 @@ class ProjectsController < ApplicationController
     redirect_to projects_url
   end
 
+  # DEPRECATED!
+  # This method is deprecated. Use API for posting build
+  #
   def build
    # Ignore remove branch push
    return head(200) if params[:after] =~ /^00000000/
 
-   # Support payload (like github) push
-   build_params = if params[:payload]
-                    HashWithIndifferentAccess.new(JSON.parse(params[:payload]))
-                  else
-                    params
-                  end.dup
-
+   build_params = params.dup
    @build = @project.register_build(build_params)
 
    if @build
@@ -119,7 +105,6 @@ class ProjectsController < ApplicationController
     @charts[:month] = Charts::MonthChart.new(@project)
     @charts[:year] = Charts::YearChart.new(@project)
   end
-
 
   protected
 
