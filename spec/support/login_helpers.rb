@@ -18,4 +18,8 @@ module LoginHelpers
   def logout
     click_link "Logout" rescue nil
   end
+
+  def skip_admin_auth
+    ApplicationController.any_instance.stub(authenticate_admin!: true)
+  end
 end
