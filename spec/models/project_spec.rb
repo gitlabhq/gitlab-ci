@@ -16,6 +16,7 @@
 #  public           :boolean          default(FALSE), not null
 #  ssh_url_to_repo  :string(255)
 #  gitlab_id        :integer
+#  allow_git_fetch  :boolean          default(TRUE), not null
 #
 
 require 'spec_helper'
