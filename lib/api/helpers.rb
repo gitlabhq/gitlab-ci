@@ -29,6 +29,10 @@ module API
       forbidden! unless current_runner
     end
 
+    def authenticate_project_token!(project)
+      forbidden! unless project.valid_token?(params[:project_token])
+    end
+
     # Checks the occurrences of required attributes, each attribute must be present in the params hash
     # or a Bad Request error is invoked.
     #
