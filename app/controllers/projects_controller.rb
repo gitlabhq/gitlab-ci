@@ -42,7 +42,22 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.parse(params[:project])
 
-    if @project.save
+    Project.transaction do
+      @project.save!
+
+      opts = {
+        token: @project.token,
+        project_url: project_url(@project),
+      }
+
+      if Network.new.enable_ci(current_user.url, @project.gitlab_id, opts, current_user.private_token)
+        true
+      else
+        raise ActiveRecord::Rollback
+      end
+    end
+
+    if @project.persisted?
       redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
     else
       redirect_to :back, alert: 'Cannot save project'
@@ -62,6 +77,7 @@ class ProjectsController < ApplicationController
 
   def destroy
     project.destroy
+    Network.new.disable_ci(current_user.url, project.gitlab_id, current_user.private_token)
 
     redirect_to projects_url
   end

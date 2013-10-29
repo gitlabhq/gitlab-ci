@@ -75,4 +75,38 @@ class Network
       nil
     end
   end
+
+  def enable_ci(url, project_id, ci_opts, token)
+    opts = {
+      body: ci_opts.to_json,
+      headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.put(endpoint, opts)
+
+    if response.code == 200
+      true
+    else
+      nil
+    end
+  end
+
+  def disable_ci(url, project_id, token)
+    opts = {
+      headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.delete(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
 end

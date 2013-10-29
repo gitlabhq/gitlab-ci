@@ -1,9 +1,10 @@
-.well
-  %h3 Setup guide:
+.alert.alert-success
+  %h4
+    Project sucessfully added to GitLab CI!
+  %br
+  %p Its only 2 steps left:
   %ol
     %li
-      Activate GitLab CI service for project inside GitLab. Visit #{link_to 'integration tab', integration_project_path(@project), target: :blank} for more details
-    %li
-      Try test settings to confirm everything is working
+      Visit #{link_to 'GitLab project settings', @project.gitlab_url + "/services/gitlab_ci/edit", target: :blank} and press "Test settings" button  to confirm everything is working.
     %li
       Customize script section to run own test command  #{link_to 'here', edit_project_path(@project), target: :blank}
