@@ -4,7 +4,7 @@ describe "Charts" do
 
   context "build_times" do
     before do
-      @project = Project.all.first
+      @project = FactoryGirl.create(:project)
       FactoryGirl.create(:build, :project_id => @project.id)
     end
     it {
