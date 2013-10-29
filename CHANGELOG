@@ -6,6 +6,7 @@ v4.0.0
   - Allow choose between git clone and git fetch when get code for build
   - Make build timeout actually works
   - Requires GitLab 6.3 or higher
+  - GitLab CI settings go to GitLab project via api on creation
 
 v3.2.0
   - Limit visibility of projects by gitlab authorized projects
