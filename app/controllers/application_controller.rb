@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  before_filter :default_headers
+
   protect_from_forgery
 
   helper_method :current_user
@@ -53,5 +55,10 @@ class ApplicationController < ActionController::Base
     if current_user && current_user.sync_at < (Time.zone.now - 24.hours)
       current_user.reset_cache
     end
+  end
+
+  def default_headers
+    headers['X-Frame-Options'] = 'DENY'
+    headers['X-XSS-Protection'] = '1; mode=block'
   end
 end
