@@ -7,22 +7,23 @@
   %span To register new runner you should use next token
   %code #{GitlabCi::RunnersToken}
 
-%p
-  Runner is a process which run a build.
-  You can setup as much runners as you need.
-  %br
-  Runners can be placed on separate users, servers,  even on your local machine
-  %br
+.well
+  %p
+    Runner is a process which run a build.
+    You can setup as much runners as you need.
+    %br
+    Runners can be placed on separate users, servers,  even on your local machine
+    %br
 
-.alert.alert-info
-  %span Each runner can be in one of next states:
-  %ul
-    %li
-      %span.label.label-success shared
-      \- run any builds
-    %li
-      %span.label.label-info private
-      \- run only builds from assigned projects
+  %div
+    %span Each runner can be in one of next states:
+    %ul
+      %li
+        %span.label.label-success shared
+        \- run any builds
+      %li
+        %span.label.label-info specific
+        \- run only builds from assigned projects
 
 
 %table.table
