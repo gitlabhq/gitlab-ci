@@ -1,0 +1,63 @@
+= content_for :title do
+  %h3.project-title
+    %span.light Admin /
+    #{@project.name}
+.row-fluid
+  .span6
+    %fieldset
+      %legend Project info
+      %p
+        ID:
+        %strong= @project.id
+      %p
+        Name:
+        %strong= @project.name
+      %p
+        Build timeout:
+        %strong= @project.timeout
+      %p
+        GitLab ID:
+        %strong= @project.gitlab_id
+      %p
+        Created at:
+        %strong= @project.created_at
+      %p
+        Token:
+        %strong= @project.token
+      %p
+        Public:
+        %strong= @project.public
+      %p
+        Last build:
+        - if @project.last_build
+          = time_ago_in_words @project.last_build_date
+
+  .span6
+    %fieldset
+      %legend Build script
+      = preserve do
+        %pre
+          = @project.scripts
+
+    %fieldset
+      %legend Builds stats
+      %p
+        Total:
+        %strong= pluralize @project.builds.count, 'build'
+      %p
+        Successful:
+        %strong= pluralize @project.builds.success.count, 'build'
+      %p
+        Failed:
+        %strong= pluralize @project.builds.failed.count, 'build'
+
+      %p
+        Success ratio:
+        %strong
+          #{success_ratio(@project.builds.success, @project.builds.failed)}%
+
+      %p
+        Commits covered:
+        %strong
+          = @project.builds.uniq_sha.count
+
