@@ -25,7 +25,7 @@ class Build < ActiveRecord::Base
   serialize :push_data
 
   attr_accessible :project_id, :ref, :sha, :before_sha,
-    :status, :finished_at, :trace, :started_at, :push_data, :runner_id
+    :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name
 
   validates :sha, presence: true
   validates :ref, presence: true
@@ -156,5 +156,9 @@ class Build < ActiveRecord::Base
 
   def allow_git_fetch
     project.allow_git_fetch
+  end
+
+  def project_name
+    project.name
   end
 end
