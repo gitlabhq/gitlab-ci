@@ -16,9 +16,10 @@ GitLab CI officially supports (recent versions of) these Linux distributions:
 
 Additionally GitLab CI requires:
 
-* GitLab 6.0+
+* GitLab 6.3+
 * ruby 1.9.3
 * MySQL or PostgreSQL
+
 
 __If you want to use GitLab CI without GitLab or with older versions of GitLab you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)__
 

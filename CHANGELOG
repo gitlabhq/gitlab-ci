@@ -5,6 +5,7 @@ v4.0.0
   - Use http cloning for builds instead of deploy keys
   - Allow choose between git clone and git fetch when get code for build
   - Make build timeout actually works
+  - Requires GitLab 6.3 or higher
 
 v3.2.0
   - Limit visibility of projects by gitlab authorized projects
