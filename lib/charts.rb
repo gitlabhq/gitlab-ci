@@ -55,7 +55,14 @@ module Charts
 
   class BuildTime < Chart
     def collect
-      30.times do |i|
+      i=0
+      if ActiveRecord::Base.connection.adapter_name.downcase == "postgresql"
+         sql = "date_part('epoch',finished_at) - date_part('epoch',started_at) as duration"
+      else
+        sql = 'UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(started_at) as duration'
+      end
+      result = project.builds.order(:finished_at).limit(30).pluck(sql)
+      result.each do |b|
         @labels << i
         @build << project.builds.select('DATEDIFF(second, started_at, finished_at) as duration').all
       end

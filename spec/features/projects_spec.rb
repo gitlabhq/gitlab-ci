@@ -32,9 +32,9 @@ describe "Projects" do
     it { page.should have_content 'Build Schedule' }
   end
 
-  describe "GET /projects/:id/stats" do
+  describe "GET /projects/:id/chart" do
     before do
-      visit charts_project_path(@project)
+      visit project_charts_path(@project, 'builds')
     end
 
     it { page.should have_content @project.name }
