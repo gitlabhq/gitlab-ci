@@ -66,9 +66,6 @@ class ProjectsController < ApplicationController
     redirect_to projects_url
   end
 
-  # DEPRECATED!
-  # This method is deprecated. Use API for posting build
-  #
   def build
    # Ignore remove branch push
    return head(200) if params[:after] =~ /^00000000/
