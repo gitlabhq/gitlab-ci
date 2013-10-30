@@ -1,3 +1,5 @@
+require "#{Rails.root}/lib/report_parser/report_parser"
+
 module API
   # Builds API
   class Builds < Grape::API
@@ -33,12 +35,17 @@ module API
       #   id (required) - The ID of a project
       #   state (optional) - The state of a build
       #   trace (optional) - The trace of a build
+      #   reports(optional)- The requested report files as an json array
       # Example Request:
       #   PUT /builds/:id
       put ":id" do
         authenticate_runner!
         build = Build.where(runner_id: current_runner.id).running.find(params[:id])
         build.update_attributes(trace: params[:trace])
+        ReportFile.new()
+        params[:reports].each do |report|
+          build.report_files << ReportParser.parse(report)
+        end if params[:reports]
 
         case params[:state].to_s
         when 'success'

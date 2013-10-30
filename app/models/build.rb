@@ -21,11 +21,15 @@
 class Build < ActiveRecord::Base
   belongs_to :project
   belongs_to :runner
+  has_many :coverages
+  has_many :test_reports
+  has_many :report_file_contents
+  has_many :report_files, through: :report_file_contents
 
   serialize :push_data
 
   attr_accessible :project_id, :ref, :sha, :before_sha,
-    :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name
+    :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :report_files
 
   validates :sha, presence: true
   validates :ref, presence: true
@@ -76,7 +80,7 @@ class Build < ActiveRecord::Base
       build.update_attributes finished_at: Time.now
     end
 
-    state :pending, value: 'pending'
+      state :pending, value: 'pending'
     state :running, value: 'running'
     state :failed, value: 'failed'
     state :success, value: 'success'
@@ -148,7 +152,13 @@ class Build < ActiveRecord::Base
     url.sub(/^https?:\/\//) do |prefix|
       prefix + auth
     end
+
+  def project_report_files
+    project.report_files.map do |file|
+      { filename: file.filename, filetype: file.filetype }
+    end
   end
+end
 
   def timeout
     project.timeout

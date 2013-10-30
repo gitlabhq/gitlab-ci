@@ -1,0 +1,27 @@
+%h1 Listing test_reports
+
+%table
+  %tr
+    %th Testclass
+    %th Title
+    %th Duration
+    %th Description
+    %th Status
+    %th
+    %th
+    %th
+
+  - @report_files.each do |test_report|
+    %tr
+      %td= test_report.testClass
+      %td= test_report.title
+      %td= test_report.duration
+      %td= test_report.description
+      %td= test_report.status
+      %td= link_to 'Show', test_report
+      %td= link_to 'Edit', edit_test_report_path(test_report)
+      %td= link_to 'Destroy', test_report, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Test report', new_test_report_path

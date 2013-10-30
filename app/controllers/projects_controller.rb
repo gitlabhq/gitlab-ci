@@ -70,6 +70,7 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    @project.report_files.build
   end
 
   def update

@@ -31,6 +31,20 @@
 
 
       %fieldset
+        %legend Report files
+        .field
+          %table#reportfilelist
+            %tr
+              %th File
+              %th File Type
+              %th= link_to_function '<span><i class="icon-plus-sign" alt="add"></i>Add</span>'.html_safe, 'addReportFile(this);', class: 'btn'
+            = f.fields_for :report_files do |r|
+              %tr
+                %td= r.text_field :filename, placeholder: 'spec/reports.json'
+                %td= r.select :filetype, report_file_types
+                %td= link_to_function '<span><i class="icon-minus-sign" alt="delete"></i>Delete</span>'.html_safe, 'removeReportFile(this);', class: 'btn'
+
+      %fieldset
         %legend Build Schedule
         .field
           = f.label :always_build do
@@ -73,3 +87,23 @@
     = link_to 'Cancel', projects_path, class: 'btn'
     - unless @project.new_record?
       = link_to 'Remove Project', project_path(@project), method: :delete, confirm: 'Project will be removed. Are you sure?', class: 'btn btn-danger right'
+
+:javascript
+  var addReportFile = function(line) {
+    var template = $('#reportfilelist tr').last().clone(false);
+    template.removeAttr('id');
+    template.find('input').val('');
+    template.css('display','none');
+    $('#reportfilelist').append(template);
+    $('#reportfilelist a').show();
+    template.slideDown();
+  }
+  var removeReportFile = function(line) {
+    $(line).parents('tr').remove();
+    var elems = $('#reportfilelist tr');
+    if (elems.size() <= 2) {
+      console.log(elems);
+      console.log(elems.last().find('a'));
+      elems.last().find('a').hide();
+    }
+  }
