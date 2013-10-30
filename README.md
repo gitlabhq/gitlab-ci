@@ -28,8 +28,6 @@ __If you want to use GitLab CI without GitLab or with older versions of GitLab y
 The following features are not in GitLab CI but merge requests are very welcome:
 
 * Email notification
-* API documentation
-* Increase test coverage (the goal is to be above 85%)
 * Build artifacts access
 * Build pipeline / build promotion actions
 
