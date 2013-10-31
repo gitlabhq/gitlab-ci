@@ -15,7 +15,7 @@ class BuildsController < ApplicationController
 
     raise ActiveRecord::RecordNotFound unless @build
 
-    @builds = @builds.page(params[:page]).per(20)
+    @builds = @builds.where("id not in (?)", @build.id).page(params[:page]).per(20)
   end
 
   def retry

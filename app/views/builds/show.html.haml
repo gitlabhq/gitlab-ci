@@ -12,13 +12,19 @@
 
 .row-fluid
   .span9
-    .alert{class: build_status_alert_class(@build)}
+    .build-head.alert{class: build_status_alert_class(@build)}
       %h4
         Build ##{@build.short_sha}
-        %small= "(#{@build.ref})"
-      .right
-        %span= @build.updated_at.stamp('19:00 Aug 27')
-      = @build.status
+        %span.label.label-inverse= "#{@build.ref}"
+        .pull-right
+          %span
+            %i.icon-time
+            #{build_duration @build}
+
+      .clearfix
+        = @build.status
+        .pull-right
+          = @build.updated_at.stamp('19:00 Aug 27')
 
 
 
@@ -41,13 +47,13 @@
           - else
             = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-small btn-info', method: :post
 
-      %p
-        %span.attr-name Status:
-        #{@build.status}
       - if @build.started_at
         %p
           %span.attr-name Duration:
           #{build_duration @build}
+      %p
+        %span.attr-name Created:
+        #{time_ago_in_words(@build.created_at)} ago
       - if @build.finished_at
         %p
           %span.attr-name Finished:
@@ -61,11 +67,8 @@
       %h4.title
         Commit
         .pull-right
-          #{build_commit_link @build}
+          %small #{build_commit_link @build}
 
-      %p
-        %span.attr-name ID:
-        #{build_commit_link @build}
       - if @build.compare?
         %p
           %span.attr-name Compare:
@@ -80,18 +83,19 @@
         %span.attr-name Message:
         #{@build.git_commit_message}
 
-    .build-widget
-      %h4.title All builds for #{@build.short_sha}:
-      %table.builds
-        - @builds.each_with_index do |build, i|
-          %tr.build.alert{class: build_status_alert_class(build)}
-            %td
-              = link_to project_build_path(@project, build, bid: build.id ) do
-                %span #{i+=1} &ndash; #{build.short_sha}
-            %td.status= build.status
+    - if @builds.present?
+      .build-widget
+        %h4.title #{pluralize(@builds.count, "other build")} for #{@build.short_sha}:
+        %table.builds
+          - @builds.each_with_index do |build, i|
+            %tr.build.alert{class: build_status_alert_class(build)}
+              %td
+                = link_to project_build_path(@project, build, bid: build.id ) do
+                  %span #{i+=1} &ndash; #{build.short_sha}
+              %td.status= build.status
 
 
-      = paginate @builds
+        = paginate @builds
 %br
 .right
   %a.btn.btn-small{href: edit_project_path(@project)}

@@ -316,7 +316,7 @@ h3 {
 .build-widget {
   padding: 10px;
   background: #f4f4f4;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   border-radius: 4px;
 
   .title {
@@ -327,5 +327,16 @@ h3 {
   }
   .attr-name {
     color: #777;
+  }
+}
+
+.build-head h4 {
+  line-height: 1.5;
+
+  .label {
+    padding: 4px 9px;
+    position: relative;
+    top: -2px;
+    left: 4px;
   }
 }
