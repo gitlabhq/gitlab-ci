@@ -84,8 +84,8 @@ class Build < ActiveRecord::Base
       build.update_attributes finished_at: Time.now
     end
 
-    before_transition :deployed => any do |build, transition|
-      Build.find_all_by_project_id(:build.project_id).where(:status => :deployed).update_attributes status: :success
+    before_transition any => :deployed do |build, transition|
+      Build.where(project_id: build.project_id).where(:status => :deployed).update_all status: :success
     end
 
     state :pending, value: 'pending'
