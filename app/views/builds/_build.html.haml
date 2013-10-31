@@ -1,6 +1,6 @@
 %tr.build.alert{class: build_status_alert_class(build)}
   %td.status
-    = build.status
+    = "#{build.action.humanize}: #{build.status.humanize}"
 
   %td.build-link
     = link_to project_build_path(build.project, build) do
@@ -20,6 +20,5 @@
     - if build.finished_at
       %span #{time_ago_in_words build.finished_at} ago
 
-  %td.deploy
-    - if build.deployable?
-      = link_to "Deploy", deploy_project_build_path(@project, build.sha), class: 'btn btn-small', method: :post
+  %td.actions
+    = action_links_for build

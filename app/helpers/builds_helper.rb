@@ -32,4 +32,17 @@ module BuildsHelper
   def build_link build
     link_to(build.short_sha, project_build_path(build.project, build))
   end
+
+  def action_links_for build
+    content = ''
+    if build.active?
+      content = link_to "Cancel", cancel_project_build_path(build.project, build.id), class: 'btn btn-small btn-danger'
+    else
+      content = link_to "Rebuild", retry_project_build_path(build.project, build.sha), class: 'btn btn-small', method: :post
+    end
+    if build.deployed? || build.deployable?
+      content += link_to build.deployed? ? "Redeploy" : "Deploy", deploy_project_build_path(build.project, build.sha), class: 'btn btn-small', method: :post
+    end
+    content
+  end
 end
