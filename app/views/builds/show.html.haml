@@ -9,6 +9,7 @@
   = link_to project_path(@project) do
     &larr; Back to project builds
 %hr
+
 .row-fluid
   .span9
     .alert{class: build_status_alert_class(@build)}
@@ -20,51 +21,6 @@
       = @build.status
 
 
-    .row-fluid
-      .span6
-        %fieldset
-          %legend
-            Build
-            .right
-              - if @build.active?
-                = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
-              - else
-                = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-small', method: :post
-
-          %p
-            %b Status:
-            #{@build.status}
-          - if @build.started_at
-            %p
-              %b Duration:
-              #{build_duration @build}
-          - if @build.finished_at
-            %p
-              %b Finished:
-              #{time_ago_in_words(@build.finished_at)} ago
-          %p
-            %b Runner:
-            - if @build.runner
-              \##{@build.runner.id}
-      .span6
-        %fieldset
-          %legend Commit
-          %p
-            %b ID:
-            #{build_commit_link @build}
-          - if @build.compare?
-            %p
-              %b Compare:
-              #{build_compare_link @build}
-          %p
-            %b Branch:
-            #{build_ref_link @build}
-          %p
-            %b Author:
-            #{@build.git_author_name}
-          %p
-            %b Message:
-            #{@build.git_commit_message}
 
     .clearfix
     - if @build.active?
@@ -76,13 +32,57 @@
         = raw @build.trace_html
 
   .span3
-    .builds
-      %h5 Builds for #{@build.short_sha}:
+    .build-widget
+      %h4.title
+        Build
+        .pull-right
+          - if @build.active?
+            = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
+          - else
+            = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-small btn-info', method: :post
+
+      %p
+        %span.attr-name Status:
+        #{@build.status}
+      - if @build.started_at
+        %p
+          %span.attr-name Duration:
+          #{build_duration @build}
+      - if @build.finished_at
+        %p
+          %span.attr-name Finished:
+          #{time_ago_in_words(@build.finished_at)} ago
+      %p
+        %span.attr-name Runner:
+        - if @build.runner
+          \##{@build.runner.id}
+
+    .build-widget
+      %h4.title
+        Commit
+        .pull-right
+          #{build_commit_link @build}
+
+      %p
+        %span.attr-name ID:
+        #{build_commit_link @build}
+      - if @build.compare?
+        %p
+          %span.attr-name Compare:
+          #{build_compare_link @build}
+      %p
+        %span.attr-name Branch:
+        #{build_ref_link @build}
+      %p
+        %span.attr-name Author:
+        #{@build.git_author_name}
+      %p
+        %span.attr-name Message:
+        #{@build.git_commit_message}
+
+    .build-widget
+      %h4.title All builds for #{@build.short_sha}:
       %table.builds
-        %thead
-          %tr
-            %th Build ID
-            %th Status
         - @builds.each_with_index do |build, i|
           %tr.build.alert{class: build_status_alert_class(build)}
             %td

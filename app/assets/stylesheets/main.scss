@@ -312,3 +312,19 @@ h3 {
   max-width: 1400px;
   margin: 0 auto;
 }
+
+.build-widget {
+  padding: 10px;
+  background: #f4f4f4;
+  margin-bottom: 15px;
+
+  .title {
+    margin-top: 0;
+    color: #666;
+    text-shadow: 0 1px 1px #FFF;
+    line-height: 1.5;
+  }
+  .attr-name {
+    color: #777;
+  }
+}
