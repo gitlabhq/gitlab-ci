@@ -25,8 +25,13 @@ class ProjectsController < ApplicationController
 
   def show
     unless @project.public
-      authenticate_user!
-      authorize_access_project!
+      unless current_user
+        redirect_to(new_user_sessions_path) and return
+      end
+
+      unless current_user.can_access_project?(@project.gitlab_id)
+        page_404 and return
+      end
     end
 
     @ref = params[:ref]
