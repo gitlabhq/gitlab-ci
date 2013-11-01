@@ -44,6 +44,7 @@ GEM
     celluloid (0.15.1)
       timers (~> 1.1.0)
     chronic (0.10.2)
+    chunky_png (1.2.9)
     cliver (0.2.2)
     coderay (1.0.9)
     coffee-rails (3.2.2)
@@ -281,6 +282,7 @@ DEPENDENCIES
   annotate
   bootstrap-sass
   capybara
+  chunky_png
   coffee-rails (~> 3.2.1)
   coveralls
   factory_girl_rails

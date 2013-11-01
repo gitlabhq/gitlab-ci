@@ -106,15 +106,32 @@ class ProjectsController < ApplicationController
   # Project status badge
   # Image with build status for sha or ref
   def status
-    image_name = if params[:sha]
-                   @project.sha_status_image(params[:sha])
-                 elsif params[:ref]
-                   @project.status_image(params[:ref])
-                 else
-                   'unknown.png'
-                 end
+    image_name = 'unknown.png'
+    build_status = { status: "unknown" }
+    if params[:sha]
+      sha_status_image = @project.sha_status_image(params[:sha])
+      last_build_for_sha = @project.last_build_for_sha(params[:sha])
+      image_name = sha_status_image if sha_status_image
+      build_status = last_build_for_sha if last_build_for_sha
+    elsif params[:ref]
+      status_image = @project.status_image(params[:ref])
+      last_build = @project.builds.where(ref: params[:ref]).last
+      image_name = status_image if status_image
+      build_status = last_build if last_build
+    else
+      build = @project.builds.last
+      if build
+        image_name = @project.image_for_build(build)
+        build_status = build
+      end
+    end
 
-    send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
+    respond_to do |format|
+      format.json { render :json => build_status.to_json }
+      format.xml { render :xml => build_status.to_xml }
+      format.png { send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline' }
+    end
+
   end
 
   def charts
