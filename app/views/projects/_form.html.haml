@@ -39,7 +39,7 @@
         %br
         .field
           = f.label :polling_interval, "Build interval"
-          = f.number_field :polling_interval, placeholder: '5'
+          = f.number_field :polling_interval, placeholder: '5', min: '0'
           %span Hours
     .span5
       %fieldset
