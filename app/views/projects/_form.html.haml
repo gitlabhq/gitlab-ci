@@ -13,7 +13,7 @@
         %legend Build
         .field
           = f.label :timeout, 'Timeout (in seconds) per command'
-          = f.number_field :timeout, class: 'input-xlarge'
+          = f.number_field :timeout, class: 'input-xlarge', min: '0'
         .field
           = f.label :scripts
           = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec"
