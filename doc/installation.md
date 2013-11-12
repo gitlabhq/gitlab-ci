@@ -108,6 +108,10 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H cp config/puma.rb.example config/puma.rb
     sudo -u gitlab_ci -H editor config/puma.rb
 
+    # Configure email settings
+    sudo -u gitlab_ci -H cp config/initializers/smtp_settings.rb.example config/initializers/smtp_settings.rb
+    sudo -u gitlab_ci -H editor config/initializers/smtp_settings.rb
+
     # Create socket and pid directories
     sudo -u gitlab_ci -H mkdir -p tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/

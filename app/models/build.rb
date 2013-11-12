@@ -99,6 +99,10 @@ class Build < ActiveRecord::Base
     commit_data[:author][:name] if commit_data && commit_data[:author]
   end
 
+  def git_author_email
+    commit_data[:author][:email] if commit_data && commit_data[:author]
+  end
+
   def git_commit_message
     commit_data[:message] if commit_data
   end

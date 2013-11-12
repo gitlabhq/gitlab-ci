@@ -2,12 +2,29 @@ defaults: &defaults
   allowed_gitlab_urls: 
     - 'https://dev.gitlab.org/'
     - 'https://staging.gitlab.org/'
+
+  ## Gitlab CI settings  
   gitlab_ci:
+    ## Web server settings
+    host: localhost
+    port: 80
     https: false
+
+    ## Email settings
+    # Email address used in the "From" field in mails sent by GitLab-CI
+    email_from: gitlab-ci@localhost
+  
+    # Email address of your support contact (default: same as email_from)
+    support_email: support@localhost
+  
+    # Only send emails for failing builds
+    # only_fail_notifications: true
+    
   gravatar:
     enabled: true
     plain_url: "http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
     ssl_url:   "https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
+
 
 development:
   <<: *defaults
