@@ -1,6 +1,6 @@
 %tr.build.alert{class: build_status_alert_class(build)}
   %td.status
-    = "#{build.action.humanize}: #{build.status.humanize}"
+    = "#{(build.action||'build').humanize}: #{build.status.humanize}"
 
   %td.build-link
     = link_to project_build_path(build.project, build) do
