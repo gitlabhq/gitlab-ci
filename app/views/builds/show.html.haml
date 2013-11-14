@@ -40,7 +40,7 @@
       %h4.title
         Build
         .pull-right
-		  = action_links_for @build
+          = action_links_for @build
 
       - if @build.started_at
         %p
@@ -57,9 +57,9 @@
         %span.attr-name Runner:
         - if @build.runner
           \##{@build.runner.id}
-	  %p
-		%b Action:
-		#{@build.action}
+      %p
+        Action:
+        #{@build.action}
 
     .build-widget
       %h4.title
