@@ -52,6 +52,7 @@ module API
       #   gitlab_url (required)      - The gitlab web url to the project
       #   ssh_url_to_repo (required) - The gitlab ssh url to the repo
       #   scripts                    - The shell script provided for a runner to run
+      #   deployment_script          - The shell script that performs deployment
       #   default_ref                - The branch to run against (defaults to `master`)
       # Example Request:
       #   POST /projects
@@ -63,6 +64,7 @@ module API
           :gitlab_id       => params[:gitlab_id],
           :gitlab_url      => params[:gitlab_url],
           :scripts         => params[:scripts] || 'ls -al',
+          :deployment_script=>params[:deployment_script] || 'ls -al',
           :default_ref     => params[:default_ref] || 'master',
           :ssh_url_to_repo => params[:ssh_url_to_repo]
         }
@@ -86,6 +88,7 @@ module API
       #   gitlab_url      - The gitlab web url to the project
       #   ssh_url_to_repo - The gitlab ssh url to the repo
       #   scripts         - The shell script provided for a runner to run
+      #   deployment_script-The shell script that performs deployment
       #   default_ref     - The branch to run against (defaults to `master`)
       # Example Request:
       #   PUT /projects/:id
