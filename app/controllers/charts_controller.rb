@@ -25,8 +25,7 @@ class ChartsController < ApplicationController
   end
 
   def build_times
-    @charts = {}
-    @charts[:build_times] = Charts::BuildTime.new(@project)
+    @charts = { :build_times => Charts::BuildTime.new(@project) }
     render :partial => 'charts/build_times'
   end
 

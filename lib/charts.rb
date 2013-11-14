@@ -61,7 +61,8 @@ module Charts
       else
         sql = 'UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(started_at) as duration'
       end
-      result = project.builds.order(:finished_at).limit(30).pluck(sql)
+      @labels = (1..30).to_a
+      @build_times = project.builds.order(:finished_at).limit(30).pluck(sql)
     end
   end
 end
