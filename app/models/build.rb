@@ -80,7 +80,7 @@ class Build < ActiveRecord::Base
       build.update_attributes finished_at: Time.now
     end
 
-      state :pending, value: 'pending'
+    state :pending, value: 'pending'
     state :running, value: 'running'
     state :failed, value: 'failed'
     state :success, value: 'success'
@@ -152,13 +152,13 @@ class Build < ActiveRecord::Base
     url.sub(/^https?:\/\//) do |prefix|
       prefix + auth
     end
+  end
 
   def project_report_files
     project.report_files.map do |file|
       { filename: file.filename, filetype: file.filetype }
     end
   end
-end
 
   def timeout
     project.timeout

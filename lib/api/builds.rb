@@ -1,4 +1,4 @@
-require "#{Rails.root}/lib/report_parser/report_parser"
+require "#{Rails.root}/lib/report_parser/report_file_parser"
 
 module API
   # Builds API
@@ -42,16 +42,16 @@ module API
         authenticate_runner!
         build = Build.where(runner_id: current_runner.id).running.find(params[:id])
         build.update_attributes(trace: params[:trace])
-        ReportFile.new()
+        state = params[:state].to_s
         params[:reports].each do |report|
-          build.report_files << ReportParser.parse(report)
+          state = ReportParser.parse(report, build) unless report.content.empty?
         end if params[:reports]
-
-        case params[:state].to_s
+        state = params[:state] if state == 'success'
+        case state
         when 'success'
-          build.success
+          build.success!
         when 'failed'
-          build.drop
+          build.drop!
         end
       end
 

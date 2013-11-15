@@ -31,6 +31,8 @@ GEM
     annotate (2.5.0)
       rake
     arel (3.0.2)
+    awesome_nested_set (2.1.6)
+      activerecord (>= 3.0.0)
     backports (3.3.4)
     bootstrap-sass (2.3.2.2)
       sass (~> 3.2)
@@ -279,6 +281,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  awesome_nested_set
   bootstrap-sass
   capybara
   coffee-rails (~> 3.2.1)

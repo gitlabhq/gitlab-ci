@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131031170718) do
+ActiveRecord::Schema.define(:version => 20131115111452) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20131031170718) do
   end
 
   create_table "report_file_contents", :force => true do |t|
-    t.string  "content"
+    t.binary  "content",        :limit => 16777215
     t.integer "build_id"
     t.integer "report_file_id"
   end
@@ -113,6 +113,9 @@ ActiveRecord::Schema.define(:version => 20131031170718) do
     t.integer  "build_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
   end
 
 end

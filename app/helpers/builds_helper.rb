@@ -32,4 +32,24 @@ module BuildsHelper
   def build_link build
     link_to(build.short_sha, project_build_path(build.project, build))
   end
+
+  def build_status_alert_class build
+    if build.success?
+      'alert-success'
+    elsif build.failed? || build.canceled?
+      'alert-error'
+    else
+      ''
+    end
+  end
+
+  def test_status_alert_class test
+    case test.status
+      when 'failed' then 'alert-error'
+      when 'success' then 'alert-success'
+      when 'pending' || 'skipped' then 'alert-warning'
+      else
+        ''
+    end
+  end
 end

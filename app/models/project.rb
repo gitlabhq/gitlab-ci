@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
   has_many :runners, through: :runner_projects
   has_many :report_files
 
-  accepts_nested_attributes_for :report_files, :reject_if => :reject_empty_files
+  accepts_nested_attributes_for :report_files, :reject_if => :reject_empty_files, :allow_destroy => true
 
   #
   # Validations
@@ -173,7 +173,8 @@ class Project < ActiveRecord::Base
 
   protected
     def reject_empty_files(attributes)
-      exists = attributes['id'].present?
+      p attributes
+      exists = attributes[:id].present?
       empty = attributes[:filename].blank?
       attributes.merge!({:_destroy => 1}) if exists and empty
       return (!exists and empty)
