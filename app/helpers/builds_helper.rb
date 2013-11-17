@@ -43,6 +43,17 @@ module BuildsHelper
     end
   end
 
+  def test_status_icon test
+    case test.status
+      when 'failed' then 'icon-exclamation-sign'
+      when 'success' then 'icon-check'
+      when 'pending' then 'icon-cogs'
+      when 'skipped' then 'icon-check-empty'
+      else
+        ''
+    end
+  end
+
   def test_status_alert_class test
     case test.status
       when 'failed' then 'alert-error'

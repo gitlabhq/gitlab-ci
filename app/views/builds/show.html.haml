@@ -31,7 +31,6 @@
       - if @build.active?
         .autoscroll-container.pull-right
           %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
-        .clearfix
 
       #collapseBuild.accordion-body.collapse
         %pre.accordion-inner.in.trace#build-trace
@@ -44,7 +43,7 @@
     - @build.report_file_contents.each do |rf|
       .accordion-group
         .accordion-heading
-          %a.accordion-toggle{data: { toggle: 'collapse', parent: '#accordion' }, href: "#collapse#{i+=1}"}
+          %a.accordion-toggle.collapsed{data: { toggle: 'collapse', parent: '#accordion' }, href: "#collapse#{i+=1}"}
             %b= rf.report_file.filename
             = rf.report_file.filetype
         .accordion-body.collapse.in{ id: "collapse#{i}"}

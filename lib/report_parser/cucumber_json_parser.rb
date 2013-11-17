@@ -14,7 +14,7 @@ module ReportParser
 
     def self.add_feature(feature,build)
       report = TestReport.new do |r|
-        r.title= feature["name"]
+        r.title= feature["keyword"] + " " + feature["name"]
         r.description= feature["description"]
         r.location= "#{feature["uri"]}:#{feature["line"]}"
         r.build= build
@@ -33,7 +33,7 @@ module ReportParser
 
     def self.add_element(elem, report)
       element = TestReport.new do |r|
-        r.title= elem["name"]
+        r.title= elem["keyword"] + " " + elem["name"]
         r.description= elem["description"]
         r.location= "#{elem["uri"]}:#{elem["line"]}"
         r.parent= report
@@ -51,7 +51,7 @@ module ReportParser
     end
     def self.add_step(step, element)
       st = TestReport.new do |r|
-        r.title= step["name"]
+        r.title= step["keyword"] + " " + step["name"]
         r.description= step["description"]
         r.location= "#{step["match"]["location"] if step["match"]}:#{step["line"]}"
         r.parent= element

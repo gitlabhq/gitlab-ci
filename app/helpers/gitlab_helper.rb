@@ -17,4 +17,10 @@ module GitlabHelper
     gitlab_url << "/commit/#{sha}"
     link_to sha, gitlab_url
   end
+
+  def gitlab_issue_create_link test_step, project
+    gitlab_url = project.gitlab_url.dup
+    gitlab_url << "/issues/new?issue[title]=Test: #{test_step.title}&issue[description]=#{test_step.error_message}"
+    link_to '<i class="icon-plus"></i> Create Issue'.html_safe, gitlab_url, class: 'btn'
+  end
 end
