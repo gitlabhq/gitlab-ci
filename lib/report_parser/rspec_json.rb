@@ -12,7 +12,8 @@ module ReportParser
         end
         test.save
         content["examples"].each do |example|
-          ret_status = add_example(example, test)
+          state = add_example(example, test)
+          ret_status = state unless ret_status=='failed'
         end
         test.status = ret_status
         test.save
