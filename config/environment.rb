@@ -1,5 +1,3 @@
-ENV['RAILS_RELATIVE_URL_ROOT'] = "/gitlab"
-
 # Load the rails application
 require File.expand_path('../application', __FILE__)
 
