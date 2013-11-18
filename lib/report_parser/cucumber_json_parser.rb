@@ -19,8 +19,8 @@ module ReportParser
         report.status = ret[:status]
         report.save
       end
-      return 'success' if ret[:status] == 'success'
-      'failed'
+      return 'failed' if ret[:status] == 'failed'
+      'success'
     end
 
     def self.add_feature(feature,report)
@@ -34,7 +34,7 @@ module ReportParser
       ret = { status: 'empty', duration: 0.0 }
       feature["elements"].each do |elem|
         elem = add_element(elem, report)
-        ret[:status] = elem[:status] unless ret[:status]=='failed'
+        ret[:status] = elem[:status] if ret[:status]=='success' or ret[:status]=='empty'
         ret[:duration] += elem[:duration]
       end if feature["elements"]
       report.duration = ret[:duration]
@@ -43,37 +43,56 @@ module ReportParser
       ret
     end
 
-    def self.add_element(elem, report)
-      element = TestReport.new do |r|
-        r.title= elem["keyword"] + " " + elem["name"]
-        r.description= elem["description"]
-        r.location= "#{elem["uri"]}:#{elem["line"]}"
-        r.parent= report
-      end
+    def self.add_element(json, report)
       ret = { status: 'empty', duration: 0.0 }
-      elem["steps"].each do |step|
+      element = create_element(json, report)
+      if json['keyword'] == 'Scenario Outline'
+        ret[:status] = 'pending'
+        element.status = 'pending'
+        element.error_message = "#{element.error_message} <br />
+<p class='alert alert-error'>This step is marked as pending as it's impossible currently to determin the currect state due to an bug in Gherkin
+<br />See the <a href='https://github.com/cucumber/gherkin/issues/165'>bugreport</a> for more information
+<p>".html_safe
+      end
+      json['steps'].each do |step|
         step = add_step(step, element)
-        ret[:status] = step[:status] unless ret[:status]=='failed'
+        ret[:status] = step[:status] if ret[:status]=='success' or ret[:status]=='empty'
         ret[:duration] += step[:duration]
-      end if elem["steps"]
+      end if json['steps']
       element.duration = ret[:duration]
       element.status = ret[:status]
       element.save
       ret
     end
-    def self.add_step(step, element)
+
+    def self.create_element(json, report)
+      TestReport.new do |r|
+        r.title= json["keyword"] + " " + json["name"]
+        r.description= json["description"]
+        r.location= "#{json["uri"]}:#{elem["line"]}" unless json["uri"].blank?
+        r.error_message = examples(json['examples']) unless json['examples'].blank?
+        r.parent= report
+      end
+    end
+
+    def self.add_step(json, element)
       st = TestReport.new do |r|
-        r.title= step["keyword"] + " " + step["name"]
-        r.description= step["description"]
-        r.location= "#{step["match"]["location"] if step["match"]}:#{step["line"]}"
+        r.title= json["keyword"] + " " + json["name"]
+        r.description= json["description"]
+        r.location= location(json["match"])
         r.parent= element
-        r.error_message= step["result"]["error_message"] if step["result"]
-        r.status= status(step)
-        r.duration= duration(step)
+        r.error_message= json["result"]["error_message"] if json["result"]
+        r.status= status(json)
+        r.duration= duration(json)
       end
       st.save
 
-      { status: status(step), duration: duration(step) }
+      { status: status(json), duration: duration(json) }
+    end
+
+    def self.location(step)
+      return '' if step.nil?
+      "#{step["location"]}:#{step["line"]}"
     end
 
     def self.duration(step)
@@ -89,8 +108,9 @@ module ReportParser
     end
 
     def self.examples(example)
-      example.shift
-      (example["rows"].map { |row| row['cells'].join ',' }.join '<br />').html_safe
+      rows = example.first["rows"]
+      rows.shift
+      (rows.map { |row| row['cells'].join ',' }.join '<br />').html_safe
     end
   end
 end

@@ -44,9 +44,9 @@ module API
         build.update_attributes(trace: params[:trace])
         state = params[:state].to_s
         params[:reports].each do |report|
-          state = ReportParser.parse(report, build) unless report.content.empty?
+          state = ReportParser.parse(report, build) unless report.content.blank?
         end if params[:reports]
-        state = params[:state] if state == 'success'
+        state = params[:state] unless state == 'failed'
         case state
         when 'success'
           build.success!

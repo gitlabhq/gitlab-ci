@@ -16,8 +16,8 @@ module ReportParser
           test.save
         end
       end
-      return 'success' if ret_status == 'success'
-      'failed'
+      return 'failed' if ret_status == 'failed'
+      'success'
     end
 
     def self.create_initial_report(build, content)

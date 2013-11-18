@@ -24,7 +24,7 @@
                 #{build_duration @build}
 
       .clearfix
-        = @build.status
+        %span.build-status= @build.status
         .pull-right
           = @build.updated_at.stamp('19:00 Aug 27')
 
