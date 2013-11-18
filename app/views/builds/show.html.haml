@@ -28,16 +28,16 @@
         .pull-right
           = @build.updated_at.stamp('19:00 Aug 27')
 
-      - if @build.active?
-        .autoscroll-container.pull-right
-          %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+          - if @build.running?
+            .autoscroll-container
+              %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
 
       #collapseBuild.accordion-body.collapse
         %pre.accordion-inner.in.trace#build-trace
           = preserve do
             = raw @build.trace_html
-
-    = render @build.test_reports
+    -unless @build.test_reports.empty?
+      = render @build.test_reports
 
     - i=0
     - @build.report_file_contents.each do |rf|

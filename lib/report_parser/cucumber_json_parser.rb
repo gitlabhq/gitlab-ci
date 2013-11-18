@@ -5,19 +5,27 @@ module ReportParser
     def self.parse(content, build)
       cucumber = JSON.parse(content)
       ret = { status: 'empty', duration: 0.0 }
+      report = TestReport.new do |r|
+        r.title= 'Cucumber Reports'
+        r.build= build
+      end
+      report.save
       cucumber.map do |feature|
         ret = add_feature(feature, build)
       end
+      report.duration = ret[:duration]
+      report.status = ret[:status]
+      report.save
       return 'success' if ret[:status] == 'success'
       'failed'
     end
 
-    def self.add_feature(feature,build)
+    def self.add_feature(feature,report)
       report = TestReport.new do |r|
         r.title= feature["keyword"] + " " + feature["name"]
         r.description= feature["description"]
         r.location= "#{feature["uri"]}:#{feature["line"]}"
-        r.build= build
+        r.parent= report
       end
       ret = { status: 'empty', duration: 0.0 }
       feature["elements"].each do |elem|

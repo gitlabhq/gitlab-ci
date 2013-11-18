@@ -22,5 +22,5 @@ module ReportParser
   end
 
   autoload :CucumberJson, 'report_parser/cucumber_json_parser'
-  autoload :RSpecJson, 'report_parser/report_parser'
+  autoload :RSpecJson, 'report_parser/rspec_json'
 end

@@ -40,7 +40,7 @@
               %th= link_to_function '<span><i class="icon-plus-sign" alt="add"></i>Add</span>'.html_safe, 'addReportFile(this);', class: 'btn'
             = f.fields_for :report_files do |r|
               %tr
-                %td= r.text_field :filename, placeholder: 'spec/reports.json'
+                %td= r.text_field :filename, placeholder: 'spec/report.json'
                 %td= r.select :filetype, report_file_types
                 %td= link_to_function '<span><i class="icon-minus-sign" alt="delete"></i>Delete</span>'.html_safe, 'removeReportFile(this);', class: 'btn'
 

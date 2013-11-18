@@ -18,6 +18,12 @@ module GitlabHelper
     link_to sha, gitlab_url
   end
 
+  def gitlab_file_link build, file
+    gitlab_url = build.project.gitlab_url.dup
+    gitlab_url << "/blob/#{build.sha}/#{file}"
+    link_to truncate(file, length: 50), gitlab_url
+  end
+
   def gitlab_issue_create_link test_step, project
     gitlab_url = project.gitlab_url.dup
     gitlab_url << "/issues/new?issue[title]=Test: #{test_step.title}&issue[description]=#{test_step.error_message}"

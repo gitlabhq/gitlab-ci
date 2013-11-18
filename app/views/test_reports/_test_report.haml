@@ -4,8 +4,7 @@
     .accordion-heading{class: test_status_alert_class(test_report)}
       %a.accordion-toggle.collapsed{data: { toggle: 'collapse', parent: '#accordion', parent: "#accordion_#{test_report.parent.id rescue 0}" }, href: "#collapse_#{test_report.id}"}
         %i.pull-left{class: test_status_icon(test_report), alt: test_report.status}
-        %b Cucumber Test
-        = ": #{truncate test_report.title, length: 250, separator: ' '}"
+        %b= "Test: #{truncate test_report.title, length: 250, separator: ' '}"
         - if test_report.duration
           %span.span2.pull-right.text-right
             #{"%.3f s" % (test_report.duration)}
@@ -13,6 +12,7 @@
     .accordion-body.collapse.row-fluid{ id: "collapse_#{test_report.id}"}
       %div.accordion-inner.span12
         - if has_content
+          = gitlab_file_link @build, test_report.location if test_report.location
           %pre
             = preserve test_report.error_message
             = gitlab_issue_create_link test_report, @build.project
@@ -21,8 +21,7 @@
 -else
   .test-empty{class: test_status_alert_class(test_report)}
     %i.pull-left{class: test_status_icon(test_report), alt: test_report.status}
-    %b Cucumber Test
-    = ": #{truncate test_report.title, length: 250, separator: ' '}"
+    %b= "Test: #{truncate test_report.title, length: 250, separator: ' '}"
     - if test_report.duration
       .pull-right
         %span
