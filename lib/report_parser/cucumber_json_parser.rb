@@ -13,6 +13,7 @@ module ReportParser
         cucumber.map do |feature|
           feat = add_feature(feature, report)
           ret[:status] = feat[:status] unless ret[:status]=='failed'
+          ret[:duration] += elem[:duration]
         end
         report.duration = ret[:duration]
         report.status = ret[:status]
