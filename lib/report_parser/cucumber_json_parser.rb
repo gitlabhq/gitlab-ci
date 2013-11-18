@@ -5,18 +5,19 @@ module ReportParser
     def self.parse(content, build)
       cucumber = JSON.parse(content)
       ret = { status: 'empty', duration: 0.0 }
-      report = TestReport.new do |r|
-        r.title= 'Cucumber Reports'
-        r.build= build
+      ActiveRecord::Base.transaction do
+        report = TestReport.new do |r|
+          r.title= 'Cucumber Reports'
+          r.build= build
+        end
+        cucumber.map do |feature|
+          feat = add_feature(feature, report)
+          ret[:status] = feat[:status] unless ret[:status]=='failed'
+        end
+        report.duration = ret[:duration]
+        report.status = ret[:status]
+        report.save
       end
-      report.save
-      cucumber.map do |feature|
-        feat = add_feature(feature, build)
-        ret[:status] = feat[:status] unless ret[:status]=='failed'
-      end
-      report.duration = ret[:duration]
-      report.status = ret[:status]
-      report.save
       return 'success' if ret[:status] == 'success'
       'failed'
     end
@@ -26,6 +27,7 @@ module ReportParser
         r.title= feature["keyword"] + " " + feature["name"]
         r.description= feature["description"]
         r.location= "#{feature["uri"]}:#{feature["line"]}"
+        r.error_message = examples(feature['examples']) unless feature['examples'].nil?
         r.parent= report
       end
       ret = { status: 'empty', duration: 0.0 }
@@ -83,6 +85,11 @@ module ReportParser
     def self.status(step)
       status = (step["result"])? step["result"]["status"] : 'failed'
       status.gsub /passed/, 'success'
+    end
+
+    def self.examples(example)
+      example.shift
+      (example["rows"].map { |row| row['cells'].join ',' }.join '<br />').html_safe
     end
   end
 end

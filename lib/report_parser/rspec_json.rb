@@ -5,21 +5,27 @@ module ReportParser
       content = JSON.parse(content)
       ret_status = 'empty'
       unless content["examples"].empty? and content["summary"].nil?
-        test = TestReport.new do |r|
-          r.title = 'RSpec tests'
-          r.duration = content['summary']['duration']
-          r.build= build
+        ActiveRecord::Base.transaction do
+          test = create_initial_report(build, content)
+          test.save
+          content["examples"].each do |example|
+            state = add_example(example, test)
+            ret_status = state unless ret_status=='failed'
+          end
+          test.status = ret_status
+          test.save
         end
-        test.save
-        content["examples"].each do |example|
-          state = add_example(example, test)
-          ret_status = state unless ret_status=='failed'
-        end
-        test.status = ret_status
-        test.save
       end
       return 'success' if ret_status == 'success'
       'failed'
+    end
+
+    def self.create_initial_report(build, content)
+      test = TestReport.new do |r|
+        r.title = 'RSpec tests'
+        r.duration = content['summary']['duration']
+        r.build= build
+      end
     end
 
     def self.add_example(example, test)
