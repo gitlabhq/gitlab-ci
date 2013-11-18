@@ -173,7 +173,6 @@ class Project < ActiveRecord::Base
 
   protected
     def reject_empty_files(attributes)
-      p attributes
       exists = attributes[:id].present?
       empty = attributes[:filename].blank?
       attributes.merge!({:_destroy => 1}) if exists and empty
