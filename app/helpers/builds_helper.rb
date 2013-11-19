@@ -49,8 +49,6 @@ module BuildsHelper
   def build_status_alert_class build
     if build.success?
       'alert-success'
-    elsif build.deployed?
-      'alert-info'
     elsif build.failed? || build.canceled?
       'alert-error'
     else

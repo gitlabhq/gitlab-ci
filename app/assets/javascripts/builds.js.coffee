@@ -10,7 +10,6 @@ $(document).ready ->
 
 
 @getBuild = (buildPath, buildId) ->
-  console.log "run"
   setTimeout (->
     $.get buildPath + ".js?bid=" + buildId
   ), 3000
