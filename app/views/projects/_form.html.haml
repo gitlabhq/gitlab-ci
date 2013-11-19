@@ -13,7 +13,7 @@
         %legend Build
         .field
           = f.label :timeout, 'Timeout (in seconds) per command'
-          = f.number_field :timeout, class: 'input-xlarge'
+          = f.number_field :timeout, class: 'input-xlarge', min: '0'
         .field
           = f.label :scripts
           = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec"
@@ -39,7 +39,7 @@
         %br
         .field
           = f.label :polling_interval, "Build interval"
-          = f.number_field :polling_interval, placeholder: '5'
+          = f.number_field :polling_interval, placeholder: '5', min: '0'
           %span Hours
     .span5
       %fieldset
