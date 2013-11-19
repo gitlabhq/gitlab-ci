@@ -20,8 +20,16 @@ Additionally GitLab CI requires:
 * ruby 1.9.3
 * MySQL or PostgreSQL
 
-
 __If you want to use GitLab CI without GitLab or with older versions of GitLab you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)__
+
+## Features
+
+* Single Sign On: use the same login and password as on your GitLab instance
+* Quick project setup: add your project in a single click, all setup automatic via the GitLab API
+* Elegant and flexible: build scripts are written in bash, test projects in any programming language
+* Merge request integration: see the status of the feature branch build within the Merge Request
+* Distributed by default: GitLab CI and build runners can on separate machines providing more stability
+* Realtime logging: the current build log scolls and update every few seconds
 
 ### Limitations
 
