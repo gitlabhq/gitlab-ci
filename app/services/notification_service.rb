@@ -8,11 +8,13 @@
 class NotificationService
 
   def build_ended(build)
-    if !GitlabCi.config.gitlab_ci.only_fail_notifications
-      build.status == :success ? mailer.build_success_email(build.id) : mailer.build_fail_email(build.id)
-    elsif build.status == :failed  
-      mailer.build_fail_email(build.id)
-    end
+    build.project_recipients.each do |recipient|
+      if build.status == :success 
+        mailer.build_success_email(build.id, recipient) 
+      else
+        mailer.build_fail_email(build.id, recipient)
+      end
+    end      
   end
 
   protected
@@ -22,4 +24,5 @@ class NotificationService
     # Notify.delay
     Notify
   end
+  
 end

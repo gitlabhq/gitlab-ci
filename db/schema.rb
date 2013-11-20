@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131023103430) do
+ActiveRecord::Schema.define(:version => 20131120155545) do
 
   create_table "builds", :force => true do |t|
     t.integer  "project_id"
@@ -33,20 +33,23 @@ ActiveRecord::Schema.define(:version => 20131023103430) do
   add_index "builds", ["runner_id"], :name => "index_builds_on_runner_id"
 
   create_table "projects", :force => true do |t|
-    t.string   "name",                                :null => false
-    t.integer  "timeout",          :default => 1800,  :null => false
-    t.text     "scripts",                             :null => false
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.string   "name",                                         :null => false
+    t.integer  "timeout",                   :default => 1800,  :null => false
+    t.text     "scripts",                                      :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.string   "token"
     t.string   "default_ref"
     t.string   "gitlab_url"
-    t.boolean  "always_build",     :default => false, :null => false
+    t.boolean  "always_build",              :default => false, :null => false
     t.integer  "polling_interval"
-    t.boolean  "public",           :default => false, :null => false
+    t.boolean  "public",                    :default => false, :null => false
     t.string   "ssh_url_to_repo"
     t.integer  "gitlab_id"
-    t.boolean  "allow_git_fetch",  :default => true,  :null => false
+    t.boolean  "allow_git_fetch",           :default => true,  :null => false
+    t.string   "email_recipients",          :default => "",    :null => false
+    t.boolean  "email_add_committer",       :default => true,  :null => false
+    t.boolean  "email_only_breaking_build", :default => true,  :null => false
   end
 
   create_table "runner_projects", :force => true do |t|

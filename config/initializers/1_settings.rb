@@ -30,15 +30,16 @@ end
 # GitlabCi
 #
 Settings['gitlab_ci'] ||= Settingslogic.new({})
-Settings.gitlab_ci['https']             = false if Settings.gitlab_ci['https'].nil?
-Settings.gitlab_ci['host']              ||= 'localhost'
-Settings.gitlab_ci['port']              ||= Settings.gitlab_ci.https ? 443 : 80
-Settings.gitlab_ci['relative_url_root'] ||= ENV['RAILS_RELATIVE_URL_ROOT'] || ''
-Settings.gitlab_ci['protocol']          ||= Settings.gitlab_ci.https ? "https" : "http"
-Settings.gitlab_ci['email_from']        ||= "gitlab-ci@#{Settings.gitlab_ci.host}"
-Settings.gitlab_ci['support_email']     ||= Settings.gitlab_ci.email_from
-Settings.gitlab_ci['only_fail_notifications'] ||= true
-Settings.gitlab_ci['url']               ||= Settings.send(:build_gitlab_ci_url)
+Settings.gitlab_ci['https']               = false if Settings.gitlab_ci['https'].nil?
+Settings.gitlab_ci['host']                ||= 'localhost'
+Settings.gitlab_ci['port']                ||= Settings.gitlab_ci.https ? 443 : 80
+Settings.gitlab_ci['relative_url_root']   ||= ENV['RAILS_RELATIVE_URL_ROOT'] || ''
+Settings.gitlab_ci['protocol']            ||= Settings.gitlab_ci.https ? "https" : "http"
+Settings.gitlab_ci['email_from']          ||= "gitlab-ci@#{Settings.gitlab_ci.host}"
+Settings.gitlab_ci['support_email']       ||= Settings.gitlab_ci.email_from
+Settings.gitlab_ci['only_breaking_build'] ||= true
+Settings.gitlab_ci['add_committer']       ||= true
+Settings.gitlab_ci['url']                 ||= Settings.send(:build_gitlab_ci_url)
 
 
 #

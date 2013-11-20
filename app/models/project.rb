@@ -2,27 +2,31 @@
 #
 # Table name: projects
 #
-#  id               :integer          not null, primary key
-#  name             :string(255)      not null
-#  timeout          :integer          default(1800), not null
-#  scripts          :text             default(""), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  token            :string(255)
-#  default_ref      :string(255)
-#  gitlab_url       :string(255)
-#  always_build     :boolean          default(FALSE), not null
-#  polling_interval :integer
-#  public           :boolean          default(FALSE), not null
-#  ssh_url_to_repo  :string(255)
-#  gitlab_id        :integer
-#  allow_git_fetch  :boolean          default(TRUE), not null
+#  id                        :integer          not null, primary key
+#  name                      :string(255)      not null
+#  timeout                   :integer          default(1800), not null
+#  scripts                   :text             default(""), not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  token                     :string(255)
+#  default_ref               :string(255)
+#  gitlab_url                :string(255)
+#  always_build              :boolean          default(FALSE), not null
+#  polling_interval          :integer
+#  public                    :boolean          default(FALSE), not null
+#  ssh_url_to_repo           :string(255)
+#  gitlab_id                 :integer
+#  allow_git_fetch           :boolean          default(TRUE), not null
+#  email_recipients          :string(255)
+#  email_add_committer       :boolean          default(TRUE), not null 
+#  email_only_breaking_build :boolean          default(TRUE), not null 
 #
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
-    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch
+    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, 
+    :email_recipients, :email_add_committer, :email_only_breaking_build
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -54,7 +58,9 @@ class Project < ActiveRecord::Base
         gitlab_url: project.web_url,
         scripts: 'ls -la',
         default_ref: project.default_branch || 'master',
-        ssh_url_to_repo: project.ssh_url_to_repo
+        ssh_url_to_repo: project.ssh_url_to_repo,
+        email_add_committer:       GitlabCi.config.gitlab_ci.add_committer,
+        email_only_breaking_build: GitlabCi.config.gitlab_ci.only_breaking_build,
       }
 
       Project.new(params)
@@ -166,20 +172,9 @@ class Project < ActiveRecord::Base
     # Get running builds not later than 3 days ago to ignore hangs
     builds.running.where("updated_at > ?", 3.days.ago).empty?
   end
+  
+  def email_notification?
+    email_add_committer || !email_recipients.blank?
+  end
+  
 end
-
-
-# == Schema Information
-#
-# Table name: projects
-#
-#  id          :integer(4)      not null, primary key
-#  name        :string(255)     not null
-#  path        :string(255)     not null
-#  timeout     :integer(4)      default(1800), not null
-#  scripts     :text            default(""), not null
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
-#  token       :string(255)
-#  default_ref :string(255)
-#

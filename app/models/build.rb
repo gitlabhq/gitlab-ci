@@ -165,4 +165,13 @@ class Build < ActiveRecord::Base
   def project_name
     project.name
   end
+  
+  def project_recipients
+    recipients = []
+    return recipients if project.email_only_breaking_build && status != :failed
+    recipients.concat(project.email_recipients.split(' '))
+    recipients << git_author_email if project.email_add_committer?
+    recipients.uniq
+  end
+  
 end
