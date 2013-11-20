@@ -48,6 +48,7 @@ class Build < ActiveRecord::Base
   def self.create_from(build)
     new_build = build.dup
     new_build.status = :pending
+    new_build.runner_id = nil
     new_build.save
   end
 
