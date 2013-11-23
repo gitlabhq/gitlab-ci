@@ -1,0 +1,29 @@
+-has_content = (test_report.error_message and test_report.error_message != '')
+-if has_content or not test_report.children.empty?
+  .accordion-group
+    .accordion-heading{class: test_status_alert_class(test_report)}
+      %a.accordion-toggle.collapsed{data: { toggle: 'collapse', parent: '#accordion', parent: "#accordion_#{test_report.parent.id rescue 0}" }, href: "#collapse_#{test_report.id}"}
+        %i.pull-left{class: test_status_icon(test_report), alt: test_report.status}
+        %b= "Test: #{truncate test_report.title, length: 250, separator: ' '}"
+        - if test_report.duration
+          %span.span2.pull-right.text-right
+            #{"%.3f s" % (test_report.duration)}
+            %i.icon-time
+    .accordion-body.collapse.row-fluid{ id: "collapse_#{test_report.id}"}
+      %div.accordion-inner.span12
+        - if has_content
+          = gitlab_file_link @build, test_report.location if test_report.location
+          %pre
+            = preserve test_report.error_message
+            = gitlab_issue_create_link test_report, @build.project
+        -unless test_report.children.empty?
+          .accordion{id: "#accordion_#{test_report.id}"}= render test_report.children
+-else
+  .test-empty{class: test_status_alert_class(test_report)}
+    %i.pull-left{class: test_status_icon(test_report), alt: test_report.status}
+    %b= "Test: #{truncate test_report.title, length: 250, separator: ' '}"
+    - if test_report.duration
+      .pull-right
+        %span
+          #{"%.3f s" % (test_report.duration)}
+          %i.icon-time

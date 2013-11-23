@@ -17,16 +17,20 @@
 #  ssh_url_to_repo  :string(255)
 #  gitlab_id        :integer
 #  allow_git_fetch  :boolean          default(TRUE), not null
+#  requested_report_files :string     default("")
 #
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
-    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch
+    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :report_files_attributes
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
+  has_many :report_files
+
+  accepts_nested_attributes_for :report_files, :reject_if => :reject_empty_files, :allow_destroy => true
 
   #
   # Validations
@@ -166,20 +170,13 @@ class Project < ActiveRecord::Base
     # Get running builds not later than 3 days ago to ignore hangs
     builds.running.where("updated_at > ?", 3.days.ago).empty?
   end
+
+  protected
+    def reject_empty_files(attributes)
+      exists = attributes[:id].present?
+      empty = attributes[:filename].blank?
+      attributes.merge!({:_destroy => 1}) if exists and empty
+      return (!exists and empty)
+    end
 end
 
-
-# == Schema Information
-#
-# Table name: projects
-#
-#  id          :integer(4)      not null, primary key
-#  name        :string(255)     not null
-#  path        :string(255)     not null
-#  timeout     :integer(4)      default(1800), not null
-#  scripts     :text            default(""), not null
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
-#  token       :string(255)
-#  default_ref :string(255)
-#

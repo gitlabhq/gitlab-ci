@@ -11,31 +11,45 @@
 %hr
 
 .row-fluid
-  .span9
-    .build-head.alert{class: build_status_alert_class(@build)}
-      %h4
-        Build ##{@build.short_sha}
-        %span.label.label-inverse= "#{@build.ref}"
-        .pull-right
-          %span
-            %i.icon-time
-            #{build_duration @build}
+  #accordion.accordion.span9
+    .accordion-group.build-head.alert{class: build_status_alert_class(@build)}
+      .accordion-heading
+        %a.accordion-toggle{data: { toggle: 'collapse', parent: '#accordion'}, href: '#collapseBuild'}
+          %h4
+            Build ##{@build.short_sha}
+            %span.label.label-inverse= "#{@build.ref}"
+            .pull-right
+              %span
+                %i.icon-time
+                #{build_duration @build}
 
       .clearfix
-        = @build.status
+        %span.build-status= @build.status
         .pull-right
           = @build.updated_at.stamp('19:00 Aug 27')
 
+          - if @build.running?
+            .autoscroll-container
+              %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
 
+      #collapseBuild.accordion-body.collapse
+        %pre.accordion-inner.in.trace#build-trace
+          = preserve do
+            = raw @build.trace_html
+    -unless @build.test_reports.empty?
+      = render @build.test_reports
 
-    .clearfix
-    - if @build.active?
-      .autoscroll-container.pull-right
-        %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
-      .clearfix
-    %pre.trace#build-trace
-      = preserve do
-        = raw @build.trace_html
+    - i=0
+    - @build.report_file_contents.each do |rf|
+      .accordion-group
+        .accordion-heading
+          %a.accordion-toggle.collapsed{data: { toggle: 'collapse', parent: '#accordion' }, href: "#collapse#{i+=1}"}
+            %b= rf.report_file.filename
+            = rf.report_file.filetype
+        .accordion-body.collapse.in{ id: "collapse#{i}"}
+          %pre.accordion-inner
+            = preserve do
+              = raw rf.content
 
   .span3
     .build-widget

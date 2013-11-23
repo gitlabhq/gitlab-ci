@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b File:
+  = @coverage.file
+%p
+  %b Lines:
+  = @coverage.lines
+%p
+  %b Percentage:
+  = @coverage.percentage
+
+= link_to 'Edit', edit_coverage_path(@coverage)
+\|
+= link_to 'Back', coverages_path

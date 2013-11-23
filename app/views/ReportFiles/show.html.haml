@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Testclass:
+  = @report_files.testClass
+%p
+  %b Title:
+  = @report_files.title
+%p
+  %b Duration:
+  = @report_files.duration
+%p
+  %b Description:
+  = @report_files.description
+%p
+  %b Status:
+  = @report_files.status
+
+= link_to 'Edit', edit_test_report_path(@report_files)
+\|
+= link_to 'Back', test_reports_path

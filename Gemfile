@@ -47,6 +47,9 @@ gem 'httparty', '0.11.0'
 gem 'grape'
 gem 'grape-entity'
 
+# Nested cuverage and test reports
+gem 'awesome_nested_set'
+
 # Other
 gem 'rake'
 gem 'foreman'

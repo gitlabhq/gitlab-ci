@@ -1,0 +1,23 @@
+%h1 Listing coverages
+
+%table
+  %tr
+    %th File
+    %th Lines
+    %th Percentage
+    %th
+    %th
+    %th
+
+  - @coverages.each do |coverage|
+    %tr
+      %td= coverage.file
+      %td= coverage.lines
+      %td= coverage.percentage
+      %td= link_to 'Show', coverage
+      %td= link_to 'Edit', edit_coverage_path(coverage)
+      %td= link_to 'Destroy', coverage, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Coverage', new_coverage_path

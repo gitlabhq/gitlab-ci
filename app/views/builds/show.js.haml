@@ -2,6 +2,7 @@
   :plain
     $('#build-trace').html("#{escape_javascript(@build.trace_html)}");
     $('#build-trace').append('#{loader_html}');
+    $('span.build-status').html("#{@build.status}");
     checkAutoscroll();
     getBuild('#{project_build_path(@project, @build)}', '#{@build.id}');
 - else

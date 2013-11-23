@@ -64,10 +64,48 @@ pre.trace {
   overflow: auto;
   overflow-y: hidden;
   font-size: 12px;
+  margin-bottom: 0px;
 }
 
 .autoscroll-container {
   margin-bottom: 5px;
+}
+
+.accordion {
+  margin-bottom: 0px;
+  &> .test-empty {
+    padding: 8px 8px 8px 28px;
+    &:hover {
+      background: #EEEEEE;
+    }
+  }
+  .accordion-inner pre > a.btn {
+    @extend .pull-right;
+    margin-right: -10px;
+  }
+  .accordion-heading {
+    padding: 0px 5px;
+    margin-bottom: 0px;
+    .accordion-toggle {
+      padding: 8px;
+    }
+    .accordion-toggle.collapsed:before {
+      @extend .#{icon-chevron-right}:before;
+    }
+    .accordion-toggle:before {
+      @extend .#{icon-chevron-down}:before;
+      @extend .icon-3;
+      font-family: FontAwesome;
+      font-size: medium;
+      float: left;
+      margin-top: 2px;
+      padding-right: 8px;
+    }
+    a {
+      height: 22px;
+      text-decoration: none;
+    }
+  }
 }
 
 .builds {
