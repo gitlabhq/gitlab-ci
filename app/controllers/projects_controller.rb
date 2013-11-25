@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :status, :index, :show]
-  before_filter :project, only: [:build, :integration, :show, :status, :edit, :update, :destroy, :charts]
+  before_filter :project, only: [:build, :integration, :show, :status, :edit, :update, :destroy]
   before_filter :authorize_access_project!, except: [:build, :gitlab, :status, :index, :show, :new, :create]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:status]
@@ -115,13 +115,6 @@ class ProjectsController < ApplicationController
                  end
 
     send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
-  end
-
-  def charts
-    @charts = {}
-    @charts[:week] = Charts::WeekChart.new(@project)
-    @charts[:month] = Charts::MonthChart.new(@project)
-    @charts[:year] = Charts::YearChart.new(@project)
   end
 
   protected
