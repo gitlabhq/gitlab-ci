@@ -96,7 +96,7 @@ You can use either MySQL or PostgreSQL.
 
     cd gitlab-ci
 
-    sudo -u gitlab_ci -H git checkout 3-2-stable
+    sudo -u gitlab_ci -H git checkout 4-0-stable
 
 ## 6. Setup application
 
