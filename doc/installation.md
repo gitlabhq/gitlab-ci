@@ -76,8 +76,8 @@ You can use either MySQL or PostgreSQL.
     # Login to PostgreSQL
     sudo -u postgres psql -d template1
 
-    # Create a user for GitLab. (change $password to a real password)
-    template1=# CREATE USER gitlab_ci WITH PASSWORD '$password';
+    # Create a user for GitLab. We do not specify a password because we are using peer authentication.
+    template1=# CREATE USER gitlab_ci;
 
     # Create the GitLab production database & grant all privileges on database
     template1=# CREATE DATABASE gitlab_ci_production OWNER gitlab_ci;
@@ -129,8 +129,8 @@ You can use either MySQL or PostgreSQL.
 
     # postgres
     sudo -u gitlab_ci -H cp config/database.yml.postgresql config/database.yml
- 
-    # Edit user/password
+
+    # Edit user/password (not necessary with default Postgres setup)
     sudo -u gitlab_ci -H editor config/database.yml
 
     # Setup tables
