@@ -181,6 +181,10 @@ Make sure to edit the config file to match your setup:
     # of your host serving GitLab CI
     sudo editor /etc/nginx/sites-enabled/gitlab_ci
 
+## Check your configuration
+
+    sudo nginx -t
+
 ## Reload configuration
 
     sudo /etc/init.d/nginx reload
