@@ -28,9 +28,9 @@ Install the required packages:
 Download Ruby and compile it:
 
     mkdir /tmp/ruby && cd /tmp/ruby
-    curl --progress http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p392.tar.gz | tar xz
-    cd ruby-1.9.3-p392
-    ./configure
+    curl --progress http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2 | tar xj
+    cd ruby-2.0.0-p353
+    ./configure --disable-install-rdoc
     make
     sudo make install
 
