@@ -68,9 +68,9 @@
             %span Add committer to recipients list
         %br
         .field
-          = f.label :email_only_breaking_build do
-            = f.check_box :email_only_breaking_build
-            %span Send notification on breaking builds only
+          = f.label :email_all_breaking_builds do
+            = f.check_box :email_all_breaking_builds
+            %span Send notification on all breaking builds
 
       %br
       %fieldset

@@ -19,14 +19,14 @@
 #  allow_git_fetch           :boolean          default(TRUE), not null
 #  email_recipients          :string(255)
 #  email_add_committer       :boolean          default(TRUE), not null 
-#  email_only_breaking_build :boolean          default(TRUE), not null 
+#  email_all_broken_builds   :boolean          default(TRUE), not null 
 #
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, 
-    :email_recipients, :email_add_committer, :email_only_breaking_build
+    :email_recipients, :email_add_committer, :email_all_broken_builds
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -53,14 +53,14 @@ class Project < ActiveRecord::Base
       project = YAML.load(project_yaml)
 
       params = {
-        name: project.name_with_namespace,
-        gitlab_id: project.id,
-        gitlab_url: project.web_url,
-        scripts: 'ls -la',
-        default_ref: project.default_branch || 'master',
-        ssh_url_to_repo: project.ssh_url_to_repo,
-        email_add_committer:       GitlabCi.config.gitlab_ci.add_committer,
-        email_only_breaking_build: GitlabCi.config.gitlab_ci.only_breaking_build,
+        name:                    project.name_with_namespace,
+        gitlab_id:               project.id,
+        gitlab_url:              project.web_url,
+        scripts:                 'ls -la',
+        default_ref:             project.default_branch || 'master',
+        ssh_url_to_repo:         project.ssh_url_to_repo,
+        email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,
+        email_all_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
       }
 
       Project.new(params)
@@ -120,6 +120,18 @@ class Project < ActiveRecord::Base
     last_build.status if last_build
   end
 
+  def broken?
+    last_build.failed? || last_build.canceled? if last_build
+  end
+
+  def success?
+    last_build.success? if last_build
+  end
+  
+  def broken_or_success?
+    broken? || success? 
+  end
+  
   def last_build
     builds.last
   end
@@ -174,7 +186,15 @@ class Project < ActiveRecord::Base
   end
   
   def email_notification?
-    email_add_committer || !email_recipients.blank?
+    (email_add_committer || !email_recipients.blank?) && broken_or_success?
+  end
+  
+  # onlu check for toggling build status within same ref.
+  def last_build_changed_status?
+    ref = last_build.ref 
+    last_builds = builds.where(ref: ref).order('id DESC').limit(2)
+    return false if last_builds.size < 2 
+    return last_builds[0].status != last_builds[1].status
   end
   
 end

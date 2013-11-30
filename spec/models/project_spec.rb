@@ -70,26 +70,61 @@ describe Project do
   
   describe '#email_notification?' do
     it { 
-      project = FactoryGirl.create :project, email_add_committer: true 
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken_or_success?).and_return(true)
       project.email_notification?.should == true 
     }
 
     it { 
-      project = FactoryGirl.create :project, email_add_committer: false 
-      project.email_notification?.should == false 
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken_or_success?).and_return(false)
+      project.email_notification?.should == false
     }
+
 
     it { 
       project = FactoryGirl.create :project, email_add_committer: false, email_recipients: 'test tesft' 
+      project.stub(:broken_or_success?).and_return(true)
       project.email_notification?.should == true 
     }
 
     it { 
       project = FactoryGirl.create :project, email_add_committer: false, email_recipients: ''  
+      project.stub(:broken_or_success?).and_return(true)
       project.email_notification?.should == false 
     }
   end
   
+  describe '#broken_or_success?' do
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(true)
+      project.stub(:success?).and_return(true)
+      project.broken_or_success?.should == true
+    }
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(true)
+      project.stub(:success?).and_return(false)
+      project.broken_or_success?.should == true
+    }
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(false)
+      project.stub(:success?).and_return(true)
+      project.broken_or_success?.should == true
+    }
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(false)
+      project.stub(:success?).and_return(false)
+      project.broken_or_success?.should == false
+    }
+   end 
 end
 
 # == Schema Information

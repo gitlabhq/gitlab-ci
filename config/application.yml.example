@@ -17,8 +17,8 @@ defaults: &defaults
     # Email address of your support contact (default: same as email_from)
     support_email: support@localhost
   
-    # Only send emails for breaking builds
-    # only_breaking_build: true
+    # Only send emails for all failing builds
+    # all_broken_builds: true
     
     # Add committer to recipients list
     # add_committer: true
