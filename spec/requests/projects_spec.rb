@@ -10,14 +10,21 @@ describe API::API do
       :password => "123456"
     }
   }
-
   let(:private_token) { Network.new.authenticate(gitlab_url, auth_opts)["private_token"] }
+
   let(:options) {
     {
       :private_token => private_token,
       :url => gitlab_url
     }
   }
+  
+  # before { 
+  #   stub_request(:post, "http://demo.gitlab.com/api/v3/session.json").
+  #     with(:body => "{\"email\":\"test@test.com\",\"password\":\"123456\"}",
+  #          :headers => {'Content-Type'=>'application/json'}).
+  #     to_return(:status => 200, :body => "[1,2,3]", :headers => {})
+  # }
 
   context "requests for scoped projects" do
     # NOTE: These ids are tied to the actual projects on demo.gitlab.com
