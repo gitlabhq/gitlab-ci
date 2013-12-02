@@ -16,11 +16,15 @@ GitLab CI officially supports (recent versions of) these Linux distributions:
 
 Additionally GitLab CI requires:
 
-* GitLab 6.3+
+* GitLab 6.3+ (to host the repositories you test)
 * ruby 1.9.3
 * MySQL or PostgreSQL
 
-__If you want to use GitLab CI without GitLab or with older versions of GitLab you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)__
+Hardware requirements:
+
+* 1GB of memory or more is recommended, 512MB works
+* 2 CPU cores or more are recommended, 1 CPU core works
+* A little disk space, 100MB or less
 
 ## Features
 
