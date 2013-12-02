@@ -89,6 +89,6 @@ group :development, :test do
   gem 'minitest', '4.3.2'
 end
 
-# group :test do
-#   gem 'webmock'
-# end
+group :test do
+  gem 'webmock'
+end

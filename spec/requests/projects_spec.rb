@@ -19,13 +19,10 @@ describe API::API do
     }
   }
   
-  # before { 
-  #   stub_request(:post, "http://demo.gitlab.com/api/v3/session.json").
-  #     with(:body => "{\"email\":\"test@test.com\",\"password\":\"123456\"}",
-  #          :headers => {'Content-Type'=>'application/json'}).
-  #     to_return(:status => 200, :body => "[1,2,3]", :headers => {})
-  # }
-
+  before {
+    stub_gitlab_calls
+  }
+  
   context "requests for scoped projects" do
     # NOTE: These ids are tied to the actual projects on demo.gitlab.com
     describe "GET /projects" do
