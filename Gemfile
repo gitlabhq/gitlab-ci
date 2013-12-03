@@ -88,3 +88,7 @@ group :development, :test do
   gem 'coveralls', require: false
   gem 'minitest', '4.3.2'
 end
+
+group :test do
+  gem 'webmock'
+end
