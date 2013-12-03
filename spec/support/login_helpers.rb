@@ -1,7 +1,7 @@
 module LoginHelpers
   def login_as(role)
     raise 'Only :user allowed' unless role == :user
-
+    stub_gitlab_calls
     login_with(:user)
   end
 
