@@ -2,7 +2,12 @@ require 'spec_helper'
 
 describe API::API do
   include ApiHelpers
-
+  include StubGitlabCalls
+  
+  before {
+    stub_gitlab_calls
+  }
+  
   describe "GET /runners" do
     let(:gitlab_url) { GitlabCi.config.allowed_gitlab_urls.first }
     let(:auth_opts) {

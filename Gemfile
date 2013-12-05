@@ -8,7 +8,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '3.2.15'
+gem 'rails', '3.2.16'
 
 # DB
 gem 'mysql2', group: :mysql
@@ -87,4 +87,8 @@ group :development, :test do
   gem "simplecov", require: false
   gem 'coveralls', require: false
   gem 'minitest', '4.3.2'
+end
+
+group :test do
+  gem 'webmock'
 end
