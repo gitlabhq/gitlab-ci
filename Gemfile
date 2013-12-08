@@ -23,7 +23,7 @@ gem 'pg',     group: :postgres
 gem 'settingslogic'
 
 # Web server
-gem "puma", "~> 2.3.2"
+gem "puma", "~> 2.7.1"
 
 # Haml
 gem 'haml-rails'
