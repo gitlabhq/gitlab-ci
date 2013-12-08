@@ -1,9 +1,9 @@
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:build, :status, :index, :show]
-  before_filter :project, only: [:build, :integration, :show, :status, :edit, :update, :destroy, :charts]
-  before_filter :authorize_access_project!, except: [:build, :gitlab, :status, :index, :show, :new, :create]
+  before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
+  before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy, :charts]
+  before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
   before_filter :authenticate_token!, only: [:build]
-  before_filter :no_cache, only: [:status]
+  before_filter :no_cache, only: [:badge]
 
   layout 'project', except: [:index, :gitlab]
 
@@ -105,7 +105,7 @@ class ProjectsController < ApplicationController
 
   # Project status badge
   # Image with build status for sha or ref
-  def status
+  def badge
     image_name = if params[:sha]
                    @project.sha_status_image(params[:sha])
                  elsif params[:ref]
