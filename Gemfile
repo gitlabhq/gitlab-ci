@@ -9,6 +9,11 @@ def linux_only(require_as)
 end
 
 gem 'rails', '4.0.2'
+gem 'protected_attributes'
+gem 'actionpack-page_caching'
+gem 'actionpack-action_caching'
+gem 'activerecord-deprecated_finders'
+gem 'activerecord-session_store'
 
 # DB
 gem 'mysql2', group: :mysql
@@ -53,15 +58,13 @@ gem 'foreman'
 gem 'jquery-rails'
 gem 'gitlab_ci_meta'
 
-group :assets do
-  gem 'sass-rails',   '~> 4.0.0'
-  gem 'coffee-rails', '~> 4.0.0'
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
 
-  gem 'uglifier', '>= 1.0.3'
-  gem "therubyracer"
-  gem 'bootstrap-sass', '~> 2.3.2'
-  gem "font-awesome-sass-rails", '~> 3.0.2'
-end
+gem 'uglifier', '>= 1.0.3'
+gem "therubyracer"
+gem 'bootstrap-sass', '~> 2.3.2'
+gem "font-awesome-sass-rails", '~> 3.0.2'
 
 
 group :development do
