@@ -8,6 +8,7 @@ FactoryGirl.define do
     ssh_url_to_repo 'git@demo.gitlab.com:gitlab/gitlab-shell.git'
     gitlab_id 8
     scripts 'ls'
+    deployment_script 'ls'
 
     factory :project do
       token 'iPWx6WM4lhHNedGfBpPJNP'

@@ -14,9 +14,18 @@
         .field
           = f.label :timeout, 'Timeout (in seconds) per command'
           = f.number_field :timeout, class: 'input-xlarge', min: '0'
-        .field
-          = f.label :scripts
-          = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec"
+        %ul.field.nav.nav-tabs#buildtabs
+          %li.active
+            %a(href='#tabscript' data-toggle='tab')= f.label :build_script
+          %li
+            %a(href='#tabdeploy' data-toggle='tab')= f.label :deployment_script
+        %ul.tab-content
+          %li.tab-pane.active#tabscript
+            = f.text_area :scripts, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake spec"
+          %li.tab-pane#tabdeploy
+            = f.text_area :deployment_script, class: 'input-xxlarge', rows: 11, placeholder: "bundle exec rake cap"
+        %script
+          $('#buildtabs > li > a').click(function (e) {e.preventDefault();$(this).tab('show');});
 
         .field
           %p Get recent application code by next command:
