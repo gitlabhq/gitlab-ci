@@ -158,7 +158,7 @@ Start your GitLab instance:
 
     sudo service gitlab_ci start
     # or
-    sudo /etc/init.d/gitlab_ci restart
+    sudo /etc/init.d/gitlab_ci start
 
 
 # 8. Nginx
