@@ -32,8 +32,8 @@ Hardware requirements:
 * Quick project setup: add your project in a single click, all setup automatic via the GitLab API
 * Elegant and flexible: build scripts are written in bash, test projects in any programming language
 * Merge request integration: see the status of the feature branch build within the Merge Request
-* Distributed by default: GitLab CI and build runners can on separate machines providing more stability
-* Realtime logging: the current build log scolls and update every few seconds
+* Distributed by default: GitLab CI and build runners can run on separate machines providing more stability
+* Realtime logging: the current build log scrolls and updates every few seconds
 
 ### Limitations
 
