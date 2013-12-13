@@ -43,10 +43,18 @@ The following features are not in GitLab CI but merge requests are very welcome:
 * Build artifacts access
 * Build pipeline / build promotion actions
 
+### Runners
+
+To perform the actual build you need a CI runner (also see the Architecture section below):
+
+* [Official CI runner for Linux](https://github.com/gitlabhq/gitlab-ci-runner)
+* [Unofficial CI runner for Windows](https://github.com/virtualmarc/gitlab-ci-runner-win)
+* [Unofficial CI runner for Scala/Java](https://github.com/nafg/gitlab-ci-runner-scala)
+
 ### Architecture
 
-__GitLab CI__ is a web application with an API and it connect to the db.
-It manage projects/builds and provides a nice user interface.
+__GitLab CI__ is a web application with an API that stores its state in a databse.
+It manages projects/builds and provides a nice user interface.
 It uses the GitLab application API to authenticate users.
 
 __GitLab CI Runner__ is a pure ruby application which processes builds.
@@ -72,7 +80,6 @@ and
 
 * [Installation guide](https://github.com/gitlabhq/gitlab-ci/blob/master/doc/installation.md)
 
-
 ### Docs
 
 * [API](doc/api.md)
@@ -80,13 +87,14 @@ and
 ### How to add a new project to GitLab CI
 
 1. Log in the GitLab CI web interface
-2. Press the 'Sync now' button
-3. Select your project with the 'Add' button
-4. Go to the settings page of the project and add a build script (example given below)
-5. Go the the Integration page and do the 'Complete (as service)' steps, the press 'Test settings'
-6. A new build should become visible on the project page of GitLab CI
-7. If the build fails then adjust the build script and press the 'Retry' button on the build page
-8. If the build is green you are done, all new commits will be tested and you see the status of merge requests builds within GitLab
+1. Press the 'Sync now' button
+1. Select your project with the 'Add' button
+1. Go to the settings page of the project and add a build script (example given below)
+1. A new build should become visible on the project page of GitLab CI
+1. If the build fails then adjust the build script and press the 'Retry' button on the build page
+1. If the build is green you are done, all new commits will be tested and you see the status of merge requests builds within GitLab
+
+### Build script
 
 For your information, the runner runs the line below before it runs the commands in your build script:
 
