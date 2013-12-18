@@ -31,6 +31,17 @@
         Last build:
         - if @project.last_build
           = time_ago_in_words @project.last_build_date
+    %fieldset
+      %legend Email notification
+      %p
+        Repicients:
+        %strong= @project.email_recipients
+      %p
+        Send mail to commiter:
+        %strong= @project.email_add_committer
+      %p
+        Send on all broken builds:
+        %strong= @project.email_all_broken_builds
 
   .span6
     %fieldset

@@ -30,6 +30,7 @@
             %span.light (faster)
 
 
+      %br
       %fieldset
         %legend Build Schedule
         .field
@@ -41,6 +42,7 @@
           = f.label :polling_interval, "Build interval"
           = f.number_field :polling_interval, placeholder: '5', min: '0'
           %span Hours
+
     .span5
       %fieldset
         %legend Project settings
@@ -53,6 +55,24 @@
             = f.check_box :public, class: 'input-xlarge'
             %span Public (Anyone can see project and builds list)
         %br
+
+      %fieldset
+        %legend Email notification
+        .field
+          = f.label :email_recipients, "Whitespace-separated list of recipient addresses."
+          = f.text_field :email_recipients, class: 'input-xlarge'
+        %br
+        .field
+          = f.label :email_add_committer do
+            = f.check_box :email_add_committer
+            %span Add committer to recipients list
+        %br
+        .field
+          = f.label :email_all_broken_builds do
+            = f.check_box :email_all_broken_builds
+            %span Send notification on all broken builds
+
+      %br
       %fieldset
         %legend Advanced settings
         .field

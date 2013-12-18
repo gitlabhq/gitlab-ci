@@ -1,0 +1,14 @@
+%p
+  Build successful for
+  = link_to project_url(@project) do
+    = @project.name
+
+%p
+  Status: #{@build.status}
+%p
+  Commit: #{@build.short_sha}
+%p 
+  Author: #{@build.git_author_name}
+
+%p 
+  Url: #{link_to(project_build_path(@build.project, @build), @build.short_sha)}

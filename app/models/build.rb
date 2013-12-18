@@ -100,6 +100,10 @@ class Build < ActiveRecord::Base
     commit_data[:author][:name] if commit_data && commit_data[:author]
   end
 
+  def git_author_email
+    commit_data[:author][:email] if commit_data && commit_data[:author]
+  end
+
   def git_commit_message
     commit_data[:message] if commit_data
   end
@@ -162,4 +166,11 @@ class Build < ActiveRecord::Base
   def project_name
     project.name
   end
+  
+  def project_recipients
+    recipients = project.email_recipients.split(' ')
+    recipients << git_author_email if project.email_add_committer?
+    recipients.uniq
+  end
+  
 end
