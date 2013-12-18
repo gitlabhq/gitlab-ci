@@ -1,6 +1,7 @@
 v4.1.0
   - Rails 4
   - Click on build branch to see other builds for this branch
+  - Email notifications (Jeroen Knoops)
 
 v4.0.0
   - Shared runners (no need to add runner to every project)
