@@ -14,6 +14,7 @@ gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
+gem "rails-observers"
 
 # DB
 gem 'mysql2', group: :mysql
