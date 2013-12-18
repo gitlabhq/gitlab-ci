@@ -108,10 +108,6 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H cp config/puma.rb.example config/puma.rb
     sudo -u gitlab_ci -H editor config/puma.rb
 
-    # Configure email settings
-    sudo -u gitlab_ci -H cp config/initializers/smtp_settings.rb.example config/initializers/smtp_settings.rb
-    sudo -u gitlab_ci -H editor config/initializers/smtp_settings.rb
-
     # Create socket and pid directories
     sudo -u gitlab_ci -H mkdir -p tmp/sockets/
     sudo chmod -R u+rwX  tmp/sockets/
@@ -208,3 +204,34 @@ Visit YOUR_SERVER for your first GitLab CI login.
 You should use your GitLab credentials in order to login
 
 **Enjoy!**
+
+
+
+## Advanced settings
+
+### SMTP email settings
+
+If you want to use SMTP do next:
+
+    # Copy config file
+    sudo -u gitlab_ci -H cp config/initializers/smtp_settings.rb.example config/initializers/smtp_settings.rb
+
+    # Edit it with your settings
+    sudo -u gitlab_ci -H editor config/initializers/smtp_settings.rb
+
+Restart application
+
+### Custom Redis Connection
+
+If you'd like Resque to connect to a Redis server on a non-standard port or on
+a different host, you can configure its connection string via the
+`config/resque.yml` file.
+
+    # example
+    production: redis://redis.example.tld:6379
+
+If you want to connect the Redis server via socket, then use the "unix:" URL scheme
+and the path to the Redis socket file in the `config/resque.yml` file.
+
+    # example
+    production: unix:/path/to/redis/socket
