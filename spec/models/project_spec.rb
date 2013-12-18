@@ -18,8 +18,8 @@
 #  gitlab_id                 :integer
 #  allow_git_fetch           :boolean          default(TRUE), not null
 #  email_recipients          :string(255)
-#  email_add_committer       :boolean          default(TRUE), not null 
-#  email_only_breaking_build :boolean          default(TRUE), not null 
+#  email_add_committer       :boolean          default(TRUE), not null
+#  email_only_breaking_build :boolean          default(TRUE), not null
 #
 
 require 'spec_helper'
@@ -67,34 +67,24 @@ describe Project do
       it { project.status_image.should == 'running.png' }
     end
   end
-  
+
   describe '#email_notification?' do
-    it { 
+    it do
       project = FactoryGirl.create :project, email_add_committer: true
-      project.stub(:broken_or_success?).and_return(true)
-      project.email_notification?.should == true 
-    }
+      project.email_notification?.should == true
+    end
 
-    it { 
-      project = FactoryGirl.create :project, email_add_committer: true
-      project.stub(:broken_or_success?).and_return(false)
+    it do
+      project = FactoryGirl.create :project, email_add_committer: false, email_recipients: 'test tesft'
+      project.email_notification?.should == true
+    end
+
+    it do
+      project = FactoryGirl.create :project, email_add_committer: false, email_recipients: ''
       project.email_notification?.should == false
-    }
-
-
-    it { 
-      project = FactoryGirl.create :project, email_add_committer: false, email_recipients: 'test tesft' 
-      project.stub(:broken_or_success?).and_return(true)
-      project.email_notification?.should == true 
-    }
-
-    it { 
-      project = FactoryGirl.create :project, email_add_committer: false, email_recipients: ''  
-      project.stub(:broken_or_success?).and_return(true)
-      project.email_notification?.should == false 
-    }
+    end
   end
-  
+
   describe '#broken_or_success?' do
 
     it {
@@ -124,7 +114,7 @@ describe Project do
       project.stub(:success?).and_return(false)
       project.broken_or_success?.should == false
     }
-   end 
+   end
 end
 
 # == Schema Information
@@ -147,7 +137,7 @@ end
 #  gitlab_id                 :integer
 #  allow_git_fetch           :boolean          default(TRUE), not null
 #  email_recipients          :string(255)
-#  email_add_committer       :boolean          default(TRUE), not null 
-#  email_only_breaking_build :boolean          default(TRUE), not null 
+#  email_add_committer       :boolean          default(TRUE), not null
+#  email_only_breaking_build :boolean          default(TRUE), not null
 #
 

@@ -1,7 +1,7 @@
 class Settings < Settingslogic
   source "#{Rails.root}/config/application.yml"
   namespace Rails.env
-  
+
   class << self
     def gitlab_ci_on_non_standard_port?
       ![443, 80].include?(gitlab_ci.port.to_i)
@@ -37,8 +37,8 @@ Settings.gitlab_ci['relative_url_root']   ||= ENV['RAILS_RELATIVE_URL_ROOT'] || 
 Settings.gitlab_ci['protocol']            ||= Settings.gitlab_ci.https ? "https" : "http"
 Settings.gitlab_ci['email_from']          ||= "gitlab-ci@#{Settings.gitlab_ci.host}"
 Settings.gitlab_ci['support_email']       ||= Settings.gitlab_ci.email_from
-Settings.gitlab_ci['all_broken_builds']   ||= true
-Settings.gitlab_ci['add_committer']       ||= true
+Settings.gitlab_ci['all_broken_builds'] = true if Settings.gitlab_ci['all_broken_builds'].nil?
+Settings.gitlab_ci['add_committer']     = true if Settings.gitlab_ci['add_committer'].nil?
 Settings.gitlab_ci['url']                 ||= Settings.send(:build_gitlab_ci_url)
 
 
