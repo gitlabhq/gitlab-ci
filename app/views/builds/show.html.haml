@@ -15,7 +15,9 @@
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
         Build ##{@build.short_sha}
-        %span.label.label-inverse= "#{@build.ref}"
+
+        = link_to project_path(@build.project, ref: @build.ref) do
+          %span.label.label-inverse= "#{@build.ref}"
         .pull-right
           %span
             %i.icon-time

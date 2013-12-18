@@ -8,6 +8,11 @@
     %li{class: ref_tab_class(ref)}
       = link_to ref, project_path(@project, ref: ref)
 
+  - if @ref && !@project.tracked_refs.include?(@ref)
+    %li{class: 'active'}
+      = link_to @ref, project_path(@project, ref: @ref)
+
+
 
 - if @ref
   %p
