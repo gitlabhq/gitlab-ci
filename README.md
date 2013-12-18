@@ -39,7 +39,6 @@ Hardware requirements:
 
 The following features are not in GitLab CI but merge requests are very welcome:
 
-* Email notification
 * Build artifacts access
 * Build pipeline / build promotion actions
 
