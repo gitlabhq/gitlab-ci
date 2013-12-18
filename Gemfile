@@ -14,7 +14,6 @@ gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
-gem "rails-observers"
 
 # DB
 gem 'mysql2', group: :mysql
@@ -71,6 +70,7 @@ gem "font-awesome-sass-rails", '~> 3.0.2'
 group :development do
   gem 'annotate'
   gem 'quiet_assets'
+  gem "letter_opener"
 end
 
 

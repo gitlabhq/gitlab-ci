@@ -75,6 +75,13 @@ class Build < ActiveRecord::Base
 
     after_transition any => [:success, :failed, :canceled] do |build, transition|
       build.update_attributes finished_at: Time.now
+      project = build.project
+
+      if project.email_notification?
+        if build.status.to_sym == :failed || project.email_all_broken_builds
+          NotificationService.new.build_ended(build)
+        end
+      end
     end
 
     state :pending, value: 'pending'
@@ -166,11 +173,10 @@ class Build < ActiveRecord::Base
   def project_name
     project.name
   end
-  
+
   def project_recipients
     recipients = project.email_recipients.split(' ')
     recipients << git_author_email if project.email_add_committer?
     recipients.uniq
   end
-  
 end

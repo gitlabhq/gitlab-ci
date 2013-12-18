@@ -37,7 +37,7 @@ describe NotificationService do
     describe 'successfull build and project has email_recipients' do
       let(:project) { FactoryGirl.create(:project, :email_recipients => "jeroen@example.com")}
       let(:build) { FactoryGirl.create(:build, :status => :success, :project => project) }
-      
+
       it do
         should_email(build.git_author_email)
         should_email("jeroen@example.com")
@@ -50,5 +50,4 @@ describe NotificationService do
       end
     end
   end
-
 end
