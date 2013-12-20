@@ -11,4 +11,4 @@
   Author: #{@build.git_author_name}
 
 %p
-  Url: #{link_to(project_build_url(@build.project, @build), @build.short_sha)}
+  Url: #{link_to @build.short_sha, project_build_url(@build.project, @build)}
