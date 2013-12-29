@@ -214,7 +214,7 @@ You should use your GitLab credentials in order to login
 If you want to use SMTP do next:
 
     # Copy config file
-    sudo -u gitlab_ci -H cp config/initializers/smtp_settings.rb.example config/initializers/smtp_settings.rb
+    sudo -u gitlab_ci -H cp config/initializers/smtp_settings.rb.sample config/initializers/smtp_settings.rb
 
     # Edit it with your settings
     sudo -u gitlab_ci -H editor config/initializers/smtp_settings.rb
