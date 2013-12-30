@@ -5,7 +5,7 @@
 * [![Dependency Status](https://gemnasium.com/gitlabhq/gitlab-ci.png)](https://gemnasium.com/gitlabhq/gitlab-ci)
 * [![Coverage Status](https://coveralls.io/repos/gitlabhq/gitlab-ci/badge.png?branch=master)](https://coveralls.io/r/gitlabhq/gitlab-ci)
 
-![Screen](https://raw.github.com/gitlabhq/gitlab-ci/master/public/gitlab-ci-screenshot.png)
+![Screen](https://gitlab.com/gitlab-org/gitlab-ci/raw/master/public/gitlab-ci-screenshot.png)
 
 ### Requirements
 
@@ -46,7 +46,7 @@ The following features are not in GitLab CI but merge requests are very welcome:
 
 To perform the actual build you need a CI runner (also see the Architecture section below):
 
-* [Official CI runner for Linux](https://github.com/gitlabhq/gitlab-ci-runner)
+* [Official CI runner for Linux](https://gitlab.com/gitlab-org/gitlab-ci-runner)
 * [Unofficial CI runner for Windows](https://github.com/virtualmarc/gitlab-ci-runner-win)
 * [Unofficial CI runner for Scala/Java](https://github.com/nafg/gitlab-ci-runner-scala)
 
@@ -68,7 +68,7 @@ Possible Cases:
 * 1 __GitLab CI__ and N __GitLab CI Runner__ instances on different machines
 * 1 __GitLab CI__ and N __GitLab CI Runner__ instances on local machines
 
-![screen](https://raw.github.com/gitlabhq/gitlab-ci/master/app/assets/images/arch.jpg)
+![screen](https://gitlab.com/gitlab-org/gitlab-ci/raw/master/app/assets/images/arch.jpg)
 
 For more information see:
 [Announcing GitLab CI 3.0](http://blog.gitlab.org/announcing-gitlab-ci-3.0/)
@@ -77,7 +77,7 @@ and
 
 ### Installation
 
-* [Installation guide](https://github.com/gitlabhq/gitlab-ci/blob/master/doc/installation.md)
+* [Installation guide](https://gitlab.com/gitlab-org/gitlab-ci/blob/master/doc/installation.md)
 
 ### Docs
 

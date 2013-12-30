@@ -34,7 +34,7 @@ v3.0.0
 v2.2.0
   - replaced unicorn with puma
   - replaced grit with rugged
-  - Runner.rb more transactional safe now (see https://github.com/gitlabhq/gitlab-ci/pull/142)
+  - Runner.rb more transactional safe now
   - updated rails to 3.2.13
   - updated devise to 2.2
   - fixed issue when build left in running status if exception triggered

@@ -92,7 +92,7 @@ You can use either MySQL or PostgreSQL.
 
     cd /home/gitlab_ci/
 
-    sudo -u gitlab_ci -H git clone https://github.com/gitlabhq/gitlab-ci.git
+    sudo -u gitlab_ci -H git clone https://gitlab.com/gitlab-org/gitlab-ci.git
 
     cd gitlab-ci
 
@@ -195,7 +195,7 @@ Make sure to edit the config file to match your setup:
 
 
 Now you need Runners to process your builds.
-Checkout [runner repository](https://github.com/gitlabhq/gitlab-ci-runner#installation) for setup info.
+Checkout [runner repository](https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/README.md) for setup info.
 
 # Done!
 
