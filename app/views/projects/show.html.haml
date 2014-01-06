@@ -1,7 +1,7 @@
 = render 'shared/guide' if params[:show_guide].present?
 
 
-%ul.nav.nav-tabs
+%ul.nav.nav-tabs.append-bottom-20
   %li{class: ref_tab_class}
     = link_to 'All builds', project_path(@project)
   - @project.tracked_refs.each do |ref|
@@ -17,13 +17,13 @@
 - if @ref
   %p
     Paste build status image for #{@ref} with next link
-    = link_to '#', class: 'badge-codes-toggle btn btn-small ' do
+    = link_to '#', class: 'badge-codes-toggle btn btn-default btn-sm' do
       Status Badge
     .badge-codes-block.well.well-small.hide
       %label Markdown:
-      = text_field_tag 'badge_md', markdown_badge_code(@project, @ref), readonly: true, class: 'input-xxlarge'
+      = text_field_tag 'badge_md', markdown_badge_code(@project, @ref), readonly: true, class: 'form-control'
       %label Html:
-      = text_field_tag 'badge_html', html_badge_code(@project, @ref), readonly: true, class: 'input-xxlarge'
+      = text_field_tag 'badge_html', html_badge_code(@project, @ref), readonly: true, class: 'form-control'
 
 
 

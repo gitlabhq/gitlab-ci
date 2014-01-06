@@ -2,8 +2,8 @@
   %h3.project-title
     %span.light Admin /
     #{@project.name}
-.row-fluid
-  .span6
+.row
+  .col-md-6
     %fieldset
       %legend Project info
       %p
@@ -43,7 +43,7 @@
         Send on all broken builds:
         %strong= @project.email_all_broken_builds
 
-  .span6
+  .col-md-6
     %fieldset
       %legend Build script
       = preserve do

@@ -1,7 +1,7 @@
-%h3
+%h4
   Project: #{@project.name}
   .right
-    %a.btn.btn-small{href: edit_project_path(@project)}
+    = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
       %i.icon-edit.icon-white
       Edit Project
 
@@ -10,14 +10,14 @@
     &larr; Back to project builds
 %hr
 
-.row-fluid
-  .span9
+.row
+  .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
         Build ##{@build.short_sha}
 
         = link_to project_path(@build.project, ref: @build.ref) do
-          %span.label.label-inverse= "#{@build.ref}"
+          %span.label.label-primary= "#{@build.ref}"
         .pull-right
           %span
             %i.icon-time
@@ -33,21 +33,21 @@
     .clearfix
     - if @build.active?
       .autoscroll-container.pull-right
-        %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+        %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
       .clearfix
     %pre.trace#build-trace
       = preserve do
         = raw @build.trace_html
 
-  .span3
+  .col-md-3
     .build-widget
       %h4.title
         Build
         .pull-right
           - if @build.active?
-            = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-small btn-danger'
+            = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-sm btn-danger'
           - else
-            = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-small btn-info', method: :post
+            = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-sm btn-primary', method: :post
 
       - if @build.started_at
         %p
@@ -98,11 +98,6 @@
 
 
         = paginate @builds
-%br
-.right
-  %a.btn.btn-small{href: edit_project_path(@project)}
-    %i.icon-edit.icon-white
-    Edit Project
 
 
 - if @build.active?

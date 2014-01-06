@@ -1,7 +1,7 @@
 .clearfix.light
   .pull-left.fetch-status
     Fetched from GitLab (#{link_to current_user.url, current_user.url}) #{time_ago_in_words(current_user.sync_at)} ago.
-    = link_to gitlab_projects_path(reset_cache: true), remote: true, class: 'sync-now btn btn-mini' do
+    = link_to gitlab_projects_path(reset_cache: true), remote: true, class: 'sync-now btn btn-xs btn-default' do
       %i.icon-refresh
       Sync now
     %br
@@ -26,7 +26,6 @@
         \-
       %td
         = project.name_with_namespace
-        -#= link_to project.web_url, project.web_url
       %td
         %small Not added to CI
       %td
@@ -37,7 +36,7 @@
         - else
           = form_tag projects_path do
             = hidden_field_tag :project, project.to_yaml
-            = submit_tag 'Add', class: 'btn btn-small'
+            = submit_tag 'Add', class: 'btn btn-default btn-xs'
 
 %center
   - if @page > 1
