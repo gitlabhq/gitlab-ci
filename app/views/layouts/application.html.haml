@@ -5,10 +5,10 @@
     = render 'layouts/nav'
     = render 'layouts/info'
     - if content_for?(:title)
-      .container-fluid.container-title
+      .container.container-title
         = yield(:title)
       %hr
 
-    .container-fluid.container-body
+    .container.container-body
       = yield
     = render 'layouts/foot'

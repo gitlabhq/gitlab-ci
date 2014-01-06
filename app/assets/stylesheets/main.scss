@@ -27,9 +27,12 @@ a {
   padding-left: 20px;
 }
 
+.navbar-brand {
+  color: #fff;
+}
+
 .navbar-ci {
   .navbar-inner {
-    padding: 4px;
     background: $style_color;
 
     .brand,
