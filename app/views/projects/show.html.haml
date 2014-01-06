@@ -19,7 +19,7 @@
     Paste build status image for #{@ref} with next link
     = link_to '#', class: 'badge-codes-toggle btn btn-default btn-sm' do
       Status Badge
-    .badge-codes-block.well.well-small.hide
+    .badge-codes-block.alert.alert-info
       %label Markdown:
       = text_field_tag 'badge_md', markdown_badge_code(@project, @ref), readonly: true, class: 'form-control'
       %label Html:
