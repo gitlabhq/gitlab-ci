@@ -30,16 +30,22 @@ a {
 
 .navbar-brand {
   color: #fff;
+
+  &:hover {
+    color: #fff;
+  }
 }
 
 .navbar-ci {
-  .navbar-inner {
-    background: $style_color;
+  background: $style_color;
 
-    .brand,
-    .nav > li > a {
-      color: #fff;
-      text-shadow: 0 1px 0 #167;
+  .brand,
+  .nav > li > a {
+    color: #fff;
+    text-shadow: 0 1px 0 #167;
+
+    &:hover {
+      background: none;
     }
   }
 }
