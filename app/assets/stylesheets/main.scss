@@ -1,6 +1,7 @@
 @import "bootstrap";
 @import "font-awesome";
 @import "xterm";
+@import "login";
 
 $style_color: #289;
 
@@ -87,22 +88,13 @@ pre.trace {
   }
 }
 
-.btn {
-  &.btn-primary {
-    background: #29a;
-    border:1px solid #279;
-    padding: 4px 20px;
-  }
-
-  &.btn-danger {
-    background: #D33;
-    border:1px solid red;
-    text-shadow: 0 1px 0 #D44;
-  }
-}
-
 .form-actions {
-  background: none;
+  padding: 17px 20px 18px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  background-color: whitesmoke;
+  border-top: 1px solid #e5e5e5;
+  padding-left: 17%;
 }
 
 h3.error { color: #B94A48; }
@@ -203,23 +195,6 @@ td form {
   background: #AAA;
 }
 
-.login-box {
-  width: 400px;
-  position: relative;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  margin: auto;
-  padding: 20px;
-  background: white;
-
-  input[type="email"], input[type="password"], input[type="text"], select {
-    width: 250px;
-  }
-}
-
 .table {
   th {
     background: #eee;
@@ -297,17 +272,6 @@ td form {
   font-size: 14px;
 }
 
-.login-form {
-  .btn-success {
-    padding: 10px 20px;
-  }
-
-  input[type="text"],
-  input[type="password"] {
-    padding: 8px 14px;
-  }
-}
-
 h3 {
   font-size: 22px;
 }
@@ -347,4 +311,10 @@ h3 {
 
 #project_scripts {
   font-family: monospace;
+}
+
+label {
+  &.control-label {
+    @extend .col-sm-2;
+  }
 }
