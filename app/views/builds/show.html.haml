@@ -11,7 +11,7 @@
 %hr
 
 .row
-  .span9
+  .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
         Build ##{@build.short_sha}
@@ -39,7 +39,7 @@
       = preserve do
         = raw @build.trace_html
 
-  .span3
+  .col-md-3
     .build-widget
       %h4.title
         Build

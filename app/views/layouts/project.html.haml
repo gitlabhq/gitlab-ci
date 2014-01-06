@@ -20,7 +20,7 @@
     .container
       .row
         - if current_user
-          .span2
+          .col-md-2
             %ul.nav.nav-tabs.nav-stacked.project-menu
               = nav_link path: 'projects#show' do
                 = link_to project_path(@project) do
@@ -39,6 +39,6 @@
                 = link_to edit_project_path(@project) do
                   %i.icon-edit
                   Settings
-        .span10
+        .col-md-10
           = yield
     = render 'layouts/foot'
