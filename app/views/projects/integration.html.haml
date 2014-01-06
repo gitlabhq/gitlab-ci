@@ -15,8 +15,8 @@
       .form-group
         = label_tag :token, 'Project Token', class: 'control-label'
         .col-sm-10
-          = text_field_tag :token, @project.token, class: 'input-xxlarge', readonly: true
+          = text_field_tag :token, @project.token, class: 'form-control', readonly: true
       .form-group
         = label_tag :url, 'Project URL', class: 'control-label'
         .col-sm-10
-          = text_field_tag :url, project_url(@project), class: 'input-xxlarge', readonly: true
+          = text_field_tag :url, project_url(@project), class: 'form-control', readonly: true

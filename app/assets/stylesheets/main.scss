@@ -216,23 +216,6 @@ td form {
   margin: 0;
 }
 
-.nav-stacked {
-  li.active a {
-    font-weight: bold;
-    background: $style_color;
-    color: #FFF;
-
-    &:hover {
-      background: $style_color;
-      color: #FFF;
-    }
-  }
-
-  a {
-    background: #f9f9f9;
-  }
-}
-
 .well-list {
   @extend .unstyled;
   li {
@@ -265,12 +248,6 @@ td form {
 .restrict-projects-list {
   form {
     margin: 0;
-  }
-}
-
-.project-menu {
-  a {
-    padding: 10px !important;
   }
 }
 
@@ -324,3 +301,54 @@ label {
     @extend .col-sm-2;
   }
 }
+
+.prepend-top-20 { margin-top:20px }
+.append-bottom-20 { margin-bottom:20px }
+
+/**
+ * nav-pills
+ *
+ */
+.nav-pills {
+  .active a {
+    background: $style_color;
+  }
+
+  > li > a {
+    @include border-radius(0);
+  }
+
+  &.nav-stacked {
+    > li > a {
+      border-left: 4px solid #EEE;
+      padding: 12px;
+      color: #777;
+    }
+    > .active > a {
+      border-color: $style_color;
+      background: none;
+      color: #333;
+      font-weight: bolder;
+
+      &:hover {
+        background: none;
+        color: #333;
+      }
+    }
+
+    &.nav-stacked-menu {
+      li > a {
+        padding: 16px;
+      }
+    }
+  }
+
+  &.nav-pills-small {
+    > li > a {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+  }
+}
+
+.nav-pills > .active > a > i[class^="icon-"] { background: inherit; }
