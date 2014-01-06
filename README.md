@@ -114,3 +114,4 @@ The build command is run from [GitlabCi::Build#command](https://github.com/gitla
 ### Getting help
 
 * [Feedback and suggestions forum](http://feedback.gitlab.com/forums/176466-general/category/64310-gitlab-ci) is the place to propose and discuss new features for GitLab CI.
+* [Subscriptions from GitLab.com](https://www.gitlab.com/subscription/) have setting up and maintaining GitLab CI as an optional extra.
