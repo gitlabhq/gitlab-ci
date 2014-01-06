@@ -1,7 +1,7 @@
-%h3
+%h4
   Project: #{@project.name}
   .right
-    %a.btn.btn-default.btn-sml{href: edit_project_path(@project)}
+    = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
       %i.icon-edit.icon-white
       Edit Project
 
@@ -33,7 +33,7 @@
     .clearfix
     - if @build.active?
       .autoscroll-container.pull-right
-        %button.btn.btn-mini#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+        %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
       .clearfix
     %pre.trace#build-trace
       = preserve do
@@ -98,11 +98,6 @@
 
 
         = paginate @builds
-%br
-.right
-  %a.btn.btn-small{href: edit_project_path(@project)}
-    %i.icon-edit.icon-white
-    Edit Project
 
 
 - if @build.active?
