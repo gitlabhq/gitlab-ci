@@ -7,7 +7,6 @@ class Admin::RunnersController < Admin::ApplicationController
   end
 
   def show
-    @runner = Runner.find(params[:id])
     @builds = @runner.builds.order('id DESC').first(30)
   end
 
@@ -16,14 +15,14 @@ class Admin::RunnersController < Admin::ApplicationController
 
     respond_to do |format|
       format.js
-      format.html { redirect_to runners_path }
+      format.html { redirect_to admin_runners_path }
     end
   end
 
   def destroy
-    Runner.find(params[:id]).destroy
+    @runner.destroy
 
-    redirect_to runners_path
+    redirect_to admin_runners_path
   end
 
   def assign_all
@@ -31,7 +30,7 @@ class Admin::RunnersController < Admin::ApplicationController
 
     respond_to do |format|
       format.js
-      format.html { redirect_to runners_path, notice: "Runner was assigned to all projects" }
+      format.html { redirect_to admin_runners_path, notice: "Runner was assigned to all projects" }
     end
   end
 
