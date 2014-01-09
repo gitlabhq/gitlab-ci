@@ -3,9 +3,9 @@ module ProjectsHelper
     if project.last_build.try :success?
       'alert-success'
     elsif project.last_build.try :failed?
-      'alert-error'
+      'alert-danger'
     else
-      ''
+      'alert-warning'
     end
   end
 
@@ -13,9 +13,9 @@ module ProjectsHelper
     if build.success?
       'alert-success'
     elsif build.failed? || build.canceled?
-      'alert-error'
+      'alert-danger'
     else
-      ''
+      'alert-warning'
     end
   end
 

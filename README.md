@@ -5,7 +5,7 @@
 * [![Dependency Status](https://gemnasium.com/gitlabhq/gitlab-ci.png)](https://gemnasium.com/gitlabhq/gitlab-ci)
 * [![Coverage Status](https://coveralls.io/repos/gitlabhq/gitlab-ci/badge.png?branch=master)](https://coveralls.io/r/gitlabhq/gitlab-ci)
 
-![Screen](https://raw.github.com/gitlabhq/gitlab-ci/master/public/gitlab-ci-screenshot.png)
+![Screen](https://gitlab.com/gitlab-org/gitlab-ci/raw/master/public/gitlab-ci-screenshot.png)
 
 ### Requirements
 
@@ -16,25 +16,44 @@ GitLab CI officially supports (recent versions of) these Linux distributions:
 
 Additionally GitLab CI requires:
 
-* GitLab 6.3+
+* GitLab 6.3+ (to host the repositories you test)
 * ruby 1.9.3
 * MySQL or PostgreSQL
 
+Hardware requirements:
 
-__If you want to use GitLab CI without GitLab or with older versions of GitLab you need to use [2-2-stable](https://github.com/gitlabhq/gitlab-ci/tree/2-2-stable#gitlab-ci-is-an-open-source-continuous-integration-server)__
+* 1GB of memory or more is recommended, 512MB works
+* 2 CPU cores or more are recommended, 1 CPU core works
+* A little disk space, 100MB or less
+
+## Features
+
+* Single Sign On: use the same login and password as on your GitLab instance
+* Quick project setup: add your project in a single click, all setup automatic via the GitLab API
+* Elegant and flexible: build scripts are written in bash, test projects in any programming language
+* Merge request integration: see the status of the feature branch build within the Merge Request
+* Distributed by default: GitLab CI and build runners can run on separate machines providing more stability
+* Realtime logging: the current build log scrolls and updates every few seconds
 
 ### Limitations
 
 The following features are not in GitLab CI but merge requests are very welcome:
 
-* Email notification
 * Build artifacts access
 * Build pipeline / build promotion actions
 
+### Runners
+
+To perform the actual build you need a CI runner (also see the Architecture section below):
+
+* [Official CI runner for Linux](https://gitlab.com/gitlab-org/gitlab-ci-runner)
+* [Unofficial CI runner for Windows](https://github.com/virtualmarc/gitlab-ci-runner-win)
+* [Unofficial CI runner for Scala/Java](https://github.com/nafg/gitlab-ci-runner-scala)
+
 ### Architecture
 
-__GitLab CI__ is a web application with an API and it connect to the db.
-It manage projects/builds and provides a nice user interface.
+__GitLab CI__ is a web application with an API that stores its state in a databse.
+It manages projects/builds and provides a nice user interface.
 It uses the GitLab application API to authenticate users.
 
 __GitLab CI Runner__ is a pure ruby application which processes builds.
@@ -49,7 +68,7 @@ Possible Cases:
 * 1 __GitLab CI__ and N __GitLab CI Runner__ instances on different machines
 * 1 __GitLab CI__ and N __GitLab CI Runner__ instances on local machines
 
-![screen](https://raw.github.com/gitlabhq/gitlab-ci/master/app/assets/images/arch.jpg)
+![screen](https://gitlab.com/gitlab-org/gitlab-ci/raw/master/app/assets/images/arch.jpg)
 
 For more information see:
 [Announcing GitLab CI 3.0](http://blog.gitlab.org/announcing-gitlab-ci-3.0/)
@@ -58,8 +77,7 @@ and
 
 ### Installation
 
-* [Installation guide](https://github.com/gitlabhq/gitlab-ci/blob/master/doc/installation.md)
-
+* [Installation guide](https://gitlab.com/gitlab-org/gitlab-ci/blob/master/doc/installation.md)
 
 ### Docs
 
@@ -68,13 +86,14 @@ and
 ### How to add a new project to GitLab CI
 
 1. Log in the GitLab CI web interface
-2. Press the 'Sync now' button
-3. Select your project with the 'Add' button
-4. Go to the settings page of the project and add a build script (example given below)
-5. Go the the Integration page and do the 'Complete (as service)' steps, the press 'Test settings'
-6. A new build should become visible on the project page of GitLab CI
-7. If the build fails then adjust the build script and press the 'Retry' button on the build page
-8. If the build is green you are done, all new commits will be tested and you see the status of merge requests builds within GitLab
+1. Press the 'Sync now' button
+1. Select your project with the 'Add' button
+1. Go to the settings page of the project and add a build script (example given below)
+1. A new build should become visible on the project page of GitLab CI
+1. If the build fails then adjust the build script and press the 'Retry' button on the build page
+1. If the build is green you are done, all new commits will be tested and you see the status of merge requests builds within GitLab
+
+### Build script
 
 For your information, the runner runs the line below before it runs the commands in your build script:
 
@@ -87,6 +106,12 @@ Build script example:
     bundle exec rake db:migrate RAILS_ENV=test
     script/run_all_tests
 
+The build command is run from [GitlabCi::Build#command](https://github.com/gitlabhq/gitlab-ci-runner/blob/master/lib/build.rb#L96) and contains the following environmental variables:
+
+    CI_SERVER, CI_SERVER_NAME, CI_SERVER_VERSION, CI_SERVER_REVISION
+    CI_BUILD_REF, CI_BUILD_BEFORE_SHA, CI_BUILD_REF_NAME, CI_BUILD_ID
+
 ### Getting help
 
 * [Feedback and suggestions forum](http://feedback.gitlab.com/forums/176466-general/category/64310-gitlab-ci) is the place to propose and discuss new features for GitLab CI.
+* [Subscriptions from GitLab.com](https://www.gitlab.com/subscription/) have setting up and maintaining GitLab CI as an optional extra.

@@ -8,7 +8,12 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '3.2.15'
+gem 'rails', '4.0.2'
+gem 'protected_attributes'
+gem 'actionpack-page_caching'
+gem 'actionpack-action_caching'
+gem 'activerecord-deprecated_finders'
+gem 'activerecord-session_store'
 
 # DB
 gem 'mysql2', group: :mysql
@@ -18,7 +23,7 @@ gem 'pg',     group: :postgres
 gem 'settingslogic'
 
 # Web server
-gem "puma", "~> 2.3.2"
+gem "puma", "~> 2.7.1"
 
 # Haml
 gem 'haml-rails'
@@ -53,20 +58,19 @@ gem 'foreman'
 gem 'jquery-rails'
 gem 'gitlab_ci_meta'
 
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
 
-  gem 'uglifier', '>= 1.0.3'
-  gem "therubyracer"
-  gem 'bootstrap-sass'
-  gem "font-awesome-sass-rails"
-end
+gem 'uglifier', '>= 1.0.3'
+gem "therubyracer"
+gem 'bootstrap-sass', '~> 3.0'
+gem "font-awesome-sass-rails", '~> 3.0.2'
 
 
 group :development do
   gem 'annotate'
   gem 'quiet_assets'
+  gem "letter_opener"
 end
 
 
@@ -87,4 +91,8 @@ group :development, :test do
   gem "simplecov", require: false
   gem 'coveralls', require: false
   gem 'minitest', '4.3.2'
+end
+
+group :test do
+  gem 'webmock'
 end

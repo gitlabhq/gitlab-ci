@@ -10,15 +10,19 @@ describe API::API do
       :password => "123456"
     }
   }
-
   let(:private_token) { Network.new.authenticate(gitlab_url, auth_opts)["private_token"] }
+
   let(:options) {
     {
       :private_token => private_token,
       :url => gitlab_url
     }
   }
-
+  
+  before {
+    stub_gitlab_calls
+  }
+  
   context "requests for scoped projects" do
     # NOTE: These ids are tied to the actual projects on demo.gitlab.com
     describe "GET /projects" do

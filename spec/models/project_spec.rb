@@ -2,21 +2,24 @@
 #
 # Table name: projects
 #
-#  id               :integer          not null, primary key
-#  name             :string(255)      not null
-#  timeout          :integer          default(1800), not null
-#  scripts          :text             default(""), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  token            :string(255)
-#  default_ref      :string(255)
-#  gitlab_url       :string(255)
-#  always_build     :boolean          default(FALSE), not null
-#  polling_interval :integer
-#  public           :boolean          default(FALSE), not null
-#  ssh_url_to_repo  :string(255)
-#  gitlab_id        :integer
-#  allow_git_fetch  :boolean          default(TRUE), not null
+#  id                        :integer          not null, primary key
+#  name                      :string(255)      not null
+#  timeout                   :integer          default(1800), not null
+#  scripts                   :text             default(""), not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  token                     :string(255)
+#  default_ref               :string(255)
+#  gitlab_url                :string(255)
+#  always_build              :boolean          default(FALSE), not null
+#  polling_interval          :integer
+#  public                    :boolean          default(FALSE), not null
+#  ssh_url_to_repo           :string(255)
+#  gitlab_id                 :integer
+#  allow_git_fetch           :boolean          default(TRUE), not null
+#  email_recipients          :string(255)
+#  email_add_committer       :boolean          default(TRUE), not null
+#  email_only_breaking_build :boolean          default(TRUE), not null
 #
 
 require 'spec_helper'
@@ -64,24 +67,77 @@ describe Project do
       it { project.status_image.should == 'running.png' }
     end
   end
+
+  describe '#email_notification?' do
+    it do
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.email_notification?.should == true
+    end
+
+    it do
+      project = FactoryGirl.create :project, email_add_committer: false, email_recipients: 'test tesft'
+      project.email_notification?.should == true
+    end
+
+    it do
+      project = FactoryGirl.create :project, email_add_committer: false, email_recipients: ''
+      project.email_notification?.should == false
+    end
+  end
+
+  describe '#broken_or_success?' do
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(true)
+      project.stub(:success?).and_return(true)
+      project.broken_or_success?.should == true
+    }
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(true)
+      project.stub(:success?).and_return(false)
+      project.broken_or_success?.should == true
+    }
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(false)
+      project.stub(:success?).and_return(true)
+      project.broken_or_success?.should == true
+    }
+
+    it {
+      project = FactoryGirl.create :project, email_add_committer: true
+      project.stub(:broken?).and_return(false)
+      project.stub(:success?).and_return(false)
+      project.broken_or_success?.should == false
+    }
+   end
 end
 
 # == Schema Information
 #
 # Table name: projects
 #
-#  id               :integer(4)      not null, primary key
-#  name             :string(255)     not null
-#  path             :string(255)     not null
-#  timeout          :integer(4)      default(1800), not null
-#  scripts          :text            default(""), not null
-#  created_at       :datetime        not null
-#  updated_at       :datetime        not null
-#  token            :string(255)
-#  default_ref      :string(255)
-#  gitlab_url       :string(255)
-#  always_build     :boolean(1)      default(FALSE), not null
-#  polling_interval :integer(4)
-#  public           :boolean(1)      default(FALSE), not null
+#  id                        :integer          not null, primary key
+#  name                      :string(255)      not null
+#  timeout                   :integer          default(1800), not null
+#  scripts                   :text             default(""), not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  token                     :string(255)
+#  default_ref               :string(255)
+#  gitlab_url                :string(255)
+#  always_build              :boolean          default(FALSE), not null
+#  polling_interval          :integer
+#  public                    :boolean          default(FALSE), not null
+#  ssh_url_to_repo           :string(255)
+#  gitlab_id                 :integer
+#  allow_git_fetch           :boolean          default(TRUE), not null
+#  email_recipients          :string(255)
+#  email_add_committer       :boolean          default(TRUE), not null
+#  email_only_breaking_build :boolean          default(TRUE), not null
 #
 

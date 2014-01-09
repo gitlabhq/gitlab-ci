@@ -6,7 +6,7 @@ production:
   encoding: unicode
   database: gitlab_ci_production
   pool: 5
-  username: postgres
+  username: gitlab_ci
   password:
   # host: localhost
   # port: 5432

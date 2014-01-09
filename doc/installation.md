@@ -28,9 +28,9 @@ Install the required packages:
 Download Ruby and compile it:
 
     mkdir /tmp/ruby && cd /tmp/ruby
-    curl --progress http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p392.tar.gz | tar xz
-    cd ruby-1.9.3-p392
-    ./configure
+    curl --progress http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2 | tar xj
+    cd ruby-2.0.0-p353
+    ./configure --disable-install-rdoc
     make
     sudo make install
 
@@ -76,8 +76,8 @@ You can use either MySQL or PostgreSQL.
     # Login to PostgreSQL
     sudo -u postgres psql -d template1
 
-    # Create a user for GitLab. (change $password to a real password)
-    template1=# CREATE USER gitlab_ci WITH PASSWORD '$password';
+    # Create a user for GitLab. We do not specify a password because we are using peer authentication.
+    template1=# CREATE USER gitlab_ci;
 
     # Create the GitLab production database & grant all privileges on database
     template1=# CREATE DATABASE gitlab_ci_production OWNER gitlab_ci;
@@ -92,11 +92,11 @@ You can use either MySQL or PostgreSQL.
 
     cd /home/gitlab_ci/
 
-    sudo -u gitlab_ci -H git clone https://github.com/gitlabhq/gitlab-ci.git
+    sudo -u gitlab_ci -H git clone https://gitlab.com/gitlab-org/gitlab-ci.git
 
     cd gitlab-ci
 
-    sudo -u gitlab_ci -H git checkout 3-2-stable
+    sudo -u gitlab_ci -H git checkout 4-1-stable
 
 ## 6. Setup application
 
@@ -129,8 +129,8 @@ You can use either MySQL or PostgreSQL.
 
     # postgres
     sudo -u gitlab_ci -H cp config/database.yml.postgresql config/database.yml
- 
-    # Edit user/password
+
+    # Edit user/password (not necessary with default Postgres setup)
     sudo -u gitlab_ci -H editor config/database.yml
 
     # Setup tables
@@ -158,7 +158,7 @@ Start your GitLab instance:
 
     sudo service gitlab_ci start
     # or
-    sudo /etc/init.d/gitlab_ci restart
+    sudo /etc/init.d/gitlab_ci start
 
 
 # 8. Nginx
@@ -181,6 +181,10 @@ Make sure to edit the config file to match your setup:
     # of your host serving GitLab CI
     sudo editor /etc/nginx/sites-enabled/gitlab_ci
 
+## Check your configuration
+
+    sudo nginx -t
+
 ## Reload configuration
 
     sudo /etc/init.d/nginx reload
@@ -191,7 +195,7 @@ Make sure to edit the config file to match your setup:
 
 
 Now you need Runners to process your builds.
-Checkout [runner repository](https://github.com/gitlabhq/gitlab-ci-runner#installation) for setup info.
+Checkout [runner repository](https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/README.md) for setup info.
 
 # Done!
 
@@ -200,3 +204,34 @@ Visit YOUR_SERVER for your first GitLab CI login.
 You should use your GitLab credentials in order to login
 
 **Enjoy!**
+
+
+
+## Advanced settings
+
+### SMTP email settings
+
+If you want to use SMTP do next:
+
+    # Copy config file
+    sudo -u gitlab_ci -H cp config/initializers/smtp_settings.rb.sample config/initializers/smtp_settings.rb
+
+    # Edit it with your settings
+    sudo -u gitlab_ci -H editor config/initializers/smtp_settings.rb
+
+Restart application
+
+### Custom Redis Connection
+
+If you'd like Resque to connect to a Redis server on a non-standard port or on
+a different host, you can configure its connection string via the
+`config/resque.yml` file.
+
+    # example
+    production: redis://redis.example.tld:6379
+
+If you want to connect the Redis server via socket, then use the "unix:" URL scheme
+and the path to the Redis socket file in the `config/resque.yml` file.
+
+    # example
+    production: unix:/path/to/redis/socket

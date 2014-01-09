@@ -1,0 +1,7 @@
+Build successful for <%= @project.name %>
+
+Status:   <%= @build.status %>
+Commit:   <%= @build.short_sha %>
+Author:   <%= @build.git_author_name %>
+
+Url:      <%= project_build_url(@build.project, @build) %>

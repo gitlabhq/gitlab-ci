@@ -1,15 +1,17 @@
-= form_for @user_session do |f|
+= form_for @user_session, html: { class: 'form-horizontal form-signin' } do |f|
+  %h2.form-signin-heading
+    Sign in
+    %small with GitLab account
+
   - if @error.present?
-    .alert.alert-error
+    .alert.alert-danger
       = @error
-  %div.control-group
-    = f.label :email, 'GitLab Email or Login',class: 'control-label'
-    .controls= f.text_field :email
-  %div.control-group
-    = f.label :password, class: 'control-label'
-    .controls= f.password_field :password
-  .field
+
+  = f.text_field :email, class: 'form-control', placeholder: 'GitLab Email or Login'
+  = f.password_field :password, class: 'form-control', placeholder: 'Password'
+  %div
     = f.label :url, 'GitLab Server'
-    = f.select :url, GitlabCi.config.allowed_gitlab_urls.map {|url| [url, url] }, placeholder: 'http://gitlab.company.com'
-  .form-actions
-    = f.submit "Sign in", class: 'btn btn-success'
+  %div
+    = f.select :url, GitlabCi.config.allowed_gitlab_urls.map {|url| [url, url] }, { placeholder: 'http://gitlab.company.com' }, class: 'form-control signin-select'
+  %br
+  = f.submit "Sign in", class: 'btn btn-lg btn-success btn-block'

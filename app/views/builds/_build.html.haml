@@ -11,7 +11,8 @@
 
   %td.build-branch
     - unless @ref
-      %span= build.ref
+      %span
+        = link_to build.ref, project_path(@project, ref: build.ref)
 
   %td.duration
     = build_duration build

@@ -4,9 +4,8 @@
   %body
     = render 'layouts/nav'
     = render 'layouts/info'
-    .container-fluid
+    .container
       %h3.project-title
-        %span.light Project:
         = @project.name
         - if @project.public
           %small
@@ -15,13 +14,13 @@
 
         - if @project.gitlab_url.present?
           .pull-right
-            = link_to 'View on GitLab', @project.gitlab_url, class: 'btn'
+            = link_to 'View on GitLab', @project.gitlab_url, class: 'btn btn-default'
     %hr
-    .container-fluid
-      .row-fluid
+    .container
+      .row
         - if current_user
-          .span2
-            %ul.nav.nav-tabs.nav-stacked.project-menu
+          .col-md-2.append-bottom-20
+            %ul.nav.nav-pills.nav-stacked.project-menu
               = nav_link path: 'projects#show' do
                 = link_to project_path(@project) do
                   %i.icon-list-alt
@@ -39,6 +38,5 @@
                 = link_to edit_project_path(@project) do
                   %i.icon-edit
                   Settings
-        .span10
+        .col-md-10
           = yield
-    = render 'layouts/foot'

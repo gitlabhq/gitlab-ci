@@ -8,6 +8,7 @@ describe "Projects" do
 
   describe "GET /projects", js: true do
     before do
+      stub_js_gitlab_calls
       visit projects_path
     end
 
