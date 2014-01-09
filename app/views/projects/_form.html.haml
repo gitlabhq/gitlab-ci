@@ -89,4 +89,4 @@
     = f.submit 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', projects_path, class: 'btn btn-default'
     - unless @project.new_record?
-      = link_to 'Remove Project', project_path(@project), method: :delete, confirm: 'Project will be removed. Are you sure?', class: 'btn btn-danger right'
+      = link_to 'Remove Project', project_path(@project), method: :delete, data: { confirm: 'Project will be removed. Are you sure?' }, class: 'btn btn-danger right'

@@ -12,7 +12,7 @@ module API
         gitlab_projects = Project.from_gitlab(current_user, nil, nil, :authorized)
         ids = gitlab_projects.map { |project| project.id }
 
-        projects = Project.where("gitlab_id IN (?)", ids).all
+        projects = Project.where("gitlab_id IN (?)", ids).load
         present projects, with: Entities::Project
       end
 
@@ -24,7 +24,7 @@ module API
         gitlab_projects = Project.from_gitlab(current_user, nil, nil, :owned)
         ids = gitlab_projects.map { |project| project.id }
 
-        projects = Project.where("gitlab_id IN (?)", ids).all
+        projects = Project.where("gitlab_id IN (?)", ids).load
         present projects, with: Entities::Project
       end
 

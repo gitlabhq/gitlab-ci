@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
     if: ->(project) { project.always_build.present? }
 
 
-  scope :public, where(public: true)
+  scope :public, ->(_) { where(public: true) }
 
   before_validation :set_default_values
 
