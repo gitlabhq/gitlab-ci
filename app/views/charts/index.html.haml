@@ -1,0 +1,7 @@
+%ul.nav.nav-tabs.chart-links
+  %li
+    = link_to 'Build duration',  project_chart_path(@project, 'build_times'), remote: true, :data => {:toggle=>"charts"}
+  %li
+    = link_to 'All builds', project_chart_path(@project, 'builds'), remote: true, :data => {:toggle=>"charts"}
+
+#charts

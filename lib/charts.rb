@@ -1,11 +1,12 @@
 module Charts
   class Chart
-    attr_reader :labels, :total, :success, :project
+    attr_reader :labels, :total, :success, :project, :build_times
 
     def initialize(project)
       @labels = []
       @total = []
       @success = []
+      @build_times = []
       @project = project
 
       collect
@@ -49,6 +50,19 @@ module Charts
 
         push(start_day, end_day, "%d %B")
       end
+    end
+  end
+
+  class BuildTime < Chart
+    def collect
+      i=0
+      if ActiveRecord::Base.connection.adapter_name.downcase == "postgresql"
+         sql = "date_part('epoch',finished_at) - date_part('epoch',started_at) as duration"
+      else
+        sql = 'UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(started_at) as duration'
+      end
+      @labels = (1..30).to_a
+      @build_times = project.builds.order(:finished_at).limit(30).pluck(sql)
     end
   end
 end
