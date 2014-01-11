@@ -18,10 +18,12 @@
 
         = link_to project_path(@build.project, ref: @build.ref) do
           %span.label.label-primary= "#{@build.ref}"
-        .pull-right
-          %span
-            %i.icon-time
-            #{build_duration @build}
+
+        - if @build.duration
+          .pull-right
+            %span
+              %i.icon-time
+              #{distance_of_time_in_words @build.duration}
 
       .clearfix
         = @build.status

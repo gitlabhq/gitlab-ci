@@ -179,4 +179,10 @@ class Build < ActiveRecord::Base
     recipients << git_author_email if project.email_add_committer?
     recipients.uniq
   end
+
+  def duration
+    if started_at && finished_at
+      finished_at - started_at
+    end
+  end
 end

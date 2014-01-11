@@ -15,7 +15,8 @@
         = link_to build.ref, project_path(@project, ref: build.ref)
 
   %td.duration
-    = build_duration build
+    - if build.duration
+      #{distance_of_time_in_words build.duration}
 
   %td.timestamp
     - if build.finished_at

@@ -55,14 +55,11 @@ module Charts
 
   class BuildTime < Chart
     def collect
-      if ActiveRecord::Base.connection.adapter_name.downcase == "postgresql"
-         sql = "date_part('epoch',finished_at) - date_part('epoch',started_at) as duration"
-      else
-        sql = 'UNIX_TIMESTAMP(finished_at) - UNIX_TIMESTAMP(started_at) as duration'
-      end
-
       @labels = (1..30).to_a
-      @build_times = project.builds.order(:finished_at).limit(30).pluck(sql)
+      builds = project.builds.order(:finished_at).limit(30)
+      @build_times = builds.map do |build|
+        build.duration
+      end
     end
   end
 end

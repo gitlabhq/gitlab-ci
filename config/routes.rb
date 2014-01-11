@@ -19,7 +19,7 @@ GitlabCi::Application.routes.draw do
       post :build
     end
 
-    resources :charts, only: [:show, :index]
+    resource :charts, only: [:show]
 
     resources :builds, only: [:show] do
       member do

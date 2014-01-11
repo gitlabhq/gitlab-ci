@@ -1,12 +1,4 @@
 module BuildsHelper
-  def build_duration build
-    if build.started?
-      from = build.started_at
-      to = build.finished_at || Time.zone.now
-      distance_of_time_in_words(from, to)
-    end
-  end
-
   def build_ref_link build
     if build.gitlab?
       gitlab_ref_link build.project, build.ref
