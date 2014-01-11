@@ -1,3 +1,5 @@
+
+
 %fieldset
   %legend
     Builds chart for last week
@@ -13,30 +15,17 @@
   %canvas#monthChart.padded{width: 800, height: 300}
 
 %fieldset
+  %legend
+    Builds chart for last month
+    (#{date_from_to(Date.today - 30.days, Date.today)})
+
+  %canvas#monthChart.padded{width: 800, height: 300}
+
+%fieldset
   %legend Builds chart for last year
   %canvas#yearChart.padded{width: 800, height: 400}
 
-%fieldset
-  %legend Overall
-  %p
-    Total:
-    %strong= pluralize @project.builds.count, 'build'
-  %p
-    Successful:
-    %strong= pluralize @project.builds.success.count, 'build'
-  %p
-    Failed:
-    %strong= pluralize @project.builds.failed.count, 'build'
-
-  %p
-    Success ratio:
-    %strong
-      #{success_ratio(@project.builds.success, @project.builds.failed)}%
-
-  %p
-    Commits covered:
-    %strong
-      = @project.builds.uniq_sha.count
+=render :partial => 'charts/overall'
 
 - [:week, :month, :year].each do |scope|
   :javascript
