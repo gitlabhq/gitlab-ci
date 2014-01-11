@@ -1,0 +1,21 @@
+%fieldset
+  %legend Overall
+  %p
+    Total:
+    %strong= pluralize @project.builds.count, 'build'
+  %p
+    Successful:
+    %strong= pluralize @project.builds.success.count, 'build'
+  %p
+    Failed:
+    %strong= pluralize @project.builds.failed.count, 'build'
+
+  %p
+    Success ratio:
+    %strong
+      #{success_ratio(@project.builds.success, @project.builds.failed)}%
+
+  %p
+    Commits covered:
+    %strong
+      = @project.builds.uniq_sha.count
