@@ -35,22 +35,14 @@ describe "Projects" do
 
   describe "GET /projects/:id/charts" do
     before do
-      visit project_chart_path(@project, 'build_times')
-    end
-
-    it { page.should have_content 'Overall' }
-    it { page.should have_content 'Build duration in seconds for last 30 builds' }
-  end
-
-  describe "GET /projects/:id/charts/builds" do
-    before do
-      visit project_chart_path(@project, 'builds')
+      visit project_charts_path(@project)
     end
 
     it { page.should have_content 'Overall' }
     it { page.should have_content 'Builds chart for last week' }
     it { page.should have_content 'Builds chart for last month' }
     it { page.should have_content 'Builds chart for last year' }
+    it { page.should have_content 'Build duration in seconds for last 30 builds' }
   end
 
   describe "GET /projects/:id/details" do

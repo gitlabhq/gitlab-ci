@@ -55,10 +55,10 @@ module Charts
 
   class BuildTime < Chart
     def collect
-      @labels = (1..30).to_a
       builds = project.builds.order(:finished_at).limit(30)
-      @build_times = builds.map do |build|
-        build.duration
+      builds.each do |build|
+        @labels << build.short_sha
+        @build_times << build.duration
       end
     end
   end

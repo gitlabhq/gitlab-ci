@@ -51,10 +51,10 @@
           - else
             = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-sm btn-primary', method: :post
 
-      - if @build.started_at
+      - if @build.duration
         %p
           %span.attr-name Duration:
-          #{build_duration @build}
+          #{distance_of_time_in_words @build.duration}
       %p
         %span.attr-name Created:
         #{time_ago_in_words(@build.created_at)} ago
