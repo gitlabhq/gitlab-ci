@@ -1,3 +1,7 @@
+v4.2.0
+  - Build duration chart
+  - Bootstrap 3 with responsive UI
+
 v4.1.0
   - Rails 4
   - Click on build branch to see other builds for this branch
