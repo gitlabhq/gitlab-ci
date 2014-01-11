@@ -42,7 +42,7 @@ describe "Projects" do
     it { page.should have_content 'Builds chart for last week' }
     it { page.should have_content 'Builds chart for last month' }
     it { page.should have_content 'Builds chart for last year' }
-    it { page.should have_content 'Build duration in seconds for last 30 builds' }
+    it { page.should have_content 'Build duration in minutes for last 30 builds' }
   end
 
   describe "GET /projects/:id/details" do

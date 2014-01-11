@@ -7,9 +7,10 @@ describe "Charts" do
       @project = FactoryGirl.create(:project)
       FactoryGirl.create(:build, :project_id => @project.id)
     end
-    it {
+
+    it 'should return build times in minutes' do
       chart = Charts::BuildTime.new(@project)
-      chart.build_times.should == [120]
-    }
+      chart.build_times.should == [2]
+    end
   end
 end
