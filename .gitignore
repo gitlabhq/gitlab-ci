@@ -13,3 +13,4 @@ tmp/*
 .rvmrc
 coverage/*
 .ruby-version
+.secret
