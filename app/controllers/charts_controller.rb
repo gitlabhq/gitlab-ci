@@ -30,9 +30,10 @@ class ChartsController < ApplicationController
   end
 
   protected
-    def project
-      @project = Project.find(params[:project_id])
-      @chart = params[:id] || 'builds'
-    end
+
+  def project
+    @project = Project.find(params[:project_id])
+    @chart = params[:id] || 'builds'
+  end
 
 end

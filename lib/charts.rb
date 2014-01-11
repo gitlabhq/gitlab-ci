@@ -55,7 +55,6 @@ module Charts
 
   class BuildTime < Chart
     def collect
-      i=0
       if ActiveRecord::Base.connection.adapter_name.downcase == "postgresql"
          sql = "date_part('epoch',finished_at) - date_part('epoch',started_at) as duration"
       else
