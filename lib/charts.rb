@@ -55,10 +55,10 @@ module Charts
 
   class BuildTime < Chart
     def collect
-      builds = project.builds.order(:finished_at).limit(30)
+      builds = project.builds.where('builds.finished_at is NOT NULL').last(30)
       builds.each do |build|
         @labels << build.short_sha
-        @build_times << build.duration
+        @build_times << (build.duration / 60)
       end
     end
   end
