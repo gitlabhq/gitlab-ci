@@ -42,6 +42,7 @@ class ProjectsController < ApplicationController
   end
 
   def integration
+    @protocol = Settings['gitlab_ci']['https'] ? 'https' : 'http'
   end
 
   def create

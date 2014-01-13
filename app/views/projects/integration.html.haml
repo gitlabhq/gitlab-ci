@@ -19,4 +19,4 @@
       .form-group
         = label_tag :url, 'Project URL', class: 'control-label'
         .col-sm-10
-          = text_field_tag :url, project_url(@project), class: 'form-control', readonly: true
+          = text_field_tag :url, project_url(@project, :protocol => @protocol), class: 'form-control', readonly: true
