@@ -48,7 +48,7 @@ start() {
   else
     if [ `whoami` = root ]; then
       ! [ -e $SOCKET_FILE ] || sudo -u $APP_USER -H bash -l -c  "rm $SOCKET_FILE"
-      sudo -u $APP_USER -H bash -l -c "RAILS_ENV=production bundle exec puma $DAEMON_OPTS"
+      sudo -u $APP_USER -H bash -l -c "RAILS_ENV=production bundle exec \"puma $DAEMON_OPTS\""
       sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
       echo "$DESC started"
     fi
