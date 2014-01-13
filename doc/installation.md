@@ -41,7 +41,9 @@ Install the Bundler Gem:
 
 ## 3. GitLab CI user:
 
-    sudo adduser --disabled-login --gecos 'GitLab CI' gitlab_ci
+    sudo adduser --disabled-password --gecos 'GitLab CI' gitlab_ci
+
+Make sure `bundler` is in `PATH` for non-interactive shells (If bundler is not in `PATH` scheduled builds will not work).
 
 
 ## 4. Prepare the database
