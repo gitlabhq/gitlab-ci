@@ -1,7 +1,6 @@
 defaults: &defaults
   gitlab_server_urls:
-    - 'http://git.example.com/'
-    - 'https://replace.with.your.local.gitlab.server/'
+    - 'http://replace.with.your.local.gitlab.server.or.servers.example.com/'
 
   ## Gitlab CI settings  
   gitlab_ci:
