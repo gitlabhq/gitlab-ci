@@ -183,6 +183,8 @@ class Build < ActiveRecord::Base
   def duration
     if started_at && finished_at
       finished_at - started_at
+    elsif started_at
+      Time.now - started_at
     end
   end
 end
