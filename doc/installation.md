@@ -185,9 +185,9 @@ Make sure to edit the config file to match your setup:
 
     sudo nginx -t
 
-## Reload configuration
+## Start nginx
 
-    sudo /etc/init.d/nginx reload
+    sudo /etc/init.d/nginx start
 
 
 
