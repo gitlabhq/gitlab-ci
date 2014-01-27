@@ -49,7 +49,7 @@ start() {
     if [ `whoami` = root ]; then
       ! [ -e $SOCKET_FILE ] || sudo -u $APP_USER -H bash -l -c  "rm $SOCKET_FILE"
       sudo -u $APP_USER -H bash -l -c "RAILS_ENV=production bundle exec puma $DAEMON_OPTS"
-      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1"
+      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  >> log/sidekiq.log  2>&1"
       echo "$DESC started"
     fi
   fi
@@ -61,8 +61,8 @@ stop() {
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     ## Program is running, stop it.
     kill -QUIT `cat $WEB_SERVER_PID`
-    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1"
-    rm "$WEB_SERVER_PID" >> /dev/null
+    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  >> log/sidekiq.log  2>&1"
+    rm "$WEB_SERVER_PID" > /dev/null
     echo "$DESC stopped"
   else
     ## Program is not running, exit with error.
@@ -77,9 +77,9 @@ restart() {
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     echo "Restarting $DESC..."
     kill -USR2 `cat $WEB_SERVER_PID`
-    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1"
+    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  >> log/sidekiq.log  2>&1"
     if [ `whoami` = root ]; then
-      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1"
+      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  >> log/sidekiq.log  2>&1"
     fi
     echo "$DESC restarted."
   else
