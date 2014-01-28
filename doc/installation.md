@@ -161,7 +161,7 @@ Start your GitLab instance:
     sudo /etc/init.d/gitlab_ci start
 
 
-# 8. Nginx
+# 8a. Nginx
 
 
 ## Installation
@@ -189,6 +189,34 @@ Make sure to edit the config file to match your setup:
 
     sudo /etc/init.d/nginx start
 
+
+# 8b. Apache2
+
+
+## Installation 
+    sudo apt-get install apache2
+
+## Site Configuration
+
+Download an example site config:
+
+    sudo cp /home/gitlab_ci/gitlab-ci/lib/support/apache2/gitlab_ci.conf /etc/apache2/sites-available/gitlab_ci.conf
+    sudo ln -s /etc/apache2/sites-available/gitlab_ci.conf /etc/apache2/sites-enabled/gitlab_ci.conf
+
+Make sure to edit the config file to match your setup:
+
+    # Change **YOUR_SERVER_IP** and **YOUR_SERVER_FQDN**
+    # to the IP address and fully-qualified domain name
+    # of your host serving GitLab CI
+    sudo editor /etc/apache2/sites-enabled/gitlab_ci.conf
+
+## Check your configuration
+
+    sudo apache2ctl configtest
+
+## Start apache2
+
+    sudo /etc/init.d/apache2 start
 
 
 # 9. Runners
