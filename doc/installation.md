@@ -195,6 +195,8 @@ Make sure to edit the config file to match your setup:
 
 ## Installation 
     sudo apt-get install apache2
+    sudo a2enmod rewrite
+    sudo a2enmod proxy_http
 
 ## Site Configuration
 
