@@ -23,7 +23,7 @@
           %h5
             = project.name
             .pull-right
-              = link_to 'Disable', [:admin, project, runner_project], method: :delete, class: 'btn btn-danger btn-small'
+              = link_to 'Disable', [:admin, project, runner_project], method: :delete, class: 'btn btn-danger btn-xs'
 
       - (Project.all - @runner.projects).each do |project|
         %li
@@ -32,7 +32,7 @@
             .pull-right
               = form_for [:admin, project, project.runner_projects.new] do |f|
                 = f.hidden_field :runner_id, value: @runner.id
-                = f.submit 'Enable', class: 'btn btn-small'
+                = f.submit 'Enable', class: 'btn btn-xs'
 
   .col-md-6
     %h5 Recent builds served by this runner
