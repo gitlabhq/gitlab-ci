@@ -1,0 +1,70 @@
+/** COLORS **/
+.cgray { color: gray }
+.clgray { color: #BBB }
+.cred { color: #D12F19 }
+.cgreen { color: #4a2 }
+.cblue { color: #29A }
+.cblack { color: #111 }
+.cdark { color: #444 }
+.camber { color: #ffc000 }
+.cwhite { color: #fff!important }
+.bgred { background: #F2DEDE!important }
+
+/** COMMON CLASSES **/
+.prepend-top-10 { margin-top:10px }
+.prepend-top-20 { margin-top:20px }
+.prepend-left-10 { margin-left:10px }
+.prepend-left-20 { margin-left:20px }
+.append-right-10 { margin-right:10px }
+.append-right-20 { margin-right:20px }
+.append-bottom-10 { margin-bottom:10px }
+.append-bottom-15 { margin-bottom:15px }
+.append-bottom-20 { margin-bottom:20px }
+.inline { display: inline-block }
+.padded { padding:20px }
+.ipadded { padding:20px!important }
+.lborder { border-left:1px solid #eee }
+.underlined_link { text-decoration: underline; }
+.hint { font-style: italic; color: #999; }
+.light { color: #888 }
+.tiny { font-weight: normal }
+.vtop { vertical-align: top !important; }
+
+
+.dropdown-menu > li > a {
+  text-shadow: none;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background: #29b;
+}
+
+.breadcrumb > li + li:before {
+  content: "/";
+  padding: 0;
+  color: #666;
+}
+
+.str-truncated {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+  white-space: nowrap;
+  max-width: 82%;
+}
+
+.table {
+  th {
+    background: #eee;
+    border-bottom: 1px solid #CCC;
+    @include linear-gradient(#EEE, #DFDFDF);
+  }
+}
+
+.page-title {
+  color: #444;
+  line-height: 1.5;
+  margin-top: 0px;
+  margin-bottom: 15px;
+}

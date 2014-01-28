@@ -1,7 +1,10 @@
 = content_for :title do
   %h3.project-title
-    %span.light Admin /
-    Projects (#{@projects.total_count})
+    Manage Projects
+
+    .pull-right
+      %small
+        = pluralize(@projects.total_count, 'project')
 
 %table.table
   %tr

@@ -1,6 +1,6 @@
-%h4
-  Project: #{@project.name}
-  .right
+%h4.page-title
+  = @project.name
+  .pull-right
     = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
       %i.icon-edit.icon-white
       Edit Project

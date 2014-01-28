@@ -1,0 +1,46 @@
+pre.trace {
+  background: #000;
+  color:#fff;
+  font-family: $monospace_font;
+  white-space: pre;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  overflow: auto;
+  overflow-y: hidden;
+  font-size: 12px;
+}
+
+.autoscroll-container {
+  margin-bottom: 5px;
+}
+
+.build-widget {
+  padding: 10px;
+  background: #f4f4f4;
+  margin-bottom: 20px;
+  border-radius: 4px;
+
+  .title {
+    margin-top: 0;
+    color: #666;
+    text-shadow: 0 1px 1px #FFF;
+    line-height: 1.5;
+  }
+  .attr-name {
+    color: #777;
+  }
+}
+
+.build-head h4 {
+  line-height: 1.5;
+
+  .label {
+    padding: 4px 9px;
+    position: relative;
+    top: -2px;
+    left: 4px;
+  }
+}

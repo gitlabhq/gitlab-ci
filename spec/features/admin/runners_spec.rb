@@ -11,7 +11,7 @@ describe "Admin Runners" do
       visit admin_runners_path
     end
 
-    it { page.should have_content "Admin / Runners" }
+    it { page.should have_content "Manage Runners" }
     it { page.should have_content "To register new runner you" }
   end
 

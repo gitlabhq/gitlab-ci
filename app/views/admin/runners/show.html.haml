@@ -1,4 +1,4 @@
-%h3
+%h4.page-title
   Runner: #{@runner.token}
 
 %p.light= @runner.description
@@ -8,10 +8,10 @@
 %hr
 
 - if @runner.shared?
-  .alert.alert-success
+  .bs-callout.bs-callout-success
     %h4 This runner will process build from ALL projects
 - else
-  .alert.alert-info
+  .bs-callout.bs-callout-info
     %h4 This runner will process build only from ASSIGNED projects
 .row
   .col-md-6

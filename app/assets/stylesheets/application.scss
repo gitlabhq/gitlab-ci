@@ -1,0 +1,45 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ */
+
+@import "main/variables.scss";
+@import "main/mixins.scss";
+@import "main/fonts.scss";
+@import "main/layout.scss";
+
+/**
+ * Customized Twitter bootstrap
+ */
+@import 'gl_bootstrap';
+
+/**
+ * Font icons
+ *
+ */
+@import "font-awesome";
+
+/**
+ * Generic css (forms, buttons etc):
+ */
+@import "generic/xterm.scss";
+@import "generic/common.scss";
+@import "generic/typography.scss";
+@import "generic/buttons.scss";
+@import "generic/forms.scss";
+
+/**
+ * Page specific styles (issues, projects etc):
+ */
+@import "sections/navbar.scss";
+@import "sections/projects.scss";
+@import "sections/builds.scss";
+@import "sections/login.scss";

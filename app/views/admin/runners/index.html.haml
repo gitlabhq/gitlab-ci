@@ -1,13 +1,16 @@
 = content_for :title do
   %h3.project-title
-    %span.light Admin /
-    Runners (#{@runners.total_count})
+    Manage Runners
+
+    .pull-right
+      %small
+        = pluralize(@runners.total_count, 'runner')
 
 %p.lead
   %span To register new runner you should use next token
   %code #{GitlabCi::RunnersToken}
 
-.well
+.bs-callout
   %p
     A 'runner' is a process which runs a build.
     You can setup as many runners as you need.
@@ -24,6 +27,7 @@
       %li
         %span.label.label-info specific
         \- run only builds from assigned projects
+
 
 
 %table.table
