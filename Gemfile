@@ -65,6 +65,8 @@ gem 'uglifier', '>= 1.0.3'
 gem "therubyracer"
 gem 'bootstrap-sass', '~> 3.0'
 gem "font-awesome-sass-rails", '~> 3.0.2'
+gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 
 group :development do

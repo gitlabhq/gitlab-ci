@@ -138,6 +138,9 @@ GEM
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-turbolinks (2.0.1)
+      railties (>= 3.1.0)
+      turbolinks
     json (1.8.1)
     kaminari (0.15.0)
       actionpack (>= 3.0.0)
@@ -282,6 +285,8 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    turbolinks (2.0.0)
+      coffee-rails
     tzinfo (0.3.38)
     uglifier (2.3.2)
       execjs (>= 0.3.0)
@@ -326,6 +331,7 @@ DEPENDENCIES
   haml-rails
   httparty (= 0.11.0)
   jquery-rails
+  jquery-turbolinks
   kaminari
   letter_opener
   minitest (= 4.3.2)
@@ -351,6 +357,7 @@ DEPENDENCIES
   stamp
   state_machine
   therubyracer
+  turbolinks
   uglifier (>= 1.0.3)
   webmock
   whenever

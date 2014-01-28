@@ -13,14 +13,16 @@
 #= require jquery
 #= require bootstrap
 #= require jquery_ujs
+#= require turbolinks
+#= require jquery.turbolinks
 #= require_tree .
 #
 #
 
 $ ->
   $('.sync-now').on 'click', ->
-    alert(1)
     $(this).addClass('icon-spin')
+
   $('.edit-runner-link').on 'click', ->
     descr = $(this).closest('.runner-description').first()
     descr.hide()
@@ -28,3 +30,17 @@ $ ->
 
   $('.assign-all-runner').on 'click', ->
     $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')
+
+window.startSpinner = ->
+  $('.turbolink-spinner').fadeIn()
+
+window.stopSpinner = ->
+  $('.turbolink-spinner').fadeOut()
+
+window.unbindEvents = ->
+  $(document).unbind('scroll')
+  $(document).off('scroll')
+
+document.addEventListener("page:fetch", startSpinner)
+document.addEventListener("page:fetch", unbindEvents)
+document.addEventListener("page:change", stopSpinner)
