@@ -42,6 +42,8 @@ The following features are not in GitLab CI but merge requests are very welcome:
 * Build artifacts access
 * Build pipeline / build promotion actions
 
+To support parallel builds and deployments there is a [blog article with a roadmap](http://blog.gitlab.org/gitlab-ci-with-parallel-builds-and-deployments/).
+
 ### Runners
 
 To perform the actual build you need a CI runner (also see the Architecture section below):
