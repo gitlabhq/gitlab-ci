@@ -79,11 +79,13 @@ and
 
 ### Installation
 
-* [Installation guide](https://gitlab.com/gitlab-org/gitlab-ci/blob/master/doc/installation.md)
+* [Installation guide](doc/install/installation.md)
 
 ### Docs
 
-* [API](doc/api.md)
+* [Update guides]()
+* [API](doc/api/api.md)
+* [Examples](doc/examples)
 
 ### How to add a new project to GitLab CI
 
