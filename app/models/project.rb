@@ -89,7 +89,6 @@ class Project < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
 
-
   def gitlab?
     gitlab_url.present?
   end
@@ -122,32 +121,8 @@ class Project < ActiveRecord::Base
     status
   end
 
-  def status_image ref = 'master'
-    build = self.builds.where(ref: ref).last
-    image_for_build build
-  end
-
-  def last_build_for_sha sha
+  def last_build_for_sha(sha)
     builds.where(sha: sha).order('id DESC').limit(1).first
-  end
-
-  def sha_status_image sha
-    build = last_build_for_sha(sha)
-    image_for_build build
-  end
-
-  def image_for_build build
-    return 'unknown.png' unless build
-
-    if build.success?
-      'success.png'
-    elsif build.failed?
-      'failed.png'
-    elsif build.active?
-      'running.png'
-    else
-      'unknown.png'
-    end
   end
 
   def tracked_refs

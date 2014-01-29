@@ -85,15 +85,9 @@ class ProjectsController < ApplicationController
   # Project status badge
   # Image with build status for sha or ref
   def badge
-    image_name = if params[:sha]
-                   @project.sha_status_image(params[:sha])
-                 elsif params[:ref]
-                   @project.status_image(params[:ref])
-                 else
-                   'unknown.png'
-                 end
+    image = ImageForBuildService.new.execute(@project, params)
 
-    send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
+    send_file image.path, filename: image.name, disposition: 'inline'
   end
 
   protected
