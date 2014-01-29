@@ -29,6 +29,11 @@ describe Project do
 
   it { should have_many(:builds) }
 
+  it { should validate_presence_of :name }
+  it { should validate_presence_of :scripts }
+  it { should validate_presence_of :timeout }
+  it { should validate_presence_of :default_ref }
+
   describe 'before_validation' do
     it 'should set an random token if none provided' do
       project = FactoryGirl.create :project_without_token
@@ -40,11 +45,6 @@ describe Project do
       project.token.should == "iPWx6WM4lhHNedGfBpPJNP"
     end
   end
-
-  it { should validate_presence_of :name }
-  it { should validate_presence_of :scripts }
-  it { should validate_presence_of :timeout }
-  it { should validate_presence_of :default_ref }
 
   context :valid_project do
     let(:project) { FactoryGirl.create :project }
@@ -77,7 +77,6 @@ describe Project do
   end
 
   describe '#broken_or_success?' do
-
     it {
       project = FactoryGirl.create :project, email_add_committer: true
       project.stub(:broken?).and_return(true)
@@ -105,7 +104,18 @@ describe Project do
       project.stub(:success?).and_return(false)
       project.broken_or_success?.should == false
     }
-   end
+  end
+
+  describe 'Project.parse' do
+    let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
+    let(:parsed_project) { Project.parse(project_dump) }
+
+    it { parsed_project.should be_valid }
+    it { parsed_project.should be_kind_of(Project) }
+    it { parsed_project.name.should eq("GitLab / api.gitlab.org") }
+    it { parsed_project.gitlab_id.should eq(189) }
+    it { parsed_project.gitlab_url.should eq("http://localhost:3000/gitlab/api-gitlab-org") }
+  end
 end
 
 # == Schema Information
