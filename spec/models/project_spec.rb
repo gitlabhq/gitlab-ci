@@ -49,17 +49,8 @@ describe Project do
   context :valid_project do
     let(:project) { FactoryGirl.create :project }
 
-    describe :register_build do
-      let(:build) { project.register_build(ref: 'master', after: '31das312') }
-
-      it { build.should be_kind_of(Build) }
-      it { build.should be_pending }
-      it { build.should be_valid }
-      it { build.should == project.last_build }
-    end
-
     context :project_with_build do
-      before { project.register_build ref: 'master', after: '31das312' }
+      before { FactoryGirl.create(:build, project: project) }
 
       it { project.status.should == 'pending' }
       it { project.last_build.should be_kind_of(Build)  }

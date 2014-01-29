@@ -27,9 +27,11 @@ class Build < ActiveRecord::Base
   attr_accessible :project_id, :ref, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name
 
+  validates :before_sha, presence: true
   validates :sha, presence: true
   validates :ref, presence: true
   validates :status, presence: true
+  validate :valid_commit_sha
 
   scope :running, ->() { where(status: "running") }
   scope :pending, ->() { where(status: "pending") }
@@ -89,6 +91,12 @@ class Build < ActiveRecord::Base
     state :failed, value: 'failed'
     state :success, value: 'success'
     state :canceled, value: 'canceled'
+  end
+
+  def valid_commit_sha
+    if self.sha =~ /\A00000000/
+      self.errors.add(:sha, " cant be 00000000 (branch removal)")
+    end
   end
 
   def compare?

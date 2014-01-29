@@ -73,19 +73,13 @@ class ProjectsController < ApplicationController
   end
 
   def build
-   # Ignore remove branch push
-   return head(200) if params[:after] =~ /^00000000/
+    @build = CreateBuildService.new.execute(@project, params.dup)
 
-   build_params = params.dup
-   @build = @project.register_build(build_params)
-
-   if @build
-     head 200
-   else
-     head 500
-   end
-  rescue
-    head 500
+    if @build
+      head 200
+    else
+      head 500
+    end
   end
 
   # Project status badge

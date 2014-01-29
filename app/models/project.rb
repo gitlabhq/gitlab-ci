@@ -89,28 +89,6 @@ class Project < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
 
-  def register_build(opts={})
-    ref = opts[:ref]
-
-    raise 'ref is not defined' unless ref
-
-    if ref.include? 'heads'
-      ref = ref.scan(/heads\/(.*)$/).flatten[0]
-    end
-
-    before_sha = opts[:before]
-    sha = opts[:after]
-
-    data = {
-      project_id: self.id,
-      ref: ref,
-      sha: sha,
-      before_sha: before_sha,
-      push_data: opts
-    }
-
-    @build = Build.create(data)
-  end
 
   def gitlab?
     gitlab_url.present?
