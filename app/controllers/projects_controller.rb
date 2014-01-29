@@ -75,10 +75,10 @@ class ProjectsController < ApplicationController
   def build
     @build = CreateBuildService.new.execute(@project, params.dup)
 
-    if @build
-      head 200
+    if @build.persisted?
+      head 201
     else
-      head 500
+      head 400
     end
   end
 

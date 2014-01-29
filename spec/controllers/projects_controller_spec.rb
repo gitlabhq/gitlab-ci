@@ -15,24 +15,24 @@ describe ProjectsController do
 
 
       expect(response).to be_success
-      expect(response.code).to eq('200')
+      expect(response.code).to eq('201')
     end
 
-    it 'should respond 200 if push about removed branch' do
+    it 'should respond 400 if push about removed branch' do
       post :build, id: @project.id,
         ref: 'master',
         before: '2aa371379db71ac89ae20843fcff3b3477cf1a1d',
         after: '000000000000000000000000000000000000000',
         token: @project.token
 
-      expect(response).to be_success
-      expect(response.code).to eq('200')
+      expect(response).not_to be_success
+      expect(response.code).to eq('400')
     end
 
-    it 'should respond 500 if something wrong' do
+    it 'should respond 400 if some params missed' do
       post :build, id: @project.id, token: @project.token
       expect(response).not_to be_success
-      expect(response.code).to eq('500')
+      expect(response.code).to eq('400')
     end
 
     it 'should respond 403 if token is wrong' do
