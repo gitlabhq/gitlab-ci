@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: runner_projects
+#
+#  id         :integer          not null, primary key
+#  runner_id  :integer          not null
+#  project_id :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do

@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: builds
+#
+#  id          :integer          not null, primary key
+#  project_id  :integer
+#  ref         :string(255)
+#  status      :string(255)
+#  finished_at :datetime
+#  trace       :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  sha         :string(255)
+#  started_at  :datetime
+#  tmp_file    :string(255)
+#  before_sha  :string(255)
+#  push_data   :text
+#  runner_id   :integer
+#
+
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do

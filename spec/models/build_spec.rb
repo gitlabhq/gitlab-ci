@@ -7,7 +7,7 @@
 #  ref         :string(255)
 #  status      :string(255)
 #  finished_at :datetime
-#  trace       :text(2147483647)
+#  trace       :text
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  sha         :string(255)
