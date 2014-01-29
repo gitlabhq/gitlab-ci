@@ -4,7 +4,7 @@ class CreateBuildService
     sha = params[:after]
     ref = params[:ref]
 
-    if ref && ref.start_with?('/refs/heads/')
+    if ref && ref.include?('refs/heads/')
       ref = ref.scan(/heads\/(.*)$/).flatten[0]
     end
 
