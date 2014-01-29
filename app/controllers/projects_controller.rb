@@ -45,28 +45,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.parse(params[:project])
-
-    Project.transaction do
-      # Send emails only on broken builds be default
-      @project.email_all_broken_builds = true
-
-      # Disable committer notification by defualt to prevent spamming
-      @project.email_add_committer = false
-
-      @project.save!
-
-      opts = {
-        token: @project.token,
-        project_url: project_url(@project),
-      }
-
-      if Network.new.enable_ci(current_user.url, @project.gitlab_id, opts, current_user.private_token)
-        true
-      else
-        raise ActiveRecord::Rollback
-      end
-    end
+    @project = CreateProjectService.new.execute(current_user, params[:project], project_url(":project_id"))
 
     if @project.persisted?
       redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
