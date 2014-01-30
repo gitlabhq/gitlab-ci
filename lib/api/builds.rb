@@ -14,7 +14,7 @@ module API
         required_attributes! [:token]
 
         ActiveRecord::Base.transaction do
-          builds = Build.scoped
+          builds = Build.all
           builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
           build =  builds.first_pending
 
