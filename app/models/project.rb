@@ -2,24 +2,24 @@
 #
 # Table name: projects
 #
-#  id                        :integer          not null, primary key
-#  name                      :string(255)      not null
-#  timeout                   :integer          default(1800), not null
-#  scripts                   :text             default(""), not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  token                     :string(255)
-#  default_ref               :string(255)
-#  gitlab_url                :string(255)
-#  always_build              :boolean          default(FALSE), not null
-#  polling_interval          :integer
-#  public                    :boolean          default(FALSE), not null
-#  ssh_url_to_repo           :string(255)
-#  gitlab_id                 :integer
-#  allow_git_fetch           :boolean          default(TRUE), not null
-#  email_recipients          :string(255)
-#  email_add_committer       :boolean          default(TRUE), not null
-#  email_all_broken_builds   :boolean          default(TRUE), not null
+#  id                      :integer          not null, primary key
+#  name                    :string(255)      not null
+#  timeout                 :integer          default(1800), not null
+#  scripts                 :text             not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  token                   :string(255)
+#  default_ref             :string(255)
+#  gitlab_url              :string(255)
+#  always_build            :boolean          default(FALSE), not null
+#  polling_interval        :integer
+#  public                  :boolean          default(FALSE), not null
+#  ssh_url_to_repo         :string(255)
+#  gitlab_id               :integer
+#  allow_git_fetch         :boolean          default(TRUE), not null
+#  email_recipients        :string(255)      default(""), not null
+#  email_add_committer     :boolean          default(TRUE), not null
+#  email_all_broken_builds :boolean          default(TRUE), not null
 #
 
 class Project < ActiveRecord::Base
@@ -89,29 +89,6 @@ class Project < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
 
-  def register_build(opts={})
-    ref = opts[:ref]
-
-    raise 'ref is not defined' unless ref
-
-    if ref.include? 'heads'
-      ref = ref.scan(/heads\/(.*)$/).flatten[0]
-    end
-
-    before_sha = opts[:before]
-    sha = opts[:after]
-
-    data = {
-      project_id: self.id,
-      ref: ref,
-      sha: sha,
-      before_sha: before_sha,
-      push_data: opts
-    }
-
-    @build = Build.create(data)
-  end
-
   def gitlab?
     gitlab_url.present?
   end
@@ -144,32 +121,8 @@ class Project < ActiveRecord::Base
     status
   end
 
-  def status_image ref = 'master'
-    build = self.builds.where(ref: ref).last
-    image_for_build build
-  end
-
-  def last_build_for_sha sha
+  def last_build_for_sha(sha)
     builds.where(sha: sha).order('id DESC').limit(1).first
-  end
-
-  def sha_status_image sha
-    build = last_build_for_sha(sha)
-    image_for_build build
-  end
-
-  def image_for_build build
-    return 'unknown.png' unless build
-
-    if build.success?
-      'success.png'
-    elsif build.failed?
-      'failed.png'
-    elsif build.active?
-      'running.png'
-    else
-      'unknown.png'
-    end
   end
 
   def tracked_refs

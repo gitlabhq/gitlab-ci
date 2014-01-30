@@ -45,28 +45,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.parse(params[:project])
-
-    Project.transaction do
-      # Send emails only on broken builds be default
-      @project.email_all_broken_builds = true
-
-      # Disable committer notification by defualt to prevent spamming
-      @project.email_add_committer = false
-
-      @project.save!
-
-      opts = {
-        token: @project.token,
-        project_url: project_url(@project),
-      }
-
-      if Network.new.enable_ci(current_user.url, @project.gitlab_id, opts, current_user.private_token)
-        true
-      else
-        raise ActiveRecord::Rollback
-      end
-    end
+    @project = CreateProjectService.new.execute(current_user, params[:project], project_url(":project_id"))
 
     if @project.persisted?
       redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
@@ -94,33 +73,21 @@ class ProjectsController < ApplicationController
   end
 
   def build
-   # Ignore remove branch push
-   return head(200) if params[:after] =~ /^00000000/
+    @build = CreateBuildService.new.execute(@project, params.dup)
 
-   build_params = params.dup
-   @build = @project.register_build(build_params)
-
-   if @build
-     head 200
-   else
-     head 500
-   end
-  rescue
-    head 500
+    if @build.persisted?
+      head 201
+    else
+      head 400
+    end
   end
 
   # Project status badge
   # Image with build status for sha or ref
   def badge
-    image_name = if params[:sha]
-                   @project.sha_status_image(params[:sha])
-                 elsif params[:ref]
-                   @project.status_image(params[:ref])
-                 else
-                   'unknown.png'
-                 end
+    image = ImageForBuildService.new.execute(@project, params)
 
-    send_file Rails.root.join('public', image_name), filename: image_name, disposition: 'inline'
+    send_file image.path, filename: image.name, disposition: 'inline'
   end
 
   protected

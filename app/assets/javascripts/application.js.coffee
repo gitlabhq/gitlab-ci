@@ -19,17 +19,13 @@
 #
 #
 
-$ ->
-  $('.sync-now').on 'click', ->
-    $(this).addClass('icon-spin')
+$(document).on 'click', '.edit-runner-link', ->
+  descr = $(this).closest('.runner-description').first()
+  descr.hide()
+  descr.next('.runner-description-form').show()
 
-  $('.edit-runner-link').on 'click', ->
-    descr = $(this).closest('.runner-description').first()
-    descr.hide()
-    descr.next('.runner-description-form').show()
-
-  $('.assign-all-runner').on 'click', ->
-    $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')
+$(document).on 'click', '.assign-all-runner', ->
+  $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')
 
 window.startSpinner = ->
   $('.turbolink-spinner').fadeIn()
