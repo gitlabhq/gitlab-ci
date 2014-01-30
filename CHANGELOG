@@ -1,6 +1,10 @@
 v4.2.0
   - Build duration chart
   - Bootstrap 3 with responsive UI
+  - Improved init.d script
+  - Refactoring
+  - Changed http codes for POST /projects/:id/build action
+  - Turbolinks
 
 v4.1.0
   - Rails 4
