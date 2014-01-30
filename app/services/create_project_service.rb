@@ -5,12 +5,6 @@ class CreateProjectService
     @project = Project.parse(params)
 
     Project.transaction do
-      # Send emails only on broken builds be default
-      @project.email_all_broken_builds = true
-
-      # Disable committer notification by defualt to prevent spamming
-      @project.email_add_committer = false
-
       @project.save!
 
       opts = {

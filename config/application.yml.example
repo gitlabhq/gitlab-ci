@@ -1,7 +1,7 @@
 defaults: &defaults
   allowed_gitlab_urls: 
-    - 'https://dev.gitlab.org/'
-    - 'https://staging.gitlab.org/'
+    # Replace with your gitlab server url
+    - 'https://gitlab.example.com/'
 
   ## Gitlab CI settings  
   gitlab_ci:
@@ -17,9 +17,11 @@ defaults: &defaults
     # Email address of your support contact (default: same as email_from)
     support_email: support@localhost
   
-    # Send emails for all failing builds
+    # Default project notifications settings: 
+    #
+    # Send emails only on broken builds by default
     # all_broken_builds: true
-    
+    # 
     # Add committer to recipients list
     # add_committer: true
     
@@ -31,7 +33,6 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  neat_setting: 800
 
 test:
   <<: *defaults
