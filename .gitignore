@@ -16,3 +16,4 @@ coverage/*
 <<<<<<< HEAD
 .secret
 /vendor
+.DS_Store
