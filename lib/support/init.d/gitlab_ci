@@ -22,8 +22,8 @@ SOCKET_FILE="$SOCKET_PATH/gitlab-ci.socket"
 PID_PATH="$APP_ROOT/tmp/pids"
 WEB_SERVER_PID="$PID_PATH/puma.pid"
 SIDEKIQ_PID="$PID_PATH/sidekiq.pid"
-STOP_SIDEKIQ="RAILS_ENV=production bundle exec rake sidekiq:stop"
-START_SIDEKIQ="RAILS_ENV=production bundle exec rake sidekiq:start"
+STOP_SIDEKIQ="RAILS_ENV=production script/background_jobs stop"
+START_SIDEKIQ="RAILS_ENV=production script/background_jobs start"
 NAME="GitLab CI"
 DESC="Gitlab CI service"
 
@@ -49,7 +49,7 @@ start() {
     if [ `whoami` = root ]; then
       ! [ -e $SOCKET_FILE ] || sudo -u $APP_USER -H bash -l -c  "rm $SOCKET_FILE"
       sudo -u $APP_USER -H bash -l -c "RAILS_ENV=production bundle exec puma $DAEMON_OPTS"
-      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
+      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ"
       echo "$DESC started"
     fi
   fi
@@ -61,8 +61,8 @@ stop() {
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     ## Program is running, stop it.
     kill -QUIT `cat $WEB_SERVER_PID`
-    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1 &"
-    rm "$WEB_SERVER_PID" >> /dev/null
+    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ"
+    rm "$WEB_SERVER_PID" > /dev/null
     echo "$DESC stopped"
   else
     ## Program is not running, exit with error.
@@ -77,9 +77,9 @@ restart() {
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     echo "Restarting $DESC..."
     kill -USR2 `cat $WEB_SERVER_PID`
-    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1 &"
+    sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $STOP_SIDEKIQ"
     if [ `whoami` = root ]; then
-      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
+      sudo -u $APP_USER -H bash -l -c "mkdir -p $PID_PATH && $START_SIDEKIQ"
     fi
     echo "$DESC restarted."
   else
