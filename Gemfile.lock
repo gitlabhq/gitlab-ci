@@ -97,7 +97,7 @@ GEM
       dotenv (>= 0.7)
       thor (>= 0.13.6)
     formatador (0.2.4)
-    gitlab_ci_meta (1.0)
+    gitlab_ci_meta (4.0)
     grape (0.6.1)
       activesupport
       builder
@@ -323,7 +323,7 @@ DEPENDENCIES
   ffaker
   font-awesome-sass-rails (~> 3.0.2)
   foreman
-  gitlab_ci_meta
+  gitlab_ci_meta (~> 4.0)
   grape
   grape-entity
   growl
