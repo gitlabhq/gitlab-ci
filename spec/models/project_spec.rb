@@ -55,7 +55,6 @@ describe Project do
       it { project.status.should == 'pending' }
       it { project.last_build.should be_kind_of(Build)  }
       it { project.human_status.should == 'pending' }
-      it { project.status_image.should == 'running.png' }
     end
   end
 
