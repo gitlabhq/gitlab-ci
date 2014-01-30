@@ -80,7 +80,7 @@ class Build < ActiveRecord::Base
       project = build.project
 
       if project.email_notification?
-        if build.status.to_sym == :failed || !project.email_all_broken_builds
+        if build.status.to_sym == :failed || !project.email_only_broken_builds
           NotificationService.new.build_ended(build)
         end
       end

@@ -19,10 +19,10 @@ defaults: &defaults
   
     # Default project notifications settings: 
     #
-    # Send emails only on broken builds by default
+    # Send emails only on broken builds (default: true)
     # all_broken_builds: true
     # 
-    # Add committer to recipients list
+    # Add committer to recipients list (default: false)
     # add_committer: true
     
   gravatar:

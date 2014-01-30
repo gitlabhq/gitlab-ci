@@ -19,14 +19,14 @@
 #  allow_git_fetch         :boolean          default(TRUE), not null
 #  email_recipients        :string(255)      default(""), not null
 #  email_add_committer     :boolean          default(TRUE), not null
-#  email_all_broken_builds :boolean          default(TRUE), not null
+#  email_only_broken_builds :boolean          default(TRUE), not null
 #
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
-    :email_recipients, :email_add_committer, :email_all_broken_builds
+    :email_recipients, :email_add_committer, :email_only_broken_builds
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
     if: ->(project) { project.always_build.present? }
 
 
-  scope :public, ->(_) { where(public: true) }
+  scope :public_only, ->() { where(public: true) }
 
   before_validation :set_default_values
 
@@ -60,7 +60,7 @@ class Project < ActiveRecord::Base
         default_ref:             project.default_branch || 'master',
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,
-        email_all_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
+        email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
       }
 
       Project.new(params)

@@ -19,7 +19,7 @@
 #  allow_git_fetch         :boolean          default(TRUE), not null
 #  email_recipients        :string(255)      default(""), not null
 #  email_add_committer     :boolean          default(TRUE), not null
-#  email_all_broken_builds :boolean          default(TRUE), not null
+#  email_only_broken_builds :boolean          default(TRUE), not null
 #
 
 require 'spec_helper'

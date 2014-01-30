@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   layout 'project', except: [:index, :gitlab]
 
   def index
-    @projects = Project.public.page(params[:page]) unless current_user
+    @projects = Project.public_only.page(params[:page]) unless current_user
   end
 
   def gitlab
