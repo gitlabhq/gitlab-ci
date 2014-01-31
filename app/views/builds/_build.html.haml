@@ -3,7 +3,7 @@
     = build.status
 
   %td.build-link
-    = link_to project_build_path(build.project, build, bid: build.id) do
+    = link_to build_url(build) do
       %strong #{build.short_sha}
 
   %td.build-message

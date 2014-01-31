@@ -148,6 +148,10 @@ class Build < ActiveRecord::Base
     running? || pending?
   end
 
+  def complete?
+    canceled? || success? || failed?
+  end
+
   def commands
     project.scripts
   end

@@ -1,3 +1,7 @@
+v4.3.0
+  - Refactor build js
+  - Redirect to build page with sha + bid if build id is not provided
+
 v4.2.0
   - Build duration chart
   - Bootstrap 3 with responsive UI
