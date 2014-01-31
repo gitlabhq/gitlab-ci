@@ -7,5 +7,5 @@
 - else
   :plain
     if(window.location.pathname == "#{project_build_path(@project, @build)}") {
-      location.href = "#{project_build_path(@project, @build)}";
+      Turbolinks.visit("#{project_build_path(@project, @build)}");
     }
