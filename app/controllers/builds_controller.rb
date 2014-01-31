@@ -16,6 +16,13 @@ class BuildsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @build
 
     @builds = @builds.where("id not in (?)", @build.id).page(params[:page]).per(20)
+
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: @build.to_json
+      }
+    end
   end
 
   def retry
@@ -28,7 +35,7 @@ class BuildsController < ApplicationController
       ref: @build.ref
     )
 
-    redirect_to project_build_path(project, build)
+    redirect_to project_build_path(project, build, bid: build.id)
   end
 
   def status

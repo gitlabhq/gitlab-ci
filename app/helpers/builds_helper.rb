@@ -22,6 +22,10 @@ module BuildsHelper
   end
 
   def build_link build
-    link_to(build.short_sha, project_build_path(build.project, build))
+    link_to(build.short_sha, project_build_path(build.project, build, bid: build.id))
+  end
+
+  def build_url(build)
+    project_build_url(build.project, build, bid: build.id)
   end
 end

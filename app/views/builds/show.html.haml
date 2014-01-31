@@ -94,7 +94,7 @@
           - @builds.each_with_index do |build, i|
             %tr.build.alert{class: build_status_alert_class(build)}
               %td
-                = link_to project_build_path(@project, build, bid: build.id ) do
+                = link_to build_url(build) do
                   %span #{i+=1} &ndash; #{build.short_sha}
               %td.status= build.status
 
@@ -102,8 +102,5 @@
         = paginate @builds
 
 
-- if @build.active?
-  :javascript
-    $(function(){
-      getBuild('#{project_build_path(@project, @build)}', '#{@build.id}');
-    })
+:javascript
+  new Build("#{build_url(@build)}", "#{@build.status}", "#{escape_javascript(loader_html)}")
