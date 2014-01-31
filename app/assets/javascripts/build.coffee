@@ -28,7 +28,7 @@ class Build
             dataType: "json"
             success: (build) =>
               if build.status == "running"
-                $('#build-trace').html build.trace
+                $('#build-trace').text build.trace
                 $('#build-trace').append loader_html
                 @checkAutoscroll()
               else
