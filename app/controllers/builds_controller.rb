@@ -12,8 +12,15 @@ class BuildsController < ApplicationController
                @builds
              end.limit(1).first
 
-
     raise ActiveRecord::RecordNotFound unless @build
+
+    # Make sure we always have build id defined
+    # For next major version we will have build id as :id
+    # and possibility to pass commit sha to get redirected to last build for provided commit.
+    unless params[:bid]
+      redirect_to project_build_path(@build.project, @build, bid: @build.id)
+      return
+    end
 
     @builds = @builds.where("id not in (?)", @build.id).page(params[:page]).per(20)
 
