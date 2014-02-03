@@ -15,7 +15,11 @@
           = f.label :timeout, 'Timeout (in seconds) per command'
           = f.number_field :timeout, class: 'form-control', min: '0'
         .form-group
-          = f.label :scripts
+          = f.label :scripts, 'Build steps'
+          %p
+            Each line below will be executed separately.
+            If you need to change the working directory or the environment in a step do so as follows
+            %pre cd my_dir && MY_VAR=value ./my_script
           = f.text_area :scripts, class: 'form-control', rows: 11, placeholder: "bundle exec rake spec"
 
         .form-group
