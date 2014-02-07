@@ -1,6 +1,6 @@
 pre.trace {
-  background: #000;
-  color:#fff;
+  background: #111111;
+  color: #fff;
   font-family: $monospace_font;
   white-space: pre;
   white-space: pre-wrap;       /* css-3 */
@@ -11,6 +11,11 @@ pre.trace {
   overflow: auto;
   overflow-y: hidden;
   font-size: 12px;
+
+  .icon-refresh {
+    font-size: 24px;
+    margin-left: 20px;
+  }
 }
 
 .autoscroll-container {

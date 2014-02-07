@@ -1,10 +1,10 @@
 class Build
   @interval: null
 
-  constructor: (build_url, build_status, loader_html) ->
+  constructor: (build_url, build_status) ->
     clearInterval(Build.interval)
 
-    if build_status = "running" || build_status == "pending"
+    if build_status == "running" || build_status == "pending"
       #
       # Bind autoscroll button to follow build output
       #
@@ -28,8 +28,8 @@ class Build
             dataType: "json"
             success: (build) =>
               if build.status == "running"
-                $('#build-trace').text build.trace
-                $('#build-trace').append loader_html
+                $('#build-trace code').html build.trace_html
+                $('#build-trace code').append '<i class="icon-refresh icon-spin"/>'
                 @checkAutoscroll()
               else
                 Turbolinks.visit build_url

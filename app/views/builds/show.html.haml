@@ -14,7 +14,9 @@
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        Build ##{@build.short_sha}
+        Build for commit
+        %code #{@build.short_sha}
+        from
 
         = link_to project_path(@build.project, ref: @build.ref) do
           %span.label.label-primary= "#{@build.ref}"
@@ -33,13 +35,14 @@
 
 
     .clearfix
-    - if @build.active?
-      .autoscroll-container.pull-right
-        %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
-      .clearfix
+      - if @build.active?
+        .autoscroll-container.pull-right
+          %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+        .clearfix
     %pre.trace#build-trace
-      = preserve do
-        = raw @build.trace_html
+      %code.bash
+        = preserve do
+          = raw @build.trace_html
 
   .col-md-3
     .build-widget
@@ -47,9 +50,9 @@
         Build
         .pull-right
           - if @build.active?
-            = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-sm btn-danger'
+            = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
           - else
-            = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-sm btn-primary', method: :post
+            = link_to "Retry", retry_project_build_path(@project, @build), class: 'btn btn-sm btn-primary', method: :post
 
       - if @build.duration
         %p
@@ -103,4 +106,4 @@
 
 
 :javascript
-  new Build("#{build_url(@build)}", "#{@build.status}", "#{escape_javascript(loader_html)}")
+  new Build("#{build_url(@build)}", "#{@build.status}")
