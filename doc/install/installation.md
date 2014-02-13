@@ -147,7 +147,6 @@ You can use either MySQL or PostgreSQL.
 Copy the init script (will be /etc/init.d/gitlab_ci):
 
     sudo cp /home/gitlab_ci/gitlab-ci/lib/support/init.d/gitlab_ci /etc/init.d/gitlab_ci
-    sudo chmod +x /etc/init.d/gitlab_ci
 
 Make GitLab start on boot:
 
