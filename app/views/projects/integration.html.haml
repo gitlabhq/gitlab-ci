@@ -1,22 +1,22 @@
+%h3
+  Integration with GitLab. Requires GitLab 6.3+
+%hr
 %form.form-horizontal
-  %fieldset
-    .alert.alert-success
-      %legend
-        Integration with GitLab. Requires GitLab 6.3+
-      %p
-        Copy to GitLab &rarr; Project &rarr; Services
-        (#{link_to 'screenshot', image_path('service_sample.png'), target: '_blank'})
-      %ul
-        %li build on push
-        %li integration with Merge Requests
-        %li links to GitLab instance
+  .bs-callout.bs-callout-info
+    %p
+      Copy to GitLab &rarr; Project &rarr; Services
+      (#{link_to 'screenshot', image_path('service_sample.png'), target: '_blank'})
+    %ul
+      %li build on push
+      %li integration with Merge Requests
+      %li links to GitLab instance
 
 
-      .form-group
-        = label_tag :token, 'Project Token', class: 'control-label'
-        .col-sm-10
-          = text_field_tag :token, @project.token, class: 'form-control', readonly: true
-      .form-group
-        = label_tag :url, 'Project URL', class: 'control-label'
-        .col-sm-10
-          = text_field_tag :url, project_url(@project), class: 'form-control', readonly: true
+  .form-group
+    = label_tag :token, 'Project Token', class: 'control-label'
+    .col-sm-10
+      = text_field_tag :token, @project.token, class: 'form-control', readonly: true
+  .form-group
+    = label_tag :url, 'Project URL', class: 'control-label'
+    .col-sm-10
+      = text_field_tag :url, project_url(@project), class: 'form-control', readonly: true

@@ -1,4 +1,4 @@
-= form_for @project do |f|
+= form_for @project, html: { class: 'form-horizontal' } do |f|
   - if @project.errors.any?
     #error_explanation
       %p.lead= "#{pluralize(@project.errors.count, "error")} prohibited this project from being saved:"
@@ -7,90 +7,114 @@
           - @project.errors.full_messages.each do |msg|
             %li= msg
 
-  .row
-    .col-md-7
-      %fieldset
-        %legend Build
-        .form-group
-          = f.label :timeout, 'Timeout (in seconds) per command'
-          = f.number_field :timeout, class: 'form-control', min: '0'
-        .form-group
-          = f.label :scripts, 'Build steps'
+  %fieldset
+    %legend Build settings
+    .form-group
+      = f.label :scripts, 'Build steps', class: 'control-label'
+      .col-sm-10
+        = f.text_area :scripts, class: 'form-control', rows: 14, placeholder: "bundle exec rake spec"
+        .bs-callout.bs-callout-info
           %p
             Each line below will be executed separately.
+            %br
             If you need to change the working directory or the environment in a step do so as follows
-            %pre cd my_dir && MY_VAR=value ./my_script
-          = f.text_area :scripts, class: 'form-control', rows: 11, placeholder: "bundle exec rake spec"
+          %code cd my_dir && MY_VAR=value ./my_script
 
-        .form-group
-          %p Get recent application code by next command:
+    .form-group
+      = label_tag nil, class: 'control-label' do
+        Get code
+      .col-sm-10
+        %p Get recent application code by next command:
+        .radio
           = label_tag do
             = f.radio_button :allow_git_fetch, 'false'
-            %span git clone
-            %span.light (slower but makes sure you have clean dir before every build)
+            %strong git clone
+            .light Slower but makes sure you have clean dir before every build
+        .radio
           = label_tag do
             = f.radio_button :allow_git_fetch, 'true'
-            %span git fetch
-            %span.light (faster)
+            %strong git fetch
+            .light Faster
+    .form-group
+      = f.label :timeout, 'Timeout', class: 'control-label'
+      .col-sm-10
+        = f.number_field :timeout, class: 'form-control', min: '0'
+        .light In seconds per command
 
 
-      %br
-      %fieldset
-        %legend Build Schedule
-        .form-group
+  %fieldset
+    %legend Build Schedule
+    .form-group
+      = f.label :always_build, 'Schedule build', class: 'control-label'
+      .col-sm-10
+        .checkbox
           = f.label :always_build do
             = f.check_box :always_build
-            %span Enable automatic build on schedule
-        %br
-        .form-group
-          = f.label :polling_interval, "Build interval"
-          = f.number_field :polling_interval, placeholder: '5', min: '0', class: 'form-control'
-          %span Hours
+            %span.light Repeat last build after X hours if no builds
+    .form-group
+      = f.label :polling_interval, "Build interval", class: 'control-label'
+      .col-sm-10
+        = f.number_field :polling_interval, placeholder: '5', min: '0', class: 'form-control'
+        .light In hours
 
-    .col-md-5
-      %fieldset
-        %legend Project settings
-        .form-group
-          = f.label :default_ref, "Make tabs for next branches"
-          = f.text_field :default_ref, class: 'form-control', placeholder: 'master, stable'
-          %p You will be able to filter builds by following branches
+  %fieldset
+    %legend Project settings
+    .form-group
+      = f.label :default_ref, "Make tabs for next branches", class: 'control-label'
+      .col-sm-10
+        = f.text_field :default_ref, class: 'form-control', placeholder: 'master, stable'
+        .light You will be able to filter builds by following branches
+    .form-group
+      = f.label :public, 'Public mode', class: 'control-label'
+      .col-sm-10
         .checkbox
           = f.label :public do
             = f.check_box :public
-            %span Public (Anyone can see project and builds list)
+            %span.light Anyone can see project and builds list
 
-      %fieldset
-        %legend Email notification
-        .form-group
-          = f.label :email_recipients, "Whitespace-separated list of recipient addresses."
-          = f.text_field :email_recipients, class: 'form-control'
+  %fieldset
+    %legend Email notification
+    .form-group
+      = f.label :email_recipients, "Recipients", class: 'control-label'
+      .col-sm-10
+        = f.text_field :email_recipients, class: 'form-control'
+        .light Whitespace-separated list of recipient addresses.
+    .form-group
+      .col-sm-2
+      .col-sm-10
         .checkbox
           = f.label :email_add_committer do
             = f.check_box :email_add_committer
             %span Add committer to recipients list
+    .form-group
+      .col-sm-2
+      .col-sm-10
         .checkbox
           = f.label :email_only_broken_builds do
             = f.check_box :email_only_broken_builds
             %span Send notification only for broken builds
 
-      %br
-      %fieldset
-        %legend Advanced settings
-        .form-group
-          = f.label :name
-          = f.text_field :name, class: 'form-control', placeholder: 'my-project'
-        .form-group
-          = f.label :gitlab_url, "GitLab url to project"
-          = f.text_field :gitlab_url, class: 'form-control', placeholder: 'http://gitlab.domain.com/project-slug'
-        .form-group
-          = f.label :gitlab_id, "GitLab project id"
-          = f.text_field :gitlab_id, class: 'form-control', placeholder: '17'
-        .form-group
-          = f.label :token, "Token (Leave empty to generate random token)"
-          = f.text_field :token, class: 'form-control', placeholder: 'xEeFCaDAB89'
+  %fieldset
+    %legend Advanced settings
+    .form-group
+      = f.label :name, class: 'control-label'
+      .col-sm-10
+        = f.text_field :name, class: 'form-control', placeholder: 'my-project'
+    .form-group
+      = f.label :gitlab_url, "GitLab url to project", class: 'control-label'
+      .col-sm-10
+        = f.text_field :gitlab_url, class: 'form-control', placeholder: 'http://gitlab.domain.com/project-slug'
+    .form-group
+      = f.label :gitlab_id, "GitLab project id", class: 'control-label'
+      .col-sm-10
+        = f.text_field :gitlab_id, class: 'form-control', placeholder: '17'
+    .form-group
+      = f.label :token, "CI Token", class: 'control-label'
+      .col-sm-10
+        = f.text_field :token, class: 'form-control', placeholder: 'xEeFCaDAB89'
 
   .form-actions
-    = f.submit 'Save', class: 'btn btn-save'
+    = f.submit 'Save changes', class: 'btn btn-save'
     = link_to 'Cancel', projects_path, class: 'btn'
     - unless @project.new_record?
       = link_to 'Remove Project', project_path(@project), method: :delete, data: { confirm: 'Project will be removed. Are you sure?' }, class: 'btn btn-danger pull-right'
