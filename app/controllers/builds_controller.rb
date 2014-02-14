@@ -2,16 +2,18 @@ class BuildsController < ApplicationController
   before_filter :authenticate_user!, except: [:status]
   before_filter :project
   before_filter :authorize_access_project!, except: [:status]
-  before_filter :build, except: [:status]
+  before_filter :build, except: [:status, :show]
 
   def show
-    unless @build
+    if params[:id] =~ /\A\d+\Z/
+      @build = build
+    else
       # try to find build by sha
-      @build = build_by_sha
+      build = build_by_sha
 
-      # Redirect from sha to build with id
-      if @build
-        redirect_to project_build_path(@build.project, @build)
+      if build
+        # Redirect from sha to build with id
+        redirect_to project_build_path(build.project, build)
         return
       end
     end
