@@ -110,10 +110,10 @@ Build script example:
     bundle exec rake db:migrate RAILS_ENV=test
     script/run_all_tests
 
-The build command is run from [GitlabCi::Build#command](https://github.com/gitlabhq/gitlab-ci-runner/blob/master/lib/build.rb#L96) and contains the following environmental variables:
+The build command is run from [GitlabCi::Build#command](https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/lib/build.rb#L96) and contains the following environmental variables:
 
     CI_SERVER, CI_SERVER_NAME, CI_SERVER_VERSION, CI_SERVER_REVISION
-    CI_BUILD_REF, CI_BUILD_BEFORE_SHA, CI_BUILD_REF_NAME, CI_BUILD_ID
+    CI_BUILD_REF, CI_BUILD_BEFORE_SHA, CI_BUILD_REF_NAME (branch), CI_BUILD_ID
 
 ### Getting help
 
