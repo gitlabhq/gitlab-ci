@@ -24,6 +24,7 @@ gem 'settingslogic'
 
 # Web server
 gem "puma", "~> 2.7.1"
+gem "unicorn", "~> 4.8.2"
 
 # Haml
 gem 'haml-rails'
