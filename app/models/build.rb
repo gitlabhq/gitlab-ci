@@ -78,6 +78,9 @@ class Build < ActiveRecord::Base
     after_transition any => [:success, :failed, :canceled] do |build, transition|
       build.update_attributes finished_at: Time.now
       project = build.project
+      if project.web_hooks?
+        WebHookService.new.execute_hooks(build)
+      end
 
       if project.email_notification?
         if build.status.to_sym == :failed || !project.email_only_broken_builds
