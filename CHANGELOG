@@ -4,6 +4,8 @@ v4.3.0
   - Update rails to 4.0.3
   - Restyle project settings page
   - Improve help page
+  - Replaced puma with unicorn
+  - Improved init.d script
 
 v4.2.0
   - Build duration chart

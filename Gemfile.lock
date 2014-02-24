@@ -144,6 +144,7 @@ GEM
     kaminari (0.15.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kgio (2.9.2)
     launchy (2.4.2)
       addressable (~> 2.3)
     letter_opener (1.1.2)
@@ -179,8 +180,6 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
-    puma (2.7.1)
-      rack (>= 1.1, < 2.0)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -206,6 +205,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.1.1)
+    raindrops (0.12.0)
     rb-fsevent (0.9.3)
     rb-inotify (0.9.2)
       ffi (>= 0.5.0)
@@ -290,6 +290,10 @@ GEM
     uglifier (2.3.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicorn (4.8.2)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
     virtus (1.0.0)
       axiom-types (~> 0.0.5)
       coercible (~> 0.2)
@@ -339,7 +343,6 @@ DEPENDENCIES
   poltergeist
   protected_attributes
   pry
-  puma (~> 2.7.1)
   quiet_assets
   rails (= 4.0.3)
   rake
@@ -358,5 +361,6 @@ DEPENDENCIES
   therubyracer
   turbolinks
   uglifier (>= 1.0.3)
+  unicorn (~> 4.8.2)
   webmock
   whenever

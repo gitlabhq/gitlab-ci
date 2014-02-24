@@ -105,8 +105,8 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H editor config/application.yml
 
     # Edit web server settings
-    sudo -u gitlab_ci -H cp config/puma.rb.example config/puma.rb
-    sudo -u gitlab_ci -H editor config/puma.rb
+    sudo -u gitlab_ci -H cp config/unicorn.rb.example config/unicorn.rb
+    sudo -u gitlab_ci -H editor config/unicorn.rb
 
     # Create socket and pid directories
     sudo -u gitlab_ci -H mkdir -p tmp/sockets/
