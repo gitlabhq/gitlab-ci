@@ -20,11 +20,6 @@
           = link_to 'Help', help_path
 
       %ul.nav.navbar-nav.pull-right
-        %li.hidden-sm.hidden-xs
-          %a
-            %div.hide.turbolink-spinner
-              %i.icon-refresh.icon-spin
-              Loading...
         - if current_user
           %li
             = link_to user_sessions_path do
@@ -38,3 +33,7 @@
         - else
           %li
             = link_to 'Login', new_user_sessions_path
+
+    .hidden-sm.hidden-xs
+      .hide.turbolink-spinner
+        %i.icon-refresh.icon-spin
