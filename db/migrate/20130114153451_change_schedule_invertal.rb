@@ -1,9 +1,25 @@
 class ChangeScheduleInvertal < ActiveRecord::Migration
   def up
-    change_column :projects, :polling_interval, :integer, null: true
+    if ActiveRecord::Base.connection.instance_of?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+      connection.execute(%q{
+        ALTER TABLE projects
+        ALTER COLUMN polling_interval
+        TYPE integer USING CAST(polling_interval AS integer)
+      })
+    else
+      change_column :projects, :polling_interval, :integer, null: true
+    end
   end
 
   def down
-    change_column :projects, :polling_interval, :string, null: true
+    if ActiveRecord::Base.connection.instance_of?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+      connection.execute(%q{
+        ALTER TABLE projects
+        ALTER COLUMN polling_interval
+        TYPE integer USING CAST(polling_interval AS varchar)
+      })
+    else
+      change_column :projects, :polling_interval, :string, null: true
+    end
   end
 end
