@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20140130121538) do
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace",       limit: 2147483647
+    t.text     "trace",       limit: 1073741823
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sha"
