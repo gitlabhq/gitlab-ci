@@ -1,4 +1,12 @@
-# Setup: 
+# Select Version to Install
+Make sure you view this installation guide from the branch (version) of GitLab you would like to install. In most cases
+this should be the highest numbered stable branch (example shown below).
+
+![capture](http://i.imgur.com/fmdlXxa.png)
+
+If this is unclear check the [GitLab Blog](http://blog.gitlab.org/) for installation guide links by version.
+
+# Setup:
 
 ## 1. Packages / Dependencies
 
