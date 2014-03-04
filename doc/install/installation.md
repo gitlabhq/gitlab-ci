@@ -1,5 +1,5 @@
 # Select Version to Install
-Make sure you view this installation guide from the branch (version) of GitLab you would like to install. In most cases
+Make sure you view this installation guide from the branch (version) of GitLab CI you would like to install. In most cases
 this should be the highest numbered stable branch (example shown below).
 
 ![capture](http://i.imgur.com/fmdlXxa.png)
