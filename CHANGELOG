@@ -6,6 +6,7 @@ v4.3.0
   - Improve help page
   - Replaced puma with unicorn
   - Improved init.d script
+  - Add submodule init to default build script for new projects
 
 v4.2.0
   - Build duration chart
