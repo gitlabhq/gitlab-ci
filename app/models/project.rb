@@ -49,6 +49,13 @@ class Project < ActiveRecord::Base
   before_validation :set_default_values
 
   class << self
+    def base_build_script
+      <<-eos
+        git submodule update --init
+        ls -la
+      eos
+    end
+
     def parse(project_yaml)
       project = YAML.load(project_yaml)
 
@@ -56,7 +63,7 @@ class Project < ActiveRecord::Base
         name:                    project.name_with_namespace,
         gitlab_id:               project.id,
         gitlab_url:              project.web_url,
-        scripts:                 'ls -la',
+        scripts:                 Project.base_build_script,
         default_ref:             project.default_branch || 'master',
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,
