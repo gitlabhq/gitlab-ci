@@ -55,10 +55,13 @@
 }
 
 .table {
-  th {
-    background: #eee;
-    color: #555;
-    border-bottom: 1px solid #DDD;
+  thead {
+    th {
+      background: #eee;
+      color: #555;
+      border-bottom: 1px solid #CCC !important;
+      border-top: 1px solid #CCC !important;
+    }
   }
 }
 

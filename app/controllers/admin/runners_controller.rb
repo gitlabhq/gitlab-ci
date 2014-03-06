@@ -8,6 +8,9 @@ class Admin::RunnersController < Admin::ApplicationController
 
   def show
     @builds = @runner.builds.order('id DESC').first(30)
+    @projects = Project.all
+    @projects = @projects.where("projects.id NOT IN (?)", @runner.projects.pluck(:id)) if @runner.projects.any?
+    @projects = @projects.page(params[:page]).per(30)
   end
 
   def update

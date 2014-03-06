@@ -7,13 +7,14 @@
         = pluralize(@projects.total_count, 'project')
 
 %table.table
-  %tr
-    %th ID
-    %th Name
-    %th Last build
-    %th Access
-    %th Builds
-    %th
+  %thead
+    %tr
+      %th ID
+      %th Name
+      %th Last build
+      %th Access
+      %th Builds
+      %th
 
   = render @projects
 

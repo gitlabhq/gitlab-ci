@@ -31,15 +31,16 @@
 
 
 %table.table
-  %tr
-    %th ID
-    %th Type
-    %th Token
-    %th Description
-    %th Projects
-    %th Builds Stats
-    %th Registered
-    %th
+  %thead
+    %tr
+      %th ID
+      %th Type
+      %th Token
+      %th Description
+      %th Projects
+      %th Builds Stats
+      %th Registered
+      %th
 
   = render @runners
 = paginate @runners
