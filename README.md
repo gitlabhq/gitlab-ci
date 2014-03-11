@@ -83,7 +83,7 @@ and
 
 ### Docs
 
-* [Update guides]()
+* [Update guides](doc/update)
 * [API](doc/api/api.md)
 * [Examples](doc/examples)
 
