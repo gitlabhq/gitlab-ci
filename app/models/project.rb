@@ -51,8 +51,8 @@ class Project < ActiveRecord::Base
   class << self
     def base_build_script
       <<-eos
-        git submodule update --init
-        ls -la
+git submodule update --init
+ls -la
       eos
     end
 
