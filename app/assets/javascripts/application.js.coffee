@@ -15,6 +15,8 @@
 #= require jquery_ujs
 #= require turbolinks
 #= require jquery.turbolinks
+#= require nprogress
+#= require nprogress-turbolinks
 #= require_tree .
 #
 #
@@ -27,16 +29,8 @@ $(document).on 'click', '.edit-runner-link', ->
 $(document).on 'click', '.assign-all-runner', ->
   $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')
 
-window.startSpinner = ->
-  $('.turbolink-spinner').fadeIn()
-
-window.stopSpinner = ->
-  $('.turbolink-spinner').fadeOut()
-
 window.unbindEvents = ->
   $(document).unbind('scroll')
   $(document).off('scroll')
 
-document.addEventListener("page:fetch", startSpinner)
 document.addEventListener("page:fetch", unbindEvents)
-document.addEventListener("page:change", stopSpinner)
