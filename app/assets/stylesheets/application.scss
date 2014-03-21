@@ -43,3 +43,10 @@
 @import "sections/projects.scss";
 @import "sections/builds.scss";
 @import "sections/login.scss";
+
+/*
+ * NProgress
+ */
+$nprogress-color: #9BC;
+@import 'nprogress';
+@import 'nprogress-bootstrap';

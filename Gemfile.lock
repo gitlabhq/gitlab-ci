@@ -167,6 +167,7 @@ GEM
     mysql2 (0.3.14)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
+    nprogress-rails (0.1.2.3)
     pg (0.17.0)
     poltergeist (1.4.1)
       capybara (~> 2.1.0)
@@ -339,6 +340,7 @@ DEPENDENCIES
   letter_opener
   minitest (= 4.3.2)
   mysql2
+  nprogress-rails
   pg
   poltergeist
   protected_attributes
