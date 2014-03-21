@@ -1,3 +1,7 @@
+v4.4.0
+  - Nprogress bar
+  - Remove extra spaces in build script
+
 v4.3.0
   - Refactor build js
   - Redirect to build page with sha + bid if build id is not provided
