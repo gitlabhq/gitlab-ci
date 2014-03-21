@@ -7,7 +7,7 @@
         = pluralize(@runners.total_count, 'runner')
 
 %p.lead
-  %span To register new runner you should use next token
+  %span To register a new runner you should use the following token
   %code #{GitlabCi::RUNNERS_TOKEN}
 
 .bs-callout
@@ -15,11 +15,11 @@
     A 'runner' is a process which runs a build.
     You can setup as many runners as you need.
     %br
-    Runners can be placed on separate users, servers,  even on your local machine
+    Runners can be placed on separate users, servers, and even on your local machine.
     %br
 
   %div
-    %span Each runner can be in one of next states:
+    %span Each runner can be in one of the following states:
     %ul
       %li
         %span.label.label-success shared
