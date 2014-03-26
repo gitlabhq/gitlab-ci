@@ -15,8 +15,9 @@
       = runner.description
       %span (#{link_to 'edit', '#', class: 'edit-runner-link'})
     .runner-description-form.hide
-      = form_for [:admin, runner], remote: true do |f|
-        = f.text_field :description, class: 'pull-left'
+      = form_for [:admin, runner], remote: true, html: { class: 'form-inline' } do |f|
+        .form-group
+          = f.text_field :description, class: 'form-control'
         = f.submit 'Save', class: 'btn'
   %td
     - if runner.shared?
@@ -24,10 +25,10 @@
     - else
       = runner.projects.count
   %td
-    %span.badge.badge-success
+    %span.label.label-success
       #{runner.builds.success.count}
     %span /
-    %span.badge.badge-important
+    %span.label.label-danger
       #{runner.builds.failed.count}
   %td
     #{time_ago_in_words(runner.created_at)} ago
