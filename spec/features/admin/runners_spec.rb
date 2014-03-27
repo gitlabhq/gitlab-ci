@@ -12,7 +12,7 @@ describe "Admin Runners" do
     end
 
     it { page.should have_content "Manage Runners" }
-    it { page.should have_content "To register new runner you" }
+    it { page.should have_content "To register a new runner" }
   end
 
   describe "GET /admin/runners/:id" do
