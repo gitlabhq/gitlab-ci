@@ -51,6 +51,7 @@ To perform the actual build you need a CI runner (also see the Architecture sect
 * [Official CI runner for Linux](https://gitlab.com/gitlab-org/gitlab-ci-runner)
 * [Unofficial CI runner for Windows](https://github.com/virtualmarc/gitlab-ci-runner-win)
 * [Unofficial CI runner for Scala/Java](https://github.com/nafg/gitlab-ci-runner-scala)
+* [Unofficial CI runner for Node](https://www.npmjs.org/package/gcr)
 
 ### Architecture
 
