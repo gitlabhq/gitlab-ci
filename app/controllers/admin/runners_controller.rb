@@ -29,7 +29,7 @@ class Admin::RunnersController < Admin::ApplicationController
   end
 
   def assign_all
-    Project.all.each { |project| @runner.assign_to(project, current_user) }
+    Project.unassigned(@runner).all.each { |project| @runner.assign_to(project, current_user) }
 
     respond_to do |format|
       format.js
