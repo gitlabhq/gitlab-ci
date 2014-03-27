@@ -7,8 +7,8 @@
 ci.db
 config/application.yml
 config/database.yml
-config/puma.rb
 config/resque.yml
+config/unicorn.rb
 coverage/*
 log/*
 tmp/*

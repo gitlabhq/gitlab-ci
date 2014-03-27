@@ -90,6 +90,12 @@ ls -la
     def already_added?(project)
       where(gitlab_url: project.web_url).any?
     end
+
+    def unassigned(runner)
+      joins('LEFT JOIN runner_projects ON runner_projects.project_id = projects.id ' \
+        "AND runner_projects.runner_id = #{runner.id}").
+      where('runner_projects.project_id' => nil)
+    end
   end
 
   def set_default_values
