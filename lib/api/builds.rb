@@ -14,7 +14,7 @@ module API
         required_attributes! [:token]
 
         ActiveRecord::Base.transaction do
-          builds = Build.scoped
+          builds = Build.all
           builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
           build =  builds.first_pending
 
@@ -80,7 +80,7 @@ module API
         required_attributes! [:project_id, :data, :project_token]
         project = Project.find(params[:project_id])
         authenticate_project_token!(project)
-        build = project.register_build(params[:data])
+        build = CreateBuildService.new.execute(project, params[:data])
 
         if build.persisted?
           present build, with: Entities::Build

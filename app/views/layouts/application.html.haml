@@ -1,7 +1,7 @@
 !!! 5
 %html{ lang: "en"}
   = render 'layouts/head'
-  %body
+  %body{ :'data-page' => body_data_page }
     = render 'layouts/nav'
     = render 'layouts/info'
     - if content_for?(:title)

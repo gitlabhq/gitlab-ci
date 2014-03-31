@@ -7,7 +7,7 @@
 #  ref         :string(255)
 #  status      :string(255)
 #  finished_at :datetime
-#  trace       :text(2147483647)
+#  trace       :text
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  sha         :string(255)
@@ -24,6 +24,7 @@ describe Build do
   subject { Build.new }
 
   it { should belong_to(:project) }
+  it { should validate_presence_of :before_sha }
   it { should validate_presence_of :sha }
   it { should validate_presence_of :ref }
   it { should validate_presence_of :status }
@@ -39,7 +40,7 @@ describe Build do
 
   describe "#ci_skip?" do
     let(:project) { FactoryGirl.create(:project) }
-    let(:build) { project.register_build(ref: 'master') }
+    let(:build) { FactoryGirl.create(:build, project: project) }
 
     it 'true if commit message contains [ci skip]' do
       build.stub(:git_commit_message) { 'Small typo [ci skip]' }

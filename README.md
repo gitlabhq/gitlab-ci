@@ -42,6 +42,8 @@ The following features are not in GitLab CI but merge requests are very welcome:
 * Build artifacts access
 * Build pipeline / build promotion actions
 
+To support parallel builds and deployments there is a [blog article with a roadmap](http://blog.gitlab.org/gitlab-ci-with-parallel-builds-and-deployments/).
+
 ### Runners
 
 To perform the actual build you need a CI runner (also see the Architecture section below):
@@ -49,6 +51,7 @@ To perform the actual build you need a CI runner (also see the Architecture sect
 * [Official CI runner for Linux](https://gitlab.com/gitlab-org/gitlab-ci-runner)
 * [Unofficial CI runner for Windows](https://github.com/virtualmarc/gitlab-ci-runner-win)
 * [Unofficial CI runner for Scala/Java](https://github.com/nafg/gitlab-ci-runner-scala)
+* [Unofficial CI runner for Node](https://www.npmjs.org/package/gcr)
 
 ### Architecture
 
@@ -77,11 +80,13 @@ and
 
 ### Installation
 
-* [Installation guide](https://gitlab.com/gitlab-org/gitlab-ci/blob/master/doc/installation.md)
+* [Installation guide](doc/install/installation.md)
 
 ### Docs
 
-* [API](doc/api.md)
+* [Update guides](doc/update)
+* [API](doc/api/api.md)
+* [Examples](doc/examples)
 
 ### How to add a new project to GitLab CI
 
@@ -106,10 +111,10 @@ Build script example:
     bundle exec rake db:migrate RAILS_ENV=test
     script/run_all_tests
 
-The build command is run from [GitlabCi::Build#command](https://github.com/gitlabhq/gitlab-ci-runner/blob/master/lib/build.rb#L96) and contains the following environmental variables:
+The build command is run from [GitlabCi::Build#command](https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/lib/build.rb#L96) and contains the following environmental variables:
 
     CI_SERVER, CI_SERVER_NAME, CI_SERVER_VERSION, CI_SERVER_REVISION
-    CI_BUILD_REF, CI_BUILD_BEFORE_SHA, CI_BUILD_REF_NAME, CI_BUILD_ID
+    CI_BUILD_REF, CI_BUILD_BEFORE_SHA, CI_BUILD_REF_NAME (branch), CI_BUILD_ID
 
 ### Getting help
 

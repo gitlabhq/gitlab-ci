@@ -10,13 +10,14 @@
     #{@total_count} projects, #{@projects.size} of them added to CI
 %br
 
-%table.table
-  %tr
-    %th ID
-    %th Project Name
-    %th Last build
-    %th Access
-    %th Builds
+%table.table.projects-table
+  %thead
+    %tr
+      %th ID
+      %th Project Name
+      %th Last build
+      %th Access
+      %th Builds
 
   = render @projects
 

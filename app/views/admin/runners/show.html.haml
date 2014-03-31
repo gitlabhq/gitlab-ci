@@ -1,4 +1,4 @@
-%h3
+%h4.page-title
   Runner: #{@runner.token}
 
 %p.light= @runner.description
@@ -8,34 +8,50 @@
 %hr
 
 - if @runner.shared?
-  .alert.alert-success
+  .bs-callout.bs-callout-success
     %h4 This runner will process build from ALL projects
+    %p If you want runner to build only specific projects you just need to enable them in table below
 - else
-  .alert.alert-info
+  .bs-callout.bs-callout-info
     %h4 This runner will process build only from ASSIGNED projects
+    %p If you want runner to build all projects you just need to disable all assignee projects
 .row
   .col-md-6
-    %h5 Restrict projects for this runner
-    %ul.restrict-projects-list
-      - @runner.runner_projects.each do |runner_project|
-        - project = runner_project.project
-        %li
-          %h5
-            = project.name
-            .pull-right
-              = link_to 'Disable', [:admin, project, runner_project], method: :delete, class: 'btn btn-danger btn-small'
+    %h4 Restrict projects for this runner
+    - if @runner.projects.any?
+      %table.table
+        %thead
+          %tr
+            %th Assigned projects
+            %th
+        - @runner.runner_projects.each do |runner_project|
+          - project = runner_project.project
+          %tr.alert-info
+            %td
+              %strong
+                = project.name
+            %td
+              .pull-right
+                = link_to 'Disable', [:admin, project, runner_project], method: :delete, class: 'btn btn-danger btn-xs'
 
-      - (Project.all - @runner.projects).each do |project|
-        %li
-          %h5
+    %table.table
+      %thead
+        %tr
+          %th Project
+          %th
+      - @projects.each do |project|
+        %tr
+          %td
             = project.name
+          %td
             .pull-right
               = form_for [:admin, project, project.runner_projects.new] do |f|
                 = f.hidden_field :runner_id, value: @runner.id
-                = f.submit 'Enable', class: 'btn btn-small'
+                = f.submit 'Enable', class: 'btn btn-xs'
+    = paginate @projects
 
   .col-md-6
-    %h5 Recent builds served by this runner
+    %h4 Recent builds served by this runner
     %table.builds.runner-builds
       %thead
         %tr

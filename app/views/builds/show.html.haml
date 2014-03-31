@@ -1,6 +1,6 @@
-%h4
-  Project: #{@project.name}
-  .right
+%h4.page-title
+  = @project.name
+  .pull-right
     = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
       %i.icon-edit.icon-white
       Edit Project
@@ -14,7 +14,9 @@
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        Build ##{@build.short_sha}
+        Build for commit
+        %code #{@build.short_sha}
+        from
 
         = link_to project_path(@build.project, ref: @build.ref) do
           %span.label.label-primary= "#{@build.ref}"
@@ -33,13 +35,14 @@
 
 
     .clearfix
-    - if @build.active?
-      .autoscroll-container.pull-right
-        %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
-      .clearfix
+      - if @build.active?
+        .autoscroll-container.pull-right
+          %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+        .clearfix
     %pre.trace#build-trace
-      = preserve do
-        = raw @build.trace_html
+      %code.bash
+        = preserve do
+          = raw @build.trace_html
 
   .col-md-3
     .build-widget
@@ -47,9 +50,9 @@
         Build
         .pull-right
           - if @build.active?
-            = link_to "Cancel", cancel_project_build_path(@project, @build.id), class: 'btn btn-sm btn-danger'
+            = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
           - else
-            = link_to "Retry", retry_project_build_path(@project, @build.sha), class: 'btn btn-sm btn-primary', method: :post
+            = link_to "Retry", retry_project_build_path(@project, @build), class: 'btn btn-sm btn-primary', method: :post
 
       - if @build.duration
         %p
@@ -94,7 +97,7 @@
           - @builds.each_with_index do |build, i|
             %tr.build.alert{class: build_status_alert_class(build)}
               %td
-                = link_to project_build_path(@project, build, bid: build.id ) do
+                = link_to build_url(build) do
                   %span #{i+=1} &ndash; #{build.short_sha}
               %td.status= build.status
 
@@ -102,8 +105,5 @@
         = paginate @builds
 
 
-- if @build.active?
-  :javascript
-    $(function(){
-      getBuild('#{project_build_path(@project, @build)}', '#{@build.id}');
-    })
+:javascript
+  new Build("#{build_url(@build)}", "#{@build.status}")

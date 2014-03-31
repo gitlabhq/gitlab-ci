@@ -2,31 +2,31 @@
 #
 # Table name: projects
 #
-#  id                        :integer          not null, primary key
-#  name                      :string(255)      not null
-#  timeout                   :integer          default(1800), not null
-#  scripts                   :text             default(""), not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  token                     :string(255)
-#  default_ref               :string(255)
-#  gitlab_url                :string(255)
-#  always_build              :boolean          default(FALSE), not null
-#  polling_interval          :integer
-#  public                    :boolean          default(FALSE), not null
-#  ssh_url_to_repo           :string(255)
-#  gitlab_id                 :integer
-#  allow_git_fetch           :boolean          default(TRUE), not null
-#  email_recipients          :string(255)
-#  email_add_committer       :boolean          default(TRUE), not null
-#  email_all_broken_builds   :boolean          default(TRUE), not null
+#  id                      :integer          not null, primary key
+#  name                    :string(255)      not null
+#  timeout                 :integer          default(1800), not null
+#  scripts                 :text             not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  token                   :string(255)
+#  default_ref             :string(255)
+#  gitlab_url              :string(255)
+#  always_build            :boolean          default(FALSE), not null
+#  polling_interval        :integer
+#  public                  :boolean          default(FALSE), not null
+#  ssh_url_to_repo         :string(255)
+#  gitlab_id               :integer
+#  allow_git_fetch         :boolean          default(TRUE), not null
+#  email_recipients        :string(255)      default(""), not null
+#  email_add_committer     :boolean          default(TRUE), not null
+#  email_only_broken_builds :boolean          default(TRUE), not null
 #
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
-    :email_recipients, :email_add_committer, :email_all_broken_builds
+    :email_recipients, :email_add_committer, :email_only_broken_builds
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -44,11 +44,18 @@ class Project < ActiveRecord::Base
     if: ->(project) { project.always_build.present? }
 
 
-  scope :public, where(public: true)
+  scope :public_only, ->() { where(public: true) }
 
   before_validation :set_default_values
 
   class << self
+    def base_build_script
+      <<-eos
+git submodule update --init
+ls -la
+      eos
+    end
+
     def parse(project_yaml)
       project = YAML.load(project_yaml)
 
@@ -56,11 +63,11 @@ class Project < ActiveRecord::Base
         name:                    project.name_with_namespace,
         gitlab_id:               project.id,
         gitlab_url:              project.web_url,
-        scripts:                 'ls -la',
+        scripts:                 Project.base_build_script,
         default_ref:             project.default_branch || 'master',
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,
-        email_all_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
+        email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
       }
 
       Project.new(params)
@@ -83,33 +90,16 @@ class Project < ActiveRecord::Base
     def already_added?(project)
       where(gitlab_url: project.web_url).any?
     end
+
+    def unassigned(runner)
+      joins('LEFT JOIN runner_projects ON runner_projects.project_id = projects.id ' \
+        "AND runner_projects.runner_id = #{runner.id}").
+      where('runner_projects.project_id' => nil)
+    end
   end
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
-  end
-
-  def register_build(opts={})
-    ref = opts[:ref]
-
-    raise 'ref is not defined' unless ref
-
-    if ref.include? 'heads'
-      ref = ref.scan(/heads\/(.*)$/).flatten[0]
-    end
-
-    before_sha = opts[:before]
-    sha = opts[:after]
-
-    data = {
-      project_id: self.id,
-      ref: ref,
-      sha: sha,
-      before_sha: before_sha,
-      push_data: opts
-    }
-
-    @build = Build.create(data)
   end
 
   def gitlab?
@@ -144,32 +134,8 @@ class Project < ActiveRecord::Base
     status
   end
 
-  def status_image ref = 'master'
-    build = self.builds.where(ref: ref).last
-    image_for_build build
-  end
-
-  def last_build_for_sha sha
+  def last_build_for_sha(sha)
     builds.where(sha: sha).order('id DESC').limit(1).first
-  end
-
-  def sha_status_image sha
-    build = last_build_for_sha(sha)
-    image_for_build build
-  end
-
-  def image_for_build build
-    return 'unknown.png' unless build
-
-    if build.success?
-      'success.png'
-    elsif build.failed?
-      'failed.png'
-    elsif build.active?
-      'running.png'
-    else
-      'unknown.png'
-    end
   end
 
   def tracked_refs

@@ -1,18 +1,18 @@
+*.pid
+.powrc
+.ruby-version
+.rvmrc
+.secret
+.DS_Store
 ci.db
 config/application.yml
 config/database.yml
-config/puma.rb
 config/resque.yml
+config/unicorn.rb
+coverage/*
 log/*
 tmp/*
-*.pid
 /.bundle
 /db/*.sqlite3
 /log/*.log
-.powrc
-.rvmrc
-coverage/*
-.ruby-version
-<<<<<<< HEAD
-.secret
 /vendor

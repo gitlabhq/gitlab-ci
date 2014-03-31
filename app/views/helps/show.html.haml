@@ -1,11 +1,40 @@
 .jumbotron
   %h2
     GitLab CI
-    %span= GitlabCi::Version
-    %small= GitlabCi::Revision
+    %span= GitlabCi::VERSION
+    %small= GitlabCi::REVISION
   %p
     GitLab CI integrates with your GitLab installation and run tests for your projects.
     %br
-    Login with GitLab account, add project with one click and enjoy running tests.
+    Login with your GitLab account, add a project with one click and enjoy running your tests.
     %br
     Read more about GitLab CI at #{link_to "gitlab.org", "http://gitlab.org/gitlab-ci/", target: "_blank"}.
+
+
+.bs-callout.bs-callout-success
+  %h4
+    = link_to 'https://gitlab.com/gitlab-org/gitlab-ci/blob/master/doc/api/api.md' do
+      %i.icon-cogs
+      API
+  %p Explore how you can access GitLab CI via the API.
+
+.bs-callout.bs-callout-info
+  %h4
+    = link_to 'https://gitlab.com/gitlab-org/gitlab-ci/tree/master/doc/examples' do
+      %i.icon-info-sign
+      Build script examples
+  %p This includes the build script we use to test GitLab CE.
+
+.bs-callout.bs-callout-danger
+  %h4
+    = link_to 'https://gitlab.com/gitlab-org/gitlab-ci/issues' do
+      %i.icon-bug
+      Issue tracker
+  %p Reports about recent bugs and problems..
+
+.bs-callout.bs-callout-warning
+  %h4
+    = link_to 'http://feedback.gitlab.com/forums/176466-general/category/64310-gitlab-ci' do
+      %i.icon-thumbs-up
+      Feedback forum
+  %p Suggest improvements or new features for GitLab CI.

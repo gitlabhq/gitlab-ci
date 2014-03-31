@@ -1,7 +1,7 @@
 module GitlabCi
-  Version = File.read(Rails.root.join("VERSION"))
-  Revision = `git log --pretty=format:'%h' -n 1`
-  RunnersToken = SecureRandom.hex(10)
+  VERSION = File.read(Rails.root.join("VERSION")).strip
+  REVISION = `git log --pretty=format:'%h' -n 1`
+  RUNNERS_TOKEN = SecureRandom.hex(10)
 
   def self.config
     Settings

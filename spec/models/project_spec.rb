@@ -2,24 +2,24 @@
 #
 # Table name: projects
 #
-#  id                        :integer          not null, primary key
-#  name                      :string(255)      not null
-#  timeout                   :integer          default(1800), not null
-#  scripts                   :text             default(""), not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  token                     :string(255)
-#  default_ref               :string(255)
-#  gitlab_url                :string(255)
-#  always_build              :boolean          default(FALSE), not null
-#  polling_interval          :integer
-#  public                    :boolean          default(FALSE), not null
-#  ssh_url_to_repo           :string(255)
-#  gitlab_id                 :integer
-#  allow_git_fetch           :boolean          default(TRUE), not null
-#  email_recipients          :string(255)
-#  email_add_committer       :boolean          default(TRUE), not null
-#  email_only_breaking_build :boolean          default(TRUE), not null
+#  id                      :integer          not null, primary key
+#  name                    :string(255)      not null
+#  timeout                 :integer          default(1800), not null
+#  scripts                 :text             not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  token                   :string(255)
+#  default_ref             :string(255)
+#  gitlab_url              :string(255)
+#  always_build            :boolean          default(FALSE), not null
+#  polling_interval        :integer
+#  public                  :boolean          default(FALSE), not null
+#  ssh_url_to_repo         :string(255)
+#  gitlab_id               :integer
+#  allow_git_fetch         :boolean          default(TRUE), not null
+#  email_recipients        :string(255)      default(""), not null
+#  email_add_committer     :boolean          default(TRUE), not null
+#  email_only_broken_builds :boolean          default(TRUE), not null
 #
 
 require 'spec_helper'
@@ -28,6 +28,11 @@ describe Project do
   subject { FactoryGirl.build :project }
 
   it { should have_many(:builds) }
+
+  it { should validate_presence_of :name }
+  it { should validate_presence_of :scripts }
+  it { should validate_presence_of :timeout }
+  it { should validate_presence_of :default_ref }
 
   describe 'before_validation' do
     it 'should set an random token if none provided' do
@@ -41,30 +46,15 @@ describe Project do
     end
   end
 
-  it { should validate_presence_of :name }
-  it { should validate_presence_of :scripts }
-  it { should validate_presence_of :timeout }
-  it { should validate_presence_of :default_ref }
-
   context :valid_project do
     let(:project) { FactoryGirl.create :project }
 
-    describe :register_build do
-      let(:build) { project.register_build(ref: 'master', after: '31das312') }
-
-      it { build.should be_kind_of(Build) }
-      it { build.should be_pending }
-      it { build.should be_valid }
-      it { build.should == project.last_build }
-    end
-
     context :project_with_build do
-      before { project.register_build ref: 'master', after: '31das312' }
+      before { FactoryGirl.create(:build, project: project) }
 
       it { project.status.should == 'pending' }
       it { project.last_build.should be_kind_of(Build)  }
       it { project.human_status.should == 'pending' }
-      it { project.status_image.should == 'running.png' }
     end
   end
 
@@ -86,7 +76,6 @@ describe Project do
   end
 
   describe '#broken_or_success?' do
-
     it {
       project = FactoryGirl.create :project, email_add_committer: true
       project.stub(:broken?).and_return(true)
@@ -114,7 +103,18 @@ describe Project do
       project.stub(:success?).and_return(false)
       project.broken_or_success?.should == false
     }
-   end
+  end
+
+  describe 'Project.parse' do
+    let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
+    let(:parsed_project) { Project.parse(project_dump) }
+
+    it { parsed_project.should be_valid }
+    it { parsed_project.should be_kind_of(Project) }
+    it { parsed_project.name.should eq("GitLab / api.gitlab.org") }
+    it { parsed_project.gitlab_id.should eq(189) }
+    it { parsed_project.gitlab_url.should eq("http://localhost:3000/gitlab/api-gitlab-org") }
+  end
 end
 
 # == Schema Information

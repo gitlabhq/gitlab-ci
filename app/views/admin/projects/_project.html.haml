@@ -22,6 +22,6 @@
   %td
     = project.builds.count
   %td
-    = link_to [:admin, project], method: :delete do
+    = link_to [:admin, project], method: :delete, class: 'btn btn-danger btn-xs' do
       %i.icon-remove
       Remove

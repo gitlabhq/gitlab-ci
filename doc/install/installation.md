@@ -1,4 +1,12 @@
-# Setup: 
+# Select Version to Install
+Make sure you view this installation guide from the branch (version) of GitLab CI you would like to install. In most cases
+this should be the highest numbered stable branch (example shown below).
+
+![capture](http://i.imgur.com/fmdlXxa.png)
+
+If this is unclear check the [GitLab Blog](http://blog.gitlab.org/) for installation guide links by version.
+
+# Setup:
 
 ## 1. Packages / Dependencies
 
@@ -96,7 +104,7 @@ You can use either MySQL or PostgreSQL.
 
     cd gitlab-ci
 
-    sudo -u gitlab_ci -H git checkout 4-1-stable
+    sudo -u gitlab_ci -H git checkout 4-3-stable
 
 ## 6. Setup application
 
@@ -105,8 +113,8 @@ You can use either MySQL or PostgreSQL.
     sudo -u gitlab_ci -H editor config/application.yml
 
     # Edit web server settings
-    sudo -u gitlab_ci -H cp config/puma.rb.example config/puma.rb
-    sudo -u gitlab_ci -H editor config/puma.rb
+    sudo -u gitlab_ci -H cp config/unicorn.rb.example config/unicorn.rb
+    sudo -u gitlab_ci -H editor config/unicorn.rb
 
     # Create socket and pid directories
     sudo -u gitlab_ci -H mkdir -p tmp/sockets/
@@ -147,7 +155,6 @@ You can use either MySQL or PostgreSQL.
 Copy the init script (will be /etc/init.d/gitlab_ci):
 
     sudo cp /home/gitlab_ci/gitlab-ci/lib/support/init.d/gitlab_ci /etc/init.d/gitlab_ci
-    sudo chmod +x /etc/init.d/gitlab_ci
 
 Make GitLab start on boot:
 
@@ -185,9 +192,9 @@ Make sure to edit the config file to match your setup:
 
     sudo nginx -t
 
-## Reload configuration
+## Start nginx
 
-    sudo /etc/init.d/nginx reload
+    sudo /etc/init.d/nginx start
 
 
 

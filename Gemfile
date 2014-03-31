@@ -8,7 +8,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '4.0.2'
+gem 'rails', '4.0.3'
 gem 'protected_attributes'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
@@ -23,7 +23,7 @@ gem 'pg',     group: :postgres
 gem 'settingslogic'
 
 # Web server
-gem "puma", "~> 2.7.1"
+gem "unicorn", "~> 4.8.2"
 
 # Haml
 gem 'haml-rails'
@@ -56,7 +56,7 @@ gem 'grape-entity'
 gem 'rake'
 gem 'foreman'
 gem 'jquery-rails'
-gem 'gitlab_ci_meta'
+gem 'gitlab_ci_meta', '~> 4.0'
 
 gem 'sass-rails',   '~> 4.0.0'
 gem 'coffee-rails', '~> 4.0.0'
@@ -64,7 +64,10 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.0.3'
 gem "therubyracer"
 gem 'bootstrap-sass', '~> 3.0'
-gem "font-awesome-sass-rails", '~> 3.0.2'
+gem "font-awesome-rails", '~> 3.2'
+gem 'turbolinks'
+gem 'jquery-turbolinks'
+gem 'nprogress-rails'
 
 
 group :development do

@@ -1,6 +1,24 @@
+v4.4.0
+  - Nprogress bar
+  - Remove extra spaces in build script
+
+v4.3.0
+  - Refactor build js
+  - Redirect to build page with sha + bid if build id is not provided
+  - Update rails to 4.0.3
+  - Restyle project settings page
+  - Improve help page
+  - Replaced puma with unicorn
+  - Improved init.d script
+  - Add submodule init to default build script for new projects
+
 v4.2.0
   - Build duration chart
   - Bootstrap 3 with responsive UI
+  - Improved init.d script
+  - Refactoring
+  - Changed http codes for POST /projects/:id/build action
+  - Turbolinks
 
 v4.1.0
   - Rails 4

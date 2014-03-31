@@ -13,18 +13,24 @@
 #= require jquery
 #= require bootstrap
 #= require jquery_ujs
+#= require turbolinks
+#= require jquery.turbolinks
+#= require nprogress
+#= require nprogress-turbolinks
 #= require_tree .
 #
 #
 
-$ ->
-  $('.sync-now').on 'click', ->
-    alert(1)
-    $(this).addClass('icon-spin')
-  $('.edit-runner-link').on 'click', ->
-    descr = $(this).closest('.runner-description').first()
-    descr.hide()
-    descr.next('.runner-description-form').show()
+$(document).on 'click', '.edit-runner-link', ->
+  descr = $(this).closest('.runner-description').first()
+  descr.hide()
+  descr.next('.runner-description-form').show()
 
-  $('.assign-all-runner').on 'click', ->
-    $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')
+$(document).on 'click', '.assign-all-runner', ->
+  $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')
+
+window.unbindEvents = ->
+  $(document).unbind('scroll')
+  $(document).off('scroll')
+
+document.addEventListener("page:fetch", unbindEvents)

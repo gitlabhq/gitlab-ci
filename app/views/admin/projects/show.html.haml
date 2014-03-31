@@ -1,7 +1,10 @@
-= content_for :title do
-  %h3.project-title
-    %span.light Admin /
-    #{@project.name}
+%h4.page-title
+  Project: #{@project.name}
+
+%p
+  = link_to admin_projects_path do
+    &larr; Back to projects list
+%hr
 .row
   .col-md-6
     %fieldset
@@ -31,6 +34,7 @@
         Last build:
         - if @project.last_build
           = time_ago_in_words @project.last_build_date
+    %br
     %fieldset
       %legend Email notification
       %p
@@ -41,7 +45,7 @@
         %strong= @project.email_add_committer
       %p
         Send on all broken builds:
-        %strong= @project.email_all_broken_builds
+        %strong= @project.email_only_broken_builds
 
   .col-md-6
     %fieldset
@@ -50,6 +54,7 @@
         %pre
           = @project.scripts
 
+    %br
     %fieldset
       %legend Builds stats
       %p
