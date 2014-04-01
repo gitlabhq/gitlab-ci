@@ -19,6 +19,7 @@
         .form-group
           = f.text_field :description, class: 'form-control'
         = f.submit 'Save', class: 'btn'
+        %span (#{link_to 'cancel', '#', class: 'cancel'})
   %td
     - if runner.shared?
       \-
