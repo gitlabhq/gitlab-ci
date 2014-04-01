@@ -82,12 +82,6 @@ and
 
 * [Installation guide](doc/install/installation.md)
 
-### Docs
-
-* [Update guides](doc/update)
-* [API](doc/api/api.md)
-* [Examples](doc/examples)
-
 ### How to add a new project to GitLab CI
 
 1. Log in the GitLab CI web interface
@@ -116,7 +110,10 @@ The build command is run from [GitlabCi::Build#command](https://gitlab.com/gitla
     CI_SERVER, CI_SERVER_NAME, CI_SERVER_VERSION, CI_SERVER_REVISION
     CI_BUILD_REF, CI_BUILD_BEFORE_SHA, CI_BUILD_REF_NAME (branch), CI_BUILD_ID
 
+### Documentation
+
+All documentation can be found on [doc.gitlab.com/ci/](http://doc.gitlab.com/ci/).
+
 ### Getting help
 
-* [Feedback and suggestions forum](http://feedback.gitlab.com/forums/176466-general/category/64310-gitlab-ci) is the place to propose and discuss new features for GitLab CI.
-* [Subscriptions from GitLab.com](https://www.gitlab.com/subscription/) have setting up and maintaining GitLab CI as an optional extra.
+Please see [Getting help for GitLab](https://www.gitlab.com/getting-help/) on our website for the many options to get help.
