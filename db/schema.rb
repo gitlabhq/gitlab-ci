@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130121538) do
+ActiveRecord::Schema.define(version: 20140315174248) do
 
   create_table "builds", force: true do |t|
     t.integer  "project_id"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20140130121538) do
     t.string   "email_recipients",         default: "",    null: false
     t.boolean  "email_add_committer",      default: true,  null: false
     t.boolean  "email_only_broken_builds", default: true,  null: false
+    t.boolean  "build_only_tracked_refs",  default: false, null: false
   end
 
   create_table "runner_projects", force: true do |t|

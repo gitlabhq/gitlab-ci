@@ -105,6 +105,37 @@ describe Project do
     }
   end
 
+  describe '#build_ref?' do
+    let(:project) { Project.new }
+
+    it {
+      project.build_only_tracked_refs = false
+      project.build_ref?(nil).should == true
+    }
+
+    it {
+      project.build_only_tracked_refs = true
+      project.build_ref?(nil).should == true
+    }
+
+    it {
+      project.build_only_tracked_refs = false
+      project.build_ref?('feature').should == true
+    }
+
+    it {
+      project.build_only_tracked_refs = true
+      project.default_ref = 'master, feature'
+      project.build_ref?('feature').should == true
+    }
+
+    it {
+      project.build_only_tracked_refs = true
+      project.default_ref = 'master'
+      project.build_ref?('feature').should == false
+    }
+  end
+
   describe 'Project.parse' do
     let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:parsed_project) { Project.parse(project_dump) }

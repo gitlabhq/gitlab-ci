@@ -26,7 +26,8 @@ class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
-    :email_recipients, :email_add_committer, :email_only_broken_builds
+    :email_recipients, :email_add_committer, :email_only_broken_builds,
+    :build_only_tracked_refs
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -161,5 +162,15 @@ ls -la
     last_builds = builds.where(ref: ref).order('id DESC').limit(2)
     return false if last_builds.size < 2
     return last_builds[0].status != last_builds[1].status
+  end
+
+  def build_ref? ref
+    build_all_refs? or ref.nil? or tracked_refs.include?(ref)
+  end
+
+  private
+
+  def build_all_refs?
+    not build_only_tracked_refs?
   end
 end

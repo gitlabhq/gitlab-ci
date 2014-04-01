@@ -65,6 +65,13 @@
         = f.text_field :default_ref, class: 'form-control', placeholder: 'master, stable'
         .light You will be able to filter builds by the following branches
     .form-group
+      = f.label :build_only_tracked_refs, 'Build only tabbed branches', class: 'control-label'
+      .col-sm-10
+        .checkbox
+          = f.label :build_only_tracked_refs do
+            = f.check_box :build_only_tracked_refs
+            %span.light Build only changes from the branches, mentioned above
+    .form-group
       = f.label :public, 'Public mode', class: 'control-label'
       .col-sm-10
         .checkbox

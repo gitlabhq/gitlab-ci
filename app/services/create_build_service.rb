@@ -15,6 +15,6 @@ class CreateBuildService
       push_data: params
     }
 
-    project.builds.create(data)
+    project.builds.create(data) if project.build_ref?(ref)
   end
 end
