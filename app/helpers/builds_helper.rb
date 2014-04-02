@@ -26,6 +26,6 @@ module BuildsHelper
   end
 
   def build_url(build)
-    project_build_url(build.project, build)
+    project_build_path(build.project, build)
   end
 end
