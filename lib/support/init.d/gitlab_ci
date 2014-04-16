@@ -161,7 +161,7 @@ start() {
 
   # Then check if the service is running. If it is: don't start again.
   if [ "$web_status" = "0" ]; then
-    echo "The Unicorn web server already running with pid $wpid, not restarting."
+    echo "The GitLab CI Unicorn web server already running with pid $wpid, not restarting."
   else
     # Remove old socket if it exists
     rm -f "$socket_path"/gitlab_ci.socket 2>/dev/null
@@ -171,7 +171,7 @@ start() {
 
   # If sidekiq is already running, don't start it again.
   if [ "$sidekiq_status" = "0" ]; then
-    echo "The Sidekiq job dispatcher is already running with pid $spid, not restarting"
+    echo "The GitLab CI Sidekiq job dispatcher is already running with pid $spid, not restarting"
   else
     RAILS_ENV=$RAILS_ENV script/background_jobs start &
   fi
@@ -187,11 +187,11 @@ stop() {
   exit_if_not_running
 
   if [ "$web_status" = "0" -a "$sidekiq_status" = "0" ]; then
-    echo -n "Shutting down both Unicorn and Sidekiq"
+    echo -n "Shutting down both GitLab CI Unicorn and Sidekiq"
   elif [ "$web_status" = "0" ]; then
-    echo -n "Shutting down Sidekiq"
+    echo -n "Shutting down GitLab CI Sidekiq"
   elif [ "$sidekiq_status" = "0" ]; then
-    echo -n "Shutting down Unicorn"
+    echo -n "Shutting down GitLab CI Unicorn"
   fi
 
   # If the Unicorn web server is running, tell it to stop;
