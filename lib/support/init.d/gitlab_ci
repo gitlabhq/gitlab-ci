@@ -226,21 +226,21 @@ stop() {
 print_status() {
   check_status
   if [ "$web_status" != "0" -a "$sidekiq_status" != "0" ]; then
-    echo "GitLab is not running."
+    echo "GitLab CI is not running."
     return
   fi
   if [ "$web_status" = "0" ]; then
-      echo "The GitLab Unicorn web server with pid $wpid is running."
+      echo "The GitLab CI Unicorn web server with pid $wpid is running."
   else
-      printf "The GitLab Unicorn web server is \033[31mnot running\033[0m.\n"
+      printf "The GitLab CI Unicorn web server is \033[31mnot running\033[0m.\n"
   fi
   if [ "$sidekiq_status" = "0" ]; then
-      echo "The GitLab Sidekiq job dispatcher with pid $spid is running."
+      echo "The GitLab CI Sidekiq job dispatcher with pid $spid is running."
   else
-      printf "The GitLab Sidekiq job dispatcher is \033[31mnot running\033[0m.\n"
+      printf "The GitLab CI Sidekiq job dispatcher is \033[31mnot running\033[0m.\n"
   fi
   if [ "$web_status" = "0" -a "$sidekiq_status" = "0" ]; then
-    printf "GitLab and all its components are \033[32mup and running\033[0m.\n"
+    printf "GitLab CI and all its components are \033[32mup and running\033[0m.\n"
   fi
 }
 
