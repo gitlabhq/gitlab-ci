@@ -35,14 +35,12 @@ Hardware requirements:
 * Distributed by default: GitLab CI and build runners can run on separate machines providing more stability
 * Realtime logging: the current build log scrolls and updates every few seconds
 
-### Limitations
+### Roadmap
 
-The following features are not in GitLab CI but merge requests are very welcome:
+The following features are not yet in GitLab CI but merge requests are very welcome:
 
-* Build artifacts access
-* Build pipeline / build promotion actions
-
-To support parallel builds and deployments there is a [blog article with a roadmap](http://blog.gitlab.org/gitlab-ci-with-parallel-builds-and-deployments/).
+* [Build artifacts access](http://feedback.gitlab.com/forums/176466-general/suggestions/4522830-allow-access-to-build-artifacts-of-gitlab-ci)
+* For parallel builds, deployments, branch specific builds and build metrics there is a [blog article with implementation steps](http://blog.gitlab.org/gitlab-ci-with-parallel-builds-and-deployments/)
 
 ### Runners
 
