@@ -109,8 +109,11 @@ You can use either MySQL or PostgreSQL.
 ## 6. Setup application
 
     # Edit application settings
+    # Production
     sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
     sudo -u gitlab_ci -H editor config/application.yml
+    # Development
+    #sudo -u gitlab_ci -H cp config/application.yml.example.development config/application.yml
 
     # Edit web server settings
     sudo -u gitlab_ci -H cp config/unicorn.rb.example config/unicorn.rb
