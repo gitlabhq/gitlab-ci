@@ -1,0 +1,7 @@
+development:
+  allowed_gitlab_urls:
+    - 'http://localhost:3000'
+  gitlab_ci:
+    host: localhost
+    port: 5000
+    https: false
