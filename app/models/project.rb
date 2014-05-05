@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
-  has_many :web_hooks
+  has_many :web_hooks, dependent: :destroy
 
   #
   # Validations

@@ -1,6 +1,7 @@
 class WebHook < ActiveRecord::Base
-  belongs_to :project
   include HTTParty
+
+  belongs_to :project
 
   attr_accessible :url
 

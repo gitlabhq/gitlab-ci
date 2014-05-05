@@ -11,21 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130121538) do
+ActiveRecord::Schema.define(version: 20140222210357) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "builds", force: true do |t|
     t.integer  "project_id"
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace",       limit: 1073741823
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "trace"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "sha"
     t.datetime "started_at"
     t.string   "tmp_file"
     t.string   "before_sha"
-    t.text     "push_data",   limit: 16777215
+    t.text     "push_data"
     t.integer  "runner_id"
   end
 
@@ -36,8 +39,8 @@ ActiveRecord::Schema.define(version: 20140130121538) do
     t.string   "name",                                     null: false
     t.integer  "timeout",                  default: 1800,  null: false
     t.text     "scripts",                                  null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.string   "token"
     t.string   "default_ref"
     t.string   "gitlab_url"
@@ -55,8 +58,8 @@ ActiveRecord::Schema.define(version: 20140130121538) do
   create_table "runner_projects", force: true do |t|
     t.integer  "runner_id",  null: false
     t.integer  "project_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "runner_projects", ["project_id"], name: "index_runner_projects_on_project_id", using: :btree
@@ -65,24 +68,44 @@ ActiveRecord::Schema.define(version: 20140130121538) do
   create_table "runners", force: true do |t|
     t.string   "token"
     t.text     "public_key"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "description"
   end
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
+  create_table "users", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
   create_table "web_hooks", force: true do |t|
-    t.string  "url"
-    t.integer "project_id"
+    t.string   "url",        null: false
+    t.integer  "project_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
