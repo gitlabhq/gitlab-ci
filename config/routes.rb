@@ -28,6 +28,12 @@ GitlabCi::Application.routes.draw do
         post :retry
       end
     end
+
+    resources :web_hooks, only: [:index, :create, :destroy] do
+      member do
+        get :test
+      end
+    end
   end
 
   resource :user_sessions
