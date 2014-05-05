@@ -1,6 +1,13 @@
-v4.4.0
+v5.0.0
+  - Set build timeout in minutes
+  - Web Hooks for builds
   - Nprogress bar
   - Remove extra spaces in build script
+  - Requires runner v5
+    * All script commands executed as one file
+    * Cancel button works correctly now
+    * Runner stability increased
+    * Timeout applies to build now instead of line of script
 
 v4.3.0
   - Refactor build js
