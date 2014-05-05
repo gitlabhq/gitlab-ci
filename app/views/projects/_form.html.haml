@@ -15,10 +15,9 @@
         = f.text_area :scripts, class: 'form-control', rows: 14, placeholder: "bundle exec rake spec"
         .bs-callout.bs-callout-info
           %p
-            Each line below will be executed separately.
+            All lines will be concatenated in one file and executed.
             %br
-            If you need to change the working directory or the environment in a step, do so as follows
-          %code cd my_dir && MY_VAR=value ./my_script
+            If you change the working directory or the environment in one line - it will affect the next lines too
 
     .form-group
       = label_tag nil, class: 'control-label' do
@@ -36,10 +35,10 @@
             %strong git fetch
             .light Faster
     .form-group
-      = f.label :timeout, 'Timeout', class: 'control-label'
+      = f.label :timeout_in_minutes, 'Timeout', class: 'control-label'
       .col-sm-10
-        = f.number_field :timeout, class: 'form-control', min: '0'
-        .light In seconds
+        = f.number_field :timeout_in_minutes, class: 'form-control', min: '0'
+        .light per build in minutes
 
 
   %fieldset

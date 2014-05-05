@@ -23,7 +23,7 @@
 #
 
 class Project < ActiveRecord::Base
-  attr_accessible :name, :path, :scripts, :timeout, :token,
+  attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
     :email_recipients, :email_add_committer, :email_only_broken_builds
@@ -161,5 +161,13 @@ ls -la
     last_builds = builds.where(ref: ref).order('id DESC').limit(2)
     return false if last_builds.size < 2
     return last_builds[0].status != last_builds[1].status
+  end
+
+  def timeout_in_minutes
+    timeout / 60
+  end
+
+  def timeout_in_minutes=(value)
+    self.timeout = value.to_i * 60
   end
 end
