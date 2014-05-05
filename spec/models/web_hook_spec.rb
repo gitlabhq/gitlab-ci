@@ -28,8 +28,7 @@ describe WebHook do
   describe "execute" do
     before(:each) do
       @web_hook = FactoryGirl.create(:web_hook)
-      @project = FactoryGirl.create(:project)
-      @project.web_hooks << [@web_hook]
+      @project = @web_hook.project
       @data = { before: 'oldrev', after: 'newrev', ref: 'ref'}
 
       WebMock.stub_request(:post, @web_hook.url)
