@@ -4,8 +4,8 @@ class WebHookService
   end
 
   def execute_hooks(project, data)
-    project.web_hooks.each do |wh|
-      async_execute_hook wh, data
+    project.web_hooks.each do |web_hook|
+      async_execute_hook(web_hook, data)
     end
   end
 
@@ -17,18 +17,17 @@ class WebHookService
     project = build.project
     data = {}
     data.merge!({
-      id: build.id,
+      build_id: build.id,
+      build_status: build.status,
+      build_started_at: build.started_at,
+      build_finished_at: build.finished_at,
       project_id: project.id,
       project_name: project.name,
       gitlab_url: project.gitlab_url,
       ref: build.ref,
-      status: build.status,
-      started_at: build.started_at,
-      finished_at: build.finished_at,
       sha: build.sha,
       before_sha: build.before_sha,
       push_data: build.push_data
-
     })
   end
 end
