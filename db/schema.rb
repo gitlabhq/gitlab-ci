@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130121538) do
+ActiveRecord::Schema.define(version: 20140222210357) do
 
   create_table "builds", force: true do |t|
     t.integer  "project_id"
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace",       limit: 1073741823
+    t.text     "trace",       limit: 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sha"
@@ -79,5 +79,12 @@ ActiveRecord::Schema.define(version: 20140130121538) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
+
+  create_table "web_hooks", force: true do |t|
+    t.string   "url",        null: false
+    t.integer  "project_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

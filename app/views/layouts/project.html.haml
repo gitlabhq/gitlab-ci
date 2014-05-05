@@ -34,6 +34,10 @@
                 = link_to integration_project_path(@project) do
                   %i.icon-wrench
                   Integration
+              = nav_link path: 'web_hooks#index' do
+                = link_to project_web_hooks_path(@project) do
+                  %i.icon-link
+                  Web Hooks
               = nav_link path: 'projects#edit' do
                 = link_to edit_project_path(@project) do
                   %i.icon-edit

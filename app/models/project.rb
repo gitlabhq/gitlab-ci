@@ -31,6 +31,7 @@ class Project < ActiveRecord::Base
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
+  has_many :web_hooks, dependent: :destroy
 
   #
   # Validations
@@ -153,6 +154,10 @@ ls -la
 
   def email_notification?
     email_add_committer || email_recipients.present?
+  end
+
+  def web_hooks?
+    web_hooks.any?
   end
 
   # onlu check for toggling build status within same ref.
