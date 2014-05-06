@@ -8,8 +8,8 @@
 #  status      :string(255)
 #  finished_at :datetime
 #  trace       :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  created_at  :datetime
+#  updated_at  :datetime
 #  sha         :string(255)
 #  started_at  :datetime
 #  tmp_file    :string(255)

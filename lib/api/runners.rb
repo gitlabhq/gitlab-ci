@@ -24,15 +24,14 @@ module API
       #
       # Parameters:
       #   token (required) - The unique token of runner
-      #   public_key (required) - Deploy key used to get projects
       #
       # Example Request:
       #   POST /runners/register
       post "register" do
         authenticate_runners!
-        required_attributes! [:token, :public_key]
+        required_attributes! [:token]
 
-        runner = Runner.create(public_key: params[:public_key])
+        runner = Runner.create
 
         if runner.id
           present runner, with: Entities::Runner

@@ -4,9 +4,8 @@
 #
 #  id          :integer          not null, primary key
 #  token       :string(255)
-#  public_key  :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  created_at  :datetime
+#  updated_at  :datetime
 #  description :string(255)
 #
 
@@ -17,7 +16,7 @@ class Runner < ActiveRecord::Base
 
   has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 
-  attr_accessible :token, :public_key, :description
+  attr_accessible :token, :description
 
   before_validation :set_default_values
 

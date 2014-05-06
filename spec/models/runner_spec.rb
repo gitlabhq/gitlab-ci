@@ -4,9 +4,8 @@
 #
 #  id          :integer          not null, primary key
 #  token       :string(255)
-#  public_key  :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  created_at  :datetime
+#  updated_at  :datetime
 #  description :string(255)
 #
 
