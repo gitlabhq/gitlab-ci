@@ -5,3 +5,10 @@ development:
     host: localhost
     port: 9000
     https: false
+test:
+  gitlab_server_urls:
+    - 'http://demo.gitlab.com/'
+  gitlab_ci:
+    host: localhost
+    port: 80
+    https: false

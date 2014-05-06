@@ -5,8 +5,8 @@
 #  id         :integer          not null, primary key
 #  runner_id  :integer          not null
 #  project_id :integer          not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

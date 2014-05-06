@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: web_hooks
+#
+#  id         :integer          not null, primary key
+#  url        :string(255)      not null
+#  project_id :integer          not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class WebHook < ActiveRecord::Base
   include HTTParty
 
