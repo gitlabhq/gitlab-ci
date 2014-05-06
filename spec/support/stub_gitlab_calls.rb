@@ -14,7 +14,7 @@ module StubGitlabCalls
   private
 
   def gitlab_url
-    GitlabCi.config.allowed_gitlab_urls.first
+    GitlabCi.config.gitlab_server_urls.first
   end
 
   def stub_session

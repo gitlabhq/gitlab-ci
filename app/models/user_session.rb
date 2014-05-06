@@ -24,7 +24,7 @@ class UserSession
   def authenticate_via(options, &block)
     url = options.delete(:url)
 
-    return nil unless GitlabCi.config.allowed_gitlab_urls.include?(url)
+    return nil unless GitlabCi.config.gitlab_server_urls.include?(url)
 
     user = block.call(url, Network.new, options)
 

@@ -1,5 +1,5 @@
 defaults: &defaults
-  allowed_gitlab_urls: 
+  gitlab_server_urls:
     # Replace with your gitlab server url
     - 'https://gitlab.example.com/'
 
@@ -36,7 +36,7 @@ development:
 
 test:
   <<: *defaults
-  allowed_gitlab_urls: 
+  gitlab_server_urls:
     - 'http://demo.gitlab.com/'
 
 production:
