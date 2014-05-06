@@ -41,6 +41,8 @@ Settings.gitlab_ci['all_broken_builds'] = true if Settings.gitlab_ci['all_broken
 Settings.gitlab_ci['add_committer']     = false if Settings.gitlab_ci['add_committer'].nil?
 Settings.gitlab_ci['url']                 ||= Settings.send(:build_gitlab_ci_url)
 
+# Compatibility with old config
+Settings['gitlab_server_urls'] ||= Settings['allowed_gitlab_urls']
 
 #
 # Gravatar
