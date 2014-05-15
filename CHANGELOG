@@ -1,3 +1,6 @@
+v5.0.1
+  - Update rails to 4.0.5
+
 v5.0.0
   - Set build timeout in minutes
   - Web Hooks for builds
