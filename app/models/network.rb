@@ -52,7 +52,7 @@ class Network
     response = self.class.get(endpoint, opts)
 
     if response.code == 200
-      response.parsed_response
+      response.parsed_response.delete_if { |p| p['archived'] == true }    
     else
       nil
     end

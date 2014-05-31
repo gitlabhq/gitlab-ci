@@ -1,3 +1,6 @@
+v5.0.2
+  - Hide projects that have already been archived in Gitlab
+
 v5.0.1
   - Update rails to 4.0.5
 
