@@ -22,7 +22,7 @@ module API
     end
 
     def authenticate_runners!
-      forbidden! unless params[:token] == GitlabCi::RUNNERS_TOKEN
+      forbidden! unless params[:token] == GitlabCi::REGISTRATION_TOKEN
     end
 
     def authenticate_runner!

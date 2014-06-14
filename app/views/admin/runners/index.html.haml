@@ -7,8 +7,8 @@
         = pluralize(@runners.total_count, 'runner')
 
 %p.lead
-  %span To register a new runner you should use the following token
-  %code #{GitlabCi::RUNNERS_TOKEN}
+  %span To register new runner you should the following registration token. With this token the runner will request a unique runner token and use that for future communication.
+  %code #{GitlabCi::REGISTRATION_TOKEN}
 
 .bs-callout
   %p
@@ -35,7 +35,7 @@
     %tr
       %th ID
       %th Type
-      %th Token
+      %th Runner token
       %th Description
       %th Projects
       %th Builds Stats
