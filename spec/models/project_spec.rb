@@ -75,6 +75,22 @@ describe Project do
     end
   end
 
+  describe '#slack_notification?' do
+    it do
+      project = FactoryGirl.create :project
+      project.slack_notification?.should == false
+    end
+
+    it do
+      project = FactoryGirl.create :project,
+                                  slack_notification_channel: '#devs',
+                                  slack_notification_subdomain: 'example.com',
+                                  slack_notification_token: '121212121aaaa',
+                                  slack_notification_username: 'gitlab'
+      project.slack_notification?.should == true
+    end
+  end
+
   describe '#broken_or_success?' do
     it {
       project = FactoryGirl.create :project, email_add_committer: true
@@ -140,4 +156,3 @@ end
 #  email_add_committer       :boolean          default(TRUE), not null
 #  email_only_breaking_build :boolean          default(TRUE), not null
 #
-

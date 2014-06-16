@@ -115,6 +115,33 @@
             %span Send notification only for broken builds
 
   %fieldset
+    %legend Slack notification
+    .form-group
+      = f.label :slack_notification_subdomain, "Subdomain", class: 'control-label'
+      .col-sm-10
+        = f.text_field :slack_notification_subdomain, class: 'form-control'
+    .form-group
+      = f.label :slack_notification_token, "Token", class: 'control-label'
+      .col-sm-10
+        = f.text_field :slack_notification_token, class: 'form-control'
+    .form-group
+      = f.label :slack_notification_username, "Username", class: 'control-label'
+      .col-sm-10
+        = f.text_field :slack_notification_username, class: 'form-control'
+    .form-group
+      = f.label :slack_notification_channel, "Channel", class: 'control-label'
+      .col-sm-10
+        = f.text_field :slack_notification_channel, class: 'form-control'
+        .light Slack channel to post in, starting with a '#'
+    .form-group
+      .col-sm-2
+      .col-sm-10
+        .checkbox
+          = f.label :slack_only_broken_builds do
+            = f.check_box :slack_only_broken_builds
+            %span Send notification only for broken builds
+
+  %fieldset
     %legend Advanced settings
     .form-group
       = f.label :name, class: 'control-label'

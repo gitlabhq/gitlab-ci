@@ -67,6 +67,7 @@ gem "font-awesome-rails", '~> 3.2'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'nprogress-rails'
+gem 'slack-post'
 
 
 group :development do
