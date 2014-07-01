@@ -13,8 +13,10 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new
     user = @user_session.authenticate(params[:user_session])
 
+    @return_to = params[:return_to] if params[:return_to].present?
+
     if user && sign_in(user)
-      redirect_to root_path
+      redirect_to @return_to || root_path
     else
       @error = 'Invalid credentials'
       render :new

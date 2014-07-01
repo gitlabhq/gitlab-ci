@@ -32,4 +32,4 @@
               Logout
         - else
           %li
-            = link_to 'Login', new_user_sessions_path
+            = link_to 'Login', new_user_sessions_path(return_to: request.fullpath)

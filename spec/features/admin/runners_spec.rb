@@ -11,8 +11,8 @@ describe "Admin Runners" do
       visit admin_runners_path
     end
 
-    it { page.should have_content "Manage Runners" }
-    it { page.should have_content "To register a new runner" }
+    it { page.has_text? "Manage Runners" }
+    it { page.has_text? "To register a new runner" }
   end
 
   describe "GET /admin/runners/:id" do
