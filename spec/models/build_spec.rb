@@ -312,7 +312,10 @@ describe Build do
     end
 
     context 'if the building process has started' do
-      before { build.finished_at = nil }
+      before do
+        build.started_at = Time.now - 1.minute
+        build.finished_at = nil
+      end
 
       it { should be_a(Float) }
       it { should > 0.0 }
