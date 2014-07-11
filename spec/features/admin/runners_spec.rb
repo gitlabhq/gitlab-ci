@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Admin Runners" do
   before do
@@ -22,6 +22,6 @@ describe "Admin Runners" do
       visit admin_runner_path(runner)
     end
 
-    it { page.should have_content runner.token }
+    it { expect(page).to have_content(runner.token) }
   end
 end

@@ -9,7 +9,7 @@
 #  updated_at :datetime
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe WebHook do
   describe "Associations" do
@@ -47,22 +47,20 @@ describe WebHook do
 
     it "POSTs to the web hook URL" do
       @web_hook.execute(@data)
-      WebMock.should have_requested(:post, @web_hook.url).once
+      expect(WebMock).to have_requested(:post, @web_hook.url).once
     end
 
     it "POSTs the data as JSON" do
       json = @data.to_json
 
       @web_hook.execute(@data)
-      WebMock.should have_requested(:post, @web_hook.url).with(body: json).once
+      expect(WebMock).to have_requested(:post, @web_hook.url).with(body: json).once
     end
 
     it "catches exceptions" do
-      WebHook.should_receive(:post).and_raise("Some HTTP Post error")
+      expect(WebHook).to receive(:post).and_raise("Some HTTP Post error")
 
-      lambda {
-        @web_hook.execute(@data)
-      }.should raise_error
+      expect { @web_hook.execute(@data) }.to raise_error
     end
   end
 end

@@ -9,7 +9,7 @@
 #  description :string(255)
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Runner do
   describe '#display_name' do
