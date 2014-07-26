@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe API::API do
   include ApiHelpers
@@ -31,10 +31,10 @@ describe API::API do
 
       it "should return all projects on the CI instance" do
         get api("/projects"), options
-        response.status.should == 200
-        json_response.count.should == 2
-        json_response.first["id"].should == project1.id
-        json_response.last["id"].should == project2.id
+        expect(response.status).to be == 200
+        expect(json_response.count).to be == 2
+        expect(json_response.first["id"]).to be == project1.id
+        expect(json_response.last["id"]).to be == project2.id
       end
     end
 
@@ -46,8 +46,8 @@ describe API::API do
       it "should return all projects on the CI instance" do
         get api("/projects/owned"), options
 
-        response.status.should == 200
-        json_response.count.should == 0
+        expect(response.status).to be == 200
+        expect(json_response.count).to be == 0
       end
     end
   end
@@ -59,15 +59,15 @@ describe API::API do
     context "with an existing project" do
       it "should retrieve the project info" do
         get api("/projects/#{project.id}"), options
-        response.status.should == 200
-        json_response['id'].should == project.id
+        expect(response.status).to be == 200
+        expect(json_response['id']).to be == project.id
       end
     end
 
     context "with a non-existing project" do
       it "should return 404 error if project not found" do
         get api("/projects/non_existent_id"), options
-        response.status.should == 404
+        expect(response.status).to be == 404
       end
     end
   end
@@ -82,13 +82,13 @@ describe API::API do
 
     it "should update a specific project's information" do
       put api("/projects/#{project.id}"), options
-      response.status.should == 200
-      json_response["name"].should == project_info[:name]
+      expect(response.status).to be == 200
+      expect(json_response["name"]).to be == project_info[:name]
     end
 
     it "fails to update a non-existing project" do
       put api("/projects/non-existant-id"), options
-      response.status.should == 404
+      expect(response.status).to be == 404
     end
   end
 
@@ -97,7 +97,7 @@ describe API::API do
 
     it "should delete a specific project" do
       delete api("/projects/#{project.id}"), options
-      response.status.should == 200
+      expect(response.status).to be == 200
 
       expect { project.reload }.to raise_error
     end
@@ -122,8 +122,8 @@ describe API::API do
 
       it "should create a project with valid data" do
         post api("/projects"), options
-        response.status.should == 201
-        json_response['name'].should == project_info[:name]
+        expect(response.status).to be == 201
+        expect(json_response['name']).to be == project_info[:name]
       end
     end
 
@@ -134,7 +134,7 @@ describe API::API do
 
       it "should error with invalid data" do
         post api("/projects"), options
-        response.status.should == 400
+        expect(response.status).to be == 400
       end
     end
 
@@ -144,18 +144,18 @@ describe API::API do
 
       it "should add the project to the runner" do
         post api("/projects/#{project.id}/runners/#{runner.id}"), options
-        response.status.should == 201
+        expect(response.status).to be == 201
 
         project.reload
-        project.runners.first.id.should == runner.id
+        expect(project.runners.first.id).to be == runner.id
       end
 
       it "should fail if it tries to link a non-existing project or runner" do
         post api("/projects/#{project.id}/runners/non-existing"), options
-        response.status.should == 404
+        expect(response.status).to be == 404
 
         post api("/projects/non-existing/runners/#{runner.id}"), options
-        response.status.should == 404
+        expect(response.status).to be == 404
       end
     end
 
@@ -168,12 +168,12 @@ describe API::API do
       end
 
       it "should remove the project from the runner" do
-        project.runners.should be_present
+        expect(project.runners).to be_present
         delete api("/projects/#{project.id}/runners/#{runner.id}"), options
-        response.status.should == 200
+        expect(response.status).to be == 200
 
         project.reload
-        project.runners.should be_empty
+        expect(project.runners).to be_empty
       end
     end
   end

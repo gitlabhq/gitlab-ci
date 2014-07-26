@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Charts" do
 
@@ -10,7 +10,7 @@ describe "Charts" do
 
     it 'should return build times in minutes' do
       chart = Charts::BuildTime.new(@project)
-      chart.build_times.should == [2]
+      expect(chart.build_times).to eq([2])
     end
   end
 end

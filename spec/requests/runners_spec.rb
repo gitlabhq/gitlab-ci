@@ -1,13 +1,11 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe API::API do
   include ApiHelpers
   include StubGitlabCalls
-  
-  before {
-    stub_gitlab_calls
-  }
-  
+
+  before { stub_gitlab_calls }
+
   describe "GET /runners" do
     let(:gitlab_url) { GitlabCi.config.gitlab_server_urls.first }
     let(:auth_opts) {
@@ -31,10 +29,10 @@ describe API::API do
 
     it "should retrieve a list of all runners" do
       get api("/runners"), options
-      response.status.should == 200
-      json_response.count.should == 5
-      json_response.last.should have_key("id")
-      json_response.last.should have_key("token")
+      expect(response.status).to be == 200
+      expect(json_response.count).to be == 5
+      expect(json_response.last).to have_key("id")
+      expect(json_response.last).to have_key("token")
     end
   end
 
@@ -42,13 +40,13 @@ describe API::API do
     it "should create a runner if token provided" do
       post api("/runners/register"), token: GitlabCi::REGISTRATION_TOKEN, public_key: 'sha-rsa ....'
 
-      response.status.should == 201
+      expect(response.status).to be == 201
     end
 
     it "should return 403 error if no token" do
       post api("/runners/register")
 
-      response.status.should == 403
+      expect(response.status).to be == 403
     end
   end
 end

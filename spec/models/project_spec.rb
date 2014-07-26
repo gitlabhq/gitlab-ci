@@ -22,7 +22,7 @@
 #  email_only_broken_builds :boolean          default(TRUE), not null
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Project do
   subject { FactoryGirl.build :project }
@@ -37,12 +37,12 @@ describe Project do
   describe 'before_validation' do
     it 'should set an random token if none provided' do
       project = FactoryGirl.create :project_without_token
-      project.token.should_not == ""
+      expect(project.token).not_to eq("")
     end
 
     it 'should not set an random toke if one provided' do
       project = FactoryGirl.create :project
-      project.token.should == "iPWx6WM4lhHNedGfBpPJNP"
+      expect(project.token).to be == "iPWx6WM4lhHNedGfBpPJNP"
     end
   end
 
@@ -52,56 +52,56 @@ describe Project do
     context :project_with_build do
       before { FactoryGirl.create(:build, project: project) }
 
-      it { project.status.should == 'pending' }
-      it { project.last_build.should be_kind_of(Build)  }
-      it { project.human_status.should == 'pending' }
+      it { expect(project.status).to be == 'pending' }
+      it { expect(project.last_build).to be_kind_of(Build)  }
+      it { expect(project.human_status).to be == 'pending' }
     end
   end
 
   describe '#email_notification?' do
     it do
       project = FactoryGirl.create :project, email_add_committer: true
-      project.email_notification?.should == true
+      expect(project.email_notification?).to be == true
     end
 
     it do
       project = FactoryGirl.create :project, email_add_committer: false, email_recipients: 'test tesft'
-      project.email_notification?.should == true
+      expect(project.email_notification?).to be == true
     end
 
     it do
       project = FactoryGirl.create :project, email_add_committer: false, email_recipients: ''
-      project.email_notification?.should == false
+      expect(project.email_notification?).to be == false
     end
   end
 
   describe '#broken_or_success?' do
     it {
       project = FactoryGirl.create :project, email_add_committer: true
-      project.stub(:broken?).and_return(true)
-      project.stub(:success?).and_return(true)
-      project.broken_or_success?.should == true
+      allow(project).to receive(:broken?).and_return(true)
+      allow(project).to receive(:success?).and_return(true)
+      expect(project.broken_or_success?).to be == true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_committer: true
-      project.stub(:broken?).and_return(true)
-      project.stub(:success?).and_return(false)
-      project.broken_or_success?.should == true
+      allow(project).to receive(:broken?).and_return(true)
+      allow(project).to receive(:success?).and_return(false)
+      expect(project.broken_or_success?).to be == true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_committer: true
-      project.stub(:broken?).and_return(false)
-      project.stub(:success?).and_return(true)
-      project.broken_or_success?.should == true
+      allow(project).to receive(:broken?).and_return(false)
+      allow(project).to receive(:success?).and_return(true)
+      expect(project.broken_or_success?).to be == true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_committer: true
-      project.stub(:broken?).and_return(false)
-      project.stub(:success?).and_return(false)
-      project.broken_or_success?.should == false
+      allow(project).to receive(:broken?).and_return(false)
+      allow(project).to receive(:success?).and_return(false)
+      expect(project.broken_or_success?).to be == false
     }
   end
 
@@ -109,11 +109,11 @@ describe Project do
     let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:parsed_project) { Project.parse(project_dump) }
 
-    it { parsed_project.should be_valid }
-    it { parsed_project.should be_kind_of(Project) }
-    it { parsed_project.name.should eq("GitLab / api.gitlab.org") }
-    it { parsed_project.gitlab_id.should eq(189) }
-    it { parsed_project.gitlab_url.should eq("http://localhost:3000/gitlab/api-gitlab-org") }
+    it { expect(parsed_project).to be_valid }
+    it { expect(parsed_project).to be_kind_of(Project) }
+    it { expect(parsed_project.name).to eq("GitLab / api.gitlab.org") }
+    it { expect(parsed_project.gitlab_id).to eq(189) }
+    it { expect(parsed_project.gitlab_url).to eq("http://localhost:3000/gitlab/api-gitlab-org") }
   end
 end
 

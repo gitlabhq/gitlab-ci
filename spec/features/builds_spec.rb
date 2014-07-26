@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Builds" do
   before do
@@ -12,8 +12,8 @@ describe "Builds" do
       visit project_build_path(@project, @build)
     end
 
-    it { page.should have_content @build.sha[0..7] }
-    it { page.should have_content @build.git_commit_message }
-    it { page.should have_content @build.git_author_name }
+    it { expect(page).to have_content(@build.sha[0..7]) }
+    it { expect(page).to have_content(@build.git_commit_message) }
+    it { expect(page).to have_content(@build.git_author_name) }
   end
 end
