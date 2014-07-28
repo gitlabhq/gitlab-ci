@@ -31,7 +31,7 @@ gem 'haml-rails'
 # Background jobs
 gem 'slim'
 gem 'sinatra', :require => nil
-gem 'sidekiq'
+gem 'sidekiq', '~> 2.17.0'
 
 # Scheduled
 gem 'whenever', require: false
@@ -79,9 +79,9 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'rspec-rails'
-  gem 'capybara'
-  gem 'poltergeist'
+  gem 'rspec-rails', '~> 3.0.1'
+  gem 'capybara', '~> 2.4.0'
+  gem 'poltergeist', '~> 1.5.1'
   gem 'factory_girl_rails'
   gem "ffaker"
 

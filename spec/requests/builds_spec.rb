@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe API::API do
   include ApiHelpers
@@ -17,14 +17,14 @@ describe API::API do
 
         post api("/builds/register"), token: runner.token
 
-        response.status.should == 201
-        json_response['sha'].should == build.sha
+        expect(response.status).to be == 201
+        expect(json_response['sha']).to be == build.sha
       end
 
       it "should return 404 error if no pending build found" do
         post api("/builds/register"), token: runner.token
 
-        response.status.should == 404
+        expect(response.status).to be == 404
       end
     end
 
@@ -34,7 +34,7 @@ describe API::API do
       it "should update a running build" do
         build.run!
         put api("/builds/#{build.id}"), token: runner.token
-        response.status.should == 200
+        expect(response.status).to be == 200
       end
     end
   end
@@ -63,15 +63,15 @@ describe API::API do
     it "should create a build" do
       post api("/builds"), project_id: project.id, data: data, project_token: project.token
 
-      response.status.should == 201
-      json_response['sha'].should == "da1560886d4f094c3e6c9ef40349f7d38b5d27d7"
+      expect(response.status).to be == 201
+      expect(json_response['sha']).to be == "da1560886d4f094c3e6c9ef40349f7d38b5d27d7"
     end
 
     it "should return 400 error if no data passed" do
       post api("/builds"), project_id: project.id, project_token: project.token
 
-      response.status.should == 400
-      json_response['message'].should == "400 (Bad request) \"data\" not given"
+      expect(response.status).to be == 400
+      expect(json_response['message']).to be == "400 (Bad request) \"data\" not given"
     end
   end
 end

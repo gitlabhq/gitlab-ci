@@ -8,7 +8,7 @@ module StubGitlabCalls
   end
 
   def stub_js_gitlab_calls
-    Network.any_instance.stub(:projects) { project_hash_array }
+    allow_any_instance_of(Network).to receive(:projects).and_return(project_hash_array)
   end
 
   private
