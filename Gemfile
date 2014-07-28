@@ -8,7 +8,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '4.0.5'
+gem 'rails', '4.1.4'
 gem 'protected_attributes'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
@@ -93,7 +93,7 @@ group :development, :test do
 
   gem "simplecov", require: false
   gem 'coveralls', require: false
-  gem 'minitest', '4.3.2'
+  gem 'minitest', '~> 5.1.0'
 end
 
 group :test do
