@@ -1,6 +1,6 @@
 = content_for :title do
   %h3.project-title
-    All builds
+    Finished builds
 
     .pull-right
       %small
@@ -25,4 +25,4 @@
 = paginate @builds
 - if @builds.empty?
   .bs-callout
-    %h4 No builds
+    %h4 No finished builds

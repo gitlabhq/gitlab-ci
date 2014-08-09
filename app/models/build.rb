@@ -40,6 +40,7 @@ class Build < ActiveRecord::Base
   scope :pending, ->() { where(status: "pending") }
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
+  scope :finished, ->() { where(status: [:success, :failed]) }
   scope :uniq_sha, ->() { select('DISTINCT(sha)') }
 
   scope :heads, ->() { where(ref_type: "heads") }
@@ -221,6 +222,14 @@ class Build < ActiveRecord::Base
       finished_at - started_at
     elsif started_at
       Time.now - started_at
+    end
+  end
+
+  def wait
+    if started_at
+      started_at - created_at
+    else
+      Time.now - created_at
     end
   end
 

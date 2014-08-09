@@ -7,10 +7,10 @@ class ChartsController < ApplicationController
 
   def show
     @charts = {}
-    @charts[:week] = Charts::WeekChart.new(@project)
-    @charts[:month] = Charts::MonthChart.new(@project)
-    @charts[:year] = Charts::YearChart.new(@project)
-    @charts[:build_times] = Charts::BuildTime.new(@project)
+    @charts[:week] = Charts::WeekChart.new(@project.builds)
+    @charts[:month] = Charts::MonthChart.new(@project.builds)
+    @charts[:year] = Charts::YearChart.new(@project.builds)
+    @charts[:build_times] = Charts::BuildTime.new(@project.builds)
   end
 
   protected

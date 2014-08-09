@@ -49,7 +49,14 @@ GitlabCi::Application.routes.draw do
       resources :runner_projects
     end
 
-    resources :builds, only: :index
+    resources :builds, only: [:index, :queue] do
+      collection do
+        get :building
+        get :finished
+        get :charts
+        post :cancel
+      end
+    end
   end
 
   root :to => 'projects#index'

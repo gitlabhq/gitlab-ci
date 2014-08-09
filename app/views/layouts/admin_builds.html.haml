@@ -1,0 +1,51 @@
+!!! 5
+%html{ lang: "en"}
+  = render 'layouts/head'
+  %body{ :'data-page' => body_data_page }
+    = render 'layouts/nav'
+    = render 'layouts/info'
+    - if content_for?(:title)
+      .container.container-title
+        = yield(:title)
+      %hr
+    .container
+      .row
+        - if current_user
+          .col-md-2.append-bottom-20
+            %ul.nav.nav-pills.nav-stacked.project-menu
+              = nav_link path: 'builds#index' do
+                = link_to admin_builds_path do
+                  %i.icon-list-alt
+                  All builds
+                  %small.pull-right= @total_count
+              %hr
+              = nav_link path: 'builds#building' do
+                = link_to building_admin_builds_path do
+                  %i.icon-list-alt
+                  Building
+                  %small.pull-right= @building_count
+              = nav_link path: 'builds#finished' do
+                = link_to finished_admin_builds_path do
+                  %i.icon-list-alt
+                  Finished
+                  %small.pull-right= @finished_count
+              %hr
+              = nav_link path: 'builds#charts' do
+                = link_to charts_admin_builds_path do
+                  %i.icon-bar-chart
+                  Charts
+        .col-md-10
+          %p.lead
+            %span
+              Currently there are
+              %code= pluralize(@running_count, 'build')
+              being run and
+              %code= pluralize(@pending_count, 'build')
+              waiting in queue.
+              - if @building_count>0
+                %span.pull-right
+                  = link_to cancel_admin_builds_path, data: { confirm: 'All builds will be canceled. Are you sure?' }, class: 'btn btn-danger btn-xs', method: :post do
+                    %i.icon-remove
+                    Cancel all
+
+          = yield

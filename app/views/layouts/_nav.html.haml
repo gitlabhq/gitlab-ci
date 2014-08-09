@@ -11,14 +11,14 @@
       %ul.nav.navbar-nav
         - if current_user && current_user.is_admin
           %li
+            = link_to admin_builds_path do
+              Builds
+          %li
             = link_to admin_runners_path do
               Runners
           %li
             = link_to admin_projects_path do
               Projects
-          %li
-            = link_to admin_builds_path do
-              Builds
         %li
           = link_to 'Help', help_path
 

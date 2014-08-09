@@ -28,4 +28,8 @@ module BuildsHelper
   def build_url(build)
     project_build_url(build.project, build)
   end
+
+  def build_project_url(build)
+    project_url(build.project)
+  end
 end
