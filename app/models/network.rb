@@ -37,6 +37,9 @@ class Network
 
 
   def projects(url, api_opts, scope = :owned)
+    # Dont load archived projects
+    api_opts.merge!(archived: false)
+
     opts = {
       query: api_opts,
       headers: {"Content-Type" => "application/json"},
