@@ -39,13 +39,20 @@
             = hidden_field_tag :project, project.to_yaml
             = submit_tag 'Add', class: 'btn btn-default btn-xs'
 
-%center
+%ul.pagination.gitlab-projects-pagination
   - if @page > 1
-    = link_to gitlab_projects_path(page: @page - 1), class: 'btn', remote: true do
-      %i.icon-angle-left
-      prev
+    %li
+      = link_to gitlab_projects_path(page: @page - 1), class: 'btn', remote: true do
+        %i.icon-angle-left
+        Previous
   &nbsp;
   - if @total_count == @per_page
-    = link_to gitlab_projects_path(page: @page + 1), class: 'btn', remote: true do
-      next
-      %i.icon-angle-right
+    %li
+      = link_to gitlab_projects_path(page: @page + 1), class: 'btn', remote: true do
+        Next
+        %i.icon-angle-right
+
+:coffeescript
+  $('.gitlab-projects-pagination').on 'ajax:before', ->
+    $('.projects').html('<h1><i class="icon-spinner icon-loading"/></h1>')
+
