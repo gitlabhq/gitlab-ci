@@ -8,9 +8,9 @@ pre.trace {
   white-space: -pre-wrap;      /* Opera 4-6 */
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  position: relative;
   overflow: auto;
-  overflow-y: hidden;
-  font-size: 12px;
+  font-size: 11px;
 
   .icon-refresh {
     font-size: 24px;
@@ -20,6 +20,15 @@ pre.trace {
 
 .autoscroll-container {
   margin-bottom: 5px;
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  z-index: 2;
+
+  h4 {
+    line-height: 0px;
+    margin: 0px;
+  }
 }
 
 .build-widget {

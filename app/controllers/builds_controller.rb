@@ -30,6 +30,9 @@ class BuildsController < ApplicationController
       format.json {
         render json: @build.to_json(methods: :trace_html)
       }
+      format.text {
+        render text: @build.trace
+      }
     end
   end
 
