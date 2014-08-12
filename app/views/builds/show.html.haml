@@ -56,12 +56,12 @@
 
 
 
-    .clearfix
-      - if @build.active?
-        .autoscroll-container
-          %button.btn.btn-success.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
-        .clearfix
     %pre.trace#build-trace
+      - if @build.running?
+        .autoscroll-container#autoscroll-container
+          %h4
+            %button.btn.btn-success.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+
       %code.bash
         = preserve do
           = raw @build.trace_html
