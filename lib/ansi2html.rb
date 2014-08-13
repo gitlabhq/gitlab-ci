@@ -85,29 +85,47 @@ module Ansi2html
 
     def convert(ansi)
       @out = ""
+      @line = ""
+      @line_clear = false
+      @line_duration = nil
+      @line_fold = nil
       @n_open_tags = 0
+      @n_open_folds = []
+      @n_lines = 0
       reset()
 
-      last_line = 0
-      last_open_tags = 0
-
-      s = StringScanner.new(ansi.gsub("<", "&lt;"))
+      s = StringScanner.new(ansi)
       while(!s.eos?)
         if s.scan(/\e([@-_])(.*?)([@-~])/)
           handle_sequence(s)
         elsif s.scan(/\r?\n/)
-          @out << "\n"
-          last_line = @out.length
-          last_open_tags = @n_open_tags
+          finish_line()
+          begin_line()
         elsif s.scan(/\r/)
-          @out = @out.slice(0, last_line)
-          @n_open_tags = last_open_tags
+          @line_clear = true
+        elsif s.scan(/</)
+          append_text("&lt;")
+        elsif s.scan(/travis_fold:start:([^\r]*)\r/)
+          open_new_fold(s[1])
+        elsif s.scan(/travis_fold:end:([^\r]*)\r/)
+          close_open_fold()
+        elsif s.scan(/travis_time:start:([^\r]*)\r/)
+          unless @line.empty?
+            finish_line()
+            begin_line()
+          end
+          @line_duration = "id-time-#{s[1]}"
+        elsif s.scan(/travis_time:(end|finish):([^:]*):start=([^,]*),finish=([^,]*),duration=([^\r]*)\r/)
+          line_duration = s[5].to_i / 1000.0 / 1000.0 / 1000.0
+          line_duration = beautify_duration(line_duration)
+          @out << "<script>var duration=document.getElementById('id-time-#{s[2]}'); if(duration) { duration.innerHTML = duration.title = '#{line_duration}'; }</script>"
+          @line_duration = nil
         else
-          @out << s.scan(/[^\e\r\n]*/m)
+          append_text(s.scan(/./m))
         end
       end
 
-      close_open_tags()
+      close_open_folds()
       @out
     end
 
@@ -129,7 +147,41 @@ module Ansi2html
       end
 
       evaluate_command_stack(commands)
+      append_style()
+    end
 
+    def begin_line()
+      @line = ""
+      @line_duration = nil
+      @n_open_tags = 0
+      append_style()
+    end
+
+    def finish_line()
+      @line_clear = false
+      close_open_tags()
+      @n_lines += 1
+      if @line_fold
+        @out << %{<p onclick="javascript:Fold_Section('#{@line_fold}')">}
+        @line_fold = nil
+      else
+        @out << %{<p>}
+      end
+      @out << %{<a></a>}
+      @out << %{<span id="#{@line_duration}" class="duration" title="duration">duration</span>} unless @line_duration.nil?
+      @out << %{<span id="id-1-#{@n_lines}">#{@line}</span>}
+      @out << %{</p>}
+    end
+
+    def append_text(text)
+      if @line_clear
+        @line = ""
+        @line_clear = false
+      end
+      @line << text
+    end
+
+    def append_style()
       css_classes = []
 
       unless @fg_color.nil?
@@ -161,14 +213,43 @@ module Ansi2html
     end
 
     def open_new_tag(css_classes)
-      @out << %{<span class="#{css_classes.join(' ')}">}
+      append_text(%{<span class="#{css_classes.join(' ')}">})
       @n_open_tags += 1
     end
 
     def close_open_tags
       while @n_open_tags > 0
-        @out << %{</span>}
+        append_text(%{</span>})
         @n_open_tags -= 1
+      end
+    end
+
+    def open_new_fold(fold_name)
+      finish_line
+      @line_fold = "fold-start-" + ('a'..'z').to_a.shuffle.first(8).join
+      @out << %{<div id="#{@line_fold}" class="fold-start fold">}
+      @out << %{<span class="fold-name">#{fold_name}</span>}
+      @n_open_folds << @line_fold
+      begin_line
+    end
+
+    def close_open_fold
+      unless @n_open_folds.empty?
+        finish_line
+        @out << "</div>"
+        @n_open_folds.pop
+        begin_line
+      end
+    end
+
+    def close_open_folds
+      finish_line unless @line.empty?
+
+      # close section and make it open
+      while @n_open_folds.size > 0
+        fold_name = @n_open_folds.pop
+        @out << "</div>"
+        @out << "<script>var fold = document.getElementById('#{fold_name}'); if(fold) { fold.classList.add(\"open\"); }</script>"
       end
     end
 
@@ -227,6 +308,10 @@ module Ansi2html
 
     def get_color_class(segments)
       return [segments].flatten.compact.join('-')
+    end
+
+    def beautify_duration(duration)
+      "#{duration.round(2)}s"
     end
   end
 end

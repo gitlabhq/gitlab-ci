@@ -46,7 +46,7 @@ class Build
             success: (build) =>
               if build.status == "running" && build.status == build_status
                 $('#build-trace code').html build.trace_html
-                $('#build-trace code').append '<br/><i class="icon-refresh icon-spin"/>'
+                $('#build-trace code').append '<p><i class="icon-refresh icon-spin"/></p>'
                 @checkAutoscroll()
               else
                 Turbolinks.visit build_url
@@ -56,3 +56,11 @@ class Build
     $("html,body").scrollTop $("#build-trace").height()  if "enabled" is $("#autoscroll-button").data("state")
 
 @Build = Build
+
+@Fold_Section = (foldName) ->
+  section = document.getElementById(foldName)
+  if section
+    if section.classList.contains("open")
+      section.classList.remove("open")
+    else
+      section.classList.add("open")
