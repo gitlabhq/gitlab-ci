@@ -44,13 +44,13 @@ module StubGitlabCalls
 
   def stub_projects
     f = File.read(Rails.root.join('spec/support/gitlab_stubs/projects.json'))
-    stub_request(:get, "#{gitlab_url}api/v3/projects.json?private_token=Wvjy2Krpb7y8xi93owUz").
+    stub_request(:get, "#{gitlab_url}api/v3/projects.json?archived=false&private_token=Wvjy2Krpb7y8xi93owUz").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
   end
 
   def stub_projects_owned
-    stub_request(:get, "#{gitlab_url}api/v3/projects/owned.json?private_token=Wvjy2Krpb7y8xi93owUz").
+    stub_request(:get, "#{gitlab_url}api/v3/projects/owned.json?archived=false&private_token=Wvjy2Krpb7y8xi93owUz").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => "", :headers => {})
   end
