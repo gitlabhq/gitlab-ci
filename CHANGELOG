@@ -2,6 +2,7 @@ v5.1
   - Registration token and runner token are named differently
   - Redirect to previous page after sign-in
   - Dont show archived projects
+  - Separate Commit logic from Build logic in prep for Parallel Builds
 
 v5.0.1
   - Update rails to 4.0.5
@@ -78,7 +79,7 @@ v2.2.0
   - rescue build timeout correctly
   - badge helper with markdown & html
   - increased test coverage to 85%
- 
+
 v2.1.0
   - Removed horizontal scroll for build trace
   - new status badges

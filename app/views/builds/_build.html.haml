@@ -7,7 +7,7 @@
       %strong #{build.short_sha}
 
   %td.build-message
-    %span= truncate(build.git_commit_message, length: 50)
+    %span= truncate(build.commit.git_commit_message, length: 50)
 
   %td.build-branch
     - unless @ref

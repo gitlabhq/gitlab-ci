@@ -76,7 +76,7 @@
         .pull-right
           %small #{build_commit_link @build}
 
-      - if @build.compare?
+      - if @build.commit.compare?
         %p
           %span.attr-name Compare:
           #{build_compare_link @build}
@@ -85,10 +85,10 @@
         #{build_ref_link @build}
       %p
         %span.attr-name Author:
-        #{@build.git_author_name}
+        #{@build.commit.git_author_name}
       %p
         %span.attr-name Message:
-        #{@build.git_commit_message}
+        #{@build.commit.git_commit_message}
 
     - if @builds.present?
       .build-widget

@@ -6,11 +6,12 @@ describe NotificationService do
   describe 'Builds' do
 
     describe 'failed build' do
-      let(:project) { FactoryGirl.create(:project)}
-      let(:build) { FactoryGirl.create(:build, :status => :failed, :project => project) }
+      let(:project) { FactoryGirl.create(:project) }
+      let(:commit) { FactoryGirl.create(:commit, project: project) }
+      let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
       it do
-        should_email(build.git_author_email)
+        should_email(commit.git_author_email)
         notification.build_ended(build)
       end
 
@@ -21,10 +22,11 @@ describe NotificationService do
     end
 
     describe 'successfull build' do
-      let(:project) { FactoryGirl.create(:project)}
-      let(:build) { FactoryGirl.create(:build, :status => :success, :project => project) }
+      let(:project) { FactoryGirl.create(:project) }
+      let(:commit) { FactoryGirl.create(:commit, project: project) }
+      let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
       it do
-        should_email(build.git_author_email)
+        should_email(commit.git_author_email)
         notification.build_ended(build)
       end
 
@@ -35,11 +37,12 @@ describe NotificationService do
     end
 
     describe 'successfull build and project has email_recipients' do
-      let(:project) { FactoryGirl.create(:project, :email_recipients => "jeroen@example.com")}
-      let(:build) { FactoryGirl.create(:build, :status => :success, :project => project) }
+      let(:project) { FactoryGirl.create(:project, email_recipients: "jeroen@example.com") }
+      let(:commit) { FactoryGirl.create(:commit, project: project) }
+      let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       it do
-        should_email(build.git_author_email)
+        should_email(commit.git_author_email)
         should_email("jeroen@example.com")
         notification.build_ended(build)
       end
