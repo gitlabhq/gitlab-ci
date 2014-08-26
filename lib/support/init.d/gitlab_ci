@@ -39,7 +39,7 @@ test -f /etc/default/gitlab-ci && . /etc/default/gitlab-ci
 
 # Switch to the app_user if it is not he/she who is running the script.
 if [ "$USER" != "$app_user" ]; then
-  sudo -u "$app_user" -H -i $0 "$@"; exit;
+  su "$app_user" -l -c "$0 $@"; exit;
 fi
 
 # Switch to the gitlab path, exit on failure.
