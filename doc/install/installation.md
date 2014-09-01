@@ -84,10 +84,10 @@ You can use either MySQL or PostgreSQL.
     # Login to PostgreSQL
     sudo -u postgres psql -d template1
 
-    # Create a user for GitLab. We do not specify a password because we are using peer authentication.
+    # Create a user for GitLab CI. We do not specify a password because we are using peer authentication.
     template1=# CREATE USER gitlab_ci;
 
-    # Create the GitLab production database & grant all privileges on database
+    # Create the GitLab CI production database & grant all privileges on database
     template1=# CREATE DATABASE gitlab_ci_production OWNER gitlab_ci;
 
     # Quit the database session
@@ -147,9 +147,7 @@ You can use either MySQL or PostgreSQL.
     # Setup tables
     sudo -u gitlab_ci -H bundle exec rake setup RAILS_ENV=production
     
-
     # Setup schedules
-    #
     sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
    
 
@@ -159,12 +157,12 @@ Copy the init script (will be /etc/init.d/gitlab_ci):
 
     sudo cp /home/gitlab_ci/gitlab-ci/lib/support/init.d/gitlab_ci /etc/init.d/gitlab_ci
 
-Make GitLab start on boot:
+Make GitLab CI start on boot:
 
     sudo update-rc.d gitlab_ci defaults 21
 
 
-Start your GitLab instance:
+Start your GitLab CI instance:
 
     sudo service gitlab_ci start
     # or
@@ -175,6 +173,7 @@ Start your GitLab instance:
 
 
 ## Installation
+
     sudo apt-get install nginx
 
 ## Site Configuration
@@ -200,7 +199,6 @@ Make sure to edit the config file to match your setup:
     sudo /etc/init.d/nginx start
 
 
-
 # 9. Runners
 
 
@@ -214,8 +212,6 @@ Visit YOUR_SERVER for your first GitLab CI login.
 You should use your GitLab credentials in order to login
 
 **Enjoy!**
-
-
 
 ## Advanced settings
 
