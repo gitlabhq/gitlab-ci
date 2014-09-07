@@ -9,7 +9,9 @@ module API
       # Example Request:
       #   GET /projects
       get do
-        gitlab_projects = Project.from_gitlab(current_user, nil, nil, :authorized)
+        gitlab_projects = Project.from_gitlab(
+          current_user, params[:page], params[:per_page], :authorized
+        )
         ids = gitlab_projects.map { |project| project.id }
 
         projects = Project.where("gitlab_id IN (?)", ids).load
@@ -21,7 +23,9 @@ module API
       # Example Request:
       #   GET /projects/owned
       get "owned" do
-        gitlab_projects = Project.from_gitlab(current_user, nil, nil, :owned)
+        gitlab_projects = Project.from_gitlab(
+          current_user, params[:page], params[:per_page], :owned
+        )
         ids = gitlab_projects.map { |project| project.id }
 
         projects = Project.where("gitlab_id IN (?)", ids).load
