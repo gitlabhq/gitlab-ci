@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
   def build
     @build = CreateBuildService.new.execute(@project, params.dup)
 
-    if @build.persisted?
+    if @build && @build.persisted?
       head 201
     else
       head 400

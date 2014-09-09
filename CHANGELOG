@@ -2,6 +2,7 @@ v5.1
   - Registration token and runner token are named differently
   - Redirect to previous page after sign-in
   - Dont show archived projects
+  - Add support for skip branches from build
 
 v5.0.1
   - Update rails to 4.0.5

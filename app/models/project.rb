@@ -25,7 +25,7 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
-    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
+    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
     :email_recipients, :email_add_committer, :email_only_broken_builds
 
   has_many :builds, dependent: :destroy
@@ -174,5 +174,9 @@ ls -la
 
   def timeout_in_minutes=(value)
     self.timeout = value.to_i * 60
+  end
+
+  def skip_refs
+    read_attribute(:skip_refs).delete(" ").split(",")
   end
 end

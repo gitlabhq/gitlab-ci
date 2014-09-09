@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140506091853) do
+ActiveRecord::Schema.define(version: 20140909142245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20140506091853) do
     t.string   "email_recipients",         default: "",    null: false
     t.boolean  "email_add_committer",      default: true,  null: false
     t.boolean  "email_only_broken_builds", default: true,  null: false
+    t.string   "skip_refs"
   end
 
   create_table "runner_projects", force: true do |t|
