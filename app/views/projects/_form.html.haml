@@ -111,6 +111,10 @@
       = f.label :token, "CI token", class: 'control-label'
       .col-sm-10
         = f.text_field :token, class: 'form-control', placeholder: 'xEeFCaDAB89'
+    .form-group
+      = f.label :skip_refs, "Skip refs", class: 'control-label'
+      .col-sm-10
+        = f.text_field :skip_refs, class: 'form-control', placeholder: 'branch1, branch2'
 
   .form-actions
     = f.submit 'Save changes', class: 'btn btn-save'

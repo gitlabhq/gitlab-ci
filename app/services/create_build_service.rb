@@ -8,6 +8,8 @@ class CreateBuildService
       ref = ref.scan(/heads\/(.*)$/).flatten[0]
     end
 
+    return false if project.skip_refs.include?(ref)
+
     data = {
       ref: ref,
       sha: sha,
