@@ -59,8 +59,6 @@ ruby -v
 cp config/database.yml.mysql config/database.yml
 cp config/gitlab.yml.example config/gitlab.yml
 
-RAILS_ENV=test bundle exec rake gitlab:shell:install
-
 RAILS_ENV=test bundle exec rake db:drop db:create db:migrate
 
 RAILS_ENV=test bundle exec rake test
