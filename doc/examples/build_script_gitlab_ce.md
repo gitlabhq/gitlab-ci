@@ -1,7 +1,9 @@
 Build script to run the tests of GitLab CE
 =================================
 
-This script can be run to tests of GitLab CE on a [configured](configure_a_runner_to_run_the_gitlab_ce_test_suite.md) runner.
+These script can be run to tests of GitLab CE on a [configured](configure_a_runner_to_run_the_gitlab_ce_test_suite.md) runner.
+
+# Build script used at ci.gitlab.org to test the private GitLab B.V. repo at dev.gitlab.org
 
 ```bash
 ruby -v
@@ -15,4 +17,51 @@ touch log/application.log
 touch log/test.log
 bundle --without postgres
 bundle exec rake gitlab:test RAILS_ENV=test 
+```
+
+# Build script on [GitHost.io](https://gitlab-ce.githost.io/projects/2/) to test the [GitLab.com repo](https://gitlab.com/gitlab-org/gitlab-ce)
+
+```bash
+if [ ! -f ~/.runner_setup ]; then
+    echo "Setting up runner"
+
+    sudo wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
+    sudo tar xjf phantomjs-1.9.7-linux-x86_64.tar.bz2
+    sudo mv phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+
+    sudo apt-get update
+    sudo apt-get -y -q install mysql-server redis-server build-essential cmake curl
+
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+    curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+
+    source ~/.bash_profile
+
+    rbenv bootstrap-ubuntu-12-04
+
+    rbenv install 2.1.2
+    rbenv rehash
+    rbenv local 2.1.2
+    gem install bundler --no-ri --no-rdoc
+    rbenv rehash
+
+    touch ~/.runner_setup
+    echo "Done setting up runner"
+fi
+
+rbenv local 2.1.2
+rbenv rehash
+bundle install --path ~/.build
+
+ruby -v
+
+cp config/database.yml.mysql config/database.yml
+cp config/gitlab.yml.example config/gitlab.yml
+
+RAILS_ENV=test bundle exec rake gitlab:shell:install
+
+RAILS_ENV=test bundle exec rake db:drop db:create db:migrate
+
+RAILS_ENV=test bundle exec rake test
 ```
