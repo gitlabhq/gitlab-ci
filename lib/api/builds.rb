@@ -89,6 +89,23 @@ module API
           render_api_error!(errors, 400)
         end
       end
+
+      # Create a new build the same as previous one if no pending is found
+      #
+      # Parameters:
+      #   id (required) - The ID of a project
+      # Example Request:
+      #   POST /builds/:project_id/rebuild
+      post ":project_id/rebuild" do
+        build = Build.where(project_id: params[:project_id]).last
+        if build.pending?
+            render_api_error!("Build with id '#{build.id}' is already pending.", 200)
+        else
+            Build.create_from(build)
+            render_api_error!("Build has been added", 200)
+        end
+      end
+
     end
   end
 end
