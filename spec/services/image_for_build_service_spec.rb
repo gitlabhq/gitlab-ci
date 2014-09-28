@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ImageForBuildService do
   let(:service) { ImageForBuildService.new }
@@ -11,33 +11,33 @@ describe ImageForBuildService do
     context 'branch name' do
       let(:image) { service.execute(project, ref: 'master') }
 
-      it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/running.png') }
-      it { image.name.should == 'running.png' }
+      it { expect(image).to be_kind_of(OpenStruct) }
+      it { expect(image.path.to_s).to include('public/running.png') }
+      it { expect(image.name).to eq('running.png') }
     end
 
     context 'unknown branch name' do
       let(:image) { service.execute(project, ref: 'feature') }
 
-      it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/unknown.png') }
-      it { image.name.should == 'unknown.png' }
+      it { expect(image).to be_kind_of(OpenStruct) }
+      it { expect(image.path.to_s).to include('public/unknown.png') }
+      it { expect(image.name).to eq('unknown.png') }
     end
 
     context 'commit sha' do
       let(:image) { service.execute(project, sha: build.sha) }
 
-      it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/running.png') }
-      it { image.name.should == 'running.png' }
+      it { expect(image).to be_kind_of(OpenStruct) }
+      it { expect(image.path.to_s).to include('public/running.png') }
+      it { expect(image.name).to eq('running.png') }
     end
 
     context 'unknown commit sha' do
       let(:image) { service.execute(project, sha: '0000000') }
 
-      it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/unknown.png') }
-      it { image.name.should == 'unknown.png' }
+      it { expect(image).to be_kind_of(OpenStruct) }
+      it { expect(image.path.to_s).to include('public/unknown.png') }
+      it { expect(image.name).to eq('unknown.png') }
     end
   end
 end

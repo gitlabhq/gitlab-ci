@@ -18,7 +18,7 @@
 #  runner_id   :integer
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Build do
   let(:project) { FactoryGirl.create :project }
@@ -70,9 +70,9 @@ describe Build do
     let(:create_from_build) { Build.create_from build }
 
     it ('there should be a pending task') do
-      Build.pending.count.should eq(0)
+      expect(Build.pending.count).to eq(0)
       create_from_build
-      Build.pending.count.should > 0
+      expect(Build.pending.count).to be > 0
     end
   end
 
@@ -81,12 +81,12 @@ describe Build do
     let(:build) { FactoryGirl.create(:build, project: project) }
 
     it 'true if commit message contains [ci skip]' do
-      build.stub(:git_commit_message) { 'Small typo [ci skip]' }
-      build.ci_skip?.should == true
+      allow(build).to receive(:git_commit_message) { 'Small typo [ci skip]' }
+      expect(build.ci_skip?).to be == true
     end
 
     it 'false if commit message does not contain [ci skip]' do
-      build.ci_skip?.should == false
+      expect(build.ci_skip?).to be == false
     end
   end
 
@@ -101,8 +101,8 @@ describe Build do
           status: :success,
           project: project
         expected = 'git_author_email'
-        build.stub(:git_author_email) { expected }
-        build.project_recipients.should == [expected]
+        allow(build).to receive(:git_author_email) { expected }
+        expect(build.project_recipients).to be == [expected]
       end
 
       it 'should return git_author_email and additional recipients' do
@@ -113,8 +113,8 @@ describe Build do
           status: :success,
           project: project
         expected = 'git_author_email'
-        build.stub(:git_author_email) { expected }
-        build.project_recipients.should == ['rec1', 'rec2', expected]
+        allow(build).to receive(:git_author_email) { expected }
+        expect(build.project_recipients).to be == ['rec1', 'rec2', expected]
       end
 
       it 'should return recipients' do
@@ -125,8 +125,8 @@ describe Build do
           status: :success,
           project: project
         expected = 'git_author_email'
-        build.stub(:git_author_email) { expected }
-        build.project_recipients.should == ['rec1', 'rec2']
+        allow(build).to receive(:git_author_email) { expected }
+        expect(build.project_recipients).to be == ['rec1', 'rec2']
       end
 
       it 'should return unique recipients only' do
@@ -137,8 +137,8 @@ describe Build do
           status: :success,
           project: project
         expected = 'rec2'
-        build.stub(:git_author_email) { expected }
-        build.project_recipients.should == ['rec1', 'rec2']
+        allow(build).to receive(:git_author_email) { expected }
+        expect(build.project_recipients).to be == ['rec1', 'rec2']
       end
     end
   end
@@ -149,14 +149,14 @@ describe Build do
     context 'without started_at' do
       before { build.started_at = nil }
 
-      it { should be_false }
+      it { should be_falsey }
     end
 
     %w(running success failed).each do |status|
       context "if build status is #{status}" do
         before { build.status = status }
 
-        it { should be_true }
+        it { should be_truthy }
       end
     end
 
@@ -164,7 +164,7 @@ describe Build do
       context "if build status is #{status}" do
         before { build.status = status }
 
-        it { should be_false }
+        it { should be_falsey }
       end
     end
   end
@@ -176,7 +176,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_true }
+        it { should be_truthy }
       end
     end
 
@@ -184,7 +184,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_false }
+        it { should be_falsey }
       end
     end
   end
@@ -196,7 +196,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_true }
+        it { should be_truthy }
       end
     end
 
@@ -204,7 +204,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_false }
+        it { should be_falsey }
       end
     end
   end
@@ -216,7 +216,7 @@ describe Build do
         build.valid_commit_sha
       end
 
-      it('build errors should not be empty') { build.errors.should_not be_empty }
+      it('build errors should not be empty') { expect(build.errors).not_to be_empty }
     end
   end
 
@@ -230,7 +230,7 @@ describe Build do
       before { build.trace = text }
 
       it { should include(text) }
-      it { should have_at_least(text.length).items }
+      it { expect(subject.length).to be >= text.length }
     end
   end
 
@@ -238,22 +238,22 @@ describe Build do
     subject { build_with_project.compare? }
 
     context 'if project.gitlab_url and build.before_sha are not nil' do
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
   describe :short_sha do
     subject { build.short_before_sha }
 
-    it { should have(9).items }
-    it { build.before_sha.should start_with(subject) }
+    it { expect(subject.length).to be(9) }
+    it { expect(build.before_sha).to start_with(subject) }
   end
 
   describe :short_sha do
     subject { build.short_sha }
 
-    it { should have(9).items }
-    it { build.sha.should start_with(subject) }
+    it { expect(subject.length).to be(9) }
+    it { expect(build.sha).to start_with(subject) }
   end
 
   describe :repo_url do

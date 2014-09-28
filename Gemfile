@@ -8,7 +8,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '4.0.5'
+gem 'rails', '4.1.4'
 gem 'protected_attributes'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
@@ -31,7 +31,7 @@ gem 'haml-rails'
 # Background jobs
 gem 'slim'
 gem 'sinatra', :require => nil
-gem 'sidekiq'
+gem 'sidekiq', '~> 2.17.0'
 
 # Scheduled
 gem 'whenever', require: false
@@ -79,9 +79,9 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'rspec-rails'
-  gem 'capybara'
-  gem 'poltergeist'
+  gem 'rspec-rails', '~> 3.0.1'
+  gem 'capybara', '~> 2.4.0'
+  gem 'poltergeist', '~> 1.5.1'
   gem 'factory_girl_rails'
   gem "ffaker"
 
@@ -93,7 +93,7 @@ group :development, :test do
 
   gem "simplecov", require: false
   gem 'coveralls', require: false
-  gem 'minitest', '4.3.2'
+  gem 'minitest', '~> 5.1.0'
 end
 
 group :test do

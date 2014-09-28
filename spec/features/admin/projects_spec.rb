@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Admin Projects" do
   before do
@@ -11,7 +11,7 @@ describe "Admin Projects" do
       visit admin_projects_path
     end
 
-    it { page.should have_content "Manage Projects" }
+    it { expect(page).to have_content("Manage Projects") }
   end
 end
 
