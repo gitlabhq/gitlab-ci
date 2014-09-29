@@ -19,7 +19,7 @@ bundle --without postgres
 bundle exec rake gitlab:test RAILS_ENV=test 
 ```
 
-# Build script on [GitHost.io](https://gitlab-ce.githost.io/projects/2/) to test the [GitLab.com repo](https://gitlab.com/gitlab-org/gitlab-ce)
+# Build script on [GitHost.io](https://gitlab-ce.githost.io/projects/4/) to test the [GitLab.com repo](https://gitlab.com/gitlab-org/gitlab-ce)
 
 ```bash
 if [ ! -f ~/.runner_setup ]; then
