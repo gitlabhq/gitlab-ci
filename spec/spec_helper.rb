@@ -1,4 +1,4 @@
-if ENV['TRAVIS']
+if ENV['COVERALLS']
   require 'coveralls'
   Coveralls.wear!
 else
