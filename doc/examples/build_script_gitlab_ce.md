@@ -16,52 +16,34 @@ sed "s/gitlabhq_test/gitlabhq_test_$((RANDOM/5000))/" -i config/database.yml
 touch log/application.log
 touch log/test.log
 bundle --without postgres
-bundle exec rake gitlab:test RAILS_ENV=test 
+bundle exec rake test RAILS_ENV=test 
 ```
 
 # Build script on [GitHost.io](https://gitlab-ce.githost.io/projects/4/) to test the [GitLab.com repo](https://gitlab.com/gitlab-org/gitlab-ce)
 
 ```bash
+# Install dependencies: phantomjs, redis, cmake
 if [ ! -f ~/.runner_setup ]; then
     echo "Setting up runner"
-
     sudo wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
     sudo tar xjf phantomjs-1.9.7-linux-x86_64.tar.bz2
     sudo mv phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
-
     sudo apt-get update
     sudo apt-get -y -q install mysql-server redis-server build-essential cmake curl
-
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-    curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
-
-    source ~/.bash_profile
-
-    rbenv bootstrap-ubuntu-12-04
-
-    rbenv install 2.1.2
-    rbenv rehash
-    rbenv local 2.1.2
-    gem install bundler --no-ri --no-rdoc
-    rbenv rehash
-
     touch ~/.runner_setup
     echo "Done setting up runner"
 fi
 
-rbenv local 2.1.2
-rbenv rehash
-bundle install --path ~/.build
+# Install ruby
+\curl -sSL https://get.rvm.io | bash -s stable --ruby
+source ~/.rvm/scripts/rvm
 
+# Prepare GitLab and run tests
 ruby -v
-
+gem install bundler
+bundle install
 cp config/database.yml.mysql config/database.yml
 cp config/gitlab.yml.example config/gitlab.yml
-
-RAILS_ENV=test bundle exec rake gitlab:shell:install
-
 RAILS_ENV=test bundle exec rake db:drop db:create
-
 RAILS_ENV=test bundle exec rake test
 ```
