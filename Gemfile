@@ -51,6 +51,7 @@ gem 'httparty', '0.11.0'
 # API
 gem 'grape'
 gem 'grape-entity'
+gem 'virtus', '1.0.1'
 
 # Other
 gem 'rake'
