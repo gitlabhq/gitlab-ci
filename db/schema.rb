@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909142245) do
+ActiveRecord::Schema.define(version: 20141001132129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20140909142245) do
     t.string   "before_sha"
     t.text     "push_data"
     t.integer  "runner_id"
+    t.float    "coverage"
   end
 
   add_index "builds", ["project_id"], name: "index_builds_on_project_id", using: :btree
@@ -54,6 +55,7 @@ ActiveRecord::Schema.define(version: 20140909142245) do
     t.boolean  "email_add_committer",      default: true,  null: false
     t.boolean  "email_only_broken_builds", default: true,  null: false
     t.string   "skip_refs"
+    t.string   "coverage_regex"
   end
 
   create_table "runner_projects", force: true do |t|

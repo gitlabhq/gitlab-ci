@@ -26,7 +26,7 @@ class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
-    :email_recipients, :email_add_committer, :email_only_broken_builds
+    :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -182,5 +182,9 @@ ls -la
     else
       false
     end
+  end
+
+  def coverage_enabled?
+    coverage_regex.present?
   end
 end

@@ -70,6 +70,22 @@
           = f.label :public do
             = f.check_box :public
             %span.light Anyone can see project and builds list
+    .form-group
+      = f.label :coverage_regex, "Test coverage parsing", class: 'control-label'
+      .col-sm-10
+        .input-group
+          %span.input-group-addon /
+          = f.text_field :coverage_regex, class: 'form-control', placeholder: '\(\d+.\d+\%\) covered'
+          %span.input-group-addon /
+        .light We will use this regular expression to find test coverage output in build trace. Leave blank if you want to disable this feature
+        .bs-callout.bs-callout-info
+          %p Below are examples of regex for existing tools:
+          %ul
+            %li
+              Simplecov (Ruby) -
+              %code \(\d+.\d+\%\) covered
+
+
 
   %fieldset
     %legend Email notification

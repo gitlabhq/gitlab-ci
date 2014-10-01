@@ -42,6 +42,8 @@
       %th Branch
       %th Duration
       %th Finished at
+      - if @project.coverage_enabled?
+        %th Test coverage
 
   = render @builds
 

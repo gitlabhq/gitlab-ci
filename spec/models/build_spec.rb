@@ -321,4 +321,30 @@ describe Build do
       it { should > 0.0 }
     end
   end
+
+  describe :extract_coverage do
+    context 'valid content & regex' do
+      subject { build.extract_coverage('Coverage 1033 / 1051 LOC (98.29%) covered', '\(\d+.\d+\%\) covered') }
+
+      it { should eq(98.29) }
+    end
+
+    context 'valid content & bad regex' do
+      subject { build.extract_coverage('Coverage 1033 / 1051 LOC (98.29%) covered', 'very covered') }
+
+      it { should be_nil }
+    end
+
+    context 'no coverage content & regex' do
+      subject { build.extract_coverage('No coverage for today :sad:', '\(\d+.\d+\%\) covered') }
+
+      it { should be_nil }
+    end
+
+    context 'multiple results in content & regex' do
+      subject { build.extract_coverage(' (98.39%) covered. (98.29%) covered', '\(\d+.\d+\%\) covered') }
+
+      it { should eq(98.29) }
+    end
+  end
 end

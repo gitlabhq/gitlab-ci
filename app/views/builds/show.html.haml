@@ -45,6 +45,12 @@
           = raw @build.trace_html
 
   .col-md-3
+    - if @build.coverage
+      .build-widget
+        %h4.title
+          Test coverage
+        %h1 #{@build.coverage}%
+
     .build-widget
       %h4.title
         Build
