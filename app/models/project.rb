@@ -176,7 +176,11 @@ ls -la
     self.timeout = value.to_i * 60
   end
 
-  def skip_refs
-    read_attribute(:skip_refs).delete(" ").split(",")
+  def skip_ref?(ref_name)
+    if skip_refs.present?
+      skip_refs.delete(" ").split(",").include?(ref_name)
+    else
+      false
+    end
   end
 end
