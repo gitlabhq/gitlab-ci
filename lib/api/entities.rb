@@ -3,6 +3,7 @@ module API
     class Build < Grape::Entity
       expose :id, :commands, :path, :ref, :sha, :project_id, :repo_url, :before_sha, :timeout, :allow_git_fetch, :project_name
       expose :ref_type
+      expose :labels
     end
 
     class Runner < Grape::Entity
@@ -11,6 +12,7 @@ module API
 
     class Project < Grape::Entity
       expose :id, :name, :timeout, :scripts, :token, :default_ref, :gitlab_url, :always_build, :polling_interval, :public, :ssh_url_to_repo, :gitlab_id
+      expose :labels
     end
 
     class RunnerProject < Grape::Entity

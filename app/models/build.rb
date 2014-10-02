@@ -206,6 +206,10 @@ class Build < ActiveRecord::Base
     project.name
   end
 
+  def labels
+    project.labels.delete(" ").split(",")
+  end
+
   def project_recipients
     recipients = project.email_recipients.split(' ')
     recipients << git_author_email if project.email_add_committer?

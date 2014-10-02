@@ -35,6 +35,11 @@
             %strong git fetch
             .light Faster
     .form-group
+      = f.label :labels, "Specify build labels", class: 'control-label'
+      .col-sm-10
+        = f.text_field :labels, class: 'form-control', placeholder: 'linux shell'
+        .light You will be able to limit runners to be used
+    .form-group
       = f.label :timeout_in_minutes, 'Timeout', class: 'control-label'
       .col-sm-10
         = f.number_field :timeout_in_minutes, class: 'form-control', min: '0'
