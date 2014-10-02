@@ -45,7 +45,7 @@ class BuildsController < ApplicationController
   def status
     @build = build_by_sha
 
-    render json: @build.to_json(only: [:status, :id, :sha])
+    render json: @build.to_json(only: [:status, :id, :sha, :coverage])
   end
 
   def cancel
