@@ -176,7 +176,7 @@ ls -la
     self.timeout = value.to_i * 60
   end
 
-  def skip_ref?(ref_name)
+  def skip_ref?(ref_name, ref_type)
     if skip_refs.present?
       skip_refs.delete(" ").split(",").include?(ref_name)
     else

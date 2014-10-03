@@ -2,6 +2,7 @@ module API
   module Entities
     class Build < Grape::Entity
       expose :id, :commands, :path, :ref, :sha, :project_id, :repo_url, :before_sha, :timeout, :allow_git_fetch, :project_name
+      expose :ref_type
     end
 
     class Runner < Grape::Entity

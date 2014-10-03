@@ -11,8 +11,11 @@
 
   %td.build-branch
     - unless @ref
-      %span
-        = link_to build.ref, project_path(@project, ref: build.ref)
+      - if build.tag?
+        %span.label.label-primary #{build.ref}
+      - else
+        %span
+          = link_to build.ref, project_path(@project, ref: build.ref)
 
   %td.duration
     - if build.duration

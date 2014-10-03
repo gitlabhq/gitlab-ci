@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
-  before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy]
-  before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
+  before_filter :authenticate_user!, except: [:build, :badge, :index, :show, :tags]
+  before_filter :project, only: [:build, :integration, :show, :tags, :badge, :edit, :update, :destroy]
+  before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :tags, :new, :create]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:badge]
 
@@ -38,6 +38,21 @@ class ProjectsController < ApplicationController
 
     @builds = @project.builds
     @builds = @builds.where(ref: @ref) if @ref
+    @builds = @builds.order('id DESC').page(params[:page]).per(20)
+  end
+
+  def tags
+    unless @project.public
+      unless current_user
+        redirect_to(new_user_sessions_path(return_to: request.fullpath)) and return
+      end
+
+      unless current_user.can_access_project?(@project.gitlab_id)
+        page_404 and return
+      end
+    end
+
+    @builds = @project.builds.tags
     @builds = @builds.order('id DESC').page(params[:page]).per(20)
   end
 

@@ -26,6 +26,15 @@
                   %i.icon-list-alt
                   Builds
                   %small.pull-right= @project.builds.count
+              = nav_link path: 'projects#tags' do
+                = link_to tags_project_path(@project) do
+                  %i.icon-list-alt
+                  Tags
+                  %small.pull-right= @project.builds.tags.count
+              = nav_link path: 'builds#new' do
+                = link_to new_project_build_path(@project) do
+                  %i.icon-list-alt
+                  Create build
               = nav_link path: 'charts#show' do
                 = link_to project_charts_path(@project) do
                   %i.icon-bar-chart

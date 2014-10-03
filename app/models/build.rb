@@ -5,6 +5,7 @@
 #  id          :integer          not null, primary key
 #  project_id  :integer
 #  ref         :string(255)
+#  ref_type    :string(255)
 #  status      :string(255)
 #  finished_at :datetime
 #  trace       :text
@@ -24,12 +25,13 @@ class Build < ActiveRecord::Base
 
   serialize :push_data
 
-  attr_accessible :project_id, :ref, :sha, :before_sha,
+  attr_accessible :project_id, :ref, :ref_type, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :coverage
 
   validates :before_sha, presence: true
   validates :sha, presence: true
   validates :ref, presence: true
+  validates :ref_type, presence: true
   validates :status, presence: true
   validate :valid_commit_sha
   validates :coverage, numericality: true, allow_blank: true
@@ -39,6 +41,9 @@ class Build < ActiveRecord::Base
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
   scope :uniq_sha, ->() { select('DISTINCT(sha)') }
+
+  scope :heads, ->() { where(ref_type: "heads") }
+  scope :tags, ->() { where(ref_type: "tags") }
 
   def self.last_month
     where('created_at > ?', Date.today - 1.month)
@@ -120,12 +125,22 @@ class Build < ActiveRecord::Base
     !!(git_commit_message =~ /(\[ci skip\])/)
   end
 
+  def head?
+    ref_type == 'heads'
+  end
+
+  def tag?
+    ref_type == 'tags'
+  end
+
   def git_author_name
     commit_data[:author][:name] if commit_data && commit_data[:author]
+    commit_data[:author_name] if commit_data
   end
 
   def git_author_email
     commit_data[:author][:email] if commit_data && commit_data[:author]
+    commit_data[:author_email] if commit_data
   end
 
   def git_commit_message

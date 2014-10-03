@@ -1,0 +1,22 @@
+= render 'shared/guide' if params[:show_guide].present?
+
+
+%table.builds
+  %thead
+    %tr
+      %th Status
+      %th Commit
+      %th Message
+      %th Tag
+      %th Duration
+      %th Finished at
+      - if @project.coverage_enabled?
+        %th Coverage
+
+  = render @builds
+
+= paginate @builds
+- if @builds.empty?
+  .bs-callout
+    %h4 No tags yet
+
