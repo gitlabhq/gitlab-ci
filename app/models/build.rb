@@ -19,14 +19,21 @@
 #  runner_id   :integer
 #
 
+require 'travis/build'
+require 'shellwords'
+
 class Build < ActiveRecord::Base
   belongs_to :project
   belongs_to :runner
 
   serialize :push_data
+  serialize :build_attributes
+  serialize :matrix_attributes
 
   attr_accessible :project_id, :ref, :ref_type, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :coverage
+
+  attr_accessible :build_method, :build_attributes, :matrix_attributes, :labels
 
   validates :before_sha, presence: true
   validates :sha, presence: true
@@ -35,6 +42,7 @@ class Build < ActiveRecord::Base
   validates :status, presence: true
   validate :valid_commit_sha
   validates :coverage, numericality: true, allow_blank: true
+  validates :build_method, presence: true
 
   scope :running, ->() { where(status: "running") }
   scope :pending, ->() { where(status: "pending") }
@@ -55,9 +63,7 @@ class Build < ActiveRecord::Base
   end
 
   def self.create_from(build)
-    new_build = build.dup
-    new_build.status = :pending
-    new_build.runner_id = nil
+    new_build = CreateBuildService.new.execute(project, build)
     new_build.save
   end
 
@@ -140,6 +146,10 @@ class Build < ActiveRecord::Base
     ref_type == 'tags'
   end
 
+  def build_service
+    CreateBuildService.new.build_service(build_method || project.build_method)
+  end
+
   def git_author_name
     commit_data[:author][:name] if commit_data && commit_data[:author]
     commit_data[:author_name] if commit_data
@@ -162,6 +172,14 @@ class Build < ActiveRecord::Base
     sha[0..8]
   end
 
+  def build_id
+    project.builds.where("id <= ?", id).count
+  end
+
+  def build_concurrent_id
+    0
+  end
+
   def trace_html
     html = Ansi2html::convert(trace) if trace.present?
     html ||= ''
@@ -179,8 +197,16 @@ class Build < ActiveRecord::Base
     canceled? || success? || failed?
   end
 
+  def build_attributes_formatted
+    build_service.format_build_attributes(self)
+  end
+
+  def matrix_attributes_formatted
+    build_service.format_matrix_attributes(self)
+  end
+
   def commands
-    project.scripts
+    build_service.build_commands(self)
   end
 
   def commit_data
@@ -201,6 +227,10 @@ class Build < ActiveRecord::Base
     end
   end
 
+  def repo_slug
+    repo_url.split('/').last(2).join('/').gsub(/\.git$/, '')
+  end
+
   def timeout
     project.timeout
   end
@@ -211,10 +241,6 @@ class Build < ActiveRecord::Base
 
   def project_name
     project.name
-  end
-
-  def labels
-    project.labels.delete(" ").split(",")
   end
 
   def project_recipients

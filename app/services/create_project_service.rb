@@ -2,7 +2,8 @@ class CreateProjectService
   include Rails.application.routes.url_helpers
 
   def execute(current_user, params, project_route)
-    @project = Project.parse(params)
+    @project = Project.parse(params, current_user.private_token)
+    @project.build_method = CreateBuildService.new.detect_build_method(@project)
 
     Project.transaction do
       @project.save!

@@ -174,4 +174,21 @@ class Network
       raise response.code
     end
   end
+
+  def raw_file_content(url, project_id, token, sha, filepath)
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/repository/blobs/#{sha}?private_token=#{token}&filepath=#{filepath}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
 end

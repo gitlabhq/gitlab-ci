@@ -16,14 +16,32 @@ module API
         ActiveRecord::Base.transaction do
           builds = Build.all
           builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
-          build =  builds.first_pending
+
+          # add labels LIKE clause
+          if params[:labels] and params[:labels].size
+            query = Array.new(params[:labels].size, "labels LIKE ?").join(" OR ")
+            labels = params[:labels].map { |v| v + '%' }
+            builds = builds.where([query, *labels])
+          end
+
+          # take first tags
+          build = builds.where(ref_type: 'tags').first_pending
+          build ||= builds.first_pending
 
           not_found! and return unless build
 
-          build.runner_id = current_runner.id
-          build.save!
-          build.run!
-          present build, with: Entities::Build
+          begin
+            build.commands
+            build.runner_id = current_runner.id
+            build.save!
+            build.run!
+            present build, with: Entities::Build
+          rescue => e
+            # write trace output in case of present failure
+            build.trace = e.to_s
+            build.drop
+            not_found! and return
+          end
         end
       end
 

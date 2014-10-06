@@ -1,3 +1,15 @@
+GIT
+  remote: git://github.com/ayufan/travis-build.git
+  revision: 416a74218b3ffc3c30001cb0f4bbfb88247cf647
+  specs:
+    travis-build (0.0.1)
+
+GIT
+  remote: git://github.com/travis-ci/travis-yaml.git
+  revision: 0f2cc8c2887790d2980f4f0af81912afcc030226
+  specs:
+    travis-yaml (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -310,6 +322,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-deprecated_finders
   activerecord-session_store
+  addressable
   annotate
   bootstrap-sass (~> 3.0)
   capybara
@@ -355,6 +368,8 @@ DEPENDENCIES
   stamp
   state_machine
   therubyracer
+  travis-build!
+  travis-yaml!
   turbolinks
   uglifier (>= 1.0.3)
   unicorn (~> 4.8.2)

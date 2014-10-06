@@ -8,6 +8,7 @@ ci.db
 config/application.yml
 config/database.yml
 config/resque.yml
+config/travis.yml
 config/unicorn.rb
 coverage/*
 log/*

@@ -20,6 +20,7 @@
 #  email_recipients         :string(255)      default(""), not null
 #  email_add_committer      :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
+#  private_token           :string
 #
 
 class Project < ActiveRecord::Base
@@ -33,6 +34,8 @@ class Project < ActiveRecord::Base
     :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex,
     :labels
 
+  attr_accessible :private_token, :build_method, :travis_environment
+
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
@@ -42,6 +45,7 @@ class Project < ActiveRecord::Base
   # Validations
   #
   validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
+  validates_presence_of :private_token
 
   validates_uniqueness_of :name
 
@@ -62,7 +66,7 @@ ls -la
       eos
     end
 
-    def parse(project_yaml)
+    def parse(project_yaml, private_token)
       project = YAML.load(project_yaml)
 
       params = {
@@ -74,6 +78,9 @@ ls -la
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,
         email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
+        private_token:           private_token,
+        build_method:            project.build_method || 'shell',
+        travis_environment:      project.travis_environment || ''
       }
 
       Project.new(params)
@@ -198,5 +205,9 @@ ls -la
 
   def coverage_enabled?
     coverage_regex.present?
+  end
+
+  def build_service
+    CreateBuildService.new.build_service(build_method)
   end
 end

@@ -55,6 +55,7 @@ module API
       #   gitlab_id (required)       - The gitlab id of the project
       #   gitlab_url (required)      - The gitlab web url to the project
       #   ssh_url_to_repo (required) - The gitlab ssh url to the repo
+      #   private_token (required)   - The token of user to access repository
       #   scripts                    - The shell script provided for a runner to run
       #   default_ref                - The branch to run against (defaults to `master`)
       # Example Request:
@@ -68,7 +69,8 @@ module API
           :gitlab_url      => params[:gitlab_url],
           :scripts         => params[:scripts] || 'ls -al',
           :default_ref     => params[:default_ref] || 'master',
-          :ssh_url_to_repo => params[:ssh_url_to_repo]
+          :ssh_url_to_repo => params[:ssh_url_to_repo],
+          :private_token   => params[:private_token]
         }
 
         project = Project.new(filtered_params)

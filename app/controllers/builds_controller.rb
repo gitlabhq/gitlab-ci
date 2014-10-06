@@ -124,7 +124,11 @@ class BuildsController < ApplicationController
       before_sha: @build.before_sha,
       push_data: @build.push_data,
       ref: @build.ref,
-      ref_type: @build.ref_type
+      ref_type: @build.ref_type,
+      labels: @build.labels,
+      build_method: @build.build_method,
+      build_attributes: @build.build_attributes,
+      matrix_attributes: @build.matrix_attributes,
     )
 
     redirect_to project_build_path(project, build)

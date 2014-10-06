@@ -33,6 +33,8 @@
           = @build.updated_at.stamp('19:00 Aug 27')
 
 
+    - if @build.build_attributes_formatted
+      %pre #{@build.build_attributes_formatted}
 
     %pre.trace#build-trace
       - if @build.active?

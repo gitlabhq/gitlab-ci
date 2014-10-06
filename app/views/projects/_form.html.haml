@@ -10,6 +10,34 @@
   %fieldset
     %legend Build settings
     .form-group
+      = label_tag nil, class: 'control-label' do
+        Build method
+      .col-sm-10
+        %p Select the way project is built:
+        .radio
+          = label_tag do
+            = f.radio_button :build_method, 'shell', :class => 'build_method build_method_shell'
+            %strong Shell
+            .light Use shell defined below
+        .radio
+          = label_tag do
+            = f.radio_button :build_method, 'travis', :class => 'build_method build_method_travis'
+            %strong Travis-CI
+            .light Use Travis-CI compatibility layer
+
+    .form-group#form_group_travis_environment
+      = f.label :travis_environment, 'Travis environment', class: 'control-label'
+      .col-sm-10
+        = f.text_area :travis_environment, class: 'form-control', rows: 14, placeholder: "KEY1=VALUE1"
+        .bs-callout.bs-callout-info
+          %p
+            Enter one environment variable per line.
+            %br
+            When the key is prefixed with @ value will be hidden from build trace.
+            %br
+            Use it when you want to pass secrets or password to build script.
+
+    .form-group#form_group_scripts
       = f.label :scripts, 'Build steps', class: 'control-label'
       .col-sm-10
         = f.text_area :scripts, class: 'form-control', rows: 14, placeholder: "bundle exec rake spec"
@@ -19,7 +47,7 @@
             %br
             If you change the working directory or the environment in one line - it will affect the next lines too
 
-    .form-group
+    .form-group#form_group_allow_git_fetch
       = label_tag nil, class: 'control-label' do
         Get code
       .col-sm-10
@@ -34,11 +62,13 @@
             = f.radio_button :allow_git_fetch, 'true'
             %strong git fetch
             .light Faster
-    .form-group
+
+    .form-group#form_group_labels
       = f.label :labels, "Specify build labels", class: 'control-label'
       .col-sm-10
         = f.text_field :labels, class: 'form-control', placeholder: 'linux shell'
         .light You will be able to limit runners to be used
+
     .form-group
       = f.label :timeout_in_minutes, 'Timeout', class: 'control-label'
       .col-sm-10
@@ -169,3 +199,16 @@
     = link_to 'Cancel', projects_path, class: 'btn'
     - unless @project.new_record?
       = link_to 'Remove Project', project_path(@project), method: :delete, data: { confirm: 'Project will be removed. Are you sure?' }, class: 'btn btn-danger pull-right'
+
+:javascript
+  $(".build_method").on("change", function() {
+    $("#form_group_travis_environment").toggle($(this).hasClass("build_method_travis"));
+    $("#form_group_scripts").toggle($(this).hasClass("build_method_shell"));
+    $("#form_group_allow_git_fetch").toggle($(this).hasClass("build_method_shell"));
+    $("#form_group_labels").toggle($(this).hasClass("build_method_shell"));
+  });
+
+  $("#form_group_travis_environment").toggle("#{@project.build_method}" == "travis");
+  $("#form_group_scripts").toggle("#{@project.build_method}" == "shell");
+  $("#form_group_allow_git_fetch").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
+  $("#form_group_labels").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
