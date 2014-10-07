@@ -38,7 +38,7 @@ module API
             present build, with: Entities::Build
           rescue => e
             # write trace output in case of present failure
-            build.trace = e.to_s
+            build.update_attributes(trace: e.to_s)
             build.drop
             not_found! and return
           end

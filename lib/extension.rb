@@ -5,14 +5,36 @@ class Extension
 
   # Same as +deep_merge+, but modifies +self+.
   def self.deep_merge!(hash, other_hash, &block)
-    other_hash.each_pair do |k,v|
-      tv = hash[k]
-      if tv.is_a?(Hash) && v.is_a?(Hash)
-        hash[k] = deep_merge(tv, v, &block)
+    hash.merge!(other_hash) do |k, old, new|
+      if block
+        block.call(k, old, new)
+      elsif old.is_a?(Array) && new.is_a?(Array)
+        old + new
+      elsif old.is_a?(Hash) && new.is_a?(Hash)
+        deep_merge(old, new)
       else
-        hash[k] = block && tv ? block.call(k, tv, v) : v
+        new
       end
     end
-    hash
+  end
+
+
+
+  def self.deep_symbolize_keys(hash)
+    hash.inject({}) { |result, (key, value)|
+      result[(key.to_sym rescue key) || key] = case value
+                                                 when Array
+                                                   value.map { |value| value.is_a?(Hash) ? Extension.deep_symbolize_keys(value) : value }
+                                                 when Hash
+                                                   Extension.deep_symbolize_keys(value)
+                                                 else
+                                                   value
+                                               end
+      result
+    }
+  end
+
+  def self.deep_symbolize_keys!(hash)
+    hash.replace(hash.deep_symbolize_keys)
   end
 end

@@ -1,5 +1,6 @@
 require 'travis/yaml'
 require 'travis/yaml/nodes/language'
+require 'extension'
 
 class CreateBuildService
   class Travis
@@ -32,19 +33,12 @@ class CreateBuildService
 
     def build_commands(build)
       data = travis_config.dup
+      build_attributes = Extension.deep_symbolize_keys(build.build_attributes)
 
-      if build.build_attributes['os']
-        data[:config] = build.build_attributes.deep_symbolize_keys
+      if build_attributes[:os]
+        data[:config] = build_attributes
       else
-        data.merge!(build.build_attributes.deep_symbolize_keys) do |k, old, new|
-          if old.is_a?(Array) && new.is_a?(Array)
-            old + new
-          elsif old.is_a?(Hash) && new.is_a?(Hash)
-            old.merge(new)
-          else
-            new
-          end
-        end
+        Extension.deep_merge!(data, build_attributes)
       end
 
       data[:urls] = {
@@ -87,7 +81,7 @@ class CreateBuildService
     private
 
     def travis_config
-      @travis_config ||= YAML.load_file("#{Rails.root}/config/travis.yml")[Rails.env].deep_symbolize_keys
+      @travis_config ||= Extension.deep_symbolize_keys(YAML.load_file("#{Rails.root}/config/travis.yml")[Rails.env])
     end
 
     def load_config(project, sha, is_tagged = false)
