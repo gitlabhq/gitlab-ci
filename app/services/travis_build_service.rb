@@ -48,17 +48,17 @@ class CreateBuildService
           slug: build.repo_slug
       }
       data[:source] = {
-          id: build.build_id,
-          number: build.build_concurrent_id
+          id: build.id,           # in future change it to buildgroup.id
+          number: build.build_id  # in future change it to buildgroup.build_id (next number for current proejct)
       }
       data[:job] = {
-          id: build.build_id,
+          id: build.id,
           number: "#{build.build_id}.#{build.build_concurrent_id}",
           branch: build.ref,
           commit: build.sha,
           commit_range: "#{build.short_before_sha}..#{build.short_sha}",
-          pull_request: false,
-          tag: build.tag? ? "project_#{build.project.id}_build_#{build.id}" : nil
+          pull_request: false, # not yet supported
+          tag: build.tag? ? build.ref : nil
       }
 
       script = ::Travis::Build.script(data, logs: { build: true, state: false })

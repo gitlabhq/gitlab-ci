@@ -177,7 +177,7 @@ class Build < ActiveRecord::Base
   end
 
   def build_concurrent_id
-    0
+    project.builds.where(sha: sha).where("id <= ?", id).count
   end
 
   def trace_html
