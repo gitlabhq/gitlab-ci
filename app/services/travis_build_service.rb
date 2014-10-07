@@ -70,7 +70,7 @@ class CreateBuildService
     end
 
     def format_matrix_attributes(build)
-      build.matrix_attributes.to_yaml.sub("---\n", '').gsub(/^:/, '') if build.matrix_attributes.is_a?(Hash) and build.matrix_attributes.size
+      build.matrix_attributes.to_yaml.sub("---\n", '').gsub(/^:/, '') if build.matrix_attributes.is_a?(Hash) unless build.matrix_attributes.empty?
     end
 
     def build_labels(build_attributes)
