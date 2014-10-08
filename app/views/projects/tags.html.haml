@@ -8,16 +8,13 @@
       %th Commit
       %th Message
       %th Tag
-      %th Variant
       %th Duration
       %th Finished at
-      - if @project.coverage_enabled?
-        %th Coverage
 
-  = render @builds
+  = render @build_groups
 
-= paginate @builds
-- if @builds.empty?
+= paginate @build_groups
+- if @build_groups.empty?
   .bs-callout
     %h4 No tags yet
 

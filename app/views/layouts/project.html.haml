@@ -21,16 +21,16 @@
         - if current_user
           .col-md-2.append-bottom-20
             %ul.nav.nav-pills.nav-stacked.project-menu
-              = nav_link path: 'projects#show' do
+              = nav_link path: ['projects#show','build_groups#show'] do
                 = link_to project_path(@project) do
                   %i.icon-list-alt
                   Builds
-                  %small.pull-right= @project.builds.count
+                  %small.pull-right= @project.build_groups.count
               = nav_link path: 'projects#tags' do
                 = link_to tags_project_path(@project) do
                   %i.icon-list-alt
                   Tags
-                  %small.pull-right= @project.builds.tags.count
+                  %small.pull-right= @project.build_groups.tags.count
               = nav_link path: 'builds#new' do
                 = link_to new_project_build_path(@project) do
                   %i.icon-list-alt

@@ -104,10 +104,10 @@ class BuildsController < ApplicationController
     }
 
     begin
-      @build = CreateBuildService.new.execute(project, data)
+      @build_group = CreateBuildService.new.execute(project, data)
 
-      if @build.persisted?
-        redirect_to project_build_path(project, @build)
+      if @build_group.persisted?
+        redirect_to project_build_group_path(project, @build_group)
       else
         @alert = 'No build created.'
         render 'new'
@@ -119,6 +119,14 @@ class BuildsController < ApplicationController
   end
 
   def retry
+    build_group = project.build_groups.create(
+        sha: @build.sha,
+        before_sha: @build.before_sha,
+        push_data: @build.push_data,
+        ref: @build.ref,
+        ref_type: @build.ref_type,
+    )
+
     build = project.builds.create(
       sha: @build.sha,
       before_sha: @build.before_sha,
@@ -129,6 +137,7 @@ class BuildsController < ApplicationController
       build_method: @build.build_method,
       build_attributes: @build.build_attributes,
       matrix_attributes: @build.matrix_attributes,
+      build_group_id: build_group.id
     )
 
     redirect_to project_build_path(project, build)

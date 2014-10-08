@@ -9,7 +9,8 @@ require 'slack_notifier'
 
 class SlackNotificationService
   def build_ended(build)
-    case build.status.to_sym
+    return unless build.build_group
+    case build.build_group.status.to_sym
     when :success
       Slack::Notifier.build_success_slack_post(build)
     when :failed

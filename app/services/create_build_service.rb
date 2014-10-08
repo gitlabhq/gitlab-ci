@@ -32,7 +32,7 @@ class CreateBuildService
         build_method: project.build_method,
         push_data: {
             before: params[:before],
-            after: params[:sha],
+            after: params[:after],
             ref: params[:ref],
             user_name: params[:user_name],
             repository: params[:repository],
@@ -50,6 +50,10 @@ class CreateBuildService
       return build_class.downcase if build_service.detected?(project)
     end
     nil
+  end
+
+  def build_end(build)
+    build_service(build.project.build_method).build_end(build)
   end
 
   def build_service(build_method)

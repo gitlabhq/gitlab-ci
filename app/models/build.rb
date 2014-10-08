@@ -25,6 +25,7 @@ require 'shellwords'
 class Build < ActiveRecord::Base
   belongs_to :project
   belongs_to :runner
+  belongs_to :build_group
 
   serialize :push_data
   serialize :build_attributes
@@ -34,6 +35,8 @@ class Build < ActiveRecord::Base
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :coverage
 
   attr_accessible :build_method, :build_attributes, :matrix_attributes, :labels
+
+  attr_accessible :build_group_id
 
   validates :before_sha, presence: true
   validates :sha, presence: true
@@ -49,6 +52,7 @@ class Build < ActiveRecord::Base
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
   scope :finished, ->() { where(status: [:success, :failed]) }
+  scope :canceled, ->() { where(status: "canceled")  }
   scope :uniq_sha, ->() { select('DISTINCT(sha)') }
 
   scope :heads, ->() { where(ref_type: "heads") }
@@ -95,6 +99,8 @@ class Build < ActiveRecord::Base
       if project.web_hooks?
         WebHookService.new.build_end(build)
       end
+
+      CreateBuildService.new.build_end(build)
 
       if project.email_notification?
         if build.status.to_sym == :failed || !project.email_only_broken_builds
@@ -144,6 +150,10 @@ class Build < ActiveRecord::Base
 
   def tag?
     ref_type == 'tags'
+  end
+
+  def one?
+    build_group.nil? or build_group.one?
   end
 
   def build_service

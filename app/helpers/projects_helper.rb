@@ -19,6 +19,16 @@ module ProjectsHelper
     end
   end
 
+  def build_group_status_alert_class build_group
+    if build_group.success?
+      'alert-success'
+    elsif build_group.failed? || build_group.canceled?
+      'alert-danger'
+    else
+      'alert-warning'
+    end
+  end
+
   def ref_tab_class ref = nil
     'active' if ref == @ref
   end

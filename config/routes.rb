@@ -30,6 +30,14 @@ GitlabCi::Application.routes.draw do
       end
     end
 
+    resources :build_groups, path: "build/groups", only: [:show] do
+      member do
+        get :cancel
+        get :status
+        post :retry
+      end
+    end
+
     resources :web_hooks, only: [:index, :create, :destroy] do
       member do
         get :test

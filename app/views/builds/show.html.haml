@@ -6,8 +6,12 @@
       Edit Project
 
 %p
-  = link_to project_path(@project) do
-    &larr; Back to project builds
+  - if @build.one?
+    = link_to project_path(@project) do
+      &larr; Back to project builds
+  - else
+    = link_to project_build_group_path(@project, @build.build_group) do
+      &larr; Back to build list
 %hr
 
 .row

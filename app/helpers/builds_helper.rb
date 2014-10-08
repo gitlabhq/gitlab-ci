@@ -29,6 +29,22 @@ module BuildsHelper
     project_build_url(build.project, build)
   end
 
+  def build_group_url(build_group)
+    project_build_group_url(build_group.project, build_group)
+  end
+
+  def build_or_build_group_url(build_group)
+    if build_group.one?
+      build_url(build_group.builds.first)
+    else
+      build_group_url(build_group)
+    end
+  end
+
+  def build_or_build_group_link build_group
+    link_to(build_group.short_sha, build_or_build_group_url(build_group))
+  end
+
   def build_project_url(build)
     project_url(build.project)
   end

@@ -37,6 +37,7 @@ class Project < ActiveRecord::Base
   attr_accessible :private_token, :build_method, :travis_environment
 
   has_many :builds, dependent: :destroy
+  has_many :build_groups, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
@@ -136,7 +137,7 @@ ls -la
   end
 
   def last_build
-    builds.last
+    build_groups.last
   end
 
   def last_build_date

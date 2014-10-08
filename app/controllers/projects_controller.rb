@@ -36,9 +36,13 @@ class ProjectsController < ApplicationController
 
     @ref = params[:ref]
 
-    @builds = @project.builds
-    @builds = @builds.where(ref: @ref) if @ref
-    @builds = @builds.order('id DESC').page(params[:page]).per(20)
+    # @builds = @project.builds
+    # @builds = @builds.where(ref: @ref) if @ref
+    # @builds = @builds.order('id DESC').page(params[:page]).per(20)
+
+    @build_groups = @project.build_groups
+    @build_groups = @build_groups.where(ref: @ref) if @ref
+    @build_groups = @build_groups.order('id DESC').page(params[:page]).per(20)
   end
 
   def tags
@@ -52,8 +56,8 @@ class ProjectsController < ApplicationController
       end
     end
 
-    @builds = @project.builds.tags
-    @builds = @builds.order('id DESC').page(params[:page]).per(20)
+    @build_groups = @project.build_groups.tags
+    @build_groups = @build_groups.order('id DESC').page(params[:page]).per(20)
   end
 
   def integration

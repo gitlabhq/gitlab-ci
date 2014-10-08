@@ -16,15 +16,24 @@ class CreateBuildService
       build_config_params = load_config(project, data[:sha], data[:ref_type] == 'tags')
       return nil if build_config_params.nil?
 
-      first_build = nil
+      build_group_data = data.dup
+      build_group_data.delete(:build_method)
+      build_group = project.build_groups.create(build_group_data)
+
       generate_builds(build_config_params, data, build_attributes) do |new_data, new_attributes, new_matrix_attributes|
         new_data.merge!(build_attributes: new_attributes)
         new_data.merge!(matrix_attributes: new_matrix_attributes)
         new_data.merge!(labels: build_labels(new_attributes))
-        new_build = project.builds.create(new_data)
-        first_build = new_build unless first_build
+        new_data.merge!(build_group_id: build_group.id)
+        project.builds.create(new_data)
       end
-      first_build
+
+      if build_group.builds.empty?
+        build_group.drop
+        build_group = nil
+      end
+
+      build_group
     end
 
     def detected?(project)
@@ -76,6 +85,21 @@ class CreateBuildService
     def build_labels(build_attributes)
       config = build_attributes['config']
       ['travis', config['os'], config['language']].join(" ")
+    end
+
+    def build_end(build)
+      return unless build.build_group
+
+      build_attributes = build.build_attributes
+      config = build_attributes['config'] if build_attributes
+      matrix_config = build_attributes['matrix'] if config
+
+      # cancel all builds
+      if matrix_config and matrix_config['fast_finish']
+        build.build_group.builds.each do |other_build|
+          other_build.cancel
+        end
+      end
     end
 
     private
