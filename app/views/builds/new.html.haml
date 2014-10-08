@@ -20,13 +20,13 @@
         .radio
           = label_tag do
             = f.radio_button :ref_type, 'tags', checked: @ref_type == 'tags', :class => 'ref_type ref_type_tags'
-            %strong Tag it!
-            .light Project will be built tagged and build in release mode.
+            %strong Tag it
+            .light Release and tag it!
         .radio
           = label_tag do
             = f.radio_button :ref_type, 'heads', checked: @ref_type == 'heads', :class => 'ref_type ref_type_heads'
-            %strong Build only!
-            .light Project will be built not be tagged and will be built in test mode.
+            %strong Build only
+            .light Build and test it!
 
   %fieldset#tags_info
     %legend Version information
