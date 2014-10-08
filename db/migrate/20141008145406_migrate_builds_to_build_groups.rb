@@ -7,7 +7,7 @@ class MigrateBuildsToBuildGroups < ActiveRecord::Migration
           latest_build = all_builds.order('created_at desc').last
           next unless latest_build
 
-          build_group = Build.create(
+          build_group = BuildGroup.create!(
               sha: latest_build.sha,
               before_sha: latest_build.before_sha,
               push_data: latest_build.push_data,
