@@ -3,7 +3,7 @@
     = build_group.status
 
   %td.build-link
-    = link_to build_group_url(build_group) do
+    = link_to build_or_build_group_url(build_group) do
       %strong #{build_group.short_sha}
 
   %td.build-message
