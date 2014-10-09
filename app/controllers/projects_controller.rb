@@ -129,6 +129,7 @@ class ProjectsController < ApplicationController
       commit.deep_symbolize_keys!
     end
 
+    data[:after] = commits.first[:id] # use commit id from network
     data[:commits] = commits
     data[:total_commits_count] = commits.count
 
