@@ -17,6 +17,7 @@ GitlabCi::Application.routes.draw do
       get :status, to: 'projects#badge'
       get :integration
       post :build
+      post :tag
       get :tags
     end
 

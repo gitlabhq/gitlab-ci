@@ -191,4 +191,56 @@ class Network
       nil
     end
   end
+
+  def list_project_hooks(url, project_id, token)
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def add_project_hook(url, project_id, hook_opts, token)
+    opts = {
+        body: hook_opts.to_json,
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.post(endpoint, opts)
+
+    if response.code == 201
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def delete_project_hook(url, project_id, hook_id, token)
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks/#{hook_id}?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.delete(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
 end

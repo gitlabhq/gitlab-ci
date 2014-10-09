@@ -1,8 +1,8 @@
 class ProjectsController < ApplicationController
-  before_filter :authenticate_user!, except: [:build, :badge, :index, :show, :tags]
-  before_filter :project, only: [:build, :integration, :show, :tags, :badge, :edit, :update, :destroy]
-  before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :tags, :new, :create]
-  before_filter :authenticate_token!, only: [:build]
+  before_filter :authenticate_user!, except: [:build, :tag, :badge, :index, :show, :tags]
+  before_filter :project, only: [:build, :tag, :integration, :show, :tags, :badge, :edit, :update, :destroy]
+  before_filter :authorize_access_project!, except: [:build, :tag, :gitlab, :badge, :index, :show, :tags, :new, :create]
+  before_filter :authenticate_token!, only: [:build, :tag]
   before_filter :no_cache, only: [:badge]
 
   layout 'project', except: [:index, :gitlab]
@@ -77,22 +77,63 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    if project.update_attributes(params[:project])
+    begin
+      Project.transaction do
+        project.assign_attributes(params[:project])
+        CreateProjectService.new.update(current_user, project, project_url(":project_id"))
+      end
       redirect_to project, notice: 'Project was successfully updated.'
-    else
-      render action: "edit"
+    rescue => e
+      render action: "edit", alert: e.to_s
     end
   end
 
   def destroy
-    project.destroy
-    Network.new.disable_ci(current_user.url, project.gitlab_id, current_user.private_token)
+    CreateProjectService.new.destroy(current_user, params[:project], project_url(":project_id"))
 
     redirect_to projects_url
   end
 
   def build
     @build = CreateBuildService.new.execute(@project, params.dup)
+
+    if @build && @build.persisted?
+      head 201
+    else
+      head 400
+    end
+  end
+
+  def tag
+    data = params.dup
+
+    # check if reg is tag
+    ref = data[:ref]
+    unless ref and ref.include?('refs/tags/')
+      head 400
+      return
+    end
+    ref = ref.scan(/tags\/(.*)$/).flatten[0]
+
+    gitlab_url = project.gitlab_url.split('/')[0..-3].join('/')
+
+    # fill missing commits
+    commits = Network.new.commits_for_ref(gitlab_url, project.gitlab_id, project.private_token, ref)
+    unless commits
+      head 400
+      return
+    end
+
+    # convert all strings to symbols
+    commits.map do |commit|
+      commit.deep_symbolize_keys!
+    end
+
+    data[:commits] = commits
+    data[:total_commits_count] = commits.count
+
+    # create builds
+    @build = CreateBuildService.new.execute(@project, data)
 
     if @build && @build.persisted?
       head 201
