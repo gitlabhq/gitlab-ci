@@ -4,6 +4,7 @@ v5.1
   - Dont show archived projects
   - Add support for skip branches from build
   - Add coverage parsing feature
+  - Update rails to 4.0.10
 
 v5.0.1
   - Update rails to 4.0.5
