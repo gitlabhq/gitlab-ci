@@ -5,8 +5,6 @@ module Slack
   class Notifier
     class << self
       def build_started_slack_post(build)
-        return unless build.tag?
-
         text = build_text(build, "started")
         fields = [{}]
 

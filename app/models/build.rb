@@ -92,7 +92,9 @@ class Build < ActiveRecord::Base
       project = build.project
 
       if project.slack_notification?
-        SlackNotificationService.new.build_started(build)
+        if project.tag?
+          SlackNotificationService.new.build_started(build)
+        end
       end
 
       build.update_attributes started_at: Time.now
@@ -119,7 +121,7 @@ class Build < ActiveRecord::Base
       end
 
       if project.slack_notification?
-        if build.status.to_sym == :failed || !project.slack_only_broken_builds
+        if build.status.to_sym == :failed || !project.slack_only_broken_builds || project.tag?
           SlackNotificationService.new.build_ended(build)
         end
       end
