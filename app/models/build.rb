@@ -92,7 +92,7 @@ class Build < ActiveRecord::Base
       project = build.project
 
       if project.slack_notification?
-        if project.tag?
+        if build.tag?
           SlackNotificationService.new.build_started(build)
         end
       end
