@@ -121,7 +121,7 @@ class Build < ActiveRecord::Base
       end
 
       if project.slack_notification?
-        if build.status.to_sym == :failed || !project.slack_only_broken_builds || project.tag?
+        if build.status.to_sym == :failed || !project.slack_only_broken_builds || build.tag?
           SlackNotificationService.new.build_ended(build)
         end
       end
