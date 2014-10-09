@@ -10,10 +10,6 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
-    actionpack-action_caching (1.1.0)
-      actionpack (>= 4.0.0, < 5.0)
-    actionpack-page_caching (1.0.2)
-      actionpack (>= 4.0.0, < 5)
     activemodel (4.0.10)
       activesupport (= 4.0.10)
       builder (~> 3.1.0)
@@ -307,8 +303,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack-action_caching
-  actionpack-page_caching
   activerecord-deprecated_finders
   activerecord-session_store
   annotate
