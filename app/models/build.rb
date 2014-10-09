@@ -89,6 +89,12 @@ class Build < ActiveRecord::Base
     end
 
     after_transition :pending => :running do |build, transition|
+      project = build.project
+
+      if project.slack_notification?
+        SlackNotificationService.new.build_started(build)
+      end
+
       build.update_attributes started_at: Time.now
     end
 
@@ -187,7 +193,7 @@ class Build < ActiveRecord::Base
   end
 
   def build_concurrent_id
-    project.builds.where(sha: sha).where("id <= ?", id).count
+    build_group.builds.where("id <= ?", id).count
   end
 
   def trace_html

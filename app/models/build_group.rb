@@ -134,11 +134,7 @@ class BuildGroup < ActiveRecord::Base
   end
 
   def build_id
-    project.builds.where("id <= ?", id).count
-  end
-
-  def build_concurrent_id
-    project.builds.where(sha: sha).where("id <= ?", id).count
+    project.build_groups.where("id <= ?", id).count
   end
 
   def commit_data
