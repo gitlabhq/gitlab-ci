@@ -14,7 +14,7 @@ gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
 gem 'addressable'
 gem 'travis-build',  github: 'ayufan/travis-build'
-gem 'travis-yaml',  github: 'travis-ci/travis-yaml'
+gem 'travis-yaml',  github: 'ayufan/travis-yaml'
 
 
 # DB

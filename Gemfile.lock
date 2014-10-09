@@ -12,8 +12,8 @@ GIT
     travis-build (0.0.1)
 
 GIT
-  remote: git://github.com/travis-ci/travis-yaml.git
-  revision: 0f2cc8c2887790d2980f4f0af81912afcc030226
+  remote: git://github.com/ayufan/travis-yaml.git
+  revision: 80511999fc75a633e06ca62cd7ef66757fe64d9b
   specs:
     travis-yaml (0.1.0)
 
