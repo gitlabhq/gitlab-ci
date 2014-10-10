@@ -12,16 +12,14 @@ class CreateProjectService
   end
 
   def update(current_user, project, project_route)
-    token_changed = project.token?
-
     project.save!
 
     project_url = project_route.gsub(":project_id", project.id.to_s)
     hook_tag_url = "#{project_url}/tag?token=#{project.token}"
 
     # update only if token got changed
-    enable_ci(current_user, project, project_url) if token_changed
-    ensure_project_hook_exist(current_user, project, project_url, hook_tag_url) if token_changed
+    enable_ci(current_user, project, project_url)
+    ensure_project_hook_exist(current_user, project, project_url, hook_tag_url)
   end
 
   def destroy(current_user, project, project_route)
