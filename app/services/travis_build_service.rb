@@ -128,6 +128,9 @@ class CreateBuildService
         end
       end
 
+      # omit gh-pages unless specified in branches.only
+      return if data[:ref] == 'gh-pages' unless @parameters.branches and @parameters.branches.only
+
       ::Travis::Yaml.matrix(build_config_params).each do |matrix_entry|
         matrix_build_config = {}
         matrix_entry.mapping.each_key do |key|
