@@ -1,16 +1,24 @@
 class CreateBuildService
   class Shell
     def execute(project, data)
-      build_group_data = data.dup
-      build_group_data.delete(:build_method)
-      build_group = project.build_groups.create(build_group_data)
+      ActiveRecord::Base.transaction do
+        begin
+          build_group_data = data.dup
+          build_group_data.delete(:build_method)
+          build_group = project.build_groups.create(build_group_data)
 
-      data[:labels] = project.labels.delete(" ").split(",")
-      data[:build_group_id] = build_group.id
-      project.builds.create(data)
+          data.merge!(labels: build_labels(project))
+          data.merge!(build_group_id: build_group.id)
+          data.merge!(build_attributes: nil)
+          data.merge!(matrix_attributes: nil)
+          project.builds.create(data)
 
-      # return build group
-      build_group
+          # return build group
+          build_group
+        rescue
+          raise ActiveRecord::Rollback
+        end
+      end
     end
 
     def detected?(project)
@@ -30,6 +38,10 @@ class CreateBuildService
     end
 
     def build_end(build)
+    end
+
+    def build_labels(project)
+      project.labels.delete(" ").split(",") || 'shell linux'
     end
   end
 end
