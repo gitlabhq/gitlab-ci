@@ -16,24 +16,30 @@ class CreateBuildService
       build_config_params = load_config(project, data[:sha], data[:ref_type] == 'tags')
       return nil if build_config_params.nil?
 
-      build_group_data = data.dup
-      build_group_data.delete(:build_method)
-      build_group = project.build_groups.create(build_group_data)
+      ActiveRecord::Base.transaction do
+        begin
+          build_group_data = data.dup
+          build_group_data.delete(:build_method)
+          build_group = project.build_groups.create(build_group_data)
 
-      generate_builds(build_config_params, data, build_attributes) do |new_data, new_attributes, new_matrix_attributes|
-        new_data.merge!(build_attributes: new_attributes)
-        new_data.merge!(matrix_attributes: new_matrix_attributes)
-        new_data.merge!(labels: build_labels(new_attributes))
-        new_data.merge!(build_group_id: build_group.id)
-        project.builds.create(new_data)
+          generate_builds(build_config_params, data, build_attributes) do |new_data, new_attributes, new_matrix_attributes|
+            new_data.merge!(build_attributes: new_attributes)
+            new_data.merge!(matrix_attributes: new_matrix_attributes)
+            new_data.merge!(labels: build_labels(new_attributes))
+            new_data.merge!(build_group_id: build_group.id)
+            project.builds.create(new_data)
+          end
+
+          if build_group.builds.empty?
+            raise ActiveRecord::Rollback
+          end
+
+          build_group
+        rescue
+          raise ActiveRecord::Rollback
+          nil
+        end
       end
-
-      if build_group.builds.empty?
-        build_group.drop
-        build_group = nil
-      end
-
-      build_group
     end
 
     def detected?(project)
