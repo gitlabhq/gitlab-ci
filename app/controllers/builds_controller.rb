@@ -106,7 +106,7 @@ class BuildsController < ApplicationController
     begin
       @build_group = CreateBuildService.new.execute(project, data)
 
-      if @build_group.persisted?
+      if @build_group
         redirect_to project_build_group_path(project, @build_group)
       else
         @alert = 'No build created.'
