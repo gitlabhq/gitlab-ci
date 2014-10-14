@@ -2,7 +2,7 @@ class BuildGroup
   @interval: null
 
   constructor: (build_group_url, build_group_status) ->
-    clearInterval(Build.interval)
+    clearInterval(BuildGroup.interval)
 
     if build_group_status == "running" || build_group_status == "pending"
       BuildGroup.interval = setInterval =>
