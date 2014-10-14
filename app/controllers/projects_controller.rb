@@ -89,7 +89,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    CreateProjectService.new.destroy(current_user, params[:project], project_url(":project_id"))
+    CreateProjectService.new.destroy(current_user, project, project_url(":project_id"))
 
     redirect_to projects_url
   end

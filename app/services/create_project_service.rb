@@ -23,9 +23,11 @@ class CreateProjectService
   end
 
   def destroy(current_user, project, project_route)
-    project.destroy
-    Network.new.disable_ci(current_user.url, project.gitlab_id, current_user.private_token)
-    delete_project_hooks(current_user, project, project_route)
+    Project.transaction do
+      project.destroy
+      Network.new.disable_ci(current_user.url, project.gitlab_id, current_user.private_token)
+      delete_project_hooks(current_user, project, project_route)
+    end
   end
 
   private
@@ -85,7 +87,7 @@ class CreateProjectService
 
     if hooks
       hooks.each do |hook|
-        Network.new.delete_project_hook(current_user.url, project.gitlab_id, hook['id'], current_user.private_token) if hook.url.start_with? project_route
+        Network.new.delete_project_hook(current_user.url, project.gitlab_id, hook['id'], current_user.private_token) if hook['url'].start_with? project_route
       end
     end
   end
@@ -95,7 +97,7 @@ class CreateProjectService
     return unless hooks
 
     hooks.each do |hook|
-      next unless hook.url.start_with? project_route
+      next unless hook['url'].start_with? project_route
       Network.new.delete_project_hook(current_user.url, project.gitlab_id, hook['id'], current_user.private_token)
     end
   end
