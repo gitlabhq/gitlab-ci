@@ -43,6 +43,11 @@ class BuildsController < ApplicationController
     @tag_name = '1.0'
     @tag_message = ''
     @alert = nil
+
+    # Fill with last tag message
+    last_tag = @project.build_groups.tags.last
+    @tag_name = last_tag.ref if last_tag
+    # @tag_message = last_tag.ref_message if last_tag
   end
 
   def create
