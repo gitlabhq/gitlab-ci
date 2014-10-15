@@ -6,9 +6,6 @@
     = link_to build_or_build_group_url(build_group) do
       %strong #{build_group.short_sha}
 
-  %td.build-message
-    %span= truncate(build_group.ref_or_commit_message, length: 50)
-
   %td.build-branch
     - unless @ref
       - if build_group.tag?
@@ -16,6 +13,9 @@
       - else
         %span
           = link_to build_group.ref, project_path(@project, ref: build_group.ref)
+
+  %td.build-message
+    %span= truncate(build_group.ref_or_commit_message, length: 50)
 
   %td.duration
     - if build_group.duration

@@ -6,9 +6,6 @@
     = link_to build_url(build) do
       %strong #{build.short_sha}
 
-  %td.build-message
-    %span= truncate(build.ref_or_commit_message, length: 50)
-
   %td.build-branch
     - unless @ref
       - if build.tag?
@@ -16,6 +13,9 @@
       - else
         %span
           = link_to build.ref, project_path(@project, ref: build.ref)
+
+  %td.build-message
+    %span= truncate(build.ref_or_commit_message, length: 50)
 
   %td.build-message
     - if build.matrix_attributes_formatted
