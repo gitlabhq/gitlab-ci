@@ -29,7 +29,7 @@
               = nav_link path: 'projects#tags' do
                 = link_to tags_project_path(@project) do
                   %i.icon-list-alt
-                  Tags
+                  Releases
                   %small.pull-right= @project.build_groups.tags.count
               = nav_link path: 'builds#new' do
                 = link_to new_project_build_path(@project) do

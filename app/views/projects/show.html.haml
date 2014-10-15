@@ -39,7 +39,7 @@
       %th Status
       %th Commit
       %th Message
-      %th Branch
+      %th Ref
       %th Duration
       %th Finished at
 
@@ -48,5 +48,5 @@
 = paginate @build_groups
 - if @build_groups.empty?
   .bs-callout
-    %h4 No build groups yet
+    %h4 No builds yet
 
