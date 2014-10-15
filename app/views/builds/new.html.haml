@@ -5,9 +5,9 @@
   %fieldset
     %legend Build settings
     .form-group
-      = f.label :ref, 'Ref', class: 'control-label', placeholder: "master"
+      = f.label :ref, 'Ref', class: 'control-label'
       .col-sm-10
-        = f.text_field :ref, class: 'form-control', value: @ref
+        = f.text_field :ref, class: 'form-control', value: @ref, placeholder: "master"
         .light Select branch or Git revision from which project will be built.
 
     .form-group
@@ -29,15 +29,15 @@
   %fieldset#tags_info
     %legend Tag description
     .form-group
-      = f.label :tag_name, 'Name', class: 'control-label', placeholder: "1.0"
+      = f.label :tag_name, 'Name', class: 'control-label'
       .col-sm-10
-        = f.text_field :tag_name, class: 'form-control', value: @tag_name
+        = f.text_field :tag_name, class: 'form-control', value: @tag_name, placeholder: "1.0"
         .light Type tag name.
 
     .form-group
       = f.label :tag_message, 'Notes', class: 'control-label'
       .col-sm-10
-        = f.text_area :tag_message, class: 'form-control', rows: 4, value: @tag_message
+        = f.text_area :tag_message, class: 'form-control', rows: 4, value: @tag_message, placeholder: "ref commit message"
         .light Type short summary of changes.
 
   .form-actions
