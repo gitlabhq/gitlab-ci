@@ -47,13 +47,14 @@ class BuildsController < ApplicationController
     # Fill with last tag message
     last_tag = @project.build_groups.tags.last
     @tag_name = last_tag.ref if last_tag
-    # @tag_message = last_tag.ref_message if last_tag
+    @tag_message = last_tag.ref_or_commit_message if last_tag
   end
 
   def create
     build = params[:build]
     @ref = build[:ref]
     @ref_type = build[:ref_type]
+    @ref_message = nil
     @tag_name = build[:tag_name]
     @tag_message = build[:tag_message]
     @alert = nil
@@ -87,6 +88,7 @@ class BuildsController < ApplicationController
         created_tag = created_tag.deep_symbolize_keys
         commit = created_tag[:commit]
         @ref = @tag_name
+        @ref_message = @tag_message
 
       else
         @alert = 'Invalid option selected'
@@ -103,6 +105,7 @@ class BuildsController < ApplicationController
         after: after,
         before: before,
         ref: ref,
+        ref_message: @ref_message,
         commits: [
             commit
         ]
@@ -130,6 +133,7 @@ class BuildsController < ApplicationController
         push_data: @build.push_data,
         ref: @build.ref,
         ref_type: @build.ref_type,
+        ref_message: @build.ref_message,
     )
 
     build = project.builds.create(
@@ -138,6 +142,7 @@ class BuildsController < ApplicationController
       push_data: @build.push_data,
       ref: @build.ref,
       ref_type: @build.ref_type,
+      ref_message: @build.ref_message,
       labels: @build.labels,
       build_method: @build.build_method,
       build_attributes: @build.build_attributes,

@@ -34,7 +34,7 @@ class Build < ActiveRecord::Base
   attr_accessible :project_id, :ref, :ref_type, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :coverage
 
-  attr_accessible :build_method, :build_attributes, :matrix_attributes, :labels
+  attr_accessible :build_method, :build_attributes, :matrix_attributes, :labels, :ref_message
 
   attr_accessible :build_group_id
 
@@ -180,6 +180,10 @@ class Build < ActiveRecord::Base
 
   def git_commit_message
     commit_data[:message] if commit_data
+  end
+
+  def ref_or_commit_message
+    ref_message || git_commit_message
   end
 
   def short_before_sha

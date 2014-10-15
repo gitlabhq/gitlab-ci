@@ -29,6 +29,7 @@ class CreateBuildService
         ref_type: type,
         sha: sha,
         before_sha: before_sha,
+        ref_message: params[:ref_message],
         build_method: project.build_method,
         push_data: {
             before: params[:before],

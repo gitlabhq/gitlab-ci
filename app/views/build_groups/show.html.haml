@@ -55,7 +55,7 @@
         #{@build_group.git_author_name}
       %p
         %span.attr-name Message:
-        #{@build_group.git_commit_message}
+        #{@build_group.ref_or_commit_message}
 
       - if @build_group.duration
         %p

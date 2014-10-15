@@ -4,7 +4,7 @@ class BuildGroup < ActiveRecord::Base
   serialize :push_data
 
   attr_accessible :project_id, :ref, :ref_type, :sha, :before_sha,
-                  :started_at, :push_data
+                  :started_at, :push_data, :ref_message
 
   validates :before_sha, presence: true
   validates :sha, presence: true
@@ -123,6 +123,10 @@ class BuildGroup < ActiveRecord::Base
 
   def git_commit_message
     commit_data[:message] if commit_data
+  end
+
+  def ref_or_commit_message
+    ref_message || git_commit_message
   end
 
   def short_before_sha
