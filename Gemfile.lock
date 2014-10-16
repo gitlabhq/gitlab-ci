@@ -12,10 +12,11 @@ GIT
     travis-build (0.0.1)
 
 GIT
-  remote: git://github.com/ayufan/travis-yaml.git
-  revision: 80511999fc75a633e06ca62cd7ef66757fe64d9b
+  remote: git://github.com/ayufan/travis-model-build-config.git
+  revision: 6e8355b8e1f37ec742cdc75169c379bf9d40dfeb
   specs:
-    travis-yaml (0.1.0)
+    travis-model-build-config (0.0.1)
+      activesupport (~> 4.0)
 
 GEM
   remote: https://rubygems.org/
@@ -374,7 +375,7 @@ DEPENDENCIES
   state_machine
   therubyracer
   travis-build!
-  travis-yaml!
+  travis-model-build-config!
   turbolinks
   uglifier (>= 1.0.3)
   unicorn (~> 4.8.2)

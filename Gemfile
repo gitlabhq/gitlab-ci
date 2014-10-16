@@ -13,8 +13,8 @@ gem 'protected_attributes'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
 gem 'addressable'
-gem 'travis-build',  github: 'ayufan/travis-build'
-gem 'travis-yaml',  github: 'ayufan/travis-yaml'
+gem 'travis-build', github: 'ayufan/travis-build'
+gem 'travis-model-build-config', github: 'ayufan/travis-model-build-config'
 
 
 # DB

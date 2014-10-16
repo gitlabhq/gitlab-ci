@@ -1,6 +1,5 @@
-require 'travis/yaml'
-require 'travis/yaml/nodes/language'
-require 'extension'
+require 'travis/model/build/config'
+require 'travis/model/build/config/matrix'
 
 class CreateBuildService
   class Travis
@@ -48,13 +47,7 @@ class CreateBuildService
 
     def build_commands(build)
       data = travis_config.dup
-      build_attributes = Extension.deep_symbolize_keys(build.build_attributes)
-
-      if build_attributes[:os]
-        data[:config] = build_attributes
-      else
-        Extension.deep_merge!(data, build_attributes)
-      end
+      data[:config] = build.build_attributes
 
       data[:urls] = {
       }
@@ -81,7 +74,7 @@ class CreateBuildService
     end
 
     def format_build_attributes(build)
-      build.build_attributes["config"].to_yaml.sub("---\n", '').gsub(/^:/, '') if build.build_attributes.is_a?(Hash) and build.build_attributes["config"]
+      build.build_attributes[:config].to_yaml.sub("---\n", '').gsub(/^:/, '') if build.build_attributes.is_a?(Hash) and build.build_attributes[:config]
     end
 
     def format_matrix_attributes(build)
@@ -89,19 +82,20 @@ class CreateBuildService
     end
 
     def build_labels(build_attributes)
-      config = build_attributes['config']
-      ['travis', config['os'], config['language']].join(" ")
+      config = build_attributes[:config]
+      [:travis, config[:os], config[:language]].join(" ")
     end
 
     def build_end(build)
       return unless build.build_group
 
       build_attributes = build.build_attributes
-      config = build_attributes['config'] if build_attributes
-      matrix_config = build_attributes['matrix'] if config
+      config = build_attributes[:config] if build_attributes
+      matrix_config = build_attributes[:matrix] if config
+      fast_finish = matrix_config[:fast_finish] if fast_finish
 
       # cancel all builds
-      if matrix_config and matrix_config['fast_finish']
+      if fast_finish
         build.build_group.builds.each do |other_build|
           other_build.cancel
         end
@@ -124,45 +118,28 @@ class CreateBuildService
       raise 'block must be specified' unless block_given?
       ``
 
-      @parameters = ::Travis::Yaml.parse(build_config_params)
-
-      if @parameters.branches
-        if @parameters.branches.only
-          return unless @parameters.branches.only.include? data[:ref]
-        elsif @parameters.branches.except
-          return if @parameters.branches.except.include? data[:ref]
+      build_config = ::Travis::Model::Build::Config.new(build_config_params, default_options).normalize
+      if branches=build_config[:branches]
+        if branches[:only]
+          return unless branches[:only].include? data[:ref]
+        elsif branches[:except]
+          return if branches[:except].include? data[:ref]
         end
       end
 
       # omit gh-pages unless specified in branches.only
-      return if data[:ref] == 'gh-pages' unless @parameters.branches and @parameters.branches.only
+      return if data[:ref] == 'gh-pages' unless build_config[:branches] and build_config[:branches][:only]
 
-      ::Travis::Yaml.matrix(build_config_params).each do |matrix_entry|
-        matrix_build_config = {}
-        matrix_entry.mapping.each_key do |key|
-          # call method to get matrix entry specialization for each mapped key
-          # because Matrix::Entry redefines method for modified keys
-          matrix_build_config[key] = matrix_entry.method(key).call()
+      matrix_build = ::Travis::Model::Build::Config::Matrix.new(build_config, default_options)
+      matrix_build.expand.each do |matrix_entry|
+        matrix_attributes = matrix_entry.select do |key, value|
+          matrix_build.send(:expand_keys).include? key and build_config[key].is_a?(Array)
         end
 
-        if matrix_entry.respond_to? :matrix_attributes
-          matrix_env = matrix_entry.matrix_attributes[:env]
-          matrix_attributes = matrix_entry.matrix_attributes
-        end
-        matrix_env ||= @parameters.env.matrix if @parameters.env
-
-        # workaround for broken matrix_entry.global
-        inherited_env = @parameters.env.global if @parameters.env
-        matrix_build_config['env'] = [*matrix_env, *inherited_env].compact
-
-        # use eval to convert back to simple represtentation
-        matrix_attributes = eval(matrix_attributes.to_s) if matrix_attributes
-
-        # make it as data
-        matrix_build_data = {}
-        matrix_build_data['config'] = matrix_build_config
-        matrix_build_data['env_vars'] = custom_attributes
-        matrix_build_data = eval(matrix_build_data.to_s)
+        matrix_build_data = {
+            config: matrix_entry,
+            env_vars: custom_attributes
+        }
 
         block.call(data.dup, matrix_build_data, matrix_attributes)
       end
@@ -174,6 +151,10 @@ class CreateBuildService
 
     def network
       @network ||= Network.new
+    end
+
+    def default_options
+      {multi_os: true, dist_group_expansion: true}
     end
   end
 end
