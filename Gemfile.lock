@@ -13,9 +13,9 @@ GIT
 
 GIT
   remote: git://github.com/ayufan/travis-model-build-config.git
-  revision: 6e8355b8e1f37ec742cdc75169c379bf9d40dfeb
+  revision: b2618553985f2968480bd1e5c97a40954cf2989a
   specs:
-    travis-model-build-config (0.0.1)
+    travis-model-build-config (0.0.2)
       activesupport (~> 4.0)
 
 GEM
