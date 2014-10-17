@@ -7,11 +7,12 @@ class CreateBuildService
           build_group_data.delete(:build_method)
           build_group = project.build_groups.create(build_group_data)
 
-          data.merge!(labels: build_labels(project))
-          data.merge!(build_group_id: build_group.id)
-          data.merge!(build_attributes: nil)
-          data.merge!(matrix_attributes: nil)
-          project.builds.create(data)
+          build_data = build_group_data.dup
+          build_data.merge!(labels: build_labels(project))
+          build_data.merge!(build_group_id: build_group.id)
+          build_data.merge!(build_attributes: nil)
+          build_data.merge!(matrix_attributes: nil)
+          project.builds.create(build_data)
 
           # return build group
           build_group
@@ -41,7 +42,7 @@ class CreateBuildService
     end
 
     def build_labels(project)
-      project.labels.delete(" ").split(",") || 'shell linux'
+      project.labels || 'shell linux'
     end
   end
 end
