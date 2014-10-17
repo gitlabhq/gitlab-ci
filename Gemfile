@@ -17,6 +17,7 @@ gem 'travis-build', github: 'ayufan/travis-build'
 gem 'travis-model-build-config', github: 'ayufan/travis-model-build-config'
 
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
+gem 'newrelic_rpm'
 
 # DB
 gem 'mysql2', group: :mysql
