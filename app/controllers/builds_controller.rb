@@ -33,6 +33,9 @@ class BuildsController < ApplicationController
       format.text {
         render text: @build.trace
       }
+      format.sh {
+        render text: @build.commands
+      }
     end
   end
 
