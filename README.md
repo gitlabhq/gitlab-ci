@@ -79,6 +79,7 @@ and
 ### Installation
 
 * [Installation guide](doc/install/installation.md)
+* [Unofficial Docker Image](https://registry.hub.docker.com/u/anapsix/gitlab-ci/) is available via `docker pull anapsix/gitlab-ci` for testing and simplified installation.
 
 ### How to add a new project to GitLab CI
 
