@@ -74,6 +74,10 @@ class CreateBuildService
       script.compile
     end
 
+    def custom_commands(build)
+      true
+    end
+
     def format_build_attributes(build)
       build_config = build.build_attributes[:config] if build.build_attributes
       build_config = build_config.to_yaml.sub("---\n", '').gsub(/^:/, '') if build_config

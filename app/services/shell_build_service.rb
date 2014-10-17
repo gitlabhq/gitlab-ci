@@ -7,7 +7,7 @@ class CreateBuildService
           build_group_data.delete(:build_method)
           build_group = project.build_groups.create(build_group_data)
 
-          build_data = build_group_data.dup
+          build_data = data.dup
           build_data.merge!(build_os: project.build_os)
           build_data.merge!(build_image: project.build_image)
           build_data.merge!(build_group_id: build_group.id)
@@ -28,6 +28,10 @@ class CreateBuildService
 
     def build_commands(build)
       build.project.scripts
+    end
+
+    def custom_commands(build)
+      true
     end
 
     def format_build_attributes(build)

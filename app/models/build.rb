@@ -230,6 +230,10 @@ class Build < ActiveRecord::Base
     build_service.build_commands(self)
   end
 
+  def custom_commands
+    build_service.custom_commands(self)
+  end
+
   def commit_data
     push_data[:commits].each do |commit|
       return commit if commit[:id] == sha
