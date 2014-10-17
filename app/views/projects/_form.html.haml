@@ -63,11 +63,17 @@
             %strong git fetch
             .light Faster
 
-    .form-group#form_group_labels
-      = f.label :labels, "Specify build labels", class: 'control-label'
+    .form-group#form_group_build_os
+      = f.label :build_os, "Specify build OS", class: 'control-label'
       .col-sm-10
-        = f.text_field :labels, class: 'form-control', placeholder: 'shell linux'
-        .light You will be able to limit runners to be used
+        = f.text_field :build_os, class: 'form-control', placeholder: 'linux'
+        .light You will be able to specify base operating system on which project should be run: linux, windows or osx.
+
+    .form-group#form_group_build_image
+      = f.label :build_image, "Specify build image", class: 'control-label'
+      .col-sm-10
+        = f.text_field :build_image, class: 'form-control', placeholder: 'ubuntu:14.04'
+        .light You will be able to specify base image to be used for docker runner.
 
     .form-group
       = f.label :timeout_in_minutes, 'Timeout', class: 'control-label'
@@ -205,10 +211,12 @@
     $("#form_group_travis_environment").toggle($(this).hasClass("build_method_travis"));
     $("#form_group_scripts").toggle($(this).hasClass("build_method_shell"));
     $("#form_group_allow_git_fetch").toggle($(this).hasClass("build_method_shell"));
-    $("#form_group_labels").toggle($(this).hasClass("build_method_shell"));
+    $("#form_group_build_os").toggle($(this).hasClass("build_method_shell"));
+    $("#form_group_build_image").toggle($(this).hasClass("build_method_shell"));
   });
 
   $("#form_group_travis_environment").toggle("#{@project.build_method}" == "travis");
   $("#form_group_scripts").toggle("#{@project.build_method}" == "shell");
   $("#form_group_allow_git_fetch").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
-  $("#form_group_labels").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
+  $("#form_group_build_os").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
+  $("#form_group_build_image").toggle($(this).hasClass("#{@project.build_method}" == "shell"));

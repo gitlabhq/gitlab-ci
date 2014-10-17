@@ -21,10 +21,10 @@ class CreateBuildService
           build_group_data.delete(:build_method)
           build_group = project.build_groups.create(build_group_data)
 
-          generate_builds(build_config_params, data, build_attributes) do |new_data, new_attributes, new_matrix_attributes|
+          generate_builds(build_config_params, data, build_attributes) do |new_data, new_attributes|
             new_data.merge!(build_attributes: new_attributes)
-            new_data.merge!(matrix_attributes: new_matrix_attributes)
-            new_data.merge!(labels: build_labels(new_attributes))
+            new_data.merge!(build_os: new_attributes['os'] || 'linux')
+            new_data.merge!(build_image: build_image(new_attributes))
             new_data.merge!(build_group_id: build_group.id)
             project.builds.create(new_data)
           end
@@ -75,16 +75,20 @@ class CreateBuildService
     end
 
     def format_build_attributes(build)
-      build.build_attributes[:config].to_yaml.sub("---\n", '').gsub(/^:/, '') if build.build_attributes.is_a?(Hash) and build.build_attributes[:config]
+      build_config = build.build_attributes[:config] if build.build_attributes
+      build_config = build_config.to_yaml.sub("---\n", '').gsub(/^:/, '') if build_config
+      build_config
     end
 
     def format_matrix_attributes(build)
-      build.matrix_attributes.to_yaml.sub("---\n", '').gsub(/^:/, '') if build.matrix_attributes.is_a?(Hash) unless build.matrix_attributes.empty?
+      matrix_config = build.build_attributes[:matrix_config] if build.build_attributes
+      matrix_config = matrix_config.to_yaml.sub("---\n", '').gsub(/^:/, '') if matrix_config
+      matrix_config
     end
 
-    def build_labels(build_attributes)
-      config = build_attributes[:config]
-      [:travis, config[:os], config[:language]].join(" ")
+    def build_image(build_attributes)
+      config = build_attributes[:config] || {}
+      "ayufan/travis-#{config[:os]}-worker:#{config[:language]}"
     end
 
     def build_end(build)
@@ -132,17 +136,18 @@ class CreateBuildService
       return if data[:ref] == 'gh-pages' unless build_config[:branches] and build_config[:branches][:only]
 
       matrix_build = ::Travis::Model::Build::Config::Matrix.new(build_config, default_options)
-      matrix_build.expand.each do |matrix_entry|
-        matrix_attributes = matrix_entry.select do |key, value|
+      matrix_build.expand.each do |expanded_config|
+        matrix_attributes = expanded_config.select do |key, value|
           matrix_build.send(:expand_keys).include? key and build_config[key].is_a?(Array)
         end
 
         matrix_build_data = {
-            config: matrix_entry,
-            env_vars: custom_attributes
+            config: expanded_config,
+            matrix_config: matrix_attributes,
+            env_vars: custom_attributes,
         }
 
-        block.call(data.dup, matrix_build_data, matrix_attributes)
+        block.call(data.dup, matrix_build_data)
       end
     end
 

@@ -32,7 +32,7 @@ class Project < ActiveRecord::Base
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
     :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex,
-    :labels
+    :build_os, :build_image
 
   attr_accessible :private_token, :build_method, :travis_environment
 
@@ -81,6 +81,8 @@ ls -la
         email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
         private_token:           private_token,
         build_method:            project.build_method || 'shell',
+        build_os:                project.os || 'os',
+        build_image:             project.image || '',
         travis_environment:      project.travis_environment || ''
       }
 

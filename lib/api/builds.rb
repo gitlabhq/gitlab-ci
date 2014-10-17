@@ -17,10 +17,13 @@ module API
           builds = Build.all
           builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
 
-          # add labels LIKE clause
-          if params[:labels] and params[:labels].size
-            query = Array.new(params[:labels].size, "labels LIKE ?").join(" OR ")
-            labels = params[:labels].map { |v| v + '%' }
+          # limit builds by OS
+          builds = builds.where(build_os: params[:os]) if params[:os]
+
+          # add build_image LIKE clause
+          if params[:images] and params[:images].size
+            query = Array.new(params[:images].size, "build_image LIKE ?").join(" OR ")
+            labels = params[:images].map { |v| v + '%' }
             builds = builds.where([query, *labels])
           end
 

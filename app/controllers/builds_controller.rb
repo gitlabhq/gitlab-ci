@@ -146,10 +146,10 @@ class BuildsController < ApplicationController
       ref: @build.ref,
       ref_type: @build.ref_type,
       ref_message: @build.ref_message,
-      labels: @build.labels,
+      build_os: @build.build_os,
+      build_image: @build.build_image,
       build_method: @build.build_method,
       build_attributes: @build.build_attributes,
-      matrix_attributes: @build.matrix_attributes,
       build_group_id: build_group.id
     )
 

@@ -29,12 +29,11 @@ class Build < ActiveRecord::Base
 
   serialize :push_data
   serialize :build_attributes
-  serialize :matrix_attributes
 
   attr_accessible :project_id, :ref, :ref_type, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :coverage
 
-  attr_accessible :build_method, :build_attributes, :matrix_attributes, :labels, :ref_message
+  attr_accessible :build_method, :build_attributes, :build_os, :build_image, :ref_message
 
   attr_accessible :build_group_id
 
