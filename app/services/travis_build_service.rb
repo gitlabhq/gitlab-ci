@@ -47,7 +47,8 @@ class CreateBuildService
 
     def build_commands(build)
       data = travis_config.dup
-      data[:config] = build.build_attributes
+      data[:config] = build.build_attributes[:config]
+      data[:env_vars] = (data[:env_vars] || []) + (build.build_attributes[:env_vars] || {})
 
       data[:urls] = {
       }
