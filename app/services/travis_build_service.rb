@@ -57,11 +57,11 @@ class CreateBuildService
           slug: build.repo_slug
       }
       data[:source] = {
-          id: build.build_group.id,           # in future change it to buildgroup.id
-          number: build.build_group.build_id  # in future change it to buildgroup.build_id (next number for current proejct)
+          id: build.build_group.id.to_s,           # in future change it to buildgroup.id
+          number: build.build_group.build_id.to_s  # in future change it to buildgroup.build_id (next number for current proejct)
       }
       data[:job] = {
-          id: build.id,
+          id: build.id.to_s,
           number: "#{build.build_id}.#{build.build_concurrent_id}",
           branch: build.ref,
           commit: build.sha,
