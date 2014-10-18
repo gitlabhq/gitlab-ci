@@ -217,6 +217,6 @@
 
   $("#form_group_travis_environment").toggle("#{@project.build_method}" == "travis");
   $("#form_group_scripts").toggle("#{@project.build_method}" == "shell");
-  $("#form_group_allow_git_fetch").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
-  $("#form_group_build_os").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
-  $("#form_group_build_image").toggle($(this).hasClass("#{@project.build_method}" == "shell"));
+  $("#form_group_allow_git_fetch").toggle("#{@project.build_method}" == "shell");
+  $("#form_group_build_os").toggle("#{@project.build_method}" == "shell");
+  $("#form_group_build_image").toggle("#{@project.build_method}" == "shell");

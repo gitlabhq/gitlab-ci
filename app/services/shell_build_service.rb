@@ -31,7 +31,7 @@ class CreateBuildService
     end
 
     def custom_commands(build)
-      true
+      false
     end
 
     def format_build_attributes(build)
