@@ -85,8 +85,7 @@ describe Project do
       project = FactoryGirl.create :project,
                                   slack_notification_channel: '#devs',
                                   slack_notification_subdomain: 'example.com',
-                                  slack_notification_token: '121212121aaaa',
-                                  slack_notification_username: 'gitlab'
+                                  slack_notification_token: '121212121aaaa'
       project.slack_notification?.should == true
     end
   end

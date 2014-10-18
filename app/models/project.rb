@@ -25,8 +25,7 @@
 
 class Project < ActiveRecord::Base
   attr_accessible :slack_only_broken_builds, :slack_notification_channel,
-    :slack_notification_subdomain, :slack_notification_token,
-    :slack_notification_username
+    :slack_notification_subdomain, :slack_notification_token
 
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
@@ -171,10 +170,8 @@ ls -la
   end
 
   def slack_notification?
-    slack_notification_channel.present? &&
     slack_notification_subdomain.present? &&
-    slack_notification_token.present? &&
-    slack_notification_username.present?
+    slack_notification_token.present?
   end
 
   def web_hooks?

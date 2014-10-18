@@ -63,7 +63,7 @@ module Slack
         Slack::Post.configure(
           subdomain: project.slack_notification_subdomain,
           token:     project.slack_notification_token,
-          username:  project.slack_notification_username)
+          username:  'GitLab CI')
         Slack::Post.post(slack_string, project.slack_notification_channel, opts)
       end
 
