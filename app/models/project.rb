@@ -79,7 +79,7 @@ ls -la
         email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
         private_token:           private_token,
         build_method:            project.build_method || 'shell',
-        build_os:                project.os || 'os',
+        build_os:                project.os || 'linux',
         build_image:             project.image || '',
         travis_environment:      project.travis_environment || ''
       }
