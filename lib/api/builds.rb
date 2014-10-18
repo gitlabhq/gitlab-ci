@@ -18,12 +18,12 @@ module API
           builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
 
           # limit builds by OS
-          builds = builds.where(build_os: params[:os]) if params[:os]
+          builds = builds.where(build_os: params['os']) if params['os']
 
           # add build_image LIKE clause
-          if params[:images] and params[:images].size
-            query = Array.new(params[:images].size, "build_image LIKE ?").join(" OR ")
-            labels = params[:images].map { |v| v + '%' }
+          if params['images'] and params['images'].size
+            query = Array.new(params['images'].size, "build_image LIKE ?").join(" OR ")
+            labels = params['images'].map { |v| v + '%' }
             builds = builds.where([query, *labels])
           end
 
