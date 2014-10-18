@@ -23,7 +23,7 @@ class CreateBuildService
 
           generate_builds(build_config_params, data, build_attributes) do |new_data, new_attributes|
             new_data.merge!(build_attributes: new_attributes)
-            new_data.merge!(build_os: new_attributes['os'] || 'linux')
+            new_data.merge!(build_os: new_attributes[:config][:os] || 'linux')
             new_data.merge!(build_image: build_image(new_attributes))
             new_data.merge!(build_group_id: build_group.id)
             project.builds.create(new_data)
