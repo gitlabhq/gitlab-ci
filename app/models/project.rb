@@ -46,7 +46,6 @@ class Project < ActiveRecord::Base
   # Validations
   #
   validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
-  validates_presence_of :private_token
 
   validates_uniqueness_of :name
 
