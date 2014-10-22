@@ -5,6 +5,7 @@ v5.1
   - Add support for skip branches from build
   - Add coverage parsing feature
   - Update rails to 4.0.10
+  - All builds page for admin
 
 v5.0.1
   - Update rails to 4.0.5
