@@ -1,0 +1,23 @@
+= content_for :title do
+  %h3.project-title
+    All builds
+
+    .pull-right
+      %small
+        = pluralize(@builds.total_count, 'build')
+
+%table.builds
+  %thead
+    %tr
+      %th Status
+      %th Runner
+      %th Commit
+      %th Project
+      %th Message
+      %th Branch
+      %th Duration
+      %th Finished at
+
+  = render @builds
+
+= paginate @builds

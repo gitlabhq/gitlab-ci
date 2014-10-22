@@ -6,6 +6,7 @@ v5.1
   - Add coverage parsing feature
   - Update rails to 4.0.10
   - Look for a REVISION file before running `git log`
+  - All builds page for admin
 
 v5.0.1
   - Update rails to 4.0.5

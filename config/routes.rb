@@ -48,6 +48,8 @@ GitlabCi::Application.routes.draw do
     resources :projects do
       resources :runner_projects
     end
+
+    resources :builds, only: :index
   end
 
   root :to => 'projects#index'
