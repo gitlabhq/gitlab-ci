@@ -8,6 +8,8 @@ class BuildGroup
       BuildGroup.interval = setInterval =>
         if window.location.href is build_group_url
           Turbolinks.visit build_group_url
+        else
+          clearInterval(BuildGroup.interval)
       , 5000
 
 @BuildGroup = BuildGroup
