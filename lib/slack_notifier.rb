@@ -59,11 +59,15 @@ module Slack
       end
 
       def post(build, slack_string, opts={})
-        project = build.project
-        Slack::Post.configure(
-          webhook:   project.slack_notification_webhook,
-          username:  'GitLab CI')
-        Slack::Post.post(slack_string, project.slack_notification_channel, opts)
+        begin
+          project = build.project
+          Slack::Post.configure(
+            webhook:   project.slack_notification_webhook,
+            username:  'GitLab CI')
+          Slack::Post.post(slack_string, project.slack_notification_channel, opts)
+        rescue
+          return false
+        end
       end
 
       private
