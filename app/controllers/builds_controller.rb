@@ -118,7 +118,11 @@ class BuildsController < ApplicationController
       @build_group = CreateBuildService.new.execute(project, data)
 
       if @build_group
-        redirect_to project_build_group_path(project, @build_group)
+        if @build_group.one?
+          redirect_to project_build_path(project, @build_group.builds.first)
+        else
+          redirect_to project_build_group_path(project, @build_group)
+        end
       else
         @alert = 'No build created.'
         render 'new'
