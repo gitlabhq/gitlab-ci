@@ -1,6 +1,6 @@
 # Universal update guide for patch versions. For example from 4.0.0 to 4.0.1, also see the [semantic versioning specification](http://semver.org/).
 
-### 1. stop CI server
+### 1. Stop CI server
 
     sudo service gitlab_ci stop
 
@@ -11,7 +11,7 @@ sudo su gitlab_ci
 cd /home/gitlab_ci/gitlab-ci
 ```
 
-### 3. get latest code
+### 3. Get latest code
 
 ```
 git pull origin STABLE_BRANCH

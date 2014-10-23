@@ -72,7 +72,7 @@ Possible Cases:
 ![screen](https://gitlab.com/gitlab-org/gitlab-ci/raw/master/app/assets/images/arch.jpg)
 
 For more information see:
-[Announcing GitLab CI 3.0](http://blog.gitlab.org/announcing-gitlab-ci-3.0/)
+[Announcing GitLab CI 5.1](http://blog.gitlab.org/2014/10/22/gitlab-ci-5-dot-1-released/)
 and
 [Integrating GitLab CI With GitLab to Enable Distributed Builds](http://blog.gitlab.org/integrating-gitlab-ci-with-gitlab/)
 
