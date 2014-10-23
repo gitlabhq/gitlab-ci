@@ -1,0 +1,24 @@
+%tr.build.alert{class: build_status_alert_class(build)}
+  %td.build-id
+    = link_to build_url(build) do
+      %strong ##{build.build_canonical_id}
+
+  %td.status
+    = build.status
+
+  %td.build-variant
+    - if build.matrix_attributes_formatted
+      %code= build.matrix_attributes_formatted
+
+  %td.duration
+    - if build.duration
+      #{distance_of_time_in_words build.duration}
+
+  %td.timestamp
+    - if build.finished_at
+      %span #{time_ago_in_words build.finished_at} ago
+
+  - if build.project.coverage_enabled?
+    %td.coverage
+      - if build.coverage
+        #{build.coverage}%

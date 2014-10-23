@@ -78,14 +78,12 @@
     %tr
       %th ID
       %th Status
-      %th Commit
-      %th Ref
-      %th Message
       %th Variant
       %th Duration
       %th Finished at
 
-  = render @builds
+  - @builds.each do |build|
+    = render 'build', :build => build
 
 - if @builds.empty?
   .bs-callout
