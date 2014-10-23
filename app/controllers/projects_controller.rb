@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :tag, :badge, :index, :show, :tags]
-  before_filter :project, only: [:build, :tag, :integration, :show, :tags, :badge, :edit, :update, :destroy]
+  before_filter :project, only: [:build, :tag, :integration, :show, :tags, :badge, :edit, :update, :destroy, :cancel]
   before_filter :authorize_access_project!, except: [:build, :tag, :gitlab, :badge, :index, :show, :tags, :new, :create]
   before_filter :authenticate_token!, only: [:build, :tag]
   before_filter :no_cache, only: [:badge]
@@ -149,6 +149,16 @@ class ProjectsController < ApplicationController
     image = ImageForBuildService.new.execute(@project, params)
 
     send_file image.path, filename: image.name, disposition: 'inline'
+  end
+
+  def cancel
+    @project.builds.pending.each do |build|
+      build.cancel
+    end
+    @project.builds.running.each do |build|
+      build.cancel
+    end
+    redirect_to :back
   end
 
   protected

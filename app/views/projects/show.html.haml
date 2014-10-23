@@ -12,6 +12,11 @@
     %li{class: 'active'}
       = link_to @ref, project_path(@project, ref: @ref)
 
+  - if @project.builds.running.any? || @project.builds.pending.any?
+    %span.pull-right
+      = link_to cancel_project_path(@project), data: { confirm: 'All builds will be canceled. Are you sure?' }, class: 'btn btn-danger btn-xs', method: :post do
+        %i.icon-remove
+        Cancel all
 
 
 - if @ref

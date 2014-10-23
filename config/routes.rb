@@ -19,6 +19,7 @@ GitlabCi::Application.routes.draw do
       post :build
       post :tag
       get :tags
+      post :cancel
     end
 
     resource :charts, only: [:show]
