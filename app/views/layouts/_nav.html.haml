@@ -19,6 +19,10 @@
           %li
             = link_to admin_projects_path do
               Projects
+        - if current_user
+          - if Settings.gitlab_ci['custom_link_url']
+            %li
+              = link_to Settings.gitlab_ci['custom_link_name'] || 'Link', Settings.gitlab_ci['custom_link_url']
         %li
           = link_to 'Help', help_path
 
