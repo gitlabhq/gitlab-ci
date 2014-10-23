@@ -1,5 +1,11 @@
 %h4.page-title
   Project: #{@project.name}
+  .pull-right
+    - if @project.gitlab_url.present?
+      = link_to 'View on GitLab', @project.gitlab_url, class: 'btn btn-small'
+    = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
+      %i.icon-edit.icon-white
+      Edit Project
 
 %p
   = link_to admin_projects_path do
@@ -46,13 +52,43 @@
       %p
         Send on all broken builds:
         %strong= @project.email_only_broken_builds
+    %br
+    %fieldset
+      %legend Slack notification
+      %p
+        Webhook:
+        %strong= @project.slack_notification_webhook
+      - if @project.slack_notification_channel.present?
+        %p
+          Channel override:
+          %strong= @project.slack_notification_channel
+      %p
+        Send on all broken builds:
+        %strong= @project.slack_only_broken_builds
 
   .col-md-6
     %fieldset
-      %legend Build script
-      = preserve do
-        %pre
-          = @project.scripts
+      - if @project.build_method == 'shell'
+        %legend Build script
+        = preserve do
+          %pre
+            = @project.scripts
+        %br
+        %p
+          Build image:
+          %strong= @project.build_image
+        %p
+          Build OS:
+          %strong= @project.build_os
+      - if @project.build_method == 'travis'
+        %legend Travis environment
+        - if @project.travis_environment.present?
+          = preserve do
+            %pre
+              = @project.travis_environment
+        - else
+          = preserve do
+            Not modified
 
     %br
     %fieldset
@@ -61,11 +97,19 @@
         Total:
         %strong= pluralize @project.builds.count, 'build'
       %p
+        Requests:
+        %strong= pluralize @project.build_groups.count, 'request'
+      %p
         Successful:
         %strong= pluralize @project.builds.success.count, 'build'
       %p
         Failed:
         %strong= pluralize @project.builds.failed.count, 'build'
+
+      %p
+        Builds per request:
+        %strong
+          #{(@project.builds.count / @project.build_groups.count).round(1)}
 
       %p
         Success ratio:
