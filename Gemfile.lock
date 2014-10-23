@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ayufan/slack-post.git
-  revision: af20ea5a8bf5e25fd57087f6d6ec5d5b7d7e764e
+  revision: 85490d71586a6fe10895c8347eeb3aa404aae8fb
   specs:
     slack-post (0.0.2)
       yajl-ruby

@@ -153,18 +153,20 @@
   %fieldset
     %legend Slack notification
     .form-group
-      = f.label :slack_notification_subdomain, "Subdomain", class: 'control-label'
+      = f.label :slack_notification_webhook, "Webhook", class: 'control-label'
       .col-sm-10
-        = f.text_field :slack_notification_subdomain, class: 'form-control'
-    .form-group
-      = f.label :slack_notification_token, "Token", class: 'control-label'
-      .col-sm-10
-        = f.text_field :slack_notification_token, class: 'form-control'
+        = f.text_field :slack_notification_webhook, class: 'form-control'
+        - unless @project.slack_notification?
+          .bs-callout.bs-callout-info
+            %p
+              = link_to 'Press here to configure a new webhook in slack','https://www.slack.com/services/new/incoming-webhook', target: '_blank'
+              %br
+              Then copy link and save project!
     .form-group
       = f.label :slack_notification_channel, "Channel", class: 'control-label'
       .col-sm-10
         = f.text_field :slack_notification_channel, class: 'form-control', placeholder: "ex: #general"
-        .light Slack channel to post in, starting with a '#'
+        .light Overwrite slack channel to post in, starting with a '#'
     .form-group
       .col-sm-2
       .col-sm-10

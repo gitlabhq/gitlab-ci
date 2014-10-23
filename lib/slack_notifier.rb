@@ -61,8 +61,7 @@ module Slack
       def post(build, slack_string, opts={})
         project = build.project
         Slack::Post.configure(
-          subdomain: project.slack_notification_subdomain,
-          token:     project.slack_notification_token,
+          webhook:   project.slack_notification_webhook,
           username:  'GitLab CI')
         Slack::Post.post(slack_string, project.slack_notification_channel, opts)
       end
