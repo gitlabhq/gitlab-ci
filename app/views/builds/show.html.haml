@@ -18,7 +18,9 @@
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        Build for commit
+        Build
+        %code ##{@build.build_canonical_id}
+        for commit
         %code #{@build.short_sha}
         from
 

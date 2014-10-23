@@ -201,6 +201,10 @@ class Build < ActiveRecord::Base
     build_group.builds.where("id <= ?", id).count
   end
 
+  def build_canonical_id
+    "#{build_group.build_id}.#{build_concurrent_id}"
+  end
+
   def trace_html
     html = Ansi2html::convert(trace) if trace.present?
     html ||= ''

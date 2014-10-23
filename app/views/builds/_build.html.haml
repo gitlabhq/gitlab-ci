@@ -1,9 +1,13 @@
 %tr.build.alert{class: build_status_alert_class(build)}
+  %td.build-id
+    = link_to build_url(build) do
+      %strong ##{build.build_canonical_id}
+
   %td.status
     = build.status
 
   %td.build-link
-    = link_to build_url(build) do
+    = build_commit_link(build) do
       %strong #{build.short_sha}
 
   %td.build-branch

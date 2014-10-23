@@ -16,7 +16,9 @@
   .col-md-12
     .build-head.alert{class: build_group_status_alert_class(@build_group)}
       %h4
-        Build for commit
+        Build
+        %code ##{@build_group.build_id}
+        for commit
         %code #{build_commit_link @build_group}
         from
 
@@ -74,6 +76,7 @@
 %table.builds
   %thead
     %tr
+      %th ID
       %th Status
       %th Commit
       %th Ref
