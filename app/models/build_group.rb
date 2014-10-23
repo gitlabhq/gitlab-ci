@@ -180,7 +180,7 @@ class BuildGroup < ActiveRecord::Base
   end
 
   def finished_at
-    builds.where.not(finished_at: nil).minimum(:finished_at)
+    builds.where.not(finished_at: nil).maximum(:finished_at)
   end
 
   def wait
