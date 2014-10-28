@@ -1,6 +1,6 @@
 class ChangeScheduleInvertal < ActiveRecord::Migration
   def up
-    if ActiveRecord::Base.connection.instance_of?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+    if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
       connection.execute(%q{
         ALTER TABLE projects
         ALTER COLUMN polling_interval
@@ -12,7 +12,7 @@ class ChangeScheduleInvertal < ActiveRecord::Migration
   end
 
   def down
-    if ActiveRecord::Base.connection.instance_of?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+    if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
       connection.execute(%q{
         ALTER TABLE projects
         ALTER COLUMN polling_interval
