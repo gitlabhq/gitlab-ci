@@ -1,3 +1,6 @@
+v5.2
+  - Improve performance by adding new indicies
+
 v5.1
   - Registration token and runner token are named differently
   - Redirect to previous page after sign-in
