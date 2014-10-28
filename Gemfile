@@ -70,6 +70,7 @@ gem 'nprogress-rails'
 
 
 group :development do
+  gem 'rack-mini-profiler', require: false
   gem 'annotate'
   gem 'quiet_assets'
   gem "letter_opener"
