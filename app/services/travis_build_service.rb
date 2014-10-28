@@ -92,7 +92,14 @@ class CreateBuildService
 
     def build_image(build_attributes)
       config = build_attributes[:config] || {}
-      "ayufan/travis-#{config[:os]}-worker:#{config[:language]}"
+      language = config[:language] || ''
+      language = language.to_sym
+
+      language_mapping = travis_config[:language_mapping] || {}
+      image = language_mapping[language] || language_mapping[:default]
+      raise "No language definition for #{config[:os]}" unless image
+
+      eval("\"#{image}\"")
     end
 
     def build_end(build)
