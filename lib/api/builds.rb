@@ -15,7 +15,13 @@ module API
 
         ActiveRecord::Base.transaction do
           builds = Build.all
-          builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
+          if current_runner.shared?
+            # don't run projects which are assigned to specific runners
+            builds = builds.where.not(project_id: RunnerProject.distinct(:project).pluck(:project_id))
+          else
+            # do run projects which are only assigned to this runner
+            builds = builds.where(project_id: current_runner.projects)
+          end
 
           # limit builds by OS
           builds = builds.where(build_os: params['os']) if params['os']
