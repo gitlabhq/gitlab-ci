@@ -94,10 +94,13 @@ class CreateBuildService
       config = build_attributes[:config] || {}
       language = config[:language] || ''
       language = language.to_sym
+      os = config[:os] || ''
+      os = os.to_sym
 
       language_mapping = travis_config[:language_mapping] || {}
-      image = language_mapping[language] || language_mapping[:default]
-      raise "No language definition for #{config[:os]}" unless image
+      languages = language_mapping[os] || language_mapping[:default] || {}
+      image = languages[language] || languages[:default]
+      raise "No language definition for #{config[:os]}:#{config[:language]}" unless image
 
       eval("\"#{image}\"")
     end

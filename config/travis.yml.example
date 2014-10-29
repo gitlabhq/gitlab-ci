@@ -16,8 +16,11 @@ defaults: &defaults
       value: value
       public: false
   language_mapping:
-    objective-c: osx-xcode-#{config[:xcode_version] || '6.1'}
-    default: ayufan/travis-linux-worker:#{config[:language] || 'ruby'}
+    osx:
+      objective-c: osx-xcode-#{config[:xcode_version] || '6.1'}
+      default: osx-xcode-6.1
+    linux:
+      default: ayufan/travis-linux-worker:#{config[:language] || 'ruby'}
 
 development:
   <<: *defaults
