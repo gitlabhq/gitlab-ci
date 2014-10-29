@@ -20,6 +20,9 @@ class Runner < ActiveRecord::Base
 
   before_validation :set_default_values
 
+  scope :specific, ->() { where(id: RunnerProject.select(:runner_id)) }
+  scope :shared, ->() { where.not(id: RunnerProject.select(:runner_id)) }
+
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
   end

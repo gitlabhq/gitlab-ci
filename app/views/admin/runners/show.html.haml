@@ -9,12 +9,12 @@
 
 - if @runner.shared?
   .bs-callout.bs-callout-success
-    %h4 This runner will process build from ALL projects
+    %h4 This runner will process build from ALL UNASSIGNED projects
     %p If you want runner to build only specific projects you just need to enable them in table below
 - else
   .bs-callout.bs-callout-info
     %h4 This runner will process build only from ASSIGNED projects
-    %p If you want runner to build all projects you just need to disable all assignee projects
+    %p If you want runner to build unassigned projects you just need to disable all assignee projects
 .row
   .col-md-6
     %h4 Restrict projects for this runner

@@ -15,8 +15,11 @@ module API
 
         ActiveRecord::Base.transaction do
           build = if current_runner.shared?
-                    Build.first_pending
+                    # don't run projects which are assigned to specific runners
+                    projects = RunnerProject.pluck(:project_id)
+                    Build.where.not(project_id: projects).first_pending
                   else
+                    # do run projects which are only assigned to this runner
                     commits = Commit.where(project_id: current_runner.projects)
                     Build.where(commit_id: commits).first_pending
                   end
