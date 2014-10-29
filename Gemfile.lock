@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/ayufan/travis-build.git
-  revision: 416a74218b3ffc3c30001cb0f4bbfb88247cf647
+  revision: 3455348c380b1c3762e37daca4f1806d12aaf919
   specs:
     travis-build (0.0.1)
 
