@@ -83,9 +83,10 @@ class BuildsController < ApplicationController
         begin
           created_tag = Network.new.create_tag(current_user.url, project.gitlab_id, current_user.private_token, tag_opts)
         rescue => e
-         @alert = "Cannot create tagged build: #{e.to_s}"
-         render 'new'
-         return
+          @alert = "Cannot create tagged build: #{e.to_s}"
+          render 'new'
+          NewRelic::Agent.notice_error(e)
+          return
         end
 
         created_tag = created_tag.deep_symbolize_keys
@@ -130,6 +131,7 @@ class BuildsController < ApplicationController
     rescue => e
       @alert = "Cannot create build: #{e.to_s}"
       render 'new'
+      NewRelic::Agent.notice_error(e)
     end
   end
 
