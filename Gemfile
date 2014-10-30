@@ -16,6 +16,7 @@ gem 'activerecord-session_store'
 # DB
 gem 'mysql2', group: :mysql
 gem 'pg',     group: :postgres
+gem 'sqlite3',group: :sqlite3
 
 # Settings
 gem 'settingslogic'
