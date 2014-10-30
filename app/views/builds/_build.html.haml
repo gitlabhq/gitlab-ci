@@ -1,18 +1,29 @@
 %tr.build.alert{class: build_status_alert_class(build)}
+  %td.build-id
+    = link_to build_url(build) do
+      %strong ##{build.build_canonical_id}
+
   %td.status
     = build.status
 
   %td.build-link
-    = link_to build_url(build) do
+    = build_commit_link(build) do
       %strong #{build.short_sha}
-
-  %td.build-message
-    %span= truncate(build.git_commit_message, length: 50)
 
   %td.build-branch
     - unless @ref
-      %span
-        = link_to build.ref, project_path(@project, ref: build.ref)
+      - if build.tag?
+        %span.label.label-primary #{build.ref}
+      - else
+        %span
+          = link_to build.ref, project_path(@project, ref: build.ref)
+
+  %td.build-message
+    %span= truncate(build.ref_or_commit_message, length: 50)
+
+  %td.build-message
+    - if build.matrix_attributes_formatted
+      %code= build.matrix_attributes_formatted
 
   %td.duration
     - if build.duration

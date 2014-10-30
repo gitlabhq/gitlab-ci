@@ -1,16 +1,17 @@
 pre.trace {
   background: #111111;
   color: #fff;
-  font-family: $monospace_font;
+  font-family: 'monospace';
   white-space: pre;
   white-space: pre-wrap;       /* css-3 */
   white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
   white-space: -pre-wrap;      /* Opera 4-6 */
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  position: relative;
   overflow: auto;
-  overflow-y: hidden;
   font-size: 12px;
+  counter-reset: line-numbering;
 
   .icon-refresh {
     font-size: 24px;
@@ -18,8 +19,94 @@ pre.trace {
   }
 }
 
+pre.trace p a::before {
+  content: counter(line-numbering);
+  counter-increment: line-numbering;
+  padding-right: 1em;
+}
+
+pre.trace p a {
+  display: inline-block;
+  text-align: right;
+  min-width: 40px;
+  margin-left: -33px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #666;
+}
+
+pre.trace p {
+  position: relative;
+  padding: 0 15px 0 55px;
+  margin: 0;
+  min-height: 16px;
+}
+
+pre.trace .fold {
+  position: relative;
+  height: 16px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+pre.trace .fold p:first-of-type {
+  background: #333 url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAiIHdpZHRoPSIxMCI+CjxwYXRoIGQ9Im0wLjUsMS41LDQuNSw3LDQuNS03eiIgc3Ryb2tlPSIjNTU1IiBzdHJva2Utd2lkdGg9IjAuNSIgZmlsbD0iIzY2NiIvPgo8L3N2Zz4KCg==') no-repeat 8px 3px
+}
+
+pre.trace .fold:not(.open) p:first-of-type {
+  visibility: visible;
+  height: auto;
+  min-height: 16px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAiIHdpZHRoPSIxMCI+CjxwYXRoIGQ9Ik0yLDksOSw1LDIsMXoiIHN0cm9rZT0iIzU1NSIgc3Ryb2tlLXdpZHRoPSIwLjUiIGZpbGw9IiM2NjYiLz4KPC9zdmc+Cgo=')
+}
+
+pre.trace .fold p:first-of-type {
+  padding-right: 190px;
+}
+
+pre.trace .fold.open {
+  height: auto;
+}
+
+pre.trace .fold .fold-name {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  top: 2px;
+  right: 85px;
+  padding: 0px 7px 0px 7px;
+  line-height: 10px;
+  font-size: 10px;
+  background-color: #666;
+  border-radius: 6px;
+  color: #bbb;
+}
+
+pre.trace .duration {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  top: 2px;
+  right: 12px;
+  padding: 0px 7px 0px 7px;
+  line-height: 10px;
+  font-size: 10px;
+  background-color: #666;
+  border-radius: 6px;
+  color: #bbb;
+}
+
 .autoscroll-container {
   margin-bottom: 5px;
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  z-index: 2;
+
+  h4 {
+    line-height: 0px;
+    margin: 0px;
+  }
 }
 
 .build-widget {
@@ -48,4 +135,8 @@ pre.trace {
     top: -2px;
     left: 4px;
   }
+}
+
+.build-variant {
+  width: 50%;
 }

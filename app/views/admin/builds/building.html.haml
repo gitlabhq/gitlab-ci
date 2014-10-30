@@ -1,0 +1,28 @@
+= content_for :title do
+  %h3.project-title
+    Currently building...
+
+    .pull-right
+      %small
+        = pluralize(@builds.total_count, 'build')
+
+%table.builds
+  %thead
+    %tr
+      %th ID
+      %th Status
+      %th Runner
+      %th Project
+      %th Commit
+      %th Ref
+      %th Message
+      %th Duration
+      %th Finished at
+      %th
+
+  = render @builds
+
+= paginate @builds
+- if @builds.empty?
+  .bs-callout
+    %h4 No builds

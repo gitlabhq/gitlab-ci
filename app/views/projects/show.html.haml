@@ -12,6 +12,11 @@
     %li{class: 'active'}
       = link_to @ref, project_path(@project, ref: @ref)
 
+  - if @project.builds.running.any? || @project.builds.pending.any?
+    %span.pull-right
+      = link_to cancel_project_path(@project), data: { confirm: 'All builds will be canceled. Are you sure?' }, class: 'btn btn-danger btn-xs', method: :post do
+        %i.icon-remove
+        Cancel all
 
 
 - if @ref
@@ -36,19 +41,20 @@
 %table.builds
   %thead
     %tr
+      %th ID
       %th Status
       %th Commit
+      %th Ref
       %th Message
-      %th Branch
       %th Duration
       %th Finished at
-      - if @project.coverage_enabled?
-        %th Coverage
 
-  = render @builds
+  = render @build_groups
 
-= paginate @builds
-- if @builds.empty?
+= paginate @build_groups
+- if @build_groups.empty?
   .bs-callout
     %h4 No builds yet
 
+:javascript
+  new RefreshPage("#{project_url(@project)}", true, 30000)

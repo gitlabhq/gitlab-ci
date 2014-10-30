@@ -37,4 +37,12 @@ class Runner < ActiveRecord::Base
   def shared?
     runner_projects.blank?
   end
+
+  def current_running_builds
+    builds.running
+  end
+
+  def current_running_projects
+    Project.joins(:builds).where({builds: {runner: self, status: :running}})
+  end
 end

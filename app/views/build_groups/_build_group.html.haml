@@ -1,0 +1,30 @@
+%tr.build.alert{class: build_group_status_alert_class(build_group)}
+  %td.build-id
+    = link_to build_or_build_group_url(build_group) do
+      %strong ##{build_group.build_id}
+
+  %td.status
+    = build_group.status
+
+  %td.build-link
+    = build_commit_link(build_group) do
+      %strong #{build_group.short_sha}
+
+  %td.build-branch
+    - unless @ref
+      - if build_group.tag?
+        %span.label.label-primary #{build_group.ref}
+      - else
+        %span
+          = link_to build_group.ref, project_path(@project, ref: build_group.ref)
+
+  %td.build-message
+    %span= truncate(build_group.ref_or_commit_message, length: 50)
+
+  %td.duration
+    - if build_group.duration
+      #{distance_of_time_in_words build_group.duration}
+
+  %td.timestamp
+    - if build_group.finished_at
+      %span #{time_ago_in_words build_group.finished_at} ago

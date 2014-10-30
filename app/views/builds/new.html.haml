@@ -1,0 +1,52 @@
+- if @alert
+  .alert.alert-danger= @alert
+
+= form_for [@project, Build.new], html: { class: 'form-horizontal' } do |f|
+  %fieldset
+    %legend Build settings
+    .form-group
+      = f.label :ref, 'Ref', class: 'control-label'
+      .col-sm-10
+        = f.text_field :ref, class: 'form-control', value: @ref, placeholder: "master"
+        .light Select branch or Git revision from which project will be built.
+
+    .form-group
+      = label_tag nil, class: 'control-label' do
+        Tag
+      .col-sm-10
+        %p Select whether project will be tagged:
+        .radio
+          = label_tag do
+            = f.radio_button :ref_type, 'tags', checked: @ref_type == 'tags', :class => 'ref_type ref_type_tags'
+            %strong Release it
+            .light Tag, build and release it!
+        .radio
+          = label_tag do
+            = f.radio_button :ref_type, 'heads', checked: @ref_type == 'heads', :class => 'ref_type ref_type_heads'
+            %strong Build only
+            .light Build and test it!
+
+  %fieldset#tags_info
+    %legend Tag description
+    .form-group
+      = f.label :tag_name, 'Name', class: 'control-label'
+      .col-sm-10
+        = f.text_field :tag_name, class: 'form-control', value: @tag_name, placeholder: "1.0"
+        .light Type tag name.
+
+    .form-group
+      = f.label :tag_message, 'Notes', class: 'control-label'
+      .col-sm-10
+        = f.text_area :tag_message, class: 'form-control', rows: 4, value: @tag_message, placeholder: "ref commit message"
+        .light Type short summary of changes.
+
+  .form-actions
+    = f.submit 'Build now', class: 'btn btn-save'
+    = link_to 'Cancel', project_path(@project), class: 'btn'
+
+:javascript
+  $(".ref_type").on("change", function() {
+    $("#tags_info").toggle($(this).hasClass("ref_type_tags"));
+  });
+
+  $("#tags_info").toggle("#{@ref_type}" == "tags");

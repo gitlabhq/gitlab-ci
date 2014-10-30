@@ -1,0 +1,93 @@
+= render 'shared/guide' if params[:show_guide].present?
+
+%h4.page-title
+  = @project.name
+  .pull-right
+    = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
+      %i.icon-edit.icon-white
+      Edit Project
+
+%p
+  = link_to project_path(@project) do
+    &larr; Back to project builds
+%hr
+
+.row
+  .col-md-12
+    .build-head.alert{class: build_group_status_alert_class(@build_group)}
+      %h4
+        Build
+        %code ##{@build_group.build_id}
+        for commit
+        %code #{build_commit_link @build_group}
+        from
+
+        = link_to project_path(@build_group.project, ref: @build_group.ref) do
+          %span.label.label-primary= "#{@build_group.ref}"
+
+        - if @build_group.duration
+          .pull-right
+            %span
+              %i.icon-time
+              #{distance_of_time_in_words @build_group.duration}
+
+      .clearfix
+        = @build_group.status
+        .pull-right
+          = @build_group.updated_at.stamp('19:00 Aug 27')
+
+.row
+  .col-md-12
+    .build-widget
+      .pull-right
+        - if @build_group.active?
+          = link_to "Cancel", cancel_project_build_group_path(@project, @build_group), class: 'btn btn-sm btn-danger'
+        - else
+          = link_to "Retry", retry_project_build_group_path(@project, @build_group), class: 'btn btn-sm btn-primary', method: :post
+
+      - if @build_group.compare?
+        %p
+          %span.attr-name Compare:
+          #{build_compare_link @build_group}
+      %p
+        %span.attr-name Ref:
+        #{build_ref_link @build_group}
+      %p
+        %span.attr-name Author:
+        #{@build_group.git_author_name}
+      %p
+        %span.attr-name Message:
+        #{@build_group.ref_or_commit_message}
+
+      - if @build_group.duration
+        %p
+          %span.attr-name Duration:
+          #{distance_of_time_in_words @build_group.duration}
+      %p
+        %span.attr-name Created:
+        #{time_ago_in_words(@build_group.created_at)} ago
+      - if @build_group.finished_at
+        %p
+          %span.attr-name Finished:
+          #{time_ago_in_words(@build_group.finished_at)} ago
+
+%legend Builds
+
+%table.builds
+  %thead
+    %tr
+      %th ID
+      %th Status
+      %th Variant
+      %th Duration
+      %th Finished at
+
+  - @builds.each do |build|
+    = render 'build', :build => build
+
+- if @builds.empty?
+  .bs-callout
+    %h4 No builds yet
+
+:javascript
+  new BuildGroup("#{build_group_url(@build_group)}", "#{@build_group.status}")

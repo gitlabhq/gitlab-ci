@@ -15,15 +15,42 @@ module API
 
         ActiveRecord::Base.transaction do
           builds = Build.all
-          builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
-          build =  builds.first_pending
+          if current_runner.shared?
+            # don't run projects which are assigned to specific runners
+            builds = builds.where.not(project_id: RunnerProject.distinct(:project).pluck(:project_id))
+          else
+            # do run projects which are only assigned to this runner
+            builds = builds.where(project_id: current_runner.projects)
+          end
+
+          # limit builds by OS
+          builds = builds.where(build_os: params['os']) if params['os']
+
+          # add build_image LIKE clause
+          if params['images'] and params['images'].size
+            query = Array.new(params['images'].size, "build_image LIKE ?").join(" OR ")
+            labels = params['images'].map { |v| v + '%' }
+            builds = builds.where([query, *labels])
+          end
+
+          # take first tags
+          build = builds.where(ref_type: 'tags').first_pending
+          build ||= builds.first_pending
 
           not_found! and return unless build
 
-          build.runner_id = current_runner.id
-          build.save!
-          build.run!
-          present build, with: Entities::Build
+          begin
+            build.commands
+            build.runner_id = current_runner.id
+            build.save!
+            build.run!
+            present build, with: Entities::Build
+          rescue => e
+            # write trace output in case of present failure
+            build.update_attributes(trace: e.to_s)
+            build.drop
+            not_found! and return
+          end
         end
       end
 

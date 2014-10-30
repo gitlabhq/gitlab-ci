@@ -7,8 +7,9 @@
 #
 class NotificationService
   def build_ended(build)
+    return unless build.build_group
     build.project_recipients.each do |recipient|
-      case build.status.to_sym
+      case build.build_group.status.to_sym
       when :success
         mailer.build_success_email(build.id, recipient)
       when :failed

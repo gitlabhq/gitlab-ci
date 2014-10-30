@@ -31,7 +31,8 @@ module API
         authenticate_runners!
         required_attributes! [:token]
 
-        runner = Runner.create
+        # TODO: add os and images
+        runner = Runner.create(description: params[:hostname])
 
         if runner.id
           present runner, with: Entities::Runner

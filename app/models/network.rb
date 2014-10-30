@@ -79,6 +79,46 @@ class Network
     end
   end
 
+  def commit_for_ref_or_sha(url, project_id, token, ref_name = 'master')
+    commits = commits_for_ref(url, project_id, token, ref_name)
+    ref_name = commits[0]["id"] if commits and commits.length > 0
+    return commit_for_sha(url, project_id, token, ref_name)
+  end
+
+  def commits_for_ref(url, project_id, token, ref_name = 'master')
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/repository/commits?private_token=#{token}&ref_name=#{ref_name}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def commit_for_sha(url, project_id, token, sha)
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/repository/commits/#{sha}?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
   def enable_ci(url, project_id, ci_opts, token)
     opts = {
       body: ci_opts.to_json,
@@ -102,6 +142,97 @@ class Network
     }
 
     query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.delete(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def create_tag(url, project_id, token, tag_opts)
+    tag_opts.merge!(private_token: token)
+
+    opts = {
+        body: tag_opts.to_json,
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/repository/tags"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.post(endpoint, opts)
+
+    if response.code == 200 || response.code == 201
+      response.parsed_response
+    elsif response.code == 400
+      raise response.parsed_response['message']
+    else
+      raise response.code
+    end
+  end
+
+  def raw_file_content(url, project_id, token, sha, filepath)
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/repository/blobs/#{sha}?private_token=#{token}&filepath=#{filepath}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def list_project_hooks(url, project_id, token)
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def add_project_hook(url, project_id, hook_opts, token)
+    opts = {
+        body: hook_opts.to_json,
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks?private_token=#{token}"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.post(endpoint, opts)
+
+    if response.code == 201
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def delete_project_hook(url, project_id, hook_id, token)
+    opts = {
+        headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks/#{hook_id}?private_token=#{token}"
 
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.delete(endpoint, opts)

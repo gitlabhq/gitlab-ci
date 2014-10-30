@@ -12,6 +12,12 @@ gem 'rails', '4.0.10'
 gem 'protected_attributes'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
+gem 'addressable'
+gem 'travis-build', github: 'ayufan/travis-build'
+gem 'travis-model-build-config', github: 'ayufan/travis-model-build-config'
+
+gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
+gem 'newrelic_rpm'
 
 # DB
 gem 'mysql2', group: :mysql
@@ -67,6 +73,7 @@ gem "font-awesome-rails", '~> 3.2'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'nprogress-rails'
+gem 'slack-post', github: 'ayufan/slack-post'
 
 
 group :development do

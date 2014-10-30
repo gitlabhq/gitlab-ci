@@ -6,15 +6,21 @@
       Edit Project
 
 %p
-  = link_to project_path(@project) do
-    &larr; Back to project builds
+  - if @build.one?
+    = link_to project_path(@project) do
+      &larr; Back to project builds
+  - else
+    = link_to project_build_group_path(@project, @build.build_group) do
+      &larr; Back to build list
 %hr
 
 .row
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        Build for commit
+        Build
+        %code ##{@build.build_canonical_id}
+        for commit
         %code #{@build.short_sha}
         from
 
@@ -33,16 +39,21 @@
           = @build.updated_at.stamp('19:00 Aug 27')
 
 
+    - if @build.build_attributes_formatted
+      %pre #{@build.build_attributes_formatted}
 
-    .clearfix
-      - if @build.active?
-        .autoscroll-container.pull-right
-          %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
-        .clearfix
     %pre.trace#build-trace
+      - if @build.active?
+        .autoscroll-container#autoscroll-container
+          %h4
+            %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+
       %code.bash
         = preserve do
           = raw @build.trace_html
+          - if @build.active?
+            %p
+              %i{ :class => ['icon-refresh', 'icon-spin'] }
 
   .col-md-3
     - if @build.coverage
@@ -87,14 +98,14 @@
           %span.attr-name Compare:
           #{build_compare_link @build}
       %p
-        %span.attr-name Branch:
+        %span.attr-name Ref:
         #{build_ref_link @build}
       %p
         %span.attr-name Author:
         #{@build.git_author_name}
       %p
         %span.attr-name Message:
-        #{@build.git_commit_message}
+        #{@build.ref_or_commit_message}
 
     - if @builds.present?
       .build-widget

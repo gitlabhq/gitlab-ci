@@ -20,15 +20,25 @@
 #  email_recipients         :string(255)      default(""), not null
 #  email_add_committer      :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
+#  private_token           :string
 #
 
 class Project < ActiveRecord::Base
+  attr_accessible :slack_only_broken_builds, :slack_notification_channel,
+    :slack_notification_subdomain, :slack_notification_token
+
+  attr_accessible :slack_notification_webhook
+
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
-    :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex
+    :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex,
+    :build_os, :build_image
+
+  attr_accessible :private_token, :build_method, :travis_environment
 
   has_many :builds, dependent: :destroy
+  has_many :build_groups, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
@@ -57,7 +67,7 @@ ls -la
       eos
     end
 
-    def parse(project_yaml)
+    def parse(project_yaml, private_token)
       project = YAML.load(project_yaml)
 
       params = {
@@ -69,6 +79,11 @@ ls -la
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,
         email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
+        private_token:           private_token,
+        build_method:            project.build_method || 'shell',
+        build_os:                project.os || 'linux',
+        build_image:             project.image || '',
+        travis_environment:      project.travis_environment || ''
       }
 
       Project.new(params)
@@ -124,7 +139,7 @@ ls -la
   end
 
   def last_build
-    builds.last
+    build_groups.last
   end
 
   def last_build_date
@@ -156,6 +171,10 @@ ls -la
     email_add_committer || email_recipients.present?
   end
 
+  def slack_notification?
+    slack_notification_webhook.present?
+  end
+
   def web_hooks?
     web_hooks.any?
   end
@@ -176,7 +195,7 @@ ls -la
     self.timeout = value.to_i * 60
   end
 
-  def skip_ref?(ref_name)
+  def skip_ref?(ref_name, ref_type)
     if skip_refs.present?
       skip_refs.delete(" ").split(",").include?(ref_name)
     else
@@ -186,5 +205,9 @@ ls -la
 
   def coverage_enabled?
     coverage_regex.present?
+  end
+
+  def build_service
+    CreateBuildService.new.build_service(build_method)
   end
 end

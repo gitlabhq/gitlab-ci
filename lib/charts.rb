@@ -1,13 +1,13 @@
 module Charts
   class Chart
-    attr_reader :labels, :total, :success, :project, :build_times
+    attr_reader :labels, :total, :success, :builds, :build_times
 
-    def initialize(project)
+    def initialize(builds = nil)
       @labels = []
       @total = []
       @success = []
       @build_times = []
-      @project = project
+      @builds = builds
 
       collect
     end
@@ -15,8 +15,8 @@ module Charts
 
     def push(from, to, format)
       @labels << from.strftime(format)
-      @total << project.builds.where("? > created_at AND created_at > ?", to, from).count
-      @success << project.builds.where("? > created_at AND created_at > ?", to, from).success.count
+      @total << @builds.where("? > created_at AND created_at > ?", to, from).count
+      @success << @builds.where("? > created_at AND created_at > ?", to, from).success.count
     end
   end
 
@@ -55,10 +55,30 @@ module Charts
 
   class BuildTime < Chart
     def collect
-      builds = project.builds.where('builds.finished_at is NOT NULL AND builds.started_at is NOT NULL').last(30)
+      builds = @builds.where('builds.finished_at is NOT NULL AND builds.started_at is NOT NULL').last(30)
       builds.each do |build|
         @labels << build.short_sha
         @build_times << (build.duration / 60)
+      end
+    end
+  end
+
+  class GlobalBuildTime < Chart
+    def collect
+      builds = Build.all.where('builds.finished_at is NOT NULL AND builds.started_at is NOT NULL').last(30)
+      builds.each do |build|
+        @labels << build.short_sha
+        @build_times << (build.duration / 60)
+      end
+    end
+  end
+
+  class GlobalWaitTime < Chart
+    def collect
+      builds = Build.all.where('builds.started_at is NOT NULL AND builds.created_at is NOT NULL').last(30)
+      builds.each do |build|
+        @labels << build.short_sha
+        @build_times << (build.wait / 60)
       end
     end
   end

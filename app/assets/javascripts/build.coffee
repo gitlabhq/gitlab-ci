@@ -5,6 +5,10 @@ class Build
     clearInterval(Build.interval)
 
     if build_status == "running" || build_status == "pending"
+      # Automatically enable autoscroll
+      $("#autoscroll-button").data "state", "enabled"
+      $("#autoscroll-button").text "disable autoscroll"
+
       #
       # Bind autoscroll button to follow build output
       #
@@ -18,6 +22,19 @@ class Build
           $(this).text "disable autoscroll"
 
       #
+      # Position autoscroll button with window scroll
+      #
+      $(window).on 'scroll':->
+        basePadding = 5
+        padding = 10
+        currentScroll = $(window).scrollTop()
+        top = $(".bash").offset().top
+        if currentScroll > top - padding
+          $("#autoscroll-container").stop().animate({top: currentScroll - top + padding + basePadding}, 200)
+        else
+          $("#autoscroll-container").stop().animate({top: basePadding}, 200)
+
+      #
       # Check for new build output if user still watching build page
       # Only valid for runnig build when output changes during time
       #
@@ -27,9 +44,9 @@ class Build
             url: build_url
             dataType: "json"
             success: (build) =>
-              if build.status == "running"
+              if build.status == "running" && build.status == build_status
                 $('#build-trace code').html build.trace_html
-                $('#build-trace code').append '<i class="icon-refresh icon-spin"/>'
+                $('#build-trace code').append '<p><i class="icon-refresh icon-spin"/></p>'
                 @checkAutoscroll()
               else
                 Turbolinks.visit build_url
@@ -39,3 +56,11 @@ class Build
     $("html,body").scrollTop $("#build-trace").height()  if "enabled" is $("#autoscroll-button").data("state")
 
 @Build = Build
+
+@Fold_Section = (foldName) ->
+  section = document.getElementById(foldName)
+  if section
+    if section.classList.contains("open")
+      section.classList.remove("open")
+    else
+      section.classList.add("open")

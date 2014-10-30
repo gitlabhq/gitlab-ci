@@ -24,6 +24,10 @@ defaults: &defaults
     # 
     # Add committer to recipients list (default: false)
     # add_committer: true
+
+    # This allows you to add custom link to navigation bar
+    custom_link_name: Tutorial
+    custom_link_url: https://company.com/tutorial
     
   gravatar:
     enabled: true

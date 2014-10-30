@@ -9,15 +9,20 @@
 %table.builds
   %thead
     %tr
+      %th ID
       %th Status
       %th Runner
-      %th Commit
       %th Project
+      %th Commit
+      %th Ref
       %th Message
-      %th Branch
       %th Duration
       %th Finished at
+      %th
 
   = render @builds
 
 = paginate @builds
+- if @builds.empty?
+  .bs-callout
+    %h4 No builds

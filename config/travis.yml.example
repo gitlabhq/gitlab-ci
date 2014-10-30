@@ -1,0 +1,32 @@
+defaults: &defaults
+  skip_resolv_updates: true
+  skip_etc_hosts_fix: true
+  paranoid: false
+  hosts:
+    apt_cache: false
+    npm_cache: false
+  ssh:
+    value: |-
+      -----BEGIN RSA PRIVATE KEY-----
+      content
+      -----END RSA PRIVATE KEY-----
+    source: my-key
+  env_vars:
+    - name: MY_ENV_VAR
+      value: value
+      public: false
+  language_mapping:
+    osx:
+      objective-c: osx-xcode-#{config[:xcode_version] || '6.1'}
+      default: osx-xcode-6.1
+    linux:
+      default: ayufan/travis-linux-worker:#{config[:language] || 'ruby'}
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

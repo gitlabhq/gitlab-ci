@@ -17,11 +17,22 @@ GitlabCi::Application.routes.draw do
       get :status, to: 'projects#badge'
       get :integration
       post :build
+      post :tag
+      get :tags
+      post :cancel
     end
 
     resource :charts, only: [:show]
 
-    resources :builds, only: [:show] do
+    resources :builds, only: [:show, :new, :create] do
+      member do
+        get :cancel
+        get :status
+        post :retry
+      end
+    end
+
+    resources :build_groups, path: "build/groups", only: [:show] do
       member do
         get :cancel
         get :status
@@ -49,7 +60,14 @@ GitlabCi::Application.routes.draw do
       resources :runner_projects
     end
 
-    resources :builds, only: :index
+    resources :builds, only: [:index, :queue] do
+      collection do
+        get :building
+        get :finished
+        get :charts
+        post :cancel
+      end
+    end
   end
 
   root :to => 'projects#index'

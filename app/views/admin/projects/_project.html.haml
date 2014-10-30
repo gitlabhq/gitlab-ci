@@ -7,7 +7,7 @@
       %strong= project.name
   %td
     - if last_build
-      #{last_build.status} (#{build_link(last_build)})
+      #{last_build.status} (#{build_or_build_group_link(last_build)})
       = time_ago_in_words project.last_build_date
       ago
     - else

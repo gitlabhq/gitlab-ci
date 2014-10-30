@@ -1,0 +1,23 @@
+= render 'shared/guide' if params[:show_guide].present?
+
+
+%table.builds
+  %thead
+    %tr
+      %th ID
+      %th Status
+      %th Commit
+      %th Tag
+      %th Message
+      %th Duration
+      %th Finished at
+
+  = render @build_groups
+
+= paginate @build_groups
+- if @build_groups.empty?
+  .bs-callout
+    %h4 No tags yet
+
+:javascript
+  new RefreshPage("#{tags_project_url(@project)}", true, 30000)

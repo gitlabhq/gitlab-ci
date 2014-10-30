@@ -5,6 +5,7 @@
 #  id          :integer          not null, primary key
 #  project_id  :integer
 #  ref         :string(255)
+#  ref_type    :string(255)
 #  status      :string(255)
 #  finished_at :datetime
 #  trace       :text
@@ -18,27 +19,43 @@
 #  runner_id   :integer
 #
 
+require 'travis/build'
+require 'shellwords'
+
 class Build < ActiveRecord::Base
   belongs_to :project
   belongs_to :runner
+  belongs_to :build_group
 
   serialize :push_data
+  serialize :build_attributes
 
-  attr_accessible :project_id, :ref, :sha, :before_sha,
+  attr_accessible :project_id, :ref, :ref_type, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :coverage
+
+  attr_accessible :build_method, :build_attributes, :build_os, :build_image, :ref_message
+
+  attr_accessible :build_group_id
 
   validates :before_sha, presence: true
   validates :sha, presence: true
   validates :ref, presence: true
+  validates :ref_type, presence: true
   validates :status, presence: true
   validate :valid_commit_sha
   validates :coverage, numericality: true, allow_blank: true
+  validates :build_method, presence: true
 
   scope :running, ->() { where(status: "running") }
   scope :pending, ->() { where(status: "pending") }
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
+  scope :finished, ->() { where(status: [:success, :failed]) }
+  scope :canceled, ->() { where(status: "canceled")  }
   scope :uniq_sha, ->() { select('DISTINCT(sha)') }
+
+  scope :heads, ->() { where(ref_type: "heads") }
+  scope :tags, ->() { where(ref_type: "tags") }
 
   def self.last_month
     where('created_at > ?', Date.today - 1.month)
@@ -49,9 +66,7 @@ class Build < ActiveRecord::Base
   end
 
   def self.create_from(build)
-    new_build = build.dup
-    new_build.status = :pending
-    new_build.runner_id = nil
+    new_build = CreateBuildService.new.execute(project, build)
     new_build.save
   end
 
@@ -61,7 +76,7 @@ class Build < ActiveRecord::Base
     end
 
     event :drop do
-      transition running: :failed
+      transition [:pending, :running] => :failed
     end
 
     event :success do
@@ -73,6 +88,14 @@ class Build < ActiveRecord::Base
     end
 
     after_transition :pending => :running do |build, transition|
+      project = build.project
+
+      if project.slack_notification?
+        if build.tag?
+          SlackNotificationService.new.build_started(build)
+        end
+      end
+
       build.update_attributes started_at: Time.now
     end
 
@@ -84,6 +107,8 @@ class Build < ActiveRecord::Base
         WebHookService.new.build_end(build)
       end
 
+      CreateBuildService.new.build_end(build)
+
       if project.email_notification?
         if build.status.to_sym == :failed || !project.email_only_broken_builds
           NotificationService.new.build_ended(build)
@@ -92,6 +117,12 @@ class Build < ActiveRecord::Base
 
       if project.coverage_enabled?
         build.update_coverage
+      end
+
+      if project.slack_notification?
+        if build.status.to_sym == :failed || !project.slack_only_broken_builds || build.tag?
+          SlackNotificationService.new.build_ended(build)
+        end
       end
     end
 
@@ -120,16 +151,38 @@ class Build < ActiveRecord::Base
     !!(git_commit_message =~ /(\[ci skip\])/)
   end
 
+  def head?
+    ref_type == 'heads'
+  end
+
+  def tag?
+    ref_type == 'tags'
+  end
+
+  def one?
+    build_group.nil? or build_group.one?
+  end
+
+  def build_service
+    CreateBuildService.new.build_service(build_method || project.build_method)
+  end
+
   def git_author_name
     commit_data[:author][:name] if commit_data && commit_data[:author]
+    commit_data[:author_name] if commit_data
   end
 
   def git_author_email
     commit_data[:author][:email] if commit_data && commit_data[:author]
+    commit_data[:author_email] if commit_data
   end
 
   def git_commit_message
     commit_data[:message] if commit_data
+  end
+
+  def ref_or_commit_message
+    ref_message || git_commit_message
   end
 
   def short_before_sha
@@ -138,6 +191,18 @@ class Build < ActiveRecord::Base
 
   def short_sha
     sha[0..8]
+  end
+
+  def build_id
+    project.builds.where("id <= ?", id).count
+  end
+
+  def build_concurrent_id
+    build_group.builds.where("id <= ?", id).count
+  end
+
+  def build_canonical_id
+    "#{build_group.build_id}.#{build_concurrent_id}"
   end
 
   def trace_html
@@ -157,8 +222,20 @@ class Build < ActiveRecord::Base
     canceled? || success? || failed?
   end
 
+  def build_attributes_formatted
+    build_service.format_build_attributes(self)
+  end
+
+  def matrix_attributes_formatted
+    build_service.format_matrix_attributes(self)
+  end
+
   def commands
-    project.scripts
+    build_service.build_commands(self)
+  end
+
+  def custom_commands
+    build_service.custom_commands(self)
   end
 
   def commit_data
@@ -177,6 +254,10 @@ class Build < ActiveRecord::Base
     url.sub(/^https?:\/\//) do |prefix|
       prefix + auth
     end
+  end
+
+  def repo_slug
+    repo_url.split('/').last(2).join('/').gsub(/\.git$/, '')
   end
 
   def timeout
@@ -202,6 +283,14 @@ class Build < ActiveRecord::Base
       finished_at - started_at
     elsif started_at
       Time.now - started_at
+    end
+  end
+
+  def wait
+    if started_at
+      started_at - created_at
+    else
+      Time.now - created_at
     end
   end
 

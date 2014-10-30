@@ -28,4 +28,36 @@ module BuildsHelper
   def build_url(build)
     project_build_url(build.project, build)
   end
+
+  def build_group_url(build_group)
+    project_build_group_url(build_group.project, build_group)
+  end
+
+  def build_or_build_group_url(build_group)
+    if build_group.is_a? BuildGroup
+      if build_group.one?
+        build_url(build_group.builds.first)
+      else
+        build_group_url(build_group)
+      end
+    elsif build_group.is_a? Build
+      build_url(build_group)
+    else
+      nil
+    end
+  end
+
+  def build_or_build_group_link(build_group)
+    if build_group.is_a? BuildGroup
+      link_to(build_group.short_sha, build_or_build_group_url(build_group))
+    elsif build_group.is_a? Build
+      build_link(build_group)
+    else
+      nil
+    end
+  end
+
+  def build_project_url(build)
+    project_url(build.project)
+  end
 end
