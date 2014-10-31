@@ -65,6 +65,6 @@ class BuildsController < ApplicationController
   end
 
   def build_by_sha
-    @project.commits.find_by_sha(sha: params[:id]).try(:last_build)
+    @project.commits.find_by(sha: params[:id]).try(:last_build)
   end
 end

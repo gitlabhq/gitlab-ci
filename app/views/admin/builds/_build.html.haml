@@ -14,7 +14,7 @@
     = truncate build.project.name, length: 30
 
   %td.build-message
-    %span= truncate(build.git_commit_message, length: 50)
+    %span= truncate(build.commit.git_commit_message, length: 50)
 
   %td.build-branch
     = build.ref

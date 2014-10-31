@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe "Admin Builds" do
   let(:project) { FactoryGirl.create :project }
-  let(:build) { FactoryGirl.create :build, project: project }
+  let(:commit) { FactoryGirl.create :commit, project: project }
+  let(:build) { FactoryGirl.create :build, commit: commit }
 
   before do
     skip_admin_auth
