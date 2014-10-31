@@ -3,42 +3,31 @@
 # Table name: builds
 #
 #  id          :integer          not null, primary key
-#  project_id  :integer
-#  ref         :string(255)
 #  status      :string(255)
 #  finished_at :datetime
 #  trace       :text
 #  created_at  :datetime
 #  updated_at  :datetime
-#  sha         :string(255)
 #  started_at  :datetime
 #  tmp_file    :string(255)
-#  before_sha  :string(255)
-#  push_data   :text
 #  runner_id   :integer
+#  commit_id   :integer
 #
 
 class Build < ActiveRecord::Base
-  belongs_to :project
+  belongs_to :commit
   belongs_to :runner
 
-  serialize :push_data
+  attr_accessible :status, :finished_at, :trace, :started_at, :runner_id, :commit_id, :coverage
 
-  attr_accessible :project_id, :ref, :sha, :before_sha,
-    :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name, :coverage
-
-  validates :before_sha, presence: true
-  validates :sha, presence: true
-  validates :ref, presence: true
+  validates :commit, presence: true
   validates :status, presence: true
-  validate :valid_commit_sha
   validates :coverage, numericality: true, allow_blank: true
 
   scope :running, ->() { where(status: "running") }
   scope :pending, ->() { where(status: "pending") }
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
-  scope :uniq_sha, ->() { select('DISTINCT(sha)') }
 
   def self.last_month
     where('created_at > ?', Date.today - 1.month)
@@ -102,44 +91,6 @@ class Build < ActiveRecord::Base
     state :canceled, value: 'canceled'
   end
 
-  def valid_commit_sha
-    if self.sha =~ /\A00000000/
-      self.errors.add(:sha, " cant be 00000000 (branch removal)")
-    end
-  end
-
-  def compare?
-    gitlab? && before_sha
-  end
-
-  def gitlab?
-    project.gitlab?
-  end
-
-  def ci_skip?
-    !!(git_commit_message =~ /(\[ci skip\])/)
-  end
-
-  def git_author_name
-    commit_data[:author][:name] if commit_data && commit_data[:author]
-  end
-
-  def git_author_email
-    commit_data[:author][:email] if commit_data && commit_data[:author]
-  end
-
-  def git_commit_message
-    commit_data[:message] if commit_data
-  end
-
-  def short_before_sha
-    before_sha[0..8]
-  end
-
-  def short_sha
-    sha[0..8]
-  end
-
   def trace_html
     html = Ansi2html::convert(trace) if trace.present?
     html ||= ''
@@ -161,40 +112,8 @@ class Build < ActiveRecord::Base
     project.scripts
   end
 
-  def commit_data
-    push_data[:commits].each do |commit|
-      return commit if commit[:id] == sha
-    end
-  rescue
-    nil
-  end
-
-  # Build a clone-able repo url
-  # using http and basic auth
-  def repo_url
-    auth = "gitlab-ci-token:#{project.token}@"
-    url = project.gitlab_url + ".git"
-    url.sub(/^https?:\/\//) do |prefix|
-      prefix + auth
-    end
-  end
-
   def timeout
     project.timeout
-  end
-
-  def allow_git_fetch
-    project.allow_git_fetch
-  end
-
-  def project_name
-    project.name
-  end
-
-  def project_recipients
-    recipients = project.email_recipients.split(' ')
-    recipients << git_author_email if project.email_add_committer?
-    recipients.uniq
   end
 
   def duration
@@ -203,6 +122,44 @@ class Build < ActiveRecord::Base
     elsif started_at
       Time.now - started_at
     end
+  end
+
+
+  # The following methods are provided for Grape::Entity and end up being
+  # useful everywhere else to reduce the changes needed for parallel builds.
+  def ref
+    commit.ref
+  end
+
+  def sha
+    commit.sha
+  end
+
+  def short_sha
+    commit.short_sha
+  end
+
+  def before_sha
+    commit.before_sha end
+
+  def allow_git_fetch
+    commit.allow_git_fetch
+  end
+
+  def project
+    commit.project
+  end
+
+  def project_id
+    commit.project_id
+  end
+
+  def project_name
+    commit.project_name
+  end
+
+  def repo_url
+    commit.repo_url
   end
 
   def update_coverage

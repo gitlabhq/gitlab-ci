@@ -6,7 +6,7 @@ class ImageForBuildService
       image_name = image_for_build(build)
     elsif params[:ref]
       # Look for last build per branch
-      build = project.builds.where(ref: params[:ref]).last
+      build = project.last_build_for_ref(params[:ref])
       image_name = image_for_build(build)
     else
       image_name = 'unknown.png'

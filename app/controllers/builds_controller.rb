@@ -20,7 +20,7 @@ class BuildsController < ApplicationController
 
     raise ActiveRecord::RecordNotFound unless @build
 
-    @builds = project.builds.where(sha: @build.sha).order('id DESC')
+    @builds = @project.commits.find_by_sha(@build.sha).builds.order('id DESC')
     @builds = @builds.where("id not in (?)", @build.id).page(params[:page]).per(20)
 
     respond_to do |format|
@@ -35,7 +35,7 @@ class BuildsController < ApplicationController
     build = project.builds.create(
       sha: @build.sha,
       before_sha: @build.before_sha,
-      push_data: @build.push_data,
+      push_data: @build.commit.push_data,
       ref: @build.ref
     )
 
@@ -65,6 +65,6 @@ class BuildsController < ApplicationController
   end
 
   def build_by_sha
-    project.builds.where(sha: params[:id]).last
+    @project.commits.find_by_sha(sha: params[:id]).try(:last_build)
   end
 end

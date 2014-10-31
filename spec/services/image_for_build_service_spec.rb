@@ -3,7 +3,8 @@ require 'spec_helper'
 describe ImageForBuildService do
   let(:service) { ImageForBuildService.new }
   let(:project) { FactoryGirl.create(:project) }
-  let(:build) { FactoryGirl.create(:build, project: project, ref: 'master') }
+  let(:commit) { FactoryGirl.create(:commit, project: project, ref: 'master') }
+  let(:build) { FactoryGirl.create(:build, commit: commit) }
 
   describe :execute do
     before { build }

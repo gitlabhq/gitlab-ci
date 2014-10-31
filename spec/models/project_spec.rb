@@ -27,7 +27,7 @@ require 'spec_helper'
 describe Project do
   subject { FactoryGirl.build :project }
 
-  it { should have_many(:builds) }
+  it { should have_many(:commits) }
 
   it { should validate_presence_of :name }
   it { should validate_presence_of :scripts }
@@ -49,8 +49,11 @@ describe Project do
   context :valid_project do
     let(:project) { FactoryGirl.create :project }
 
-    context :project_with_build do
-      before { FactoryGirl.create(:build, project: project) }
+    context :project_with_commit_and_builds do
+      before do
+        commit = FactoryGirl.create(:commit, project: project)
+        FactoryGirl.create(:build, commit: commit)
+      end
 
       it { project.status.should == 'pending' }
       it { project.last_build.should be_kind_of(Build)  }

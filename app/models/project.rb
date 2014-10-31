@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
     :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex
 
-  has_many :builds, dependent: :destroy
+  has_many :commits, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
@@ -123,6 +123,10 @@ ls -la
     broken? || success?
   end
 
+  def builds
+    Build.where(commit_id: commits).references(:commits)
+  end
+
   def last_build
     builds.last
   end
@@ -135,8 +139,14 @@ ls -la
     status
   end
 
+  def last_build_for_ref(ref)
+    commits_for_ref = commits.where(ref: ref)
+    Build.where(commit_id: commits_for_ref).last
+  end
+
   def last_build_for_sha(sha)
-    builds.where(sha: sha).order('id DESC').limit(1).first
+    commit = commits.find_by_sha(sha)
+    commit.last_build unless commit.nil?
   end
 
   def tracked_refs
@@ -160,10 +170,10 @@ ls -la
     web_hooks.any?
   end
 
-  # onlu check for toggling build status within same ref.
+  # only check for toggling build status within same ref.
   def last_build_changed_status?
-    ref = last_build.ref
-    last_builds = builds.where(ref: ref).order('id DESC').limit(2)
+    commits_for_ref = commit.where(ref: last_build.ref)
+    last_builds = Build.where(commit_id: commits_for_ref).order('id DESC').limit(2)
     return false if last_builds.size < 2
     return last_builds[0].status != last_builds[1].status
   end
