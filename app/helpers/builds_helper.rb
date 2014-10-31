@@ -1,6 +1,6 @@
 module BuildsHelper
   def build_ref_link build
-    if build.gitlab?
+    if build.commit.gitlab?
       gitlab_ref_link build.project, build.ref
     else
       build.ref
@@ -8,13 +8,13 @@ module BuildsHelper
   end
 
   def build_compare_link build
-    if build.gitlab?
-      gitlab_compare_link build.project, build.short_before_sha, build.short_sha
+    if build.commit.gitlab?
+      gitlab_compare_link build.project, build.commit.short_before_sha, build.short_sha
     end
   end
 
   def build_commit_link build
-    if build.gitlab?
+    if build.commit.gitlab?
       gitlab_commit_link build.project, build.short_sha
     else
       build.short_sha

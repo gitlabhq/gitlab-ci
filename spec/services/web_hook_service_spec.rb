@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe WebHookService do
   let (:project) { FactoryGirl.create :project }
-  let (:build) { FactoryGirl.create :build, project: project }
+  let (:commit)  { FactoryGirl.create :commit, project: project }
+  let (:build)   { FactoryGirl.create :build, commit: commit }
   let (:hook)    { FactoryGirl.create :web_hook, project: project }
 
   describe :execute do

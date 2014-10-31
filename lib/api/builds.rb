@@ -14,9 +14,12 @@ module API
         required_attributes! [:token]
 
         ActiveRecord::Base.transaction do
-          builds = Build.all
-          builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
-          build =  builds.first_pending
+          build = if current_runner.shared?
+                    Build.first_pending
+                  else
+                    commits = Commit.where(project_id: current_runner.projects)
+                    Build.where(commit_id: commits).first_pending
+                  end
 
           not_found! and return unless build
 

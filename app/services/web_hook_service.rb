@@ -27,7 +27,7 @@ class WebHookService
       ref: build.ref,
       sha: build.sha,
       before_sha: build.before_sha,
-      push_data: build.push_data
+      push_data: build.commit.push_data
     })
   end
 end

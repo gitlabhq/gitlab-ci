@@ -13,7 +13,8 @@ describe API::API do
 
     describe "POST /builds/register" do
       it "should start a build" do
-        build = FactoryGirl.create(:build, project_id: project.id, status: 'pending' )
+        commit = FactoryGirl.create(:commit, project: project)
+        build = FactoryGirl.create(:build, commit: commit, status: 'pending' )
 
         post api("/builds/register"), token: runner.token
 
@@ -29,7 +30,8 @@ describe API::API do
     end
 
     describe "PUT /builds/:id" do
-      let(:build) { FactoryGirl.create(:build, project_id: project.id, runner_id: runner.id) }
+      let(:commit) { FactoryGirl.create(:commit, project: project)}
+      let(:build) { FactoryGirl.create(:build, commit: commit, runner_id: runner.id) }
 
       it "should update a running build" do
         build.run!
