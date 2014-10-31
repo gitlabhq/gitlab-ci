@@ -55,6 +55,10 @@ class Build < ActiveRecord::Base
     new_build.save
   end
 
+  def self.retry(build)
+    Build.create(commit_id: build.commit_id)
+  end
+
   state_machine :status, initial: :pending do
     event :run do
       transition pending: :running

@@ -32,12 +32,7 @@ class BuildsController < ApplicationController
   end
 
   def retry
-    build = project.builds.create(
-      sha: @build.sha,
-      before_sha: @build.before_sha,
-      push_data: @build.commit.push_data,
-      ref: @build.ref
-    )
+    build = Build.retry(@build)
 
     redirect_to project_build_path(project, build)
   end
