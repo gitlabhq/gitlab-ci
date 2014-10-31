@@ -88,12 +88,22 @@ module Ansi2html
       @n_open_tags = 0
       reset()
 
+      last_line = 0
+      last_open_tags = 0
+
       s = StringScanner.new(ansi.gsub("<", "&lt;"))
       while(!s.eos?)
         if s.scan(/\e([@-_])(.*?)([@-~])/)
           handle_sequence(s)
+        elsif s.scan(/\r?\n/)
+          @out << "\n"
+          last_line = @out.length
+          last_open_tags = @n_open_tags
+        elsif s.scan(/\r/)
+          @out = @out.slice(0, last_line)
+          @n_open_tags = last_open_tags
         else
-          @out << s.scan(/./m)
+          @out << s.scan(/[^\e\r\n]*/m)
         end
       end
 
