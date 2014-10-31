@@ -29,6 +29,7 @@ class Project < ActiveRecord::Base
     :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex
 
   has_many :commits, dependent: :destroy
+  has_many :builds, through: :commits, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
@@ -123,12 +124,8 @@ ls -la
     broken? || success?
   end
 
-  def builds
-    Build.where(commit_id: commits).references(:commits)
-  end
-
   def last_build
-    builds.last
+    @last_build ||= commits.last.last_build
   end
 
   def last_build_date
@@ -140,8 +137,8 @@ ls -la
   end
 
   def last_build_for_ref(ref)
-    commits_for_ref = commits.where(ref: ref)
-    Build.where(commit_id: commits_for_ref).last
+    commit_for_ref = commits.where(ref: ref).last
+    Build.where(commit_id: commit_for_ref).last
   end
 
   def last_build_for_sha(sha)
