@@ -61,7 +61,7 @@ class BuildsController < ApplicationController
   end
 
   def build
-    @build ||= project.builds.find_by(id: params[:id])
+    @build ||= project.builds.unscoped.find_by(id: params[:id])
   end
 
   def build_by_sha

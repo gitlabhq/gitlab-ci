@@ -15,6 +15,8 @@
 #
 
 class Build < ActiveRecord::Base
+  LAZY_ATTRIBUTES = ['trace']
+
   belongs_to :commit
   belongs_to :runner
 
@@ -28,6 +30,15 @@ class Build < ActiveRecord::Base
   scope :pending, ->() { where(status: "pending") }
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
+
+  # To prevent db load megabytes of data from trace
+  default_scope -> { select(Build.columns_without_lazy) }
+
+  def self.columns_without_lazy
+    (column_names - LAZY_ATTRIBUTES).map do |column_name|
+      "`#{table_name}`.`#{column_name}`"
+    end
+  end
 
   def self.last_month
     where('created_at > ?', Date.today - 1.month)
