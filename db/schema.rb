@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028162820) do
+ActiveRecord::Schema.define(version: 20141031114419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,12 +31,23 @@ ActiveRecord::Schema.define(version: 20141028162820) do
     t.text     "push_data"
     t.integer  "runner_id"
     t.float    "coverage"
+    t.integer  "commit_id"
   end
 
   add_index "builds", ["project_id", "sha"], name: "index_builds_on_project_id_and_sha", using: :btree
   add_index "builds", ["project_id"], name: "index_builds_on_project_id", using: :btree
   add_index "builds", ["runner_id"], name: "index_builds_on_runner_id", using: :btree
   add_index "builds", ["sha"], name: "index_builds_on_sha", using: :btree
+
+  create_table "commits", force: true do |t|
+    t.integer  "project_id"
+    t.string   "ref"
+    t.string   "sha"
+    t.string   "before_sha"
+    t.text     "push_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "projects", force: true do |t|
     t.string   "name",                                     null: false
