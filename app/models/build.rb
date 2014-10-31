@@ -36,7 +36,7 @@ class Build < ActiveRecord::Base
 
   def self.columns_without_lazy
     (column_names - LAZY_ATTRIBUTES).map do |column_name|
-      "`#{table_name}`.`#{column_name}`"
+      "#{table_name}.#{column_name}"
     end
   end
 
