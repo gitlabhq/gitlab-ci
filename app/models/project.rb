@@ -38,7 +38,8 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
+  validates_presence_of :name, :scripts, :timeout, :token, :default_ref,
+    :gitlab_url, :ssh_url_to_repo, :gitlab_id
 
   validates_uniqueness_of :name
 
@@ -50,6 +51,7 @@ class Project < ActiveRecord::Base
   scope :public_only, ->() { where(public: true) }
 
   before_validation :set_default_values
+  after_save :update_jobs
 
   class << self
     def base_build_script
@@ -194,5 +196,37 @@ ls -la
 
   def coverage_enabled?
     coverage_regex.present?
+  end
+
+  def update_jobs
+    # Mark current jobs as archived
+    self.jobs.update_all(active: false)
+
+    # Create new jobs based on project build text
+    before = []
+    jobs = []
+    after = []
+
+    scripts.lines.each do |line|
+      if line.start_with?('* ')
+        jobs << line[1..-1]
+      else
+        if jobs.present?
+          after << line
+        else
+          before << line
+        end
+      end
+    end
+
+    if jobs.present?
+      jobs.each do |job|
+        script = before + [job] + after
+        self.jobs.create(commands: script.join("\n"))
+      end
+    else
+      script = before + after
+      self.jobs.create(commands: script.join("\n"))
+    end
   end
 end
