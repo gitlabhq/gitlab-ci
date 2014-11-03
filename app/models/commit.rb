@@ -94,4 +94,10 @@ class Commit < ActiveRecord::Base
     recipients << git_author_email if project.email_add_committer?
     recipients.uniq
   end
+
+  def create_builds
+    project.jobs.active.map do |job|
+      builds.create(commands: job.commands)
+    end
+  end
 end

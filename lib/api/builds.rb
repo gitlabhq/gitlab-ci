@@ -83,7 +83,10 @@ module API
         required_attributes! [:project_id, :data, :project_token]
         project = Project.find(params[:project_id])
         authenticate_project_token!(project)
-        build = CreateBuildService.new.execute(project, params[:data])
+        builds = CreateBuildsService.new.execute(project, params[:data])
+
+        # to keep api compatibility for now
+        build = builds.first
 
         if build.persisted?
           present build, with: Entities::Build

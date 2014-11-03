@@ -20,7 +20,8 @@ class Build < ActiveRecord::Base
   belongs_to :commit
   belongs_to :runner
 
-  attr_accessible :status, :finished_at, :trace, :started_at, :runner_id, :commit_id, :coverage
+  attr_accessible :status, :finished_at, :trace, :started_at, :runner_id,
+    :commit_id, :coverage, :commands
 
   validates :commit, presence: true
   validates :status, presence: true
@@ -121,10 +122,6 @@ class Build < ActiveRecord::Base
 
   def complete?
     canceled? || success? || failed?
-  end
-
-  def commands
-    project.scripts
   end
 
   def timeout
