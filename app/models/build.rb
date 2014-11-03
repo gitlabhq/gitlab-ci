@@ -19,6 +19,7 @@ class Build < ActiveRecord::Base
 
   belongs_to :commit
   belongs_to :runner
+  belongs_to :job
 
   attr_accessible :status, :finished_at, :trace, :started_at, :runner_id,
     :commit_id, :coverage, :commands
