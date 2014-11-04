@@ -161,4 +161,10 @@ class Commit < ActiveRecord::Base
 
   def finished_at
   end
+
+  def coverage
+    if builds.size == 1
+      builds.first.coverage
+    end
+  end
 end

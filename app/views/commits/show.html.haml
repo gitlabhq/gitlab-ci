@@ -28,9 +28,10 @@
       %p
         %span.attr-name Author:
         #{@commit.git_author_name}
-      %p
-        %span.attr-name Created at:
-        #{@commit.created_at.to_s(:short)}
+      - if @commit.created_at
+        %p
+          %span.attr-name Created at:
+          #{@commit.created_at.to_s(:short)}
 
 
 %h3 Status
@@ -46,7 +47,7 @@
     %tr
       %th Status
       %th Build ID
-      %th Command
+      %th Job
       %th Branch
       %th Duration
       %th Finished at

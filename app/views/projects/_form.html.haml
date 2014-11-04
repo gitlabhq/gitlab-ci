@@ -11,6 +11,10 @@
     %legend Build scripts
     = f.fields_for :jobs do |job_form|
       .form-group
+        = f.label :name, 'Job name', class: 'control-label'
+        .col-sm-10
+          = job_form.text_field :name, class: 'form-control', placeholder: "Ex. cucumber"
+      .form-group
         = f.label :commands, 'Build steps', class: 'control-label'
         .col-sm-10
           = job_form.text_area :commands, class: 'form-control', rows: 14, placeholder: "bundle exec rake spec"

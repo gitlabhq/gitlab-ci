@@ -7,7 +7,8 @@
       %strong Build ##{build.id}
 
   %td
-    = truncate build.commands.lines.last, length: 30
+    - if build.job
+      = build.job.name
 
   %td.build-branch
     - unless @ref
