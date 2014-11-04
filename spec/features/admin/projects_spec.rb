@@ -10,6 +10,7 @@ describe "Admin Projects" do
 
   describe "GET /admin/projects" do
     before do
+      project
       visit admin_projects_path
     end
 
