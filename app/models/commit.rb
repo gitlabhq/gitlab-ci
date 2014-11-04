@@ -110,17 +110,47 @@ class Commit < ActiveRecord::Base
   end
 
   def builds_without_retry
-    builds.where('id IN (SELECT MAX(id) FROM builds GROUP BY job_id)')
+    @builds_without_retry ||=
+      begin
+        grouped_builds = builds.group_by(&:job)
+        grouped_builds.map do |job, builds|
+          builds.sort_by(&:id).last
+        end
+      end
   end
 
   def status
-    'success'
+    if success?
+      'success'
+    elsif running?
+      'running'
+    elsif pending?
+      'pending'
+    else
+      'failed'
+    end
+  end
+
+  def pending?
+    builds_without_retry.all? do |build|
+      build.pending?
+    end
+  end
+
+  def running?
+    builds_without_retry.any? do |build|
+      build.running?
+    end
   end
 
   def success?
+    builds_without_retry.all? do |build|
+      build.success?
+    end
   end
 
   def failed?
+    status == 'failed'
   end
 
   def canceled?

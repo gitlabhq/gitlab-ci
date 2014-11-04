@@ -3,11 +3,11 @@
     = build.status
 
   %td.build-link
-    = link_to build_url(build) do
-      %strong #{build.short_sha}
+    = link_to project_build_path(build.project, build) do
+      %strong Build ##{build.id}
 
-  %td.build-message
-    %span= truncate(build.commit.git_commit_message, length: 50)
+  %td
+    = truncate build.commands.lines.last, length: 30
 
   %td.build-branch
     - unless @ref

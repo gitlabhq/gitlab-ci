@@ -1,4 +1,4 @@
-= form_for @project, html: { class: 'form-horizontal' } do |f|
+= nested_form_for @project, html: { class: 'form-horizontal' } do |f|
   - if @project.errors.any?
     #error_explanation
       %p.lead= "#{pluralize(@project.errors.count, "error")} prohibited this project from being saved:"
@@ -8,17 +8,23 @@
             %li= msg
 
   %fieldset
-    %legend Build settings
-    .form-group
-      = f.label :scripts, 'Build steps', class: 'control-label'
-      .col-sm-10
-        = f.text_area :scripts, class: 'form-control', rows: 14, placeholder: "bundle exec rake spec"
-        .bs-callout.bs-callout-info
-          %p
-            All lines will be concatenated in one file and executed.
-            %br
-            If you change the working directory or the environment in one line - it will affect the next lines too
+    %legend Build scripts
+    = f.fields_for :jobs do |job_form|
+      .form-group
+        = f.label :commands, 'Build steps', class: 'control-label'
+        .col-sm-10
+          = job_form.text_area :commands, class: 'form-control', rows: 14, placeholder: "bundle exec rake spec"
+          .bs-callout.bs-callout-info
+            %p
+              All lines will be concatenated in one file and executed.
+              %br
+              If you change the working directory or the environment in one line - it will affect the next lines too
+          = job_form.link_to_remove "Remove this job", class: 'btn btn-danger'
+    %p
+      = f.link_to_add "Add a job", :jobs, class: 'btn btn-success pull-right'
 
+  %fieldset
+    %legend Build settings
     .form-group
       = label_tag nil, class: 'control-label' do
         Get code

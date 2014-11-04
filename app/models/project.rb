@@ -26,7 +26,8 @@ class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
-    :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex
+    :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex,
+    :jobs_attributes
 
   has_many :commits, dependent: :destroy
   has_many :builds, through: :commits, dependent: :destroy
@@ -34,6 +35,8 @@ class Project < ActiveRecord::Base
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
   has_many :jobs, dependent: :destroy
+
+  accepts_nested_attributes_for :jobs, allow_destroy: true
 
   #
   # Validations
@@ -47,11 +50,11 @@ class Project < ActiveRecord::Base
     presence: true,
     if: ->(project) { project.always_build.present? }
 
+  validate :validate_jobs
 
   scope :public_only, ->() { where(public: true) }
 
   before_validation :set_default_values
-  after_save :update_jobs, if: ->(project) { project.scripts_changed? }
 
   class << self
     def base_build_script
@@ -198,35 +201,15 @@ ls -la
     coverage_regex.present?
   end
 
-  def update_jobs
-    # Mark current jobs as archived
-    self.jobs.update_all(active: false)
+  def build_default_job
+    jobs.build(commands: Project.base_build_script)
+  end
 
-    # Create new jobs based on project build text
-    before = []
-    jobs = []
-    after = []
+  def validate_jobs
+    remaining_jobs = jobs.reject(&:marked_for_destruction?)
 
-    scripts.lines.each do |line|
-      if line.start_with?('* ')
-        jobs << line[1..-1]
-      else
-        if jobs.present?
-          after << line
-        else
-          before << line
-        end
-      end
-    end
-
-    if jobs.present?
-      jobs.each do |job|
-        script = before + [job] + after
-        self.jobs.create(commands: script.join("\n"))
-      end
-    else
-      script = before + after
-      self.jobs.create(commands: script.join("\n"))
+    if remaining_jobs.empty?
+      errors.add(:jobs, "At least one foo")
     end
   end
 end

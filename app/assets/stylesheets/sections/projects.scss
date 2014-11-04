@@ -32,4 +32,16 @@
     color: #666;
     margin-right: 5px;
   }
+
+  pre.commit-message {
+    font-size: 14px;
+    background: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    margin: 20px 0;
+    border-bottom: 1px solid #EEE;
+    padding-bottom: 20px;
+    border-radius: 0;
+  }
 }

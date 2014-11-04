@@ -6,8 +6,8 @@
       Edit Project
 
 %p
-  = link_to project_path(@project) do
-    &larr; Back to project builds
+  = link_to project_commit_path(@project, @build.commit) do
+    &larr; Back to project commit
 %hr
 
 .row

@@ -1,8 +1,9 @@
 module CommitsHelper
   def commit_status_alert_class(commit)
-    if commit.success?
+    case commit.status
+    when 'success'
       'alert-success'
-    elsif commit.failed? || commit.canceled?
+    when 'failed', 'canceled'
       'alert-danger'
     else
       'alert-warning'

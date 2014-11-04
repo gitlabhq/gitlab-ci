@@ -22,7 +22,7 @@ class Build < ActiveRecord::Base
   belongs_to :job
 
   attr_accessible :status, :finished_at, :trace, :started_at, :runner_id,
-    :commit_id, :coverage, :commands
+    :commit_id, :coverage, :commands, :job_id
 
   validates :commit, presence: true
   validates :status, presence: true
@@ -58,7 +58,12 @@ class Build < ActiveRecord::Base
   end
 
   def self.retry(build)
-    Build.create(commit_id: build.commit_id)
+    Build.create(
+      commit_id: build.commit_id,
+      job_id: build.job_id,
+      status: :pending,
+      commands: build.commands
+    )
   end
 
   state_machine :status, initial: :pending do
