@@ -15,11 +15,16 @@
 class Commit < ActiveRecord::Base
   belongs_to :project
   has_many :builds
+  has_many :jobs, through: :builds
 
   serialize :push_data
 
   validates_presence_of :ref, :sha, :before_sha, :push_data
   validate :valid_commit_sha
+
+  def to_param
+    sha
+  end
 
   def last_build
     builds.last
@@ -102,5 +107,28 @@ class Commit < ActiveRecord::Base
       build.save
       build
     end
+  end
+
+  def builds_without_retry
+    builds.where('id IN (SELECT MAX(id) FROM builds GROUP BY job_id)')
+  end
+
+  def status
+    'success'
+  end
+
+  def success?
+  end
+
+  def failed?
+  end
+
+  def canceled?
+  end
+
+  def duration
+  end
+
+  def finished_at
   end
 end

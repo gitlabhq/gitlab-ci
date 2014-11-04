@@ -23,3 +23,13 @@
     vertical-align: middle !important;
   }
 }
+
+.commit-info {
+  font-size: 14px;
+
+  .attr-name {
+    font-weight: 300;
+    color: #666;
+    margin-right: 5px;
+  }
+}

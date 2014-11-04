@@ -51,7 +51,7 @@ class Project < ActiveRecord::Base
   scope :public_only, ->() { where(public: true) }
 
   before_validation :set_default_values
-  after_save :update_jobs
+  after_save :update_jobs, if: ->(project) { project.scripts_changed? }
 
   class << self
     def base_build_script

@@ -3,7 +3,7 @@
 
 %ul.nav.nav-tabs.append-bottom-20
   %li{class: ref_tab_class}
-    = link_to 'All builds', project_path(@project)
+    = link_to 'All commits', project_path(@project)
   - @project.tracked_refs.each do |ref|
     %li{class: ref_tab_class(ref)}
       = link_to ref, project_path(@project, ref: ref)
@@ -45,10 +45,11 @@
       - if @project.coverage_enabled?
         %th Coverage
 
-  = render @builds
+  = render @commits
 
-= paginate @builds
-- if @builds.empty?
+= paginate @commits
+
+- if @commits.empty?
   .bs-callout
-    %h4 No builds yet
+    %h4 No commits yet
 

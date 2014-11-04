@@ -36,9 +36,9 @@ class ProjectsController < ApplicationController
 
     @ref = params[:ref]
 
-    @builds = @project.builds
-    @builds = @builds.where(ref: @ref) if @ref
-    @builds = @builds.order('id DESC').page(params[:page]).per(20)
+    @commits = @project.commits
+    @commits = @commits.where(ref: @ref) if @ref
+    @commits = @commits.order('id DESC').page(params[:page]).per(20)
   end
 
   def integration
