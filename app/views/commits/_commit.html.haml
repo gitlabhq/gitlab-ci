@@ -1,0 +1,29 @@
+%tr.build.alert{class: commit_status_alert_class(commit)}
+  %td.status
+    = commit.status
+
+  %td.build-link
+    = link_to project_commit_path(commit.project, commit) do
+      %strong #{commit.short_sha}
+
+  %td.build-message
+    %span= truncate(commit.git_commit_message, length: 50)
+
+  %td.build-branch
+    - unless @ref
+      %span
+        = link_to commit.ref, project_path(@project, ref: commit.ref)
+
+  %td.duration
+    - if commit.duration
+      #{distance_of_time_in_words commit.duration}
+
+  %td.timestamp
+    - if commit.finished_at
+      %span #{time_ago_in_words commit.finished_at} ago
+
+  - if commit.project.coverage_enabled?
+    %td.coverage
+      - if commit.coverage
+        #{commit.coverage}%
+

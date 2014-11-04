@@ -1,0 +1,46 @@
+%h3.page-title
+  = @project.name
+  @
+  #{gitlab_commit_link(@project, @commit.sha)}
+  .pull-right
+    = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
+      %i.icon-edit.icon-white
+      Edit Project
+
+%p
+  = link_to project_path(@project) do
+    &larr; Back to project commits
+%hr
+
+.commit-info
+  .row
+    .col-sm-6
+      - if @commit.compare?
+        %p
+          %span.attr-name Compare:
+          #{gitlab_compare_link(@project, @commit.short_before_sha, @commit.short_sha)}
+      %p
+        %span.attr-name Branch:
+        #{gitlab_ref_link(@project, @commit.ref)}
+    .col-sm-6
+      %p
+        %span.attr-name Author:
+        #{@commit.git_author_name}
+      %p
+        %span.attr-name Message:
+        #{@commit.git_commit_message}
+
+%h3 Builds
+
+%table.builds
+  %thead
+    %tr
+      %th Status
+      %th Commit
+      %th Message
+      %th Branch
+      %th Duration
+      %th Finished at
+      - if @project.coverage_enabled?
+        %th Coverage
+  = render @builds
