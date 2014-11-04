@@ -21,7 +21,7 @@ describe "Projects" do
     end
 
     it { page.should have_content @project.name }
-    it { page.should have_content 'All builds' }
+    it { page.should have_content 'All commits' }
   end
 
   describe "GET /projects/:id/edit" do

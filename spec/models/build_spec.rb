@@ -141,12 +141,6 @@ describe Build do
     end
   end
 
-  describe :commands do
-    subject { build.commands }
-
-    it { should eq(commit.project.scripts) }
-  end
-
   describe :timeout do
     subject { build.timeout }
 

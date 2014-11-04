@@ -36,5 +36,9 @@ FactoryGirl.define do
     factory :project do
       token 'iPWx6WM4lhHNedGfBpPJNP'
     end
+
+    before :create do |project|
+      project.build_default_job
+    end
   end
 end
