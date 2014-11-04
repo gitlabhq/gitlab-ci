@@ -131,7 +131,7 @@ ls -la
   end
 
   def last_build
-    @last_build ||= commits.last.last_build
+    @last_build ||= commits.last.last_build if commits.any?
   end
 
   def last_build_date

@@ -122,10 +122,10 @@ class Commit < ActiveRecord::Base
   def status
     if success?
       'success'
-    elsif running?
-      'running'
     elsif pending?
       'pending'
+    elsif running?
+      'running'
     else
       'failed'
     end
@@ -139,7 +139,7 @@ class Commit < ActiveRecord::Base
 
   def running?
     builds_without_retry.any? do |build|
-      build.running?
+      build.running? || build.pending?
     end
   end
 

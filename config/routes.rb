@@ -20,7 +20,11 @@ GitlabCi::Application.routes.draw do
     end
 
     resource :charts, only: [:show]
-    resources :commits, only: [:show]
+    resources :commits, only: [:show] do
+      member do
+        get :status
+      end
+    end
 
     resources :builds, only: [:show] do
       member do
