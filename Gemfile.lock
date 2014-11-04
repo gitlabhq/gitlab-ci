@@ -74,6 +74,9 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.1)
     dotenv (0.9.0)
+    email_spec (1.5.0)
+      launchy (~> 2.1)
+      mail (~> 2.2)
     equalizer (0.0.9)
     erubis (2.7.0)
     execjs (2.0.2)
@@ -313,6 +316,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4.0.0)
   coveralls
+  email_spec
   factory_girl_rails
   ffaker
   font-awesome-rails (~> 3.2)

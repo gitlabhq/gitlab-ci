@@ -99,4 +99,5 @@ end
 
 group :test do
   gem 'webmock'
+  gem 'email_spec'
 end

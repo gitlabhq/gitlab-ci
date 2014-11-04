@@ -2,7 +2,7 @@ class BuildsController < ApplicationController
   before_filter :authenticate_user!, except: [:status]
   before_filter :project
   before_filter :authorize_access_project!, except: [:status]
-  before_filter :build, except: [:status, :show]
+  before_filter :build, except: [:show]
 
   def show
     if params[:id] =~ /\A\d+\Z/
@@ -38,8 +38,6 @@ class BuildsController < ApplicationController
   end
 
   def status
-    @build = build_by_sha
-
     render json: @build.to_json(only: [:status, :id, :sha, :coverage])
   end
 
