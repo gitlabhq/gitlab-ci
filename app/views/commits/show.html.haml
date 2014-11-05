@@ -27,7 +27,7 @@
     .col-sm-6
       %p
         %span.attr-name Author:
-        #{@commit.git_author_name}
+        #{@commit.git_author_name} (#{@commit.git_author_email})
       - if @commit.created_at
         %p
           %span.attr-name Created at:
@@ -40,7 +40,12 @@
   .status
     = @commit.status.titleize
 
-%h3 Builds
+%h3
+  Builds
+  - if @commit.duration > 0
+    %small.pull-right
+      %i.icon-time
+      #{distance_of_time_in_words @commit.duration}
 
 %table.builds
   %thead
@@ -48,7 +53,6 @@
       %th Status
       %th Build ID
       %th Job
-      %th Branch
       %th Duration
       %th Finished at
       - if @project.coverage_enabled?

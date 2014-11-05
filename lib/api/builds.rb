@@ -51,6 +51,12 @@ module API
         end
       end
 
+      # TODO: Remove it after 5.2 release
+      #
+      # THIS API IS DEPRECATED.
+      # Now builds are created by commit. In order to test specific commit you
+      # need to create Commit entity via Commit API
+      #
       # Create a build
       #
       # Parameters:
@@ -83,10 +89,10 @@ module API
         required_attributes! [:project_id, :data, :project_token]
         project = Project.find(params[:project_id])
         authenticate_project_token!(project)
-        builds = CreateBuildsService.new.execute(project, params[:data])
+        commit = CreateCommitService.new.execute(project, params[:data])
 
-        # to keep api compatibility for now
-        build = builds.first
+        # Temporary solution to keep api compatibility
+        build = commit.builds.first
 
         if build.persisted?
           present build, with: Entities::Build

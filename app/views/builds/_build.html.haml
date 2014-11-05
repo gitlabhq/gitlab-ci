@@ -10,11 +10,6 @@
     - if build.job
       = build.job.name
 
-  %td.build-branch
-    - unless @ref
-      %span
-        = link_to build.ref, project_path(@project, ref: build.ref)
-
   %td.duration
     - if build.duration
       #{distance_of_time_in_words build.duration}

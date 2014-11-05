@@ -121,6 +121,9 @@ class Build < ActiveRecord::Base
     state :canceled, value: 'canceled'
   end
 
+  delegate :ref, :sha, :short_sha, :before_sha,
+    to: :commit, prefix: false
+
   def trace_html
     html = Ansi2html::convert(trace) if trace.present?
     html ||= ''
@@ -150,28 +153,6 @@ class Build < ActiveRecord::Base
     end
   end
 
-
-  # The following methods are provided for Grape::Entity and end up being
-  # useful everywhere else to reduce the changes needed for parallel builds.
-  def ref
-    commit.ref
-  end
-
-  def sha
-    commit.sha
-  end
-
-  def short_sha
-    commit.short_sha
-  end
-
-  def before_sha
-    commit.before_sha end
-
-  def allow_git_fetch
-    commit.allow_git_fetch
-  end
-
   def project
     commit.project
   end
@@ -181,11 +162,15 @@ class Build < ActiveRecord::Base
   end
 
   def project_name
-    commit.project_name
+    project.name
   end
 
   def repo_url
-    commit.repo_url
+    project.repo_url_with_auth
+  end
+
+  def allow_git_fetch
+    project.allow_git_fetch
   end
 
   def update_coverage

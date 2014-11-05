@@ -1,14 +1,4 @@
 module ProjectsHelper
-  def project_statuc_class(project)
-    if project.last_build.try :success?
-      'alert-success'
-    elsif project.last_build.try :failed?
-      'alert-danger'
-    else
-      'alert-warning'
-    end
-  end
-
   def ref_tab_class ref = nil
     'active' if ref == @ref
   end

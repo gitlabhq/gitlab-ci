@@ -58,7 +58,7 @@ describe Project do
       end
 
       it { project.status.should == 'pending' }
-      it { project.last_build.should be_kind_of(Build)  }
+      it { project.last_commit.should be_kind_of(Commit)  }
       it { project.human_status.should == 'pending' }
     end
   end
@@ -122,29 +122,16 @@ describe Project do
     it { parsed_project.gitlab_id.should eq(189) }
     it { parsed_project.gitlab_url.should eq("http://localhost:3000/gitlab/api-gitlab-org") }
   end
+
+  describe :repo_url_with_auth do
+    let(:project) { FactoryGirl.create :project }
+    subject { project.repo_url_with_auth }
+
+    it { should be_a(String) }
+    it { should end_with(".git") }
+    it { should start_with(project.gitlab_url[0..6]) }
+    it { should include(project.token) }
+    it { should include('gitlab-ci-token') }
+    it { should include(project.gitlab_url[7..-1]) }
+  end
 end
-
-# == Schema Information
-#
-# Table name: projects
-#
-#  id                        :integer          not null, primary key
-#  name                      :string(255)      not null
-#  timeout                   :integer          default(1800), not null
-#  scripts                   :text             default(""), not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  token                     :string(255)
-#  default_ref               :string(255)
-#  gitlab_url                :string(255)
-#  always_build              :boolean          default(FALSE), not null
-#  polling_interval          :integer
-#  public                    :boolean          default(FALSE), not null
-#  ssh_url_to_repo           :string(255)
-#  gitlab_id                 :integer
-#  allow_git_fetch           :boolean          default(TRUE), not null
-#  email_recipients          :string(255)
-#  email_add_committer       :boolean          default(TRUE), not null
-#  email_only_breaking_build :boolean          default(TRUE), not null
-#
-

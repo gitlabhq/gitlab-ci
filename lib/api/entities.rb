@@ -1,7 +1,15 @@
 module API
   module Entities
+    class Commit < Grape::Entity
+      expose :id, :ref, :sha, :project_id, :before_sha, :created_at
+      expose :status, :finished_at, :duration
+      expose :git_commit_message, :git_author_name, :git_author_email
+      expose :builds
+    end
+
     class Build < Grape::Entity
-      expose :id, :commands, :path, :ref, :sha, :project_id, :repo_url, :before_sha, :timeout, :allow_git_fetch, :project_name
+      expose :id, :commands, :path, :ref, :sha, :project_id, :repo_url,
+        :before_sha, :timeout, :allow_git_fetch, :project_name
     end
 
     class Runner < Grape::Entity

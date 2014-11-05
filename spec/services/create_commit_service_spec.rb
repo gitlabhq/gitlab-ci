@@ -12,6 +12,7 @@ describe CreateCommitService do
       it { commit.should be_valid }
       it { commit.should be_persisted }
       it { commit.should == project.commits.last }
+      it { commit.builds.first.should be_kind_of(Build) }
     end
 
     context 'without params' do

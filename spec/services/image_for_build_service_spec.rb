@@ -10,6 +10,7 @@ describe ImageForBuildService do
     before { build }
 
     context 'branch name' do
+      before { build.run! }
       let(:image) { service.execute(project, ref: 'master') }
 
       it { image.should be_kind_of(OpenStruct) }
@@ -26,6 +27,7 @@ describe ImageForBuildService do
     end
 
     context 'commit sha' do
+      before { build.run! }
       let(:image) { service.execute(project, sha: build.sha) }
 
       it { image.should be_kind_of(OpenStruct) }

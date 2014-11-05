@@ -73,9 +73,9 @@ class ProjectsController < ApplicationController
   end
 
   def build
-    @builds = CreateBuildsService.new.execute(@project, params.dup)
+    @commit = CreateCommitService.new.execute(@project, params.dup)
 
-    if @builds.any? && @builds.any?(&:persisted?)
+    if @commit && @commit.valid?
       head 201
     else
       head 400

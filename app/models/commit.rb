@@ -57,7 +57,7 @@ class Commit < ActiveRecord::Base
   end
 
   def git_commit_message
-    commit_data[:message] if commit_data
+    commit_data[:message] if commit_data && commit_data[:message]
   end
 
   def short_before_sha
@@ -69,29 +69,11 @@ class Commit < ActiveRecord::Base
   end
 
   def commit_data
-    push_data[:commits].each do |commit|
-      return commit if commit[:id] == sha
+    push_data[:commits].find do |commit|
+      commit[:id] == sha
     end
   rescue
     nil
-  end
-
-  # Build a clone-able repo url
-  # using http and basic auth
-  def repo_url
-    auth = "gitlab-ci-token:#{project.token}@"
-    url = project.gitlab_url + ".git"
-    url.sub(/^https?:\/\//) do |prefix|
-      prefix + auth
-    end
-  end
-
-  def allow_git_fetch
-    project.allow_git_fetch
-  end
-
-  def project_name
-    project.name
   end
 
   def project_recipients
@@ -153,17 +135,20 @@ class Commit < ActiveRecord::Base
     status == 'failed'
   end
 
+  # TODO: implement
   def canceled?
   end
 
   def duration
+    @duration ||= builds.select(&:finished_at).sum(&:duration)
   end
 
   def finished_at
+    @finished_at ||= builds.order('finished_at ASC').first.try(:finished_at)
   end
 
   def coverage
-    if builds.size == 1
+    if project.coverage_enabled? && builds.size == 1
       builds.first.coverage
     end
   end

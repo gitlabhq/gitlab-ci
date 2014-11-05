@@ -25,6 +25,8 @@
 #
 
 class Project < ActiveRecord::Base
+  include ProjectStatus
+
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
@@ -116,44 +118,6 @@ ls -la
     gitlab_url.present?
   end
 
-  def status
-    last_build.status if last_build
-  end
-
-  def broken?
-    last_build.failed? || last_build.canceled? if last_build
-  end
-
-  def success?
-    last_build.success? if last_build
-  end
-
-  def broken_or_success?
-    broken? || success?
-  end
-
-  def last_build
-    @last_build ||= commits.last.last_build if commits.any?
-  end
-
-  def last_build_date
-    last_build.try(:created_at)
-  end
-
-  def human_status
-    status
-  end
-
-  def last_build_for_ref(ref)
-    commit_for_ref = commits.where(ref: ref).last
-    Build.where(commit_id: commit_for_ref).last
-  end
-
-  def last_build_for_sha(sha)
-    commit = commits.find_by_sha(sha)
-    commit.last_build unless commit.nil?
-  end
-
   def tracked_refs
     @tracked_refs ||= default_ref.split(",").map{|ref| ref.strip}
   end
@@ -173,14 +137,6 @@ ls -la
 
   def web_hooks?
     web_hooks.any?
-  end
-
-  # only check for toggling build status within same ref.
-  def last_build_changed_status?
-    commits_for_ref = commit.where(ref: last_build.ref)
-    last_builds = Build.where(commit_id: commits_for_ref).order('id DESC').limit(2)
-    return false if last_builds.size < 2
-    return last_builds[0].status != last_builds[1].status
   end
 
   def timeout_in_minutes
@@ -212,6 +168,16 @@ ls -la
 
     if remaining_jobs.empty?
       errors.add(:jobs, "At least one foo")
+    end
+  end
+
+  # Build a clone-able repo url
+  # using http and basic auth
+  def repo_url_with_auth
+    auth = "gitlab-ci-token:#{token}@"
+    url = gitlab_url + ".git"
+    url.sub(/^https?:\/\//) do |prefix|
+      prefix + auth
     end
   end
 end
