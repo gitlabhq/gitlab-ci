@@ -207,7 +207,7 @@ describe Build do
   describe :allow_git_fetch do
     subject { build.allow_git_fetch }
 
-    it { should eq(commit.allow_git_fetch) }
+    it { should eq(project.allow_git_fetch) }
   end
 
   describe :project do
@@ -225,13 +225,13 @@ describe Build do
   describe :project_name do
     subject { build.project_name }
 
-    it { should eq(commit.project_name) }
+    it { should eq(project.name) }
   end
 
   describe :repo_url do
     subject { build.repo_url }
 
-    it { should eq(commit.repo_url) }
+    it { should eq(project.repo_url_with_auth) }
   end
 
   describe :extract_coverage do

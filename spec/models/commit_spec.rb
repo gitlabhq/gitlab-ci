@@ -141,32 +141,9 @@ describe Commit do
     it { commit.sha.should start_with(subject) }
   end
 
-  describe :repo_url do
-    subject { commit_with_project.repo_url }
-
-    it { should be_a(String) }
-    it { should end_with(".git") }
-    it { should start_with(project.gitlab_url[0..6]) }
-    it { should include(project.token) }
-    it { should include('gitlab-ci-token') }
-    it { should include(project.gitlab_url[7..-1]) }
-  end
-
   describe :gitlab? do
     subject { commit_with_project.gitlab? }
 
     it { should eq(project.gitlab?) }
-  end
-
-  describe :allow_git_fetch do
-    subject { commit_with_project.allow_git_fetch }
-
-    it { should eq(project.allow_git_fetch) }
-  end
-
-  describe :name do
-    subject { commit_with_project.project_name }
-
-    it { should eq(project.name) }
   end
 end

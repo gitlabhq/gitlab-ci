@@ -76,24 +76,6 @@ class Commit < ActiveRecord::Base
     nil
   end
 
-  # Build a clone-able repo url
-  # using http and basic auth
-  def repo_url
-    auth = "gitlab-ci-token:#{project.token}@"
-    url = project.gitlab_url + ".git"
-    url.sub(/^https?:\/\//) do |prefix|
-      prefix + auth
-    end
-  end
-
-  def allow_git_fetch
-    project.allow_git_fetch
-  end
-
-  def project_name
-    project.name
-  end
-
   def project_recipients
     recipients = project.email_recipients.split(' ')
     recipients << git_author_email if project.email_add_committer?
@@ -153,17 +135,20 @@ class Commit < ActiveRecord::Base
     status == 'failed'
   end
 
+  # TODO: implement
   def canceled?
   end
 
   def duration
+    @duration ||= builds.select(&:finished_at).sum(&:duration)
   end
 
   def finished_at
+    @finished_at ||= builds.order('finished_at ASC').first.try(:finished_at)
   end
 
   def coverage
-    if builds.size == 1
+    if project.coverage_enabled? && builds.size == 1
       builds.first.coverage
     end
   end

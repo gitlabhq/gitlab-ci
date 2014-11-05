@@ -15,7 +15,7 @@
         = link_to commit.ref, project_path(@project, ref: commit.ref)
 
   %td.duration
-    - if commit.duration
+    - if commit.duration > 0
       #{distance_of_time_in_words commit.duration}
 
   %td.timestamp

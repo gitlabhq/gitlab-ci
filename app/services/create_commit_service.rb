@@ -8,7 +8,19 @@ class CreateCommitService
       ref = ref.scan(/heads\/(.*)$/).flatten[0]
     end
 
-    return false if project.skip_ref?(ref)
+    # Skip branch removal
+    if sha =~ /\A0+\Z/
+      return false
+    end
+
+    # Dont create commit if we already have one
+    if commit_exists?(project, sha)
+      return false
+    end
+
+    if project.skip_ref?(ref)
+      return false
+    end
 
     data = {
       ref: ref,
@@ -25,6 +37,12 @@ class CreateCommitService
       }
     }
 
-    project.commits.create(data)
+    commit = project.commits.create(data)
+    commit.create_builds
+    commit
+  end
+
+  def commit_exists?(project, sha)
+    project.commits.where(sha: sha).any?
   end
 end

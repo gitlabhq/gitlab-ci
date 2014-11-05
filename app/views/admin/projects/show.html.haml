@@ -32,8 +32,8 @@
         %strong= @project.public
       %p
         Last build:
-        - if @project.last_build
-          = time_ago_in_words @project.last_build_date
+        - if @project.last_commit
+          = time_ago_in_words @project.last_commit_date
     %br
     %fieldset
       %legend Email notification
