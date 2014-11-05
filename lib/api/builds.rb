@@ -51,6 +51,12 @@ module API
         end
       end
 
+      # TODO: Remove it after 5.2 release
+      #
+      # THIS API IS DEPRECATED.
+      # Now builds are created by commit. In order to test specific commit you
+      # need to create Commit entity via Commit API
+      #
       # Create a build
       #
       # Parameters:
@@ -85,7 +91,7 @@ module API
         authenticate_project_token!(project)
         builds = CreateBuildsService.new.execute(project, params[:data])
 
-        # to keep api compatibility for now
+        # Temporary solution to keep api compatibility
         build = builds.first
 
         if build.persisted?

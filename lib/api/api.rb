@@ -26,6 +26,7 @@ module API
     helpers Helpers
 
     mount Builds
+    mount Commits
     mount Runners
     mount Projects
   end
