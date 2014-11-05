@@ -2,15 +2,14 @@
 #
 # Table name: commits
 #
-#  id          :integer          not null, primary key
-#  project_id  :integer
-#  ref         :string(255)
-#  sha         :string(255)
-#  before_sha  :string(255)
-#  status      :string(255)
-#  push_data   :text
-#  created_at  :datetime
-#  updated_at  :datetime
+#  id         :integer          not null, primary key
+#  project_id :integer
+#  ref        :string(255)
+#  sha        :string(255)
+#  before_sha :string(255)
+#  push_data  :text
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
