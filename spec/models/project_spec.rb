@@ -20,6 +20,8 @@
 #  email_recipients         :string(255)      default(""), not null
 #  email_add_committer      :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
+#  skip_refs                :string(255)
+#  coverage_regex           :string(255)
 #
 
 require 'spec_helper'
@@ -111,6 +113,8 @@ describe Project do
   describe 'Project.parse' do
     let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:parsed_project) { Project.parse(project_dump) }
+
+    before { parsed_project.build_default_job }
 
     it { parsed_project.should be_valid }
     it { parsed_project.should be_kind_of(Project) }

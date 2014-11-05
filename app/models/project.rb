@@ -20,24 +20,31 @@
 #  email_recipients         :string(255)      default(""), not null
 #  email_add_committer      :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
+#  skip_refs                :string(255)
+#  coverage_regex           :string(255)
 #
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
-    :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex
+    :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex,
+    :jobs_attributes
 
   has_many :commits, dependent: :destroy
   has_many :builds, through: :commits, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
+  has_many :jobs, dependent: :destroy
+
+  accepts_nested_attributes_for :jobs, allow_destroy: true
 
   #
   # Validations
   #
-  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
+  validates_presence_of :name, :scripts, :timeout, :token, :default_ref,
+    :gitlab_url, :ssh_url_to_repo, :gitlab_id
 
   validates_uniqueness_of :name
 
@@ -45,6 +52,7 @@ class Project < ActiveRecord::Base
     presence: true,
     if: ->(project) { project.always_build.present? }
 
+  validate :validate_jobs
 
   scope :public_only, ->() { where(public: true) }
 
@@ -125,7 +133,7 @@ ls -la
   end
 
   def last_build
-    @last_build ||= commits.last.last_build
+    @last_build ||= commits.last.last_build if commits.any?
   end
 
   def last_build_date
@@ -193,5 +201,17 @@ ls -la
 
   def coverage_enabled?
     coverage_regex.present?
+  end
+
+  def build_default_job
+    jobs.build(commands: Project.base_build_script)
+  end
+
+  def validate_jobs
+    remaining_jobs = jobs.reject(&:marked_for_destruction?)
+
+    if remaining_jobs.empty?
+      errors.add(:jobs, "At least one foo")
+    end
   end
 end

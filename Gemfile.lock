@@ -74,6 +74,9 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.1)
     dotenv (0.9.0)
+    email_spec (1.5.0)
+      launchy (~> 2.1)
+      mail (~> 2.2)
     equalizer (0.0.9)
     erubis (2.7.0)
     execjs (2.0.2)
@@ -158,6 +161,7 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     mysql2 (0.3.14)
+    nested_form (0.3.2)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     nprogress-rails (0.1.2.3)
@@ -312,6 +316,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4.0.0)
   coveralls
+  email_spec
   factory_girl_rails
   ffaker
   font-awesome-rails (~> 3.2)
@@ -329,6 +334,7 @@ DEPENDENCIES
   letter_opener
   minitest (= 4.3.2)
   mysql2
+  nested_form
   nprogress-rails
   pg
   poltergeist

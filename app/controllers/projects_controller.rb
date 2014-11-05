@@ -36,9 +36,9 @@ class ProjectsController < ApplicationController
 
     @ref = params[:ref]
 
-    @builds = @project.builds
-    @builds = @builds.where(ref: @ref) if @ref
-    @builds = @builds.order('id DESC').page(params[:page]).per(20)
+    @commits = @project.commits
+    @commits = @commits.where(ref: @ref) if @ref
+    @commits = @commits.order('id DESC').page(params[:page]).per(20)
   end
 
   def integration
@@ -73,9 +73,9 @@ class ProjectsController < ApplicationController
   end
 
   def build
-    @build = CreateBuildService.new.execute(@project, params.dup)
+    @builds = CreateBuildsService.new.execute(@project, params.dup)
 
-    if @build && @build.persisted?
+    if @builds.any? && @builds.any?(&:persisted?)
       head 201
     else
       head 400

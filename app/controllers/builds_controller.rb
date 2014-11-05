@@ -2,18 +2,18 @@ class BuildsController < ApplicationController
   before_filter :authenticate_user!, except: [:status]
   before_filter :project
   before_filter :authorize_access_project!, except: [:status]
-  before_filter :build, except: [:status, :show]
+  before_filter :build, except: [:show]
 
   def show
     if params[:id] =~ /\A\d+\Z/
       @build = build
     else
-      # try to find build by sha
-      build = build_by_sha
+      # try to find commit by sha
+      commit = commit_by_sha
 
-      if build
-        # Redirect from sha to build with id
-        redirect_to project_build_path(build.project, build)
+      if commit
+        # Redirect to commit page
+        redirect_to project_commit_path(commit.project, commit)
         return
       end
     end
@@ -38,8 +38,6 @@ class BuildsController < ApplicationController
   end
 
   def status
-    @build = build_by_sha
-
     render json: @build.to_json(only: [:status, :id, :sha, :coverage])
   end
 
@@ -59,7 +57,7 @@ class BuildsController < ApplicationController
     @build ||= project.builds.unscoped.find_by(id: params[:id])
   end
 
-  def build_by_sha
-    @project.commits.find_by(sha: params[:id]).try(:last_build)
+  def commit_by_sha
+    @project.commits.find_by(sha: params[:id])
   end
 end

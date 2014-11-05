@@ -5,6 +5,7 @@ class CreateProjectService
     @project = Project.parse(params)
 
     Project.transaction do
+      @project.build_default_job
       @project.save!
 
       opts = {

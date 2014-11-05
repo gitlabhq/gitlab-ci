@@ -28,4 +28,14 @@ module BuildsHelper
   def build_url(build)
     project_build_url(build.project, build)
   end
+
+  def build_status_alert_class(build)
+    if build.success?
+      'alert-success'
+    elsif build.failed? || build.canceled?
+      'alert-danger'
+    else
+      'alert-warning'
+    end
+  end
 end

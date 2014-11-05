@@ -12,6 +12,7 @@ gem 'rails', '4.0.10'
 gem 'protected_attributes'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
+gem "nested_form"
 
 # DB
 gem 'mysql2', group: :mysql
@@ -98,4 +99,5 @@ end
 
 group :test do
   gem 'webmock'
+  gem 'email_spec'
 end

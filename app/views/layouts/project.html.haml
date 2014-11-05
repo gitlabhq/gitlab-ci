@@ -24,8 +24,8 @@
               = nav_link path: 'projects#show' do
                 = link_to project_path(@project) do
                   %i.icon-list-alt
-                  Builds
-                  %small.pull-right= @project.builds.count
+                  Commits
+                  %small.pull-right= @project.commits.count
               = nav_link path: 'charts#show' do
                 = link_to project_charts_path(@project) do
                   %i.icon-bar-chart

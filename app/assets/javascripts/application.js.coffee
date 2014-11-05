@@ -17,6 +17,7 @@
 #= require jquery.turbolinks
 #= require nprogress
 #= require nprogress-turbolinks
+#= require jquery_nested_form
 #= require_tree .
 #
 #

@@ -20,6 +20,8 @@
 #  email_recipients         :string(255)      default(""), not null
 #  email_add_committer      :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
+#  skip_refs                :string(255)
+#  coverage_regex           :string(255)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -35,6 +37,10 @@ FactoryGirl.define do
 
     factory :project do
       token 'iPWx6WM4lhHNedGfBpPJNP'
+    end
+
+    before :create do |project|
+      project.build_default_job
     end
   end
 end

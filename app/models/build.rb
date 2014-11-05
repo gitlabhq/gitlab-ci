@@ -3,15 +3,23 @@
 # Table name: builds
 #
 #  id          :integer          not null, primary key
+#  project_id  :integer
+#  ref         :string(255)
 #  status      :string(255)
 #  finished_at :datetime
 #  trace       :text
 #  created_at  :datetime
 #  updated_at  :datetime
+#  sha         :string(255)
 #  started_at  :datetime
 #  tmp_file    :string(255)
+#  before_sha  :string(255)
+#  push_data   :text
 #  runner_id   :integer
+#  coverage    :float
 #  commit_id   :integer
+#  commands    :text
+#  job_id      :integer
 #
 
 class Build < ActiveRecord::Base
@@ -19,8 +27,10 @@ class Build < ActiveRecord::Base
 
   belongs_to :commit
   belongs_to :runner
+  belongs_to :job
 
-  attr_accessible :status, :finished_at, :trace, :started_at, :runner_id, :commit_id, :coverage
+  attr_accessible :status, :finished_at, :trace, :started_at, :runner_id,
+    :commit_id, :coverage, :commands, :job_id
 
   validates :commit, presence: true
   validates :status, presence: true
@@ -56,7 +66,12 @@ class Build < ActiveRecord::Base
   end
 
   def self.retry(build)
-    Build.create(commit_id: build.commit_id)
+    Build.create(
+      commit_id: build.commit_id,
+      job_id: build.job_id,
+      status: :pending,
+      commands: build.commands
+    )
   end
 
   state_machine :status, initial: :pending do
@@ -121,10 +136,6 @@ class Build < ActiveRecord::Base
 
   def complete?
     canceled? || success? || failed?
-  end
-
-  def commands
-    project.scripts
   end
 
   def timeout

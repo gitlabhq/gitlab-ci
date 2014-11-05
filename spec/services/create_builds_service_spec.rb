@@ -1,12 +1,13 @@
 require 'spec_helper'
 
-describe CreateBuildService do
-  let(:service) { CreateBuildService.new }
+describe CreateBuildsService do
+  let(:service) { CreateBuildsService.new }
   let(:project) { FactoryGirl.create(:project) }
 
   describe :execute do
     context 'valid params' do
-      let(:build) { service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312') }
+      let(:builds) { service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312') }
+      let(:build) { builds.first }
 
       it { build.should be_kind_of(Build) }
       it { build.should be_pending }
@@ -16,7 +17,8 @@ describe CreateBuildService do
     end
 
     context 'without params' do
-      let(:build) { service.execute(project, {}) }
+      let(:builds) { service.execute(project, {}) }
+      let(:build) { builds.first }
 
       it { build.should be_kind_of(Build) }
       it { build.should be_pending }
