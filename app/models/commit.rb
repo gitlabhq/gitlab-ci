@@ -57,7 +57,7 @@ class Commit < ActiveRecord::Base
   end
 
   def git_commit_message
-    commit_data[:message] if commit_data
+    commit_data[:message] if commit_data && commit_data[:message]
   end
 
   def short_before_sha
@@ -69,8 +69,8 @@ class Commit < ActiveRecord::Base
   end
 
   def commit_data
-    push_data[:commits].each do |commit|
-      return commit if commit[:id] == sha
+    push_data[:commits].find do |commit|
+      commit[:id] == sha
     end
   rescue
     nil
