@@ -15,6 +15,6 @@ module GitlabHelper
   def gitlab_commit_link project, sha
     gitlab_url = project.gitlab_url.dup
     gitlab_url << "/commit/#{sha}"
-    link_to sha[0...10], gitlab_url
+    link_to Commit.truncate_sha(sha), gitlab_url
   end
 end

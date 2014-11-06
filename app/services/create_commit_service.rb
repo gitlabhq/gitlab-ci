@@ -9,7 +9,7 @@ class CreateCommitService
     end
 
     # Skip branch removal
-    if sha =~ /\A0+\Z/
+    if sha == Git::BLANK_SHA
       return false
     end
 

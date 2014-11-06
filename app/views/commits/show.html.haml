@@ -21,6 +21,11 @@
         %p
           %span.attr-name Compare:
           #{gitlab_compare_link(@project, @commit.short_before_sha, @commit.short_sha)}
+      - else
+        %p
+          %span.attr-name Commit:
+          #{gitlab_commit_link(@project, @commit.sha)}
+
       %p
         %span.attr-name Branch:
         #{gitlab_ref_link(@project, @commit.ref)}

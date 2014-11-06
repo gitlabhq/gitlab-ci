@@ -22,6 +22,10 @@ class Commit < ActiveRecord::Base
   validates_presence_of :ref, :sha, :before_sha, :push_data
   validate :valid_commit_sha
 
+  def self.truncate_sha(sha)
+    sha[0...8]
+  end
+
   def to_param
     sha
   end
@@ -31,13 +35,17 @@ class Commit < ActiveRecord::Base
   end
 
   def valid_commit_sha
-    if self.sha =~ /\A00000000/
+    if self.sha == Git::BLANK_SHA
       self.errors.add(:sha, " cant be 00000000 (branch removal)")
     end
   end
 
+  def new_branch?
+    before_sha == Git::BLANK_SHA
+  end
+
   def compare?
-    gitlab? && before_sha
+    gitlab? && !new_branch?
   end
 
   def gitlab?
@@ -61,11 +69,11 @@ class Commit < ActiveRecord::Base
   end
 
   def short_before_sha
-    before_sha[0..8]
+    Commit.truncate_sha(before_sha)
   end
 
   def short_sha
-    sha[0..8]
+    Commit.truncate_sha(sha)
   end
 
   def commit_data
