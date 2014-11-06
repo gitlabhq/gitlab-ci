@@ -1,23 +1,26 @@
 %tr.build.alert{class: build_status_alert_class(build)}
+  %td.build-link
+    = link_to build_url(build) do
+      %strong #{build.id}
+
   %td.status
     = build.status
+
+  %td.commit-link
+    = commit_link(build.commit)
 
   %td.runner
     - if build.runner
       = link_to build.runner.id, admin_runner_path(build.runner)
 
-  %td.build-link
-    = link_to build_url(build) do
-      %strong #{build.short_sha}
-
   %td.build-project
     = truncate build.project.name, length: 30
 
   %td.build-message
-    %span= truncate(build.commit.git_commit_message, length: 50)
+    %span= truncate(build.commit.git_commit_message, length: 30)
 
   %td.build-branch
-    = build.ref
+    %span= truncate(build.ref, length: 25)
 
   %td.duration
     - if build.duration
