@@ -111,7 +111,7 @@ describe Commit do
   describe :valid_commit_sha do
     context 'commit.sha can not start with 00000000' do
       before do
-        commit.sha = '0' * 32
+        commit.sha = '0' * 40
         commit.valid_commit_sha
       end
 
@@ -130,14 +130,14 @@ describe Commit do
   describe :short_sha do
     subject { commit.short_before_sha }
 
-    it { should have(9).items }
+    it { should have(8).items }
     it { commit.before_sha.should start_with(subject) }
   end
 
   describe :short_sha do
     subject { commit.short_sha }
 
-    it { should have(9).items }
+    it { should have(8).items }
     it { commit.sha.should start_with(subject) }
   end
 

@@ -22,7 +22,7 @@ describe ProjectsController do
       post :build, id: @project.id,
         ref: 'master',
         before: '2aa371379db71ac89ae20843fcff3b3477cf1a1d',
-        after: '000000000000000000000000000000000000000',
+        after: '0000000000000000000000000000000000000000',
         token: @project.token
 
       expect(response).not_to be_success
