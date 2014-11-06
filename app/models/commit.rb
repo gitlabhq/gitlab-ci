@@ -108,6 +108,8 @@ class Commit < ActiveRecord::Base
       'pending'
     elsif running?
       'running'
+    elsif canceled?
+      'canceled'
     else
       'failed'
     end
@@ -135,12 +137,14 @@ class Commit < ActiveRecord::Base
     status == 'failed'
   end
 
-  # TODO: implement
   def canceled?
+    builds_without_retry.all? do |build|
+      build.canceled?
+    end
   end
 
   def duration
-    @duration ||= builds.select(&:finished_at).sum(&:duration)
+    @duration ||= builds.select(&:finished_at).sum(&:duration).to_i
   end
 
   def finished_at
