@@ -144,7 +144,7 @@ class Commit < ActiveRecord::Base
   end
 
   def duration
-    @duration ||= builds.select(&:finished_at).sum(&:duration).to_i
+    @duration ||= builds.select(&:duration).sum(&:duration).to_i
   end
 
   def finished_at
