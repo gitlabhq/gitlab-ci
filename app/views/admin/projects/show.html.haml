@@ -32,7 +32,7 @@
         %strong= @project.public
       %p
         Last build:
-        - if @project.last_commit
+        - if @project.last_commit_date
           = time_ago_in_words @project.last_commit_date
     %br
     %fieldset
