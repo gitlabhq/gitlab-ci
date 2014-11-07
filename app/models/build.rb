@@ -194,4 +194,10 @@ class Build < ActiveRecord::Base
       # so we just silentrly ignore error for now
     end
   end
+
+  def job_name
+    if job
+      job.name
+    end
+  end
 end

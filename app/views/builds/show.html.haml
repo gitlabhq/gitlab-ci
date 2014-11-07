@@ -1,5 +1,7 @@
 %h4.page-title
   = @project.name
+  @
+  = @commit.short_sha
   .pull-right
     = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
       %i.icon-edit.icon-white
@@ -9,6 +11,26 @@
   = link_to project_commit_path(@project, @build.commit) do
     &larr; Back to project commit
 %hr
+
+- if @commit.matrix?
+  %ul.nav.nav-tabs.append-bottom-10
+    - @commit.builds_without_retry.each do |build|
+      %li{class: ('active' if build == @build) }
+        = link_to build_url(build) do
+          %i{class: build_icon_css_class(build)}
+          %span
+            Build ##{build.id}
+            - if build.job_name
+              &middot;
+              = build.job_name
+
+    - unless @commit.builds_without_retry.include?(@build)
+      %li.active
+        %a
+          Build ##{@build.id}
+          &middot;
+          %i.icon-warning-sign
+          This build was retried.
 
 .row
   .col-md-9
@@ -104,7 +126,10 @@
             %tr.build.alert{class: build_status_alert_class(build)}
               %td
                 = link_to build_url(build) do
-                  %span #{i+=1} &ndash; #{build.short_sha}
+                  %span ##{build.id}
+              %td
+                - if build.job_name
+                  = build.job_name
               %td.status= build.status
 
 

@@ -34,4 +34,14 @@ module BuildsHelper
       'alert-warning'
     end
   end
+
+  def build_icon_css_class(build)
+    if build.success?
+      'icon-circle cgreen'
+    elsif build.failed?
+      'icon-circle cred'
+    else
+      'icon-circle light'
+    end
+  end
 end

@@ -164,4 +164,8 @@ class Commit < ActiveRecord::Base
       builds.first.coverage
     end
   end
+
+  def matrix?
+    builds_without_retry.size > 1
+  end
 end
