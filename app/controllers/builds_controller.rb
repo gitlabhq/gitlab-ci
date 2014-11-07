@@ -35,7 +35,11 @@ class BuildsController < ApplicationController
   def retry
     build = Build.retry(@build)
 
-    redirect_to project_build_path(project, build)
+    if params[:return_to]
+      redirect_to params[:return_to]
+    else
+      redirect_to project_build_path(project, build)
+    end
   end
 
   def status
