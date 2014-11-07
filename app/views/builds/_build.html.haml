@@ -22,3 +22,13 @@
     %td.coverage
       - if build.coverage
         #{build.coverage}%
+
+  %td
+    - if defined?(controls)
+      .pull-right
+        - if build.active?
+          = link_to cancel_project_build_path(build.project, build, return_to: request.original_url), title: 'Cancel build' do
+            %i.icon-remove.cred
+        - else
+          = link_to retry_project_build_path(build.project, build, return_to: request.original_url), method: :post, title: 'Retry build' do
+            %i.icon-repeat

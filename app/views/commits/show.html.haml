@@ -1,4 +1,4 @@
-%h3.page-title
+%h4.page-title
   = @project.name
   @
   #{gitlab_commit_link(@project, @commit.sha)}
@@ -62,4 +62,22 @@
       %th Finished at
       - if @project.coverage_enabled?
         %th Coverage
-  = render @builds
+      %th
+  = render @commit.builds_without_retry, controls: true
+
+- if @commit.retried_builds.any?
+  %h3
+    Retried builds
+
+  %table.builds
+    %thead
+      %tr
+        %th Status
+        %th Build ID
+        %th Job
+        %th Duration
+        %th Finished at
+        - if @project.coverage_enabled?
+          %th Coverage
+        %th
+    = render @commit.retried_builds

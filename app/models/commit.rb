@@ -109,6 +109,10 @@ class Commit < ActiveRecord::Base
       end
   end
 
+  def retried_builds
+    @retried_builds ||= (builds - builds_without_retry)
+  end
+
   def status
     if success?
       'success'
@@ -152,7 +156,7 @@ class Commit < ActiveRecord::Base
   end
 
   def duration
-    @duration ||= builds.select(&:duration).sum(&:duration).to_i
+    @duration ||= builds_without_retry.select(&:duration).sum(&:duration).to_i
   end
 
   def finished_at
