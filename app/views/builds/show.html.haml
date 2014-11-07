@@ -58,8 +58,8 @@
 
     .clearfix
       - if @build.active?
-        .autoscroll-container.pull-right
-          %button.btn.btn-default.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
+        .autoscroll-container
+          %button.btn.btn-success.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
         .clearfix
     %pre.trace#build-trace
       %code.bash

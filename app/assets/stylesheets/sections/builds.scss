@@ -19,7 +19,10 @@ pre.trace {
 }
 
 .autoscroll-container {
-  margin-bottom: 5px;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 100;
 }
 
 .build-widget {
