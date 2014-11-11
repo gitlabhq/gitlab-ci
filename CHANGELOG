@@ -1,6 +1,8 @@
 v5.2
   - Improve performance by adding new indicies
   - Separate Commit logic from Build logic in prep for Parallel Builds
+  - Parallel builds
+  - You can have multiple build scripts per project
 
 v5.1
   - Registration token and runner token are named differently
