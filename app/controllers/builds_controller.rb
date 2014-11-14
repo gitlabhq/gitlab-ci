@@ -46,6 +46,26 @@ class BuildsController < ApplicationController
     render json: @build.to_json(only: [:status, :id, :sha, :coverage])
   end
 
+  def log
+    respond_to do |format|
+      format.text {
+        render text: @build.trace
+      }
+      format.json {
+        state = nil
+        begin
+          state = JSON.parse(params[:state], symbolize_names: true)
+        rescue
+        end
+
+        trace = @build.trace_for_state(state)
+        trace.merge!(id: @build.id, status: @build.status)
+
+        render json: trace
+      }
+    end
+  end
+
   def cancel
     @build.cancel
 

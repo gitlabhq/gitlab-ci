@@ -125,8 +125,18 @@ class Build < ActiveRecord::Base
     to: :commit, prefix: false
 
   def trace_html
-    html = Ansi2html::convert(trace) if trace.present?
-    html ||= ''
+    html = Ansi2html::convert(trace)[:html] if trace.present?
+    html ||= ""
+  end
+
+  def trace_state
+    state = Ansi2html::convert(trace)[:state] if trace.present?
+    state ||= ""
+  end
+
+  def trace_for_state(state = nil)
+    out = Ansi2html::convert(trace, state) if trace.present?
+    out ||= {}
   end
 
   def started?
