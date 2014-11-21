@@ -6,6 +6,8 @@ this should be the highest numbered stable branch (example shown below).
 
 If this is unclear check the [GitLab Blog](http://blog.gitlab.org/) for installation guide links by version.
 
+## GitLab CI 5.2 requires GitLab 7.5 or newer
+
 # Setup:
 
 ## 1. Packages / Dependencies
