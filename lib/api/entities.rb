@@ -23,5 +23,9 @@ module API
     class RunnerProject < Grape::Entity
       expose :id, :project_id, :runner_id
     end
+
+    class WebHook < Grape::Entity
+      expose :id, :project_id, :url
+    end
   end
 end
