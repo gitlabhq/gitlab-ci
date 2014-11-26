@@ -9,6 +9,7 @@ config/application.yml
 config/database.yml
 config/resque.yml
 config/unicorn.rb
+config/initializers/smtp_settings.rb
 coverage/*
 log/*
 tmp/*
