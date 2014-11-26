@@ -5,7 +5,7 @@
 [![Dependency Status](https://gemnasium.com/gitlabhq/gitlab-ci.png)](https://gemnasium.com/gitlabhq/gitlab-ci)
 [![Coverage Status](https://coveralls.io/repos/gitlabhq/gitlab-ci/badge.png?branch=master)](https://coveralls.io/r/gitlabhq/gitlab-ci)
 
-![Screen](https://gitlab.com/gitlab-org/gitlab-ci/raw/master/public/gitlab-ci-screenshot.png)
+![Screen](https://raw.githubusercontent.com/gitlabhq/gitlab-ci/master/public/gitlab-ci-screenshot.png)
 
 ### Requirements
 
