@@ -18,17 +18,17 @@ ActiveRecord::Schema.define(version: 20141201153755) do
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace"
+    t.text     "trace",       limit: 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sha"
     t.datetime "started_at"
     t.string   "tmp_file"
     t.string   "before_sha"
-    t.text     "push_data"
+    t.text     "push_data",   limit: 16777215
     t.integer  "runner_id"
-    t.float    "coverage"
     t.integer  "commit_id"
+    t.float    "coverage"
     t.text     "commands"
     t.integer  "job_id"
   end
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 20141201153755) do
   create_table "projects", force: true do |t|
     t.string   "name",                                     null: false
     t.integer  "timeout",                  default: 1800,  null: false
-    t.text     "scripts",                                  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "token"

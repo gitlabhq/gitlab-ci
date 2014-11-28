@@ -55,7 +55,6 @@ module API
       #   gitlab_id (required)       - The gitlab id of the project
       #   gitlab_url (required)      - The gitlab web url to the project
       #   ssh_url_to_repo (required) - The gitlab ssh url to the repo
-      #   scripts                    - The shell script provided for a runner to run
       #   default_ref                - The branch to run against (defaults to `master`)
       # Example Request:
       #   POST /projects
@@ -66,7 +65,6 @@ module API
           :name            => params[:name],
           :gitlab_id       => params[:gitlab_id],
           :gitlab_url      => params[:gitlab_url],
-          :scripts         => params[:scripts] || 'ls -al',
           :default_ref     => params[:default_ref] || 'master',
           :ssh_url_to_repo => params[:ssh_url_to_repo]
         }
@@ -90,7 +88,6 @@ module API
       #   gitlab_id       - The gitlab id of the project
       #   gitlab_url      - The gitlab web url to the project
       #   ssh_url_to_repo - The gitlab ssh url to the repo
-      #   scripts         - The shell script provided for a runner to run
       #   default_ref     - The branch to run against (defaults to `master`)
       # Example Request:
       #   PUT /projects/:id
@@ -98,7 +95,7 @@ module API
         project = Project.find(params[:id])
 
         if project.present? && current_user.can_access_project?(project.gitlab_id)
-          attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :scripts, :default_ref, :ssh_url_to_repo]
+          attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :default_ref, :ssh_url_to_repo]
 
           if project.update_attributes(attrs)
             present project, :with => Entities::Project

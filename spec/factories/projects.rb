@@ -5,7 +5,6 @@
 #  id                       :integer          not null, primary key
 #  name                     :string(255)      not null
 #  timeout                  :integer          default(1800), not null
-#  scripts                  :text             not null
 #  created_at               :datetime
 #  updated_at               :datetime
 #  token                    :string(255)
@@ -33,7 +32,6 @@ FactoryGirl.define do
     gitlab_url 'http://demo.gitlabhq.com/gitlab/gitlab-shell'
     ssh_url_to_repo 'git@demo.gitlab.com:gitlab/gitlab-shell.git'
     gitlab_id 8
-    scripts 'ls'
 
     factory :project do
       token 'iPWx6WM4lhHNedGfBpPJNP'
