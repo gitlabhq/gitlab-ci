@@ -31,8 +31,7 @@ describe Project do
 
   it { should have_many(:commits) }
 
-  it { should validate_presence_of :name }
-  it { should validate_presence_of :scripts }
+  it { should validate_presence_of :name }  
   it { should validate_presence_of :timeout }
   it { should validate_presence_of :default_ref }
 

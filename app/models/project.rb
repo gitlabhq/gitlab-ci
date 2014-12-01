@@ -5,7 +5,6 @@
 #  id                       :integer          not null, primary key
 #  name                     :string(255)      not null
 #  timeout                  :integer          default(1800), not null
-#  scripts                  :text             not null
 #  created_at               :datetime
 #  updated_at               :datetime
 #  token                    :string(255)
@@ -27,7 +26,7 @@
 class Project < ActiveRecord::Base
   include ProjectStatus
 
-  attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
+  attr_accessible :name, :path, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
     :email_recipients, :email_add_committer, :email_only_broken_builds, :coverage_regex,
@@ -45,7 +44,7 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :scripts, :timeout, :token, :default_ref,
+  validates_presence_of :name, :timeout, :token, :default_ref,
     :gitlab_url, :ssh_url_to_repo, :gitlab_id
 
   validates_uniqueness_of :name
@@ -74,8 +73,7 @@ ls -la
       params = {
         name:                    project.name_with_namespace,
         gitlab_id:               project.id,
-        gitlab_url:              project.web_url,
-        scripts:                 Project.base_build_script,
+        gitlab_url:              project.web_url,        
         default_ref:             project.default_branch || 'master',
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,

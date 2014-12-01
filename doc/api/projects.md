@@ -23,7 +23,6 @@ Returns:
     "id" : 271,
     "name" : "gitlabhq",
     "timeout" : 1800,
-    "scripts" : "ls",
     "token" : "iPWx6WM4lhHNedGfBpPJNP",
     "default_ref" : "master",
     "gitlab_url" : "http://demo.gitlabhq.com/gitlab/gitlab-shell",
@@ -37,7 +36,6 @@ Returns:
     "id" : 272,
     "name" : "gitlab-ci",
     "timeout" : 1800,
-    "scripts" : "ls",
     "token" : "iPWx6WM4lhHNedGfBpPJNP",
     "default_ref" : "master",
     "gitlab_url" : "http://demo.gitlabhq.com/gitlab/gitlab-shell",
@@ -66,7 +64,6 @@ Returns:
     "id" : 272,
     "name" : "gitlab-ci",
     "timeout" : 1800,
-    "scripts" : "ls",
     "token" : "iPWx6WM4lhHNedGfBpPJNP",
     "default_ref" : "master",
     "gitlab_url" : "http://demo.gitlabhq.com/gitlab/gitlab-shell",
@@ -102,7 +99,6 @@ Parameters:
   * `gitlab_id` (required) - The ID of the project on the Gitlab instance
   * `gitlab_url` (required) - The web url of the project on the Gitlab instance
   * `ssh_url_to_repo` (required) - The gitlab SSH url to the repo
-  * `scripts` (optional) - The shell script provided for a runner to run (defaults to `ls -al`)
   * `default_ref` (optional) - The branch to run on (default to `master`)
 
 ### Update Project
@@ -118,7 +114,6 @@ Parameters:
   * `gitlab_id` - The ID of the project on the Gitlab instance
   * `gitlab_url` - The web url of the project on the Gitlab instance
   * `ssh_url_to_repo` - The gitlab SSH url to the repo
-  * `scripts` - The shell script provided for a runner to run (defaults to `ls -al`)
   * `default_ref` - The branch to run on (default to `master`)
 
 ### Remove Project
