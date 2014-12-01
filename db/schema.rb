@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20141201153755) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "builds", force: true do |t|
     t.integer  "project_id"
     t.string   "ref"
