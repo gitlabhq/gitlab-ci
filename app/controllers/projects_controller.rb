@@ -4,6 +4,7 @@ class ProjectsController < ApplicationController
   before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:badge]
+  protect_from_forgery except: :build
 
   layout 'project', except: [:index, :gitlab]
 
