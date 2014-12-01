@@ -15,11 +15,17 @@ class NotificationService
         mailer.build_fail_email(build.id, recipient)
       end
     end
+
+    slack.send_build_message(build.id) if GitlabCi.config.slack.enabled
   end
 
   protected
 
   def mailer
     Notify.delay
+  end
+
+  def slack
+    SlackNotificationService.delay
   end
 end

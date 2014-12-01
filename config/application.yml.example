@@ -13,23 +13,28 @@ defaults: &defaults
     ## Email settings
     # Email address used in the "From" field in mails sent by GitLab-CI
     email_from: gitlab-ci@localhost
-  
+
     # Email address of your support contact (default: same as email_from)
     support_email: support@localhost
-  
+
     # Default project notifications settings: 
     #
     # Send emails only on broken builds (default: true)
     # all_broken_builds: true
-    # 
+    #
     # Add committer to recipients list (default: false)
     # add_committer: true
-    
+
   gravatar:
     enabled: true
     plain_url: "http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
     ssl_url:   "https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
 
+  slack:
+    enabled: false
+    webhook_url: "fill your slack_webhook_url here"
+    username: "Gitlab CI"
+    channel: "#gitlab-ci"
 
 development:
   <<: *defaults
