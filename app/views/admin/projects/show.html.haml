@@ -48,11 +48,13 @@
         %strong= @project.email_only_broken_builds
 
   .col-md-6
-    %fieldset
-      %legend Build script
-      = preserve do
-        %pre
-          = @project.scripts
+    - @project.jobs.active.each do |job|
+      %fieldset
+        %legend 
+          Build script for #{job.name}
+        = preserve do
+          %pre
+            = job.commands
 
     %br
     %fieldset
