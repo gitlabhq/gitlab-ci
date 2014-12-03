@@ -38,7 +38,6 @@ class Project < ActiveRecord::Base
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
   has_many :jobs, dependent: :destroy
-  has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 
   accepts_nested_attributes_for :jobs, allow_destroy: true
 
@@ -111,6 +110,10 @@ ls -la
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
+  end
+  
+  def last_build
+    builds.last
   end
 
   def gitlab?
