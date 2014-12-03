@@ -38,6 +38,7 @@ class Project < ActiveRecord::Base
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
   has_many :jobs, dependent: :destroy
+  has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 
   accepts_nested_attributes_for :jobs, allow_destroy: true
 
