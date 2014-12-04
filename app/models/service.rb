@@ -64,7 +64,7 @@ class Service < ActiveRecord::Base
   end
 
   def can_test?
-    !project.commits.empty?
+    !project.builds.empty?
   end
 
   # Provide convenient accessor methods

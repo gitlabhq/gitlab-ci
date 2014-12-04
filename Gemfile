@@ -55,6 +55,9 @@ gem 'virtus', '1.0.1'
 # Default values for AR models
 gem "default_value_for", "~> 3.0.0"
 
+# Slack integration
+gem "slack-notifier", "~> 0.3.2"
+
 # Other
 gem 'rake'
 gem 'foreman'

@@ -1,110 +1,76 @@
 require 'slack-notifier'
 
 class SlackMessage
-  def initialize(params)
-    @after = params.fetch(:after)
-    @before = params.fetch(:before)
-    @commits = params.fetch(:commits, [])
-    @project_name = params.fetch(:project_name)
-    @project_url = params.fetch(:project_url)
-    @ref = params.fetch(:ref).gsub('refs/heads/', '')
-    @username = params.fetch(:user_name)
+  # default_url_options[:host]     = GitlabCi.config.gitlab_ci.host
+  # default_url_options[:protocol] = GitlabCi.config.gitlab_ci.protocol
+  # default_url_options[:port]     = GitlabCi.config.gitlab_ci.port if GitlabCi.config.gitlab_ci_on_non_standard_port?
+  # default_url_options[:script_name] = GitlabCi.config.gitlab_ci.relative_url_root
+
+  def initialize(build)
+    @build = build
   end
 
   def pretext
     format(message)
   end
 
-  def attachments
-    return [] if new_branch? || removed_branch?
+  def color
+    attachment_color
+  end
 
-    commit_message_attachments
+  def attachments
+    message_attachments
   end
 
   private
 
-  attr_reader :after
-  attr_reader :before
-  attr_reader :commits
-  attr_reader :project_name
-  attr_reader :project_url
-  attr_reader :ref
-  attr_reader :username
+  attr_reader :build
 
   def message
-    if new_branch?
-      new_branch_message
-    elsif removed_branch?
-      removed_branch_message
-    else
-      push_message
+    if build.complete?
+      "<#{project_url}|#{project_name}>: Build <#{build_url}|\##{build.id}> (<#{build_ref_link}|#{build.short_sha}>) of #{build.ref} by #{build.commit.git_author_name} #{build.status} in #{build.duration} second(s)"
     end
+  end
+
+  def message_attachments
+    []
   end
 
   def format(string)
     Slack::Notifier::LinkFormatter.format(string)
   end
 
-  def new_branch_message
-    "#{username} pushed new branch #{branch_link} to #{project_link}"
+  def project_name
+    build.project.name
   end
 
-  def removed_branch_message
-    "#{username} removed branch #{ref} from #{project_link}"
-  end
-
-  def push_message
-    "#{username} pushed to branch #{branch_link} of #{project_link} (#{compare_link})"
-  end
-
-  def commit_messages
-    commits.each_with_object('') do |commit, str|
-      str << compose_commit_message(commit)
-    end.chomp
-  end
-
-  def commit_message_attachments
-    [{ text: format(commit_messages), color: attachment_color }]
-  end
-
-  def compose_commit_message(commit)
-    author = commit.fetch(:author).fetch(:name)
-    id = commit.fetch(:id)[0..8]
-    message = commit.fetch(:message)
-    url = commit.fetch(:url)
-
-    "[#{id}](#{url}): #{message} - #{author}\n"
-  end
-
-  def new_branch?
-    before =~ /000000/
-  end
-
-  def removed_branch?
-    after =~ /000000/
-  end
-
-  def branch_url
-    "#{project_url}/commits/#{ref}"
-  end
-
-  def compare_url
-    "#{project_url}/compare/#{before}...#{after}"
-  end
-
-  def branch_link
-    "[#{ref}](#{branch_url})"
-  end
-
-  def project_link
-    "[#{project_name}](#{project_url})"
-  end
-
-  def compare_link
-    "[Compare changes](#{compare_url})"
+  def build_ref_link
+    if build.project.gitlab?
+      "#{build.project.gitlab_url}/commits/#{build.ref}"
+    else
+      build.ref
+    end
   end
 
   def attachment_color
-    '#345'
+    if build.success?
+      'good'
+    else
+      'danger'
+    end
+  end
+
+  def project_url
+    Rails.application.routes.url_helpers.project_url(
+        build.project,
+        host: Settings.gitlab_ci['host'], protocol: Settings.gitlab_ci['https'] ? "https" : "http", port: Settings.gitlab_ci['port']
+    )
+  end
+
+  def build_url
+    Rails.application.routes.url_helpers.project_build_url(
+        build.project, build,
+        host: Settings.gitlab_ci['host'], protocol: Settings.gitlab_ci['https'] ? "https" : "http", port: Settings.gitlab_ci['port']
+    )
   end
 end

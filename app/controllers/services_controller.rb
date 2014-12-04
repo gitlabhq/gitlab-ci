@@ -25,11 +25,11 @@ class ServicesController < ApplicationController
   end
 
   def test
-    # data = GitPushService.new.sample_data(project, current_user)
-    #
-    # @service.execute(data)
-    #
-    # redirect_to :back
+    last_build = @project.builds.last
+
+    @service.execute(last_build)
+
+    redirect_to :back
   end
 
   private

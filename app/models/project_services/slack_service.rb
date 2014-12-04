@@ -28,35 +28,26 @@ class SlackService < Service
     'slack'
   end
 
+  def help
+    'Visit https://www.slack.com/services/new/incoming-webhook. Then copy link and save project!' unless webhook.present?
+  end
+
   def fields
     [
-      { type: 'text', name: 'webhook', placeholder: '' }
+        {type: 'text', name: 'webhook', placeholder: ''}
     ]
   end
 
-  def execute(push_data)
-    message = SlackMessage.new(push_data.merge(
-      project_url: project_url,
-      project_name: project_name
-    ))
+  def execute(build)
+    message = SlackMessage.new(build)
 
     credentials = webhook.match(/([\w-]*).slack.com.*services\/(.*)/)
 
     if credentials.present?
-      subdomain =  credentials[1]
+      subdomain = credentials[1]
       token = credentials[2].split("token=").last
       notifier = Slack::Notifier.new(subdomain, token)
-      notifier.ping(message.pretext, attachments: message.attachments)
+      notifier.ping(message.pretext, color: message.color, fallback: message.pretext, attachments: message.attachments)
     end
-  end
-
-  private
-
-  def project_name
-    project.name_with_namespace.gsub(/\s/, '')
-  end
-
-  def project_url
-    project.web_url
   end
 end
