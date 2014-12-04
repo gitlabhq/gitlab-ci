@@ -19,6 +19,12 @@ GitlabCi::Application.routes.draw do
       post :build
     end
 
+    resources :services, only: [:index, :edit, :update] do
+      member do
+        get :test
+      end
+    end
+
     resource :charts, only: [:show]
     resources :commits, only: [:show] do
       member do

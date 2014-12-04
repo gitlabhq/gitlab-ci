@@ -52,6 +52,9 @@ gem 'grape'
 gem 'grape-entity'
 gem 'virtus', '1.0.1'
 
+# Default values for AR models
+gem "default_value_for", "~> 3.0.0"
+
 # Other
 gem 'rake'
 gem 'foreman'

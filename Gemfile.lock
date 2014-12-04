@@ -69,6 +69,8 @@ GEM
       thor
     crack (0.4.1)
       safe_yaml (~> 0.9.0)
+    default_value_for (3.0.0.1)
+      activerecord (>= 3.2.0, < 5.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
@@ -316,6 +318,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4.0.0)
   coveralls
+  default_value_for (~> 3.0.0)
   email_spec
   factory_girl_rails
   ffaker

@@ -39,6 +39,10 @@ class Project < ActiveRecord::Base
   has_many :web_hooks, dependent: :destroy
   has_many :jobs, dependent: :destroy
 
+  # Project services
+  has_many :services, dependent: :destroy
+  has_one :slack_service, dependent: :destroy
+
   accepts_nested_attributes_for :jobs, allow_destroy: true
 
   #
@@ -176,6 +180,32 @@ ls -la
     url = gitlab_url + ".git"
     url.sub(/^https?:\/\//) do |prefix|
       prefix + auth
+    end
+  end
+
+  def available_services_names
+    %w(slack)
+  end
+
+  def build_missing_services
+    available_services_names.each do |service_name|
+      service = services.find { |service| service.to_param == service_name }
+
+      # If service is available but missing in db
+      # we should create an instance. Ex `create_gitlab_ci_service`
+      service = self.send :"create_#{service_name}_service" if service.nil?
+    end
+  end
+
+  def execute_services(data)
+    services.each do |service|
+
+      # Call service hook only if it is active
+      begin
+        service.execute(data) if service.active
+      rescue => e
+        logger.error(e)
+      end
     end
   end
 end
