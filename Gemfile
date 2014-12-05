@@ -56,7 +56,7 @@ gem 'virtus', '1.0.1'
 gem "default_value_for", "~> 3.0.0"
 
 # Slack integration
-gem "slack-notifier", "~> 0.3.2"
+gem "slack-notifier", "~> 1.0.0"
 
 # Other
 gem 'rake'

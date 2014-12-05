@@ -141,6 +141,10 @@ ls -la
     web_hooks.any?
   end
 
+  def services?
+    services.any?
+  end
+
   def timeout_in_minutes
     timeout / 60
   end
