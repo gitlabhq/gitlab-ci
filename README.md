@@ -42,6 +42,13 @@ The following features are not yet in GitLab CI but merge requests are very welc
 * [Build artifacts access](http://feedback.gitlab.com/forums/176466-general/suggestions/4522830-allow-access-to-build-artifacts-of-gitlab-ci)
 * For parallel builds, deployments, branch specific builds and build metrics there is a [blog article with implementation steps](http://blog.gitlab.org/gitlab-ci-with-parallel-builds-and-deployments/)
 
+### Installation
+
+* [Omnibus packages](https://about.gitlab.com/downloads/) (recommended) now include the CI coordinator, see the [configuration instructions](https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/gitlab-ci/README.md)
+* [Installation guide](doc/install/installation.md)
+* [Unofficial Docker Image by Sameer Naik](https://github.com/sameersbn/docker-gitlab-ci)
+* [Unofficial Docker Image by Anastas Dancha](https://registry.hub.docker.com/u/anapsix/gitlab-ci/) is available via `docker pull anapsix/gitlab-ci`
+
 ### Runners
 
 To perform the actual build you need a CI runner (also see the Architecture section below):
@@ -75,12 +82,6 @@ For more information see:
 [Announcing GitLab CI 5.1](http://blog.gitlab.org/2014/10/22/gitlab-ci-5-dot-1-released/)
 and
 [Integrating GitLab CI With GitLab to Enable Distributed Builds](http://blog.gitlab.org/integrating-gitlab-ci-with-gitlab/)
-
-### Installation
-
-* [Installation guide](doc/install/installation.md)
-* [Unofficial Docker Image by Sameer Naik](https://github.com/sameersbn/docker-gitlab-ci)
-* [Unofficial Docker Image by Anastas Dancha](https://registry.hub.docker.com/u/anapsix/gitlab-ci/) is available via `docker pull anapsix/gitlab-ci`
 
 ### How to add a new project to GitLab CI
 
