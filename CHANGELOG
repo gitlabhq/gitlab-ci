@@ -1,3 +1,6 @@
+v5.3
+  - Remove annoying 'Done' message from schedule_builds cron job
+
 v5.2
   - Improve performance by adding new indicies
   - Separate Commit logic from Build logic in prep for Parallel Builds
