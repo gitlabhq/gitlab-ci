@@ -45,7 +45,7 @@ The following features are not yet in GitLab CI but merge requests are very welc
 ### Installation
 
 * [Omnibus packages](https://about.gitlab.com/downloads/) (recommended) now include the CI coordinator, see the [configuration instructions](https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/gitlab-ci/README.md)
-* [Installation guide](doc/install/installation.md)
+* [Manual installation guide](doc/install/installation.md)
 * [Unofficial Docker Image by Sameer Naik](https://github.com/sameersbn/docker-gitlab-ci)
 * [Unofficial Docker Image by Anastas Dancha](https://registry.hub.docker.com/u/anapsix/gitlab-ci/) is available via `docker pull anapsix/gitlab-ci`
 
