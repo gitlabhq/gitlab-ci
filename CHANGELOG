@@ -3,6 +3,7 @@ v5.3
   - Fix a style issue with the navbar
   - Skip CSRF check on the project's build page
   - Fix showing wrong build script on admin projects page
+  - Add branch and commit message to build result emails
 
 v5.2
   - Improve performance by adding new indicies
