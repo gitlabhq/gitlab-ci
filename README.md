@@ -13,6 +13,10 @@ GitLab CI officially supports (recent versions of) these Linux distributions:
 
 * Ubuntu Linux
 * Debian/GNU Linux
+* CentOS
+* RedHat Enterprise Linux (please use the CentOS packages and instructions)
+* Scientific Linux (please use the CentOS packages and instructions)
+* Oracle Linux (please use the CentOS packages and instructions)
 
 Additionally GitLab CI requires:
 
