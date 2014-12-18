@@ -70,7 +70,7 @@ class Build < ActiveRecord::Base
       commit_id: build.commit_id,
       job_id: build.job_id,
       status: :pending,
-      commands: build.commands
+      commands: build.job.commands
     )
   end
 
