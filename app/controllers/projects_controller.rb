@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
-  before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy]
-  before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
+  before_filter :project, only: [:summary, :build, :integration, :show, :badge, :edit, :update, :destroy]
+  before_filter :authorize_access_project!, except: [:summary, :build, :gitlab, :badge, :index, :show, :new, :create]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:badge]
   protect_from_forgery except: :build
@@ -40,6 +40,9 @@ class ProjectsController < ApplicationController
     @commits = @project.commits
     @commits = @commits.where(ref: @ref) if @ref
     @commits = @commits.order('id DESC').page(params[:page]).per(20)
+  end
+
+  def summary
   end
 
   def integration

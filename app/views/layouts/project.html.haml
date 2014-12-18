@@ -42,5 +42,9 @@
                 = link_to edit_project_path(@project) do
                   %i.icon-edit
                   Settings
+              = nav_link path: 'projects#summary' do
+                = link_to summary_project_path(@project) do
+                  %i.icon-info-sign
+                  Summary
         .col-md-10
           = yield

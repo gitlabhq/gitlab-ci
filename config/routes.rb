@@ -16,6 +16,7 @@ GitlabCi::Application.routes.draw do
     member do
       get :status, to: 'projects#badge'
       get :integration
+      get :summary
       post :build
     end
 
