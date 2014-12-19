@@ -19,9 +19,9 @@ up-to-date and install it.
     sudo apt-get upgrade
 
 **Note:**
-During this installation some files will need to be edited manually. If 
-you are familiar with vim set it as default editor with the commands 
-below. If you are not familiar with vim please skip this and keep using 
+During this installation some files will need to be edited manually. If
+you are familiar with vim set it as default editor with the commands
+below. If you are not familiar with vim please skip this and keep using
 the default editor.
 
     # Install vim
@@ -31,11 +31,19 @@ the default editor.
 Install the required packages:
 
     sudo apt-get install wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev libicu-dev openssl
-    sudo apt-get install redis-server 
+    sudo apt-get install redis-server
 
 # 2. Ruby
+Download Ruby and compile it (Ubuntu 14.04):
 
-Download Ruby and compile it:
+    mkdir /tmp/ruby && cd /tmp/ruby
+    curl --progress http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p481.tar.bz2 | tar xj
+    cd ruby-2.0.0-p481
+    ./configure --disable-install-rdoc
+    make
+    sudo make install
+
+Download Ruby and compile it (Lower than Ubuntu 14.04):
 
     mkdir /tmp/ruby && cd /tmp/ruby
     curl --progress http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2 | tar xj
@@ -74,13 +82,16 @@ You can use either MySQL or PostgreSQL.
 
     # Grant proper permissions to the MySQL User
     mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
-    
+
     # Logout MYSQL
     mysql> exit;
-    
+
 ### PostgreSQL
 
-    # Install the database packages
+    # Install the database packages (Ubuntu 14.04)
+    sudo apt-get install -y postgresql-9.3 libpq-dev
+
+    # Install the database packages (Lower than Ubuntu 14.04)
     sudo apt-get install -y postgresql-9.1 libpq-dev
 
     # Login to PostgreSQL
@@ -98,7 +109,7 @@ You can use either MySQL or PostgreSQL.
     # Try connecting to the new database with the new user
     sudo -u gitlab_ci -H psql -d gitlab_ci_production
 
-## 5. Get code 
+## 5. Get code
 
     cd /home/gitlab_ci/
 
@@ -110,7 +121,8 @@ You can use either MySQL or PostgreSQL.
 
 ## 6. Setup application
 
-    # Edit application settings
+    # You need an exisiting Gitlab Server!
+    # Edit application settings (Remember to setup the correct gitlab_server_urls)
     # Production
     sudo -u gitlab_ci -H cp config/application.yml.example config/application.yml
     sudo -u gitlab_ci -H editor config/application.yml
@@ -128,7 +140,7 @@ You can use either MySQL or PostgreSQL.
     sudo chmod -R u+rwX  tmp/pids/
 
 ### Install gems
- 
+
     # For MySQL (note, the option says "without ... postgres")
     sudo -u gitlab_ci -H bundle install --without development test postgres --deployment
 
@@ -148,10 +160,10 @@ You can use either MySQL or PostgreSQL.
 
     # Setup tables
     sudo -u gitlab_ci -H bundle exec rake setup RAILS_ENV=production
-    
+
     # Setup schedules
     sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
-   
+
 
 ## 7. Install Init Script
 
