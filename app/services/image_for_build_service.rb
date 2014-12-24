@@ -24,6 +24,10 @@ class ImageForBuildService
   def image_for_commit(commit)
     return 'unknown.png' unless commit
 
-    commit.status + ".png"
+    if commit.status == 'pending'
+      'running.png'
+    else
+      commit.status + ".png"
+    end
   end
 end
