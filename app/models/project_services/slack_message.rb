@@ -1,11 +1,6 @@
 require 'slack-notifier'
 
 class SlackMessage
-  # default_url_options[:host]     = GitlabCi.config.gitlab_ci.host
-  # default_url_options[:protocol] = GitlabCi.config.gitlab_ci.protocol
-  # default_url_options[:port]     = GitlabCi.config.gitlab_ci.port if GitlabCi.config.gitlab_ci_on_non_standard_port?
-  # default_url_options[:script_name] = GitlabCi.config.gitlab_ci.relative_url_root
-
   def initialize(commit)
     @commit = commit
   end
@@ -29,16 +24,16 @@ class SlackMessage
       commit.builds_without_retry.each do |build|
         next unless build.failed?
         fields << {
-            title: build.job_name,
-            value: "Build <#{build_log_link(build)}|\##{build.id}> failed in #{build.duration.to_i} second(s)."
+          title: build.job_name,
+          value: "Build <#{RoutesHelper.project_build_url(project, build)}|\##{build.id}> failed in #{build.duration.to_i} second(s)."
         }
       end
     end
 
     [{
-         text: attachment_message,
-         color: attachment_color,
-         fields: fields
+       text: attachment_message,
+       color: attachment_color,
+       fields: fields
      }]
   end
 
@@ -47,12 +42,12 @@ class SlackMessage
   attr_reader :commit
 
   def attachment_message
-    out = "<#{project_url}|#{project_name}>: "
+    out = "<#{RoutesHelper.project_url(project)}|#{project_name}>: "
     if commit.matrix?
-      out << "Commit <#{commit_url}|\##{commit.id}> "
+      out << "Commit <#{RoutesHelper.project_commit_url(project, commit)}|\##{commit.id}> "
     else
       build = commit.builds_without_retry.first
-      out << "Build <#{build_log_link(build)}|\##{build.id}> "
+      out << "Build <#{RoutesHelper.project_build_url(project, build)}|\##{build.id}> "
     end
     out << "(<#{commit_sha_link}|#{commit.short_sha}>) "
     out << "of <#{commit_ref_link}|#{commit.ref}> "
@@ -103,34 +98,5 @@ class SlackMessage
     else
       'failed'
     end
-  end
-
-  def project_url
-    Rails.application.routes.url_helpers.project_url(
-        project,
-        url_helper_options
-    )
-  end
-
-  def commit_url
-    Rails.application.routes.url_helpers.project_commit_url(
-        project, commit,
-        url_helper_options
-    )
-  end
-
-  def build_log_link(build)
-    Rails.application.routes.url_helpers.project_build_url(
-        project, build,
-        url_helper_options
-    )
-  end
-
-  def url_helper_options
-    {
-        host: Settings.gitlab_ci['host'],
-        protocol: Settings.gitlab_ci['https'] ? "https" : "http",
-        port: Settings.gitlab_ci['port']
-    }
   end
 end

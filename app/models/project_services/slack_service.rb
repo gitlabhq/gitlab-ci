@@ -19,6 +19,8 @@ class SlackService < Service
 
   default_value_for :notify_only_broken_builds, true
 
+  NOTIFY_ONLY_BROKEN_BUILDS_ENABLED = '1'
+
   def title
     'Slack'
   end
@@ -37,20 +39,27 @@ class SlackService < Service
 
   def fields
     [
-        {type: 'text', name: 'webhook', label: 'Webhook URL', placeholder: ''},
-        {type: 'checkbox', name: 'notify_only_broken_builds', label: 'Notify only broken builds'}
+      {type: 'text', name: 'webhook', label: 'Webhook URL', placeholder: ''},
+      {type: 'checkbox', name: 'notify_only_broken_builds', label: 'Notify only broken builds'}
     ]
   end
 
   def notify_only_broken_builds?
-    notify_only_broken_builds == '1'
+    notify_only_broken_builds == NOTIFY_ONLY_BROKEN_BUILDS_ENABLED
   end
 
   def can_test?
     # slack notification is useful only for builds either successful or failed
-    builds = project.builds
-    return builds.failed.any? if notify_only_broken_builds?
-    builds.failed.any? || builds.success.any?
+    project.commits.order(id: desc).any? do |commit|
+      case commit.status.to_sym
+        when :failed
+          true
+        when :success
+          !notify_only_broken_builds?
+        else
+          false
+      end
+    end
   end
 
   def execute(build)
@@ -68,9 +77,9 @@ class SlackService < Service
 
     message = SlackMessage.new(commit)
     options = default_options.merge(
-        color: message.color,
-        fallback: message.fallback,
-        attachments: message.attachments
+      color: message.color,
+      fallback: message.fallback,
+      attachments: message.attachments
     )
     SlackNotifierWorker.perform_async(webhook, message.pretext, options)
   end
@@ -79,7 +88,7 @@ class SlackService < Service
 
   def default_options
     {
-        username: 'GitLab CI'
+      username: 'GitLab CI'
     }
   end
 end

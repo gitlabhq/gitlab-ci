@@ -22,7 +22,6 @@ class Service < ActiveRecord::Base
   after_initialize :initialize_properties
 
   belongs_to :project
-  has_one :service_hook
 
   validates :project_id, presence: true
 
@@ -64,7 +63,7 @@ class Service < ActiveRecord::Base
   end
 
   def can_test?
-    !project.builds.empty?
+    project.builds.any?
   end
 
   # Provide convenient accessor methods
@@ -73,10 +72,11 @@ class Service < ActiveRecord::Base
     args.each do |arg|
       class_eval %{
         def #{arg}
-          properties['#{arg}']
+          (properties || {})['#{arg}']
         end
 
         def #{arg}=(value)
+          self.properties ||= {}
           self.properties['#{arg}'] = value
         end
       }
