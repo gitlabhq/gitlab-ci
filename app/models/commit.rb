@@ -34,6 +34,12 @@ class Commit < ActiveRecord::Base
     builds.last
   end
 
+  def retry
+    builds_without_retry.each do |build|
+      Build.retry(build)
+    end
+  end
+
   def valid_commit_sha
     if self.sha == Git::BLANK_SHA
       self.errors.add(:sha, " cant be 00000000 (branch removal)")

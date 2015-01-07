@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 20141201153755) do
     t.string   "before_sha"
     t.text     "push_data"
     t.integer  "runner_id"
-    t.float    "coverage"
     t.integer  "commit_id"
+    t.float    "coverage"
     t.text     "commands"
     t.integer  "job_id"
   end
