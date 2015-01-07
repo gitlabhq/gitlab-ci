@@ -73,7 +73,7 @@ ls -la
       params = {
         name:                    project.name_with_namespace,
         gitlab_id:               project.id,
-        gitlab_url:              project.web_url,        
+        gitlab_url:              project.web_url,
         default_ref:             project.default_branch || 'master',
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,

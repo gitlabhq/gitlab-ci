@@ -5,7 +5,6 @@
 #  id                       :integer          not null, primary key
 #  name                     :string(255)      not null
 #  timeout                  :integer          default(1800), not null
-#  scripts                  :text             not null
 #  created_at               :datetime
 #  updated_at               :datetime
 #  token                    :string(255)

@@ -29,7 +29,7 @@ Returns:
 ### Register a new runner
 
 
-__Authentication is done by GitLab CI runners registration token__
+__Authentication is done by GitLab CI runners registration token or CI project token__
 
 Used to make Gitlab CI aware of available runners.
 
@@ -37,7 +37,10 @@ Used to make Gitlab CI aware of available runners.
 
 Parameters:
 
-  * `token` (required) - The unique token of runner
+  * `token` (required) - The registration token. It is 2 types of token you can pass here. 
+
+1. Global registration token (admins only) at /admin/runners
+2. Project token for project-specific runners
 
 Returns:
 
