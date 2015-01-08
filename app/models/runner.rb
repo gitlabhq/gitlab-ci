@@ -37,4 +37,8 @@ class Runner < ActiveRecord::Base
   def shared?
     runner_projects.blank?
   end
+
+  def only_for?(project)
+    projects == [project]
+  end
 end

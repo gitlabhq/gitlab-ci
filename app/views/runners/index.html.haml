@@ -1,0 +1,31 @@
+%h3.project-title
+  Project specific runners
+
+  .pull-right
+    %small
+      = pluralize(@runners.total_count, 'runner')
+%hr
+%p.lead
+  %span To register new runner you should enter the following registration token. With this token the runner will request a unique runner token and use that for future communication.
+  %code #{@project.token}
+
+.bs-callout
+  %p
+    A 'runner' is a process which runs a build.
+    You can setup as many runners as you need.
+    %br
+    Runners can be placed on separate users, servers, and even on your local machine.
+    %br
+
+%table.table
+  %thead
+    %tr
+      %th ID
+      %th Runner token
+      %th Description
+      %th Last build
+      %th Registered
+      %th
+
+  = render @runners
+= paginate @runners

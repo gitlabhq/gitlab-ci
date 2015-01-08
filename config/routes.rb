@@ -39,6 +39,8 @@ GitlabCi::Application.routes.draw do
         get :test
       end
     end
+
+    resources :runners, only: [:index, :destroy]
   end
 
   resource :user_sessions
