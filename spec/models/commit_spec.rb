@@ -49,6 +49,19 @@ describe Commit do
     it('returns with the most recently created build') { should eq(@second) }
   end
 
+  describe :retry do
+    before do
+      @first = FactoryGirl.create :build, commit: commit, created_at: Date.yesterday
+      @second = FactoryGirl.create :build, commit: commit
+    end
+
+    it "creates new build" do
+      commit.builds.count.should == 2
+      commit.retry
+      commit.builds.count.should == 3
+    end
+  end
+
   describe :ci_skip? do
     let(:project) { FactoryGirl.create(:project) }
     let(:commit) { FactoryGirl.create(:commit, project: project) }
