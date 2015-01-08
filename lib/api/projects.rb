@@ -4,6 +4,30 @@ module API
     before { authenticate! }
 
     resource :projects do
+      # Register new webhook for project
+      #
+      # Parameters
+      #   project_id (required) - The ID of a project
+      #   web_hook (required) - WebHook URL
+      # Example Request
+      #   POST /projects/:project_id/webhooks
+      post ":project_id/webhooks" do
+        required_attributes! [:web_hook]
+
+        project = Project.find(params[:project_id])
+
+        if project.present? && current_user.can_access_project?(project.gitlab_id)
+          web_hook = project.web_hooks.new({url: params[:web_hook]})
+
+          if web_hook.save
+            present web_hook, :with => Entities::WebHook
+          else
+            errors = web_hook.errors.full_messages.join(", ")
+            render_api_error!(errors, 400)
+          end
+        end
+      end
+
       # Retrieve all Gitlab CI projects that the user has access to
       #
       # Example Request:
