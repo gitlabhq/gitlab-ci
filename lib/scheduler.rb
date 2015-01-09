@@ -8,7 +8,6 @@ class Scheduler
       interval = project.polling_interval
       if (last_commit.last_build.created_at + interval.hours) < Time.now
         last_commit.retry
-        puts "."
       end
     end
   end

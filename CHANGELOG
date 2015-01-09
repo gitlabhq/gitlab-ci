@@ -2,6 +2,7 @@ v5.4
   - Fixed 500 error for badge if build is pending
   - Non-admin users can now register specific runners for their projects
   - Project specific runners page which users can access
+  - Remove progress output from schedule_builds cron job
 
 v5.3
   - Remove annoying 'Done' message from schedule_builds cron job
