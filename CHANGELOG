@@ -3,6 +3,8 @@ v5.4
   - Non-admin users can now register specific runners for their projects
   - Project specific runners page which users can access
   - Remove progress output from schedule_builds cron job
+  - Fix schedule_builds rake task
+  - Fix test webhook button
 
 v5.3
   - Remove annoying 'Done' message from schedule_builds cron job
