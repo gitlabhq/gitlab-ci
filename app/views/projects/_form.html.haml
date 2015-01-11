@@ -15,6 +15,15 @@
         .col-sm-10
           = job_form.text_field :name, class: 'form-control', placeholder: "Ex. cucumber"
       .form-group
+        .col-sm-2
+        .col-sm-10
+          .checkbox
+            = f.label :build_branches, 'Build branches', class: ''
+            = job_form.check_box :build_branches
+          .checkbox
+            = f.label :build_tags, 'Build tags', class: ''
+            = job_form.check_box :build_tags
+      .form-group
         = f.label :commands, 'Build steps', class: 'control-label'
         .col-sm-10
           = job_form.text_area :commands, class: 'form-control', rows: 14, placeholder: "bundle exec rake spec"

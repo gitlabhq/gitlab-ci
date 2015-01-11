@@ -5,6 +5,7 @@ v5.4
   - Remove progress output from schedule_builds cron job
   - Fix schedule_builds rake task
   - Fix test webhook button
+  - Job can be branch specific or tag specifi or both
 
 v5.3
   - Remove annoying 'Done' message from schedule_builds cron job

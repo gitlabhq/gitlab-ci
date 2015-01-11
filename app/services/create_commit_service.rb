@@ -2,11 +2,13 @@ class CreateCommitService
   def execute(project, params)
     before_sha = params[:before]
     sha = params[:after]
-    ref = params[:ref]
+    origin_ref = params[:ref]
 
-    if ref && ref.include?('refs/heads/')
-      ref = ref.scan(/heads\/(.*)$/).flatten[0]
+    unless origin_ref && sha
+      return false
     end
+
+    ref = origin_ref.gsub(/\Arefs\/(tags|heads)\//, '')
 
     # Skip branch removal
     if sha == Git::BLANK_SHA
@@ -38,7 +40,13 @@ class CreateCommitService
     }
 
     commit = project.commits.create(data)
-    commit.create_builds
+
+    if origin_ref.start_with?('refs/tags/')
+      commit.create_builds_for_tag
+    else
+      commit.create_builds
+    end
+
     commit
   end
 

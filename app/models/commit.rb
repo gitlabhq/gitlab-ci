@@ -97,7 +97,16 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds
-    project.jobs.active.map do |job|
+    project.jobs.where(build_branches: true).active.map do |job|
+      build = builds.new(commands: job.commands)
+      build.job = job
+      build.save
+      build
+    end
+  end
+
+  def create_builds_for_tag
+    project.jobs.where(build_tags: true).active.map do |job|
       build = builds.new(commands: job.commands)
       build.job = job
       build.save
