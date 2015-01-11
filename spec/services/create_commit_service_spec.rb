@@ -16,11 +16,9 @@ describe CreateCommitService do
     end
 
     context 'without params' do
-      let(:commit) { service.execute(project, {}) }
+      subject { service.execute(project, {}) }
 
-      it { commit.should be_kind_of(Commit) }
-      it { commit.should_not be_valid }
-      it { commit.should_not be_persisted }
+      it { should be_false }
     end
   end
 end
