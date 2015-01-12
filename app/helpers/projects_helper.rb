@@ -22,4 +22,16 @@ module ProjectsHelper
     url = status_project_url(project, ref: ref, format: 'png')
     "<a href='#{project_url(project, ref: ref)}'><img src='#{url}' /></a>"
   end
+
+  def runners_for_project(project)
+    project.runners.map { |r| "#" + r.id.to_s }.join(", ")
+  end
+
+  def project_uses_specific_runner?(project)
+    project.runners.any?
+  end
+
+  def no_shared_runners_for_project?(project)
+    Runner.count.nonzero? && project.runners.blank? && Runner.shared.blank?
+  end
 end
