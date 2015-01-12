@@ -8,6 +8,8 @@
 
   %td
     - if build.job
+      - if build.for_tag?
+        %i.icon-tag
       = build.job.name
 
   %td.duration

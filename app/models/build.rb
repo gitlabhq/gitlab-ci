@@ -200,4 +200,12 @@ class Build < ActiveRecord::Base
       job.name
     end
   end
+
+  def for_tag?
+    if job && job.build_tags
+      true
+    else
+      false
+    end
+  end
 end
