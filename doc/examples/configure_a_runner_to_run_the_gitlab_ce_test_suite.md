@@ -2,77 +2,92 @@
 
 This prepares a runner to test GitLab CE. The actual [build script](build_script_gitlab_ce.md) is separate.
 
-### 1. packages
+### 1. Set up the CI runner
 
-```bash
-sudo apt-get install -y build-essential zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl openssh-server redis-server checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libicu-dev logrotate
 ```
+# Ubuntu 14.04
+wget https://s3-eu-west-1.amazonaws.com/downloads-packages/ubuntu-14.04/gitlab-runner_5.1.0~pre.omnibus.1-1_amd64.deb
+# Ubuntu 12.04:
+# wget https://s3-eu-west-1.amazonaws.com/downloads-packages/ubuntu-12.04/gitlab-runner_5.1.0~pre.omnibus.1-1_amd64.deb
 
-### 2. ruby
+sudo dpkg -i gitlab-runner_5.1.0~pre.omnibus.1-1_amd64.deb
+sudo useradd -r -m gitlab-runner -s /bin/false
 
-```bash
-\curl -L https://get.rvm.io | bash -s stable --ruby
-```
+# This step is interactive; you need to enter the Coordinator URL and runner token
+sudo /opt/gitlab-runner/bin/setup -C /home/gitlab-runner
 
-### 3. runner
-
-```bash
-# Use any directory you like
-mkdir ~/gitlab-runners
-cd ~/gitlab-runners
-git clone https://github.com/gitlabhq/gitlab-ci-runner.git
-cd gitlab-ci-runner
-gem install bundler
-bundle install
-bundle exec ./bin/setup
-nohup bundle exec ./bin/runner &
+sudo cp /opt/gitlab-runner/doc/install/upstart/gitlab-runner.conf /etc/init/
+sudo service gitlab-runner start
 ```
 
 
-### 4. mysql
+### 2. Install ruby-build and Ruby 2.1.5
 
 ```bash
+sudo apt-get install -y g++ gcc make libc6-dev libreadline6-dev zlib1g-dev \
+  libssl-dev libyaml-dev libsqlite3-dev sqlite3 autoconf libgdbm-dev \
+  libncurses5-dev automake libtool bison pkg-config libffi-dev git-core
 
-$ sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
-
-$ mysql -u root -p
-
-mysql> CREATE USER 'runner'@'localhost' IDENTIFIED BY 'password';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> GRANT ALL PRIVILEGES ON * . * TO 'runner'@'localhost';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> FLUSH PRIVILEGES;
-Query OK, 0 rows affected (0.00 sec)
-
+sudo -Hu gitlab-runner sh <<EOF
+set -e # abort if something fails
+git clone https://github.com/sstephenson/ruby-build.git ~/ruby-build
+cd ~/ruby-build
+PREFIX=~ ./install.sh
+cd ~
+# This takes a while, compiling ruby from source
+bin/ruby-build 2.1.5 ~
+EOF
 ```
 
-### 5. phantomjs
+### 3. Packages for GitLab tests
 
 ```bash
-mkdir ~/app/
-cd ~/app
+sudo apt-get update
+sudo apt-get install -y libicu-dev nodejs fontconfig cmake libkrb5-dev redis-server
+```
 
-# x64
-wget -P ~/app http://phantomjs.googlecode.com/files/phantomjs-1.8.1-linux-x86_64.tar.bz2
-tar -xf phantomjs-1.8.1-linux-x86_64.tar.bz2
+
+### 4. MySQL
+
+```bash
+# This is an interactive command; you need to set the MySQL root password
+sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev
+
+# This is an interactive command, you need to enter the MySQL root password
+mysql -u root -p <<EOF
+CREATE USER 'runner'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'runner'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+```
+
+### 5. Phantomjs
+
+```bash
+sudo -Hu gitlab-runner sh <<EOF
+set -e # abort phantomjs installation on errors
+cd ~
+# x86-64 download command
+wget http://phantomjs.googlecode.com/files/phantomjs-1.8.1-linux-x86_64.tar.bz2
+tar -xjf phantomjs-1.8.1-linux-x86_64.tar.bz2
 mv phantomjs-1.8.1-linux-x86_64 phantomjs
+# end x86-64 download command
+mkdir -p ~/bin
+ln -s ~/phantomjs/bin/phantomjs ~/bin/
+EOF
 
-# x86
+# should say '1.8.1'
+sudo -Hu gitlab-runner bash -l -c '~/bin/phantomjs --version'
+```
+
+Done!
+
+On i686, you can use the following download commands instead:
+
+```
+sudo -Hu gitlab-runner sh <<EOF
 wget -P ~/app http://phantomjs.googlecode.com/files/phantomjs-1.8.1-linux-i686.tar.bz2
 tar -xf phantomjs-1.8.1-linux-i686.tar.bz2
 mv phantomjs-1.8.1-linux-i686 phantomjs
-
-# all version
-sudo apt-get install fontconfig
-sudo ln -s ~/app/phantomjs/bin/phantomjs /usr/bin/phantomjs
-phantomjs --version
-```
-
-
-### 6. misc
-
-```bash
-sudo adduser --disabled-login --gecos 'GitLab' git
+EOF
 ```
