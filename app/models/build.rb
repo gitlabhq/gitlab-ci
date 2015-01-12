@@ -121,7 +121,7 @@ class Build < ActiveRecord::Base
     state :canceled, value: 'canceled'
   end
 
-  delegate :ref, :sha, :short_sha, :before_sha,
+  delegate :sha, :short_sha, :before_sha,
     to: :commit, prefix: false
 
   def trace_html
@@ -199,6 +199,10 @@ class Build < ActiveRecord::Base
     if job
       job.name
     end
+  end
+
+  def ref
+    read_attribute(:ref) || commit.ref
   end
 
   def for_tag?

@@ -8,9 +8,11 @@
 
   %td
     - if build.job
-      - if build.for_tag?
-        %i.icon-tag
       = build.job.name
+      - if build.for_tag?
+        %span.label.label-primary
+          %i.icon-tag
+          = build.ref
 
   %td.duration
     - if build.duration

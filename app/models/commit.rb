@@ -105,10 +105,11 @@ class Commit < ActiveRecord::Base
     end
   end
 
-  def create_builds_for_tag
+  def create_builds_for_tag(tag_name = '')
     project.jobs.where(build_tags: true).active.map do |job|
       build = builds.new(commands: job.commands)
       build.job = job
+      build.ref = tag_name
       build.save
       build
     end

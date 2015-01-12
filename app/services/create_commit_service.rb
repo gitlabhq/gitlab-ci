@@ -41,7 +41,7 @@ class CreateCommitService
     end
 
     if origin_ref.start_with?('refs/tags/')
-      commit.create_builds_for_tag
+      commit.create_builds_for_tag(ref)
     else
       commit.create_builds
     end
