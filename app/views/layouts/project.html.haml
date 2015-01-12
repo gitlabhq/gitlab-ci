@@ -40,11 +40,15 @@
                   Web Hooks
               = nav_link path: 'runners#index' do
                 = link_to project_runners_path(@project) do
-                  %i.icon-cogs
+                  %i.icon-cog
                   Runners
+              = nav_link path: 'jobs#index' do
+                = link_to project_jobs_path(@project) do
+                  %i.icon-code
+                  Jobs
               = nav_link path: 'projects#edit' do
                 = link_to edit_project_path(@project) do
-                  %i.icon-edit
+                  %i.icon-cogs
                   Settings
         .col-md-10
           = yield

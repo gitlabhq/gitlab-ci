@@ -1,0 +1,16 @@
+class JobsController < ApplicationController
+  before_filter :authenticate_user!
+  before_filter :project
+  before_filter :authorize_access_project!
+
+  layout 'project'
+
+  def index
+  end
+
+  private
+
+  def project
+    @project ||= Project.find(params[:project_id])
+  end
+end

@@ -41,6 +41,7 @@ GitlabCi::Application.routes.draw do
     end
 
     resources :runners, only: [:index, :destroy]
+    resources :jobs, only: [:index]
   end
 
   resource :user_sessions
