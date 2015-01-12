@@ -14,7 +14,7 @@
 
 class Commit < ActiveRecord::Base
   belongs_to :project
-  has_many :builds
+  has_many :builds, dependent: :destroy
   has_many :jobs, through: :builds
 
   serialize :push_data
