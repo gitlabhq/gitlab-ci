@@ -5,7 +5,8 @@ describe "Commits" do
     login_as :user
     @project = FactoryGirl.create :project
     @commit = FactoryGirl.create :commit, project: @project
-    @build = FactoryGirl.create :build, commit: @commit
+    @job = FactoryGirl.create :job, project: @project
+    @build = FactoryGirl.create :build, commit: @commit, job: @job
   end
 
   describe "GET /:project/commits/:sha" do

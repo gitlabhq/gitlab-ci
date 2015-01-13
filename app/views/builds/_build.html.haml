@@ -8,11 +8,22 @@
 
   %td
     - if build.job
-      = build.job.name
       - if build.for_tag?
-        %span.label.label-primary
-          %i.icon-tag
-          = build.ref
+        Tag
+        &middot;
+        #{build.ref}
+      - else
+        Commit
+        &middot;
+        #{build.short_sha}
+  %td
+    = build.job.name
+    - if build.tags.any?
+      .pull-right
+        - build.tag_list.each do |tag|
+          %span.label.label-primary
+            = tag
+
 
   %td.duration
     - if build.duration

@@ -36,12 +36,16 @@
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        Build for commit
-        %code #{@build.short_sha}
-        from
+        - if @build.for_tag?
+          Build for tag
+          %code #{@build.ref}
+        - else
+          Build for commit
+          %code #{@build.short_sha}
+          from
 
-        = link_to project_path(@build.project, ref: @build.ref) do
-          %span.label.label-primary= "#{@build.ref}"
+          = link_to project_path(@build.project, ref: @build.ref) do
+            %span.label.label-primary= "#{@build.ref}"
 
         - if @build.duration
           .pull-right
@@ -72,6 +76,7 @@
         %h4.title
           Test coverage
         %h1 #{@build.coverage}%
+
 
     .build-widget
       %h4.title
@@ -117,6 +122,14 @@
       %p
         %span.attr-name Message:
         #{@build.commit.git_commit_message}
+
+    - if @build.tags.any?
+      .build-widget
+        %h4.title
+          Tags
+        - @build.tag_list.each do |tag|
+          %span.label.label-primary
+            = tag
 
     - if @builds.present?
       .build-widget
