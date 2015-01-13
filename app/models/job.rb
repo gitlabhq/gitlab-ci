@@ -17,6 +17,8 @@ class Job < ActiveRecord::Base
   belongs_to :project
   has_many :builds
 
+  acts_as_taggable
+
   scope :active, ->() { where(active: true) }
   scope :archived, ->() { where(active: false) }
 end

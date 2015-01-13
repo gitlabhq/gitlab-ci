@@ -1,0 +1,19 @@
+%table.table
+  %thead
+    %tr
+      %th Name
+      %th Build commits
+      %th Build tags
+      %th Tags
+
+  %tbody
+    - @project.jobs.each do |job|
+      %tr
+        %td= job.name
+        %td= check_box_tag nil, nil, job.build_branches, disabled: true
+        %td= check_box_tag nil, nil, job.build_tags, disabled: true
+        %td
+          - job.tag_list.each do |tag|
+            %span.label.label-primary
+              = tag
+

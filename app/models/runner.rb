@@ -16,12 +16,14 @@ class Runner < ActiveRecord::Base
 
   has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 
-  attr_accessible :token, :description
+  attr_accessible :token, :description, :tag_list
 
   before_validation :set_default_values
 
   scope :specific, ->() { where(id: RunnerProject.select(:runner_id)) }
   scope :shared, ->() { where.not(id: RunnerProject.select(:runner_id)) }
+
+  acts_as_taggable
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?

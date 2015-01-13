@@ -14,6 +14,9 @@ gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
 gem "nested_form"
 
+# tag runners
+gem 'acts-as-taggable-on', '~> 3.4'
+
 # DB
 gem 'mysql2', group: :mysql
 gem 'pg',     group: :postgres
