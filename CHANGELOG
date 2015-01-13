@@ -7,6 +7,9 @@ v5.4
   - Fix test webhook button
   - Job can be branch specific or tag specifi or both
   - Shared runners builds projects which are not assigned to specific ones
+  - Job can be runner specific through tags
+  - Runner have tags
+  - Move job settings to separate page
 
 v5.3
   - Remove annoying 'Done' message from schedule_builds cron job
