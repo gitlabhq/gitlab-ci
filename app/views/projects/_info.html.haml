@@ -1,4 +1,2 @@
-- if no_shared_runners_for_project?(@project)
-  = render 'no_shared_runners'
-- if project_uses_specific_runner?(@project)
-  = render 'specific_runner'
+- if no_runners_for_project?(@project)
+  = render 'no_runners'
