@@ -13,13 +13,13 @@
       .col-sm-10
         = job_form.text_field :name, class: 'form-control', placeholder: "Ex. cucumber"
     .form-group
-      = f.label :build_branches, 'Events', class: 'control-label'
+      = f.label :build_branches, 'Trigger', class: 'control-label'
       .col-sm-10
         .checkbox
-          = f.label :build_branches, 'Push a new commit', class: ''
+          = f.label :build_branches, 'Builds commits', class: ''
           = job_form.check_box :build_branches
         .checkbox
-          = f.label :build_tags, 'Push a new tag', class: ''
+          = f.label :build_tags, 'Build tags', class: ''
           = job_form.check_box :build_tags
     .form-group
       = label_tag :tag_list, class: 'control-label' do

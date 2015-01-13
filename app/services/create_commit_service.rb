@@ -21,6 +21,7 @@ class CreateCommitService
 
     commit = project.commits.find_by(sha: sha)
 
+    # Create commit if not exists yet
     unless commit
       data = {
         ref: ref,

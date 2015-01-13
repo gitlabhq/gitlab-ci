@@ -40,38 +40,43 @@ class Build < ActiveRecord::Base
   scope :pending, ->() { where(status: "pending") }
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
+  scope :unstarted, ->() { where(runner_id: nil) }
+
+  acts_as_taggable
 
   # To prevent db load megabytes of data from trace
   default_scope -> { select(Build.columns_without_lazy) }
 
-  def self.columns_without_lazy
-    (column_names - LAZY_ATTRIBUTES).map do |column_name|
-      "#{table_name}.#{column_name}"
+  class << self
+    def columns_without_lazy
+      (column_names - LAZY_ATTRIBUTES).map do |column_name|
+        "#{table_name}.#{column_name}"
+      end
     end
-  end
 
-  def self.last_month
-    where('created_at > ?', Date.today - 1.month)
-  end
+    def last_month
+      where('created_at > ?', Date.today - 1.month)
+    end
 
-  def self.first_pending
-    pending.where(runner_id: nil).order('created_at ASC').first
-  end
+    def first_pending
+      pending.unstarted.order('created_at ASC').first
+    end
 
-  def self.create_from(build)
-    new_build = build.dup
-    new_build.status = :pending
-    new_build.runner_id = nil
-    new_build.save
-  end
+    def create_from(build)
+      new_build = build.dup
+      new_build.status = :pending
+      new_build.runner_id = nil
+      new_build.save
+    end
 
-  def self.retry(build)
-    Build.create(
-      commit_id: build.commit_id,
-      job_id: build.job_id,
-      status: :pending,
-      commands: build.commands
-    )
+    def retry(build)
+      Build.create(
+        commit_id: build.commit_id,
+        job_id: build.job_id,
+        status: :pending,
+        commands: build.commands
+      )
+    end
   end
 
   state_machine :status, initial: :pending do

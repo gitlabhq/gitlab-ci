@@ -12,24 +12,12 @@ module API
       post "register" do
         authenticate_runner!
         required_attributes! [:token]
+        build = RegisterBuildService.new.execute(current_runner)
 
-        ActiveRecord::Base.transaction do
-          build = if current_runner.shared?
-                    # don't run projects which are assigned to specific runners
-                    projects = RunnerProject.pluck(:project_id)
-                    Build.where.not(project_id: projects).first_pending
-                  else
-                    # do run projects which are only assigned to this runner
-                    commits = Commit.where(project_id: current_runner.projects)
-                    Build.where(commit_id: commits).first_pending
-                  end
-
-          not_found! and return unless build
-
-          build.runner_id = current_runner.id
-          build.save!
-          build.run!
+        if build
           present build, with: Entities::Build
+        else
+          not_found!
         end
       end
 

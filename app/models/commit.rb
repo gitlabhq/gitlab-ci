@@ -98,21 +98,24 @@ class Commit < ActiveRecord::Base
 
   def create_builds
     project.jobs.where(build_branches: true).active.map do |job|
-      build = builds.new(commands: job.commands)
-      build.job = job
-      build.save
-      build
+      create_build_from_job(job)
     end
   end
 
-  def create_builds_for_tag(tag_name = '')
+  def create_builds_for_tag(ref = '')
     project.jobs.where(build_tags: true).active.map do |job|
-      build = builds.new(commands: job.commands)
-      build.job = job
-      build.ref = tag_name
-      build.save
-      build
+      create_build_from_job(job, ref)
     end
+  end
+
+  def create_build_from_job(job, ref = '')
+    build = builds.new(commands: job.commands)
+    build.tag_list = job.tag_list
+    build.project_id = project_id
+    build.job = job
+    build.ref = ref
+    build.save
+    build
   end
 
   def builds_without_retry
