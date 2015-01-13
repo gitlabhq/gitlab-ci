@@ -28,22 +28,15 @@
 @import "font-awesome";
 
 /**
- * Generic css (forms, buttons etc):
+ * Generic css (forms, nav etc):
  */
-@import "generic/xterm.scss";
-@import "generic/common.scss";
-@import "generic/typography.scss";
-@import "generic/buttons.scss";
-@import "generic/forms.scss";
+@import "generic/*";
 
 /**
  * Page specific styles (issues, projects etc):
  */
-@import "sections/navbar.scss";
-@import "sections/projects.scss";
-@import "sections/builds.scss";
-@import "sections/login.scss";
-@import "sections/runners.scss";
+
+@import "sections/*";
 
 /*
  * NProgress
