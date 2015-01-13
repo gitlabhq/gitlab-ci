@@ -10,6 +10,7 @@ v5.4
   - Job can be runner specific through tags
   - Runner have tags
   - Move job settings to separate page
+  - Add authorization level managing projects
 
 v5.3
   - Remove annoying 'Done' message from schedule_builds cron job

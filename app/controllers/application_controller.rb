@@ -46,6 +46,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def authorize_manage_project!
+    unless current_user.can_manage_project?(@project.gitlab_id)
+      return page_404
+    end
+  end
+
   def page_404
     render file: "#{Rails.root}/public/404.html", status: 404, layout: false
   end
