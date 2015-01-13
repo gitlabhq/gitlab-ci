@@ -18,7 +18,7 @@
     %hr
     .container
       .row
-        - if current_user
+        - if current_user && current_user.can_manage_project?(@project.gitlab_id)
           .col-md-2.append-bottom-20
             %ul.nav.nav-pills.nav-stacked.project-menu
               = nav_link path: 'projects#show' do

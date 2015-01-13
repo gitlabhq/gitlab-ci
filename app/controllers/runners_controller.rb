@@ -3,6 +3,7 @@ class RunnersController < ApplicationController
   before_filter :project
   before_filter :set_runner, only: [:edit, :update, :destroy]
   before_filter :authorize_access_project!
+  before_filter :authorize_manage_project!
 
   layout 'project'
 

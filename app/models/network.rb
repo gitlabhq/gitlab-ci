@@ -79,6 +79,24 @@ class Network
     end
   end
 
+  def project_hooks(url, api_opts, project_id)
+    opts = {
+      query: api_opts,
+      headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks.json"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
   def enable_ci(url, project_id, ci_opts, token)
     opts = {
       body: ci_opts.to_json,
