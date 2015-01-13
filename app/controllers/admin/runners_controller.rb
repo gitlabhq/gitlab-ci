@@ -13,11 +13,11 @@ class Admin::RunnersController < Admin::ApplicationController
   end
 
   def update
-    @runner.update_attributes(description: params[:runner][:description])
+    @runner.update_attributes(params[:runner])
 
     respond_to do |format|
       format.js
-      format.html { redirect_to admin_runners_path }
+      format.html { redirect_to admin_runner_path(@runner) }
     end
   end
 
@@ -28,12 +28,11 @@ class Admin::RunnersController < Admin::ApplicationController
   end
 
   def assign_all
-    Project.unassigned(@runner).all.each { |project| @runner.assign_to(project, current_user) }
-
-    respond_to do |format|
-      format.js
-      format.html { redirect_to admin_runners_path, notice: "Runner was assigned to all projects" }
+    Project.unassigned(@runner).all.each do |project|
+      @runner.assign_to(project, current_user)
     end
+
+    redirect_to admin_runner_path(@runner), notice: "Runner was assigned to all projects"
   end
 
   private
