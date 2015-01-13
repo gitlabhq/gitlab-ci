@@ -40,7 +40,7 @@ GitlabCi::Application.routes.draw do
       end
     end
 
-    resources :runners, only: [:index, :destroy]
+    resources :runners, only: [:index, :edit, :update, :destroy]
     resources :jobs, only: [:index]
   end
 

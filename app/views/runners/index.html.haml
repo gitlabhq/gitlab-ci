@@ -1,21 +1,23 @@
-%h3.project-title
-  Project specific runners
-
-  .pull-right
-    %small
-      = pluralize(@runners.total_count, 'runner')
-%hr
-%p.lead
-  %span To register new runner you should enter the following registration token. With this token the runner will request a unique runner token and use that for future communication.
-  %code #{@project.token}
+%p.slead
+  A 'runner' is a process which runs a build.
+  You can setup as many runners as you need.
+  %br
+  Runners can be placed on separate users, servers, and even on your local machine.
 
 .bs-callout
+  %h4 How to setup new project runner
+
+  %br
   %p
-    A 'runner' is a process which runs a build.
-    You can setup as many runners as you need.
-    %br
-    Runners can be placed on separate users, servers, and even on your local machine.
-    %br
+    1. Install GitLab Runner software.
+    Checkout #{link_to 'runner repository', 'https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/README.md', target: '_blank'} to find out how install one
+
+  %p
+    2. Use the following registration token during setup:
+    %code #{@project.token}
+  %p
+    3. Start runner!
+
 
 %table.table
   %thead

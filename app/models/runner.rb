@@ -44,4 +44,8 @@ class Runner < ActiveRecord::Base
   def only_for?(project)
     projects == [project]
   end
+
+  def short_sha
+    token[0...10]
+  end
 end

@@ -1,5 +1,4 @@
 class Admin::RunnersController < Admin::ApplicationController
-  before_filter :authenticate_user!
   before_filter :runner, except: :index
 
   def index

@@ -1,25 +1,20 @@
 %tr{id: dom_id(runner)}
   %td
-    = runner.id
+    %strong ##{runner.id}
   %td
-    = runner.token.to_s
+    = runner.short_sha
   %td
     .runner-description
       = runner.description
-      %span (#{link_to 'edit', '#', class: 'edit-runner-link'})
-    .runner-description-form.hide
-      = form_for [:admin, runner], remote: true, html: { class: 'form-inline' } do |f|
-        .form-group
-          = f.text_field :description, class: 'form-control'
-        = f.submit 'Save', class: 'btn'
-        %span (#{link_to 'cancel', '#', class: 'cancel'})
   %td
     - if build = runner.builds.last
       = link_to "##{build.id}", [build.project,  build]
   %td
     #{time_ago_in_words(runner.created_at)} ago
   %td
-    - if runner.only_for?(@project)
-      .pull-right
+    .pull-right
+      = link_to 'Edit', edit_project_runner_path(@project, runner), class: 'btn btn-small'
+      &nbsp;
+      - if runner.only_for?(@project)
         = link_to 'Remove', [@project, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
 
