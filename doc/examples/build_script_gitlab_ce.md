@@ -6,8 +6,10 @@ These script can be run to tests of GitLab CE on a [configured](configure_a_runn
 # Build script used at ci.gitlab.org to test the private GitLab B.V. repo at dev.gitlab.org
 
 ```bash
+export PATH=~/bin:/usr/local/bin:/usr/bin:/bin
+
 ruby -v
-gem install bundler
+gem install bundler --no-ri --no-rdoc
 cp config/database.yml.mysql config/database.yml
 cp config/gitlab.yml.example config/gitlab.yml
 sed "s/username\:.*$/username\: runner/" -i config/database.yml
