@@ -1,10 +1,10 @@
 class CreateCommitService
   def execute(project, params)
     before_sha = params[:before]
-    sha = params[:after]
+    sha = params[:checkout_sha] || params[:after]
     origin_ref = params[:ref]
 
-    unless origin_ref && sha
+    unless origin_ref && sha.present?
       return false
     end
 
