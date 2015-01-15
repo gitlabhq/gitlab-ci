@@ -49,10 +49,8 @@ class ServicesController < ApplicationController
 
   def service_params
     params.require(:service).permit(
-      :title, :token, :type, :active, :api_key, :subdomain,
-      :room, :recipients, :project_url, :webhook,
-      :user_key, :device, :priority, :sound,
-      :notify_only_broken_builds
+      :type, :active, :webhook, :notify_only_broken_builds,
+      :email_recipients, :email_only_broken_builds, :email_add_committer
     )
   end
 end

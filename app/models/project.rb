@@ -42,6 +42,7 @@ class Project < ActiveRecord::Base
   # Project services
   has_many :services, dependent: :destroy
   has_one :slack_service, dependent: :destroy
+  has_one :mail_service, dependent: :destroy
 
   accepts_nested_attributes_for :jobs, allow_destroy: true
 
@@ -62,6 +63,8 @@ class Project < ActiveRecord::Base
   scope :public_only, ->() { where(public: true) }
 
   before_validation :set_default_values
+
+  after_initialize :build_missing_services
 
   class << self
     def base_build_script
@@ -188,7 +191,7 @@ ls -la
   end
 
   def available_services_names
-    %w(slack)
+    %w(slack mail)
   end
 
   def build_missing_services

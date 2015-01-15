@@ -14,12 +14,10 @@
 
 class SlackService < Service
   prop_accessor :webhook
-  prop_accessor :notify_only_broken_builds
+  boolean_accessor :notify_only_broken_builds
   validates :webhook, presence: true, if: :activated?
 
   default_value_for :notify_only_broken_builds, true
-
-  NOTIFY_ONLY_BROKEN_BUILDS_ENABLED = '1'
 
   def title
     'Slack'
@@ -42,10 +40,6 @@ class SlackService < Service
       {type: 'text', name: 'webhook', label: 'Webhook URL', placeholder: ''},
       {type: 'checkbox', name: 'notify_only_broken_builds', label: 'Notify only broken builds'}
     ]
-  end
-
-  def notify_only_broken_builds?
-    notify_only_broken_builds == NOTIFY_ONLY_BROKEN_BUILDS_ENABLED
   end
 
   def can_test?

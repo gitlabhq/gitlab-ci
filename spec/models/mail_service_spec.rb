@@ -1,18 +1,36 @@
 require 'spec_helper'
 
-describe NotificationService do
-  let(:notification) { NotificationService.new }
+describe MailService do
+  describe "Associations" do
+    it { should belong_to :project }
+  end
 
-  describe 'Builds' do
+  describe "Validations" do
+    context "active" do
+      before do
+        subject.active = true
+      end
+    end
+  end
+
+  describe 'Sends email for' do
+    let(:mail)   { MailService.new }
 
     describe 'failed build' do
       let(:project) { FactoryGirl.create(:project) }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
+      before do
+        mail.stub(
+          project: project,
+          project_id: project.id
+        )
+      end
+
       it do
         should_email(commit.git_author_email)
-        notification.build_ended(build)
+        mail.execute(build)
       end
 
       def should_email(email)
@@ -25,9 +43,17 @@ describe NotificationService do
       let(:project) { FactoryGirl.create(:project) }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
+
+      before do
+        mail.stub(
+          project: project,
+          project_id: project.id
+        )
+      end
+
       it do
         should_email(commit.git_author_email)
-        notification.build_ended(build)
+        mail.execute(build)
       end
 
       def should_email(email)
@@ -40,11 +66,19 @@ describe NotificationService do
       let(:project) { FactoryGirl.create(:project, email_recipients: "jeroen@example.com") }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
+      let(:recipients) { "jeroen@example.com" }
+
+      before do
+        mail.stub(
+          project: project,
+          project_id: project.id
+        )
+      end
 
       it do
         should_email(commit.git_author_email)
         should_email("jeroen@example.com")
-        notification.build_ended(build)
+        mail.execute(build)
       end
 
       def should_email(email)

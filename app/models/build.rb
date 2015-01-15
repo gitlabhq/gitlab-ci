@@ -119,12 +119,6 @@ class Build < ActiveRecord::Base
 
       project.execute_services(build)
 
-      if project.email_notification?
-        if build.status.to_sym == :failed || !project.email_only_broken_builds
-          NotificationService.new.build_ended(build)
-        end
-      end
-
       if project.coverage_enabled?
         build.update_coverage
       end

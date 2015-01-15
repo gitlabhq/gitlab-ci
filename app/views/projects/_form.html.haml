@@ -78,28 +78,6 @@
 
 
   %fieldset
-    %legend Email notification
-    .form-group
-      = f.label :email_recipients, "Recipients", class: 'control-label'
-      .col-sm-10
-        = f.text_field :email_recipients, class: 'form-control'
-        .light Whitespace-separated list of recipient addresses
-    .form-group
-      .col-sm-2
-      .col-sm-10
-        .checkbox
-          = f.label :email_add_committer do
-            = f.check_box :email_add_committer
-            %span Add committer to recipients list
-    .form-group
-      .col-sm-2
-      .col-sm-10
-        .checkbox
-          = f.label :email_only_broken_builds do
-            = f.check_box :email_only_broken_builds
-            %span Send notification only for broken builds
-
-  %fieldset
     %legend Advanced settings
     .form-group
       = f.label :name, class: 'control-label'
