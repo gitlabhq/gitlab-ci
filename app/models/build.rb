@@ -207,7 +207,13 @@ class Build < ActiveRecord::Base
   end
 
   def ref
-    read_attribute(:ref) || commit.ref
+    build_ref = read_attribute(:ref)
+
+    if build_ref.present?
+      build_ref
+    else
+      commit.ref
+    end
   end
 
   def for_tag?
