@@ -44,7 +44,10 @@ GitlabCi::Application.routes.draw do
     resources :jobs, only: [:index]
   end
 
-  resource :user_sessions
+  resource :user_sessions do
+    get :to_gitlab
+    get :callback
+  end
 
   namespace :admin do
     resources :runners, only: [:index, :show, :update, :destroy] do

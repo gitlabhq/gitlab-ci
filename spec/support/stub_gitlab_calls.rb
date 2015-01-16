@@ -2,6 +2,8 @@ module StubGitlabCalls
   def stub_gitlab_calls
     stub_session
     stub_user
+    stub_oauth_user
+    stub_oauth_provider
     stub_project_8
     stub_projects
     stub_projects_owned
@@ -14,7 +16,7 @@ module StubGitlabCalls
   private
 
   def gitlab_url
-    GitlabCi.config.gitlab_server_urls.first
+    GitlabCi.config.gitlab_server.url
   end
 
   def stub_session
@@ -30,6 +32,14 @@ module StubGitlabCalls
     f = File.read(Rails.root.join('spec/support/gitlab_stubs/user.json'))
 
     stub_request(:get, "#{gitlab_url}api/v3/user.json?private_token=Wvjy2Krpb7y8xi93owUz").
+      with(:headers => {'Content-Type'=>'application/json'}).
+      to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
+  end
+
+  def stub_oauth_user
+    f = File.read(Rails.root.join('spec/support/gitlab_stubs/user.json'))
+
+    stub_request(:get, "#{gitlab_url}api/v3/user").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
   end
@@ -53,6 +63,15 @@ module StubGitlabCalls
     stub_request(:get, "#{gitlab_url}api/v3/projects/owned.json?archived=false&private_token=Wvjy2Krpb7y8xi93owUz").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => "", :headers => {})
+  end
+
+  def stub_oauth_provider
+    f = File.read(Rails.root.join('spec/support/gitlab_stubs/oauth_access_token.json'))
+    stub_request(:post, "http://demo.gitlab.com/oauth/token").
+      with(:body => {"client_id"=>"", "client_secret"=>"", "code"=>"some_auth_code_here", "grant_type"=>"authorization_code", "redirect_uri"=>"http://www.example.com/user_sessions/callback"},
+              :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.1'}).
+         to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
+
   end
 
   def project_hash_array

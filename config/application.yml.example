@@ -1,7 +1,8 @@
 defaults: &defaults
-  gitlab_server_urls:
-    # Replace with your gitlab server url
-    - 'https://gitlab.example.com/'
+  gitlab_server:
+    url: 'https://gitlab.example.com/' # Replace with your gitlab server url
+    app_id: ''
+    app_secret: ''
 
   ## Gitlab CI settings  
   gitlab_ci:

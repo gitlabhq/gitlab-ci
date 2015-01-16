@@ -3,7 +3,7 @@ class UserSession
   include StaticModel
   extend ActiveModel::Naming
 
-  attr_accessor :email, :password, :url
+  attr_accessor :url
 
   def authenticate(auth_opts)
     authenticate_via(auth_opts) do |url, network, options|
@@ -24,7 +24,7 @@ class UserSession
   def authenticate_via(options, &block)
     url = options.delete(:url)
 
-    return nil unless GitlabCi.config.gitlab_server_urls.include?(url)
+    return nil unless GitlabCi.config.gitlab_server.url.include?(url)
 
     user = block.call(url, Network.new, options)
 
