@@ -1,1 +1,8 @@
-= link_to "Please authorize with GitLab", auth_user_sessions_path
+.login-block
+  %h2 Login using GitLab account
+  %p.light
+    Make sure you have account on GitLab server
+    = link_to GitlabCi.config.gitlab_server.url, GitlabCi.config.gitlab_server.url
+  %hr
+  = link_to "Login with GitLab", auth_user_sessions_path, class: 'btn btn-login btn-create'
+
