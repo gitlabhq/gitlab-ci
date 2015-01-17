@@ -5,7 +5,9 @@ GitlabCi::Application.routes.draw do
   API::API.logger Rails.logger
   mount API::API => '/api'
 
-  resource :help
+  resource :help do 
+    get :oauth2
+  end
 
   resources :projects do
     collection do
