@@ -45,7 +45,7 @@ GitlabCi::Application.routes.draw do
   end
 
   resource :user_sessions do
-    get :to_gitlab
+    get :auth
     get :callback
   end
 

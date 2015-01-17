@@ -1,5 +1,5 @@
 class UserSessionsController < ApplicationController
-  before_filter :authenticate_user!, except: [:new, :callback, :to_gitlab]
+  before_filter :authenticate_user!, except: [:new, :callback, :auth]
 
   def show
     @user = current_user
@@ -8,7 +8,7 @@ class UserSessionsController < ApplicationController
   def new
   end
 
-  def to_gitlab
+  def auth
     redirect_to client.auth_code.authorize_url({
       redirect_uri: callback_user_sessions_url
     })
