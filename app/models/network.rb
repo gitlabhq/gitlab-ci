@@ -9,10 +9,10 @@ class Network
       headers: {"Content-Type" => "application/json"},
     }
 
-    endpoint = File.join(url, API_PREFIX, 'session.json')
-    response = self.class.post(endpoint, opts)
+    endpoint = File.join(url, API_PREFIX, 'user')
+    response = self.class.get(endpoint, opts)
 
-    if response.code == 201
+    if response.code == 200
       response.parsed_response
     else
       nil

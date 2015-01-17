@@ -9,7 +9,7 @@ describe API::API do
   }
 
   describe "GET /runners" do
-    let(:gitlab_url) { GitlabCi.config.gitlab_server_urls.first }
+    let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
     let(:auth_opts) {
       {
         :email => "test@test.com",

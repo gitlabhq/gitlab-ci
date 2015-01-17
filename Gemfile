@@ -50,6 +50,9 @@ gem 'state_machine'
 # For API calls
 gem 'httparty', '0.11.0'
 
+# OAuth
+gem 'oauth2', '1.0.0'
+
 # API
 gem 'grape'
 gem 'grape-entity'

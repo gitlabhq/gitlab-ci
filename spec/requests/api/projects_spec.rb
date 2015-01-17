@@ -3,7 +3,7 @@ require 'spec_helper'
 describe API::API do
   include ApiHelpers
 
-  let(:gitlab_url) { GitlabCi.config.gitlab_server_urls.first }
+  let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
   let(:auth_opts) {
     {
       :email => "test@test.com",
