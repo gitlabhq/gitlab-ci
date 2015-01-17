@@ -70,12 +70,21 @@ class Build < ActiveRecord::Base
     end
 
     def retry(build)
-      Build.create(
-        commit_id: build.commit_id,
-        job_id: build.job_id,
-        status: :pending,
-        commands: build.commands
-      )
+      new_build = Build.new(status: :pending)
+
+      if build.job
+        new_build.commands = build.job.commands
+        new_build.tag_list = build.job.tag_list
+      else
+        new_build.commands = build.commands
+      end
+
+      new_build.job_id = build.job_id
+      new_build.commit_id = build.commit_id
+      new_build.ref = build.ref
+      new_build.project_id = build.project_id
+      new_build.save
+      new_build
     end
   end
 
@@ -207,7 +216,13 @@ class Build < ActiveRecord::Base
   end
 
   def ref
-    read_attribute(:ref) || commit.ref
+    build_ref = read_attribute(:ref)
+
+    if build_ref.present?
+      build_ref
+    else
+      commit.ref
+    end
   end
 
   def for_tag?
