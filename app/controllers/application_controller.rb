@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_filter :default_headers
+  before_filter :check_config
 
   protect_from_forgery
 
@@ -60,5 +61,13 @@ class ApplicationController < ActionController::Base
   def default_headers
     headers['X-Frame-Options'] = 'DENY'
     headers['X-XSS-Protection'] = '1; mode=block'
+  end
+
+  def check_config
+    if GitlabCi.config.gitlab_server.url.empty?
+      redirect_to oauth2_help_path
+    end
+  rescue Settingslogic::MissingSetting, NoMethodError
+    redirect_to oauth2_help_path
   end
 end

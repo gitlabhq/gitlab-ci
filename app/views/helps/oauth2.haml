@@ -1,0 +1,24 @@
+.jumbotron
+  %h2
+    Please configure GitLab CI properly
+    
+  %p
+    GitLab CI integrates with your GitLab installation and run tests for your projects.
+    GitLab CI uses GitLab application for authorization this is why you should fill the config file out with
+    an url to the GitLab, an application id and an application secret.
+
+
+
+.bs-callout.bs-callout-danger
+  %h4
+    = link_to 'https://gitlab.com/gitlab-org/gitlab-ci/issues' do
+      %i.icon-bug
+      Issue tracker
+  %p Reports about recent bugs and problems..
+
+.bs-callout.bs-callout-warning
+  %h4
+    = link_to 'http://feedback.gitlab.com/forums/176466-general/category/64310-gitlab-ci' do
+      %i.icon-thumbs-up
+      Feedback forum
+  %p Suggest improvements or new features for GitLab CI.
