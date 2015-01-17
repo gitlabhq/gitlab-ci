@@ -1,4 +1,4 @@
-v5.4
+v5.4 (Requires GitLab 7.7)
   - Fixed 500 error for badge if build is pending
   - Non-admin users can now register specific runners for their projects
   - Project specific runners page which users can access
@@ -11,6 +11,7 @@ v5.4
   - Runner have tags
   - Move job settings to separate page
   - Add authorization level managing projects
+  - OAuth authentication via GitLab.
 
 v5.3
   - Remove annoying 'Done' message from schedule_builds cron job
