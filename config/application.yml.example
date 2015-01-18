@@ -37,8 +37,10 @@ development:
 
 test:
   <<: *defaults
-  gitlab_server_urls:
-    - 'http://demo.gitlab.com/'
+  gitlab_server:
+    url: 'http://demo.gitlab.com/' 
+    app_id: 'id'
+    app_secret: 'secret'
 
 production:
   <<: *defaults
