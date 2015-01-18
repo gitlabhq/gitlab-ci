@@ -70,7 +70,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_config
-    if GitlabCi.config.gitlab_server.url.empty?
+    server = GitlabCi.config.gitlab_server
+
+    if server.blank? || server.url.blank? || server.app_id.blank? || server.app_secret.blank?
       redirect_to oauth2_help_path
     end
   rescue Settingslogic::MissingSetting, NoMethodError
