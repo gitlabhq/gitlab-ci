@@ -68,7 +68,7 @@
     %pre.trace#build-trace
       %code.bash
         = preserve do
-          = raw @build.trace_html
+          = raw truncate_project_token(@build.trace_html)
 
   .col-md-3
     - if @build.coverage
