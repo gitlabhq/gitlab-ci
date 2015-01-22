@@ -48,14 +48,16 @@ Hardware requirements:
 * [Unofficial Docker Image by Anastas Dancha](https://registry.hub.docker.com/u/anapsix/gitlab-ci/) is available via `docker pull anapsix/gitlab-ci`
 * [GitLab Development Kit](https://gitlab.com/gitlab-org/gitlab-development-kit) is recommended for development work.
 
-### Runners
+### GitLab Runner
 
-To perform the actual build you need a CI runner (also see the Architecture section below):
+To perform the actual build you need to install GitLab Runner.
+The the next section about Architecture to understand what a runner does.
 
-* [Official CI runner for Linux](https://gitlab.com/gitlab-org/gitlab-ci-runner)
-* [Unofficial CI runner for Windows](https://github.com/virtualmarc/gitlab-ci-runner-win)
-* [Unofficial CI runner for Scala/Java](https://github.com/nafg/gitlab-ci-runner-scala)
-* [Unofficial CI runner for Node](https://www.npmjs.org/package/gcr)
+* [GitLab Runner Omnibus package for Linux](https://gitlab.com/gitlab-org/omnibus-gitlab-runner/blob/master/doc/install/README.md) This is the recommended way to install GitLab Runner.
+* [GitLab Runner source code for Linux](https://gitlab.com/gitlab-org/gitlab-ci-runner)
+* [Unofficial GitLab Runner for Windows](https://github.com/virtualmarc/gitlab-ci-runner-win)
+* [Unofficial GitLab Runner for Scala/Java](https://github.com/nafg/gitlab-ci-runner-scala)
+* [Unofficial GitLab Runner for Node](https://www.npmjs.org/package/gcr)
 
 ### Architecture
 
@@ -63,11 +65,11 @@ __GitLab CI__ is a web application with an API that stores its state in a databs
 It manages projects/builds and provides a nice user interface.
 It uses the GitLab application API to authenticate users.
 
-[GitLab CI Runner](https://github.com/gitlabhq/gitlab-ci-runner) is a pure ruby application which processes builds.
+[GitLab Runner](https://github.com/gitlabhq/gitlab-ci-runner) is a pure ruby application which processes builds.
 It can be deployed separately and works with GitLab CI through an API.
 
-In order to run tests you need at least 1 __GitLab CI__ instance and 1 __GitLab CI Runner__.
-However, for running several builds at the same time you may want to setup more than one __GitLab CI Runner__.
+In order to run tests you need at least 1 __GitLab CI__ instance and 1 __GitLab Runner__.
+However, for running several builds at the same time you may want to setup more than one __GitLab Runner__.
 
 Possible Cases: 
 
