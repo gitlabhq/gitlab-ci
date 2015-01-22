@@ -44,4 +44,8 @@ module BuildsHelper
       'icon-circle light'
     end
   end
+
+  def truncate_project_token(string)
+    string.gsub(@project.token, 'xxxxxx')
+  end
 end
