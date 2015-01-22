@@ -117,6 +117,8 @@ class Build < ActiveRecord::Base
         WebHookService.new.build_end(build)
       end
 
+      project.execute_services(build)
+
       if project.email_notification?
         if build.status.to_sym == :failed || !project.email_only_broken_builds
           NotificationService.new.build_ended(build)
