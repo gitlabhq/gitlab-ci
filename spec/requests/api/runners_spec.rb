@@ -45,6 +45,13 @@ describe API::API do
       it { response.status.should == 201 }
     end
 
+    describe "should create a runner with description" do
+      before { post api("/runners/register"), token: GitlabCi::REGISTRATION_TOKEN, hostname: "server.hostname" }
+
+      it { response.status.should == 201 }
+      it { Runner.first.description.should == "server.hostname" }
+    end
+
     describe "should create a runner if project token provided" do
       let(:project) { FactoryGirl.create(:project) }
       before { post api("/runners/register"), token: project.token }
