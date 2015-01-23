@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 20150113001835) do
     t.string   "before_sha"
     t.text     "push_data"
     t.integer  "runner_id"
-    t.integer  "commit_id"
     t.float    "coverage"
+    t.integer  "commit_id"
     t.text     "commands"
     t.integer  "job_id"
   end
@@ -107,6 +107,18 @@ ActiveRecord::Schema.define(version: 20150113001835) do
     t.datetime "updated_at"
     t.string   "description"
   end
+
+  create_table "services", force: true do |t|
+    t.string   "type"
+    t.string   "title"
+    t.integer  "project_id",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "active",     default: false, null: false
+    t.text     "properties"
+  end
+
+  add_index "services", ["project_id"], name: "index_services_on_project_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
