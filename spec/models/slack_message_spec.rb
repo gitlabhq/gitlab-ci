@@ -73,7 +73,7 @@ describe SlackMessage do
       subject.fallback.should include('failed')
       subject.attachments.first[:fields].size.should == 1
       subject.attachments.first[:fields].first[:title].should == build2.job_name
-      subject.attachments.first[:fields].first[:value].should include("\##{build.id}")
+      subject.attachments.first[:fields].first[:value].should include("\##{build2.id}")
     end
   end
 end
