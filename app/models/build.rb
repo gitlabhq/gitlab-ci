@@ -144,7 +144,7 @@ class Build < ActiveRecord::Base
   end
 
   def trace
-    if project
+    if project && read_attribute(:trace).present?
       read_attribute(:trace).gsub(project.token, 'xxxxxx')
     end
   end
