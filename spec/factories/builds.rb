@@ -28,5 +28,6 @@ FactoryGirl.define do
   factory :build do
     started_at 'Di 29. Okt 09:51:28 CET 2013'
     finished_at 'Di 29. Okt 09:53:28 CET 2013'
+    commands 'ls -a'
   end
 end
