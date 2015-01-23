@@ -2,6 +2,7 @@ class ServicesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :project
   before_filter :authorize_access_project!
+  before_filter :authorize_manage_project!
   before_filter :service, only: [:edit, :update, :test]
 
   respond_to :html
