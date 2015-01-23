@@ -41,6 +41,10 @@ test:
     url: 'http://demo.gitlab.com/' 
     app_id: 'id'
     app_secret: 'secret'
+  gitlab_ci:
+    host: localhost
+    port: 80
+    https: false
 
 production:
   <<: *defaults
