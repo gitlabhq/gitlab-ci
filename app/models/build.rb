@@ -145,6 +145,12 @@ class Build < ActiveRecord::Base
     html ||= ''
   end
 
+  def trace
+    if project
+      read_attribute(:trace).gsub(project.token, 'xxxxxx')
+    end
+  end
+
   def started?
     !pending? && !canceled? && started_at
   end
