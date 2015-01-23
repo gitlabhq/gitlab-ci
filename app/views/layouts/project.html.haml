@@ -17,8 +17,8 @@
             = link_to 'View on GitLab', @project.gitlab_url, class: 'btn btn-small'
     %hr
     .container
-      .row
-        - if current_user && current_user.can_manage_project?(@project.gitlab_id)
+      - if current_user && current_user.can_manage_project?(@project.gitlab_id)
+        .row
           .col-md-2.append-bottom-20
             %ul.nav.nav-pills.nav-stacked.project-menu
               = nav_link path: 'projects#show' do
@@ -54,5 +54,8 @@
                 = link_to edit_project_path(@project) do
                   %i.icon-cogs
                   Settings
-        .col-md-10
+          .col-md-10
+            = yield
+      - else
+        .col-md-12
           = yield

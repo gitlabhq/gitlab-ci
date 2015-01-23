@@ -2,10 +2,11 @@
   = @project.name
   @
   = @commit.short_sha
-  .pull-right
-    = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
-      %i.icon-edit.icon-white
-      Edit Project
+  - if current_user.can_manage_project?(@project.gitlab_id)
+    .pull-right
+      = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
+        %i.icon-edit.icon-white
+        Edit Project
 
 %p
   = link_to project_commit_path(@project, @build.commit) do
@@ -81,11 +82,12 @@
     .build-widget
       %h4.title
         Build
-        .pull-right
-          - if @build.active?
-            = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
-          - else
-            = link_to "Retry", retry_project_build_path(@project, @build), class: 'btn btn-sm btn-primary', method: :post
+        - if current_user.can_manage_project?(@project.gitlab_id)
+          .pull-right
+            - if @build.active?
+              = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
+            - else
+              = link_to "Retry", retry_project_build_path(@project, @build), class: 'btn btn-sm btn-primary', method: :post
 
       - if @build.duration
         %p

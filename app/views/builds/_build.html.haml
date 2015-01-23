@@ -17,7 +17,7 @@
         &middot;
         #{build.short_sha}
   %td
-    = build.job.name
+    = build.job_name
     - if build.tags.any?
       .pull-right
         - build.tag_list.each do |tag|
@@ -39,7 +39,7 @@
         #{build.coverage}%
 
   %td
-    - if defined?(controls)
+    - if defined?(controls) && current_user.can_manage_project?(@project.gitlab_id)
       .pull-right
         - if build.active?
           = link_to cancel_project_build_path(build.project, build, return_to: request.original_url), title: 'Cancel build' do
