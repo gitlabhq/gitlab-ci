@@ -1,4 +1,12 @@
-v5.4 (Requires GitLab 7.7)
+v5.5.0
+  - 
+
+v5.4.1
+  - Fix 500 if on builds page if build has no job
+  - Truncate project token from build trace
+  - Allow users with access to project see build trace
+
+v5.4.0 (Requires GitLab 7.7)
   - Fixed 500 error for badge if build is pending
   - Non-admin users can now register specific runners for their projects
   - Project specific runners page which users can access
