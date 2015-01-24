@@ -1,10 +1,15 @@
-.alert.alert-success
-  %h4
-    Project sucessfully added to GitLab CI!
-  %br
-  %p Its only 2 steps left:
+.bs-callout.help-callout
+  %h4 How to setup CI for this project
+
   %ol
     %li
-      Visit #{link_to 'GitLab project settings', @project.gitlab_url + "/services/gitlab_ci/edit", target: :blank} and press "Test settings" button  to confirm everything is working.
+      Add at least one runner to the project.
+      Go to #{link_to 'Runners page', project_runners_path(@project), target: :blank} for instructions.
     %li
-      Customize script section to run own test command  #{link_to 'here', edit_project_path(@project), target: :blank}
+      Setup at least one Job with a build script.
+      Go to #{link_to 'Jobs page', project_jobs_path(@project), target: :blank} for instructions.
+    %li
+      Visit #{link_to 'GitLab project settings', @project.gitlab_url + "/services/gitlab_ci/edit", target: :blank}
+      and press the "Test settings" button.
+    %li
+      Return to this page and refresh it, it should show a new build.

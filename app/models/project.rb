@@ -212,4 +212,8 @@ ls -la
       end
     end
   end
+
+  def setup_finished?
+    commits.any?
+  end
 end

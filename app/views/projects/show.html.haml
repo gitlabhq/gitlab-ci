@@ -1,5 +1,4 @@
-= render 'shared/guide' if params[:show_guide].present?
-
+= render 'shared/guide' unless @project.setup_finished?
 
 %ul.nav.nav-tabs.append-bottom-20
   %li{class: ref_tab_class}
