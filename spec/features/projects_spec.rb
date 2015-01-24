@@ -44,13 +44,4 @@ describe "Projects" do
     it { page.should have_content 'Builds chart for last year' }
     it { page.should have_content 'Commit duration in minutes for last 30 commits' }
   end
-
-  describe "GET /projects/:id/details" do
-    before do
-      visit integration_project_path(@project)
-    end
-
-    it { page.should have_content @project.name }
-    it { page.should have_content 'Integration with GitLab' }
-  end
 end
