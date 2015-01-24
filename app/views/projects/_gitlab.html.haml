@@ -37,7 +37,7 @@
         - else
           = form_tag projects_path do
             = hidden_field_tag :project, project.to_yaml
-            = submit_tag 'Add', class: 'btn btn-default btn-xs'
+            = submit_tag 'Add project to CI', class: 'btn btn-default btn-small'
 
 %ul.pagination.gitlab-projects-pagination
   - if @page > 1
