@@ -86,7 +86,7 @@
           .pull-right
             - if @build.active?
               = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
-            - else
+            - elsif @build.commands.present?
               = link_to "Retry", retry_project_build_path(@project, @build), class: 'btn btn-sm btn-primary', method: :post
 
       - if @build.duration

@@ -34,6 +34,10 @@ class BuildsController < ApplicationController
   end
 
   def retry
+    if @build.commands.blank?
+      return page_404
+    end
+    
     build = Build.retry(@build)
 
     if params[:return_to]
