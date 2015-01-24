@@ -50,7 +50,7 @@ class SlackService < Service
 
   def can_test?
     # slack notification is useful only for builds either successful or failed
-    project.commits.order(id: desc).any? do |commit|
+    project.commits.order(id: :desc).any? do |commit|
       case commit.status.to_sym
         when :failed
           true

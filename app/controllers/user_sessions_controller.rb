@@ -43,8 +43,8 @@ class UserSessionsController < ApplicationController
       GitlabCi.config.gitlab_server.app_secret,
       {
         site: GitlabCi.config.gitlab_server.url,
-        authorize_url: '/oauth/authorize',
-        token_url: '/oauth/token'
+        authorize_url: 'oauth/authorize',
+        token_url: 'oauth/token'
       }
     )
   end
