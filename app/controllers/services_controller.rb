@@ -28,9 +28,13 @@ class ServicesController < ApplicationController
   def test
     last_build = @project.builds.last
 
-    @service.execute(last_build)
+    if @service.execute(last_build)
+      message = { notice: 'We successfully tested the service' }
+    else
+      message = { alert: 'We tried to test the service but error occured' }
+    end
 
-    redirect_to :back
+    redirect_to :back, message
   end
 
   private
