@@ -20,8 +20,8 @@ GitLab CI officially supports (recent versions of) these Linux distributions:
 
 Additionally GitLab CI requires:
 
-* GitLab 6.3+ (to host the repositories you test)
-* ruby 1.9.3
+* GitLab 7.7+ (to host the repositories you test)
+* ruby 2.1.5
 * MySQL or PostgreSQL
 
 Hardware requirements:
@@ -83,6 +83,12 @@ For more information see:
 [Announcing GitLab CI 5.1](http://blog.gitlab.org/2014/10/22/gitlab-ci-5-dot-1-released/)
 and
 [Integrating GitLab CI With GitLab to Enable Distributed Builds](http://blog.gitlab.org/integrating-gitlab-ci-with-gitlab/)
+
+
+### Versioning
+
+After GitLab CI 5.4 we change versioning of project in favor of GitLab versions. 
+That means we release GitLab and GitLab CI with same versions. 
 
 ### How to add a new project to GitLab CI
 
