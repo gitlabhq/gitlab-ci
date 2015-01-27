@@ -33,10 +33,16 @@ module API
         runner =
           if params[:token] == GitlabCi::REGISTRATION_TOKEN
             # Create shared runner. Requires admin access
-            Runner.create(description: params[:hostname])
+            Runner.create(
+              description: params[:hostname],
+              tag_list: params[:tag_list]
+            )
           elsif project = Project.find_by(token: params[:token])
             # Create a specific runner for project.
-            project.runners.create(description: params[:hostname])
+            project.runners.create(
+              description: params[:hostname],
+              tag_list: params[:tag_list]
+            )
           end
 
         return forbidden! unless runner
