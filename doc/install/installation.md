@@ -203,10 +203,10 @@ Make sure to edit the config file to match your setup:
 # 9. GitLab OAuth2 application
 
 
-You should go to the admin area of the GitLab to "Application" section. Create an application for the GtiLab CI
+Go to the admin area of GitLab, to the `Application` section. Create an application for the GitLab CI
 For callback URL use: `http://ci.example.com/user_sessions/callback` if you use http, or `https://ci.example.com/user_sessions/callback` if you use https.
 
-You will have to add this to the GitLab CI config, as such:
+When `app_id` and `app_secret` are generated add them to the GitLab CI config:
 
 ```
 production:
