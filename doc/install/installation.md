@@ -200,8 +200,25 @@ Make sure to edit the config file to match your setup:
 
     sudo /etc/init.d/nginx start
 
+# 9. GitLab OAuth2 application
 
-# 9. Runners
+
+You should go to the admin area of the GitLab to "Application" section. Create an application for the GtiLab CI
+For callback URL use: `http://ci.example.com/user_sessions/callback` if you use http, or `https://ci.example.com/user_sessions/callback` if you use https.
+
+You will have to add this to the GitLab CI config, as such:
+
+```
+production:
+  gitlab_server:
+    url: 'http://gitlab.example.com'
+    app_id: XXXXXX
+    app_secret: XXXXXX
+
+```
+
+
+# 10. Runners
 
 
 Now you need Runners to process your builds.
@@ -211,7 +228,7 @@ Checkout [runner repository](https://gitlab.com/gitlab-org/gitlab-ci-runner/blob
 
 
 Visit YOUR_SERVER for your first GitLab CI login.
-You should use your GitLab credentials in order to login
+You will be asked to authorize with your GitLab credentials.
 
 **Enjoy!**
 
