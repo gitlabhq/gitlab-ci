@@ -1,7 +1,7 @@
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
   - GitLab CI has same version as GitLab since now
-  - Allow to pass hostname and tag list during Runner's registration
+  - Allow to pass description and tag list during Runner's registration
 
 v5.4.1
   - Fix 500 if on builds page if build has no job
