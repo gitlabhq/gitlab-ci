@@ -17,14 +17,13 @@ describe MailService do
     let(:mail)   { MailService.new }
 
     describe 'failed build' do
-      let(:project) { FactoryGirl.create(:project) }
+      let(:project) { FactoryGirl.create(:project, email_add_committer: true) }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
       before do
         mail.stub(
-          project: project,
-          project_id: project.id
+          project: project
         )
       end
 
@@ -40,14 +39,13 @@ describe MailService do
     end
 
     describe 'successfull build' do
-      let(:project) { FactoryGirl.create(:project) }
+      let(:project) { FactoryGirl.create(:project, email_add_committer: true, email_only_broken_builds: false) }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
         mail.stub(
-          project: project,
-          project_id: project.id
+          project: project
         )
       end
 
@@ -63,15 +61,18 @@ describe MailService do
     end
 
     describe 'successfull build and project has email_recipients' do
-      let(:project) { FactoryGirl.create(:project, email_recipients: "jeroen@example.com") }
+      let(:project) {
+        FactoryGirl.create(:project,
+                           email_add_committer: true,
+                           email_only_broken_builds: false,
+                           email_recipients: "jeroen@example.com")
+      }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
-      let(:recipients) { "jeroen@example.com" }
 
       before do
         mail.stub(
-          project: project,
-          project_id: project.id
+          project: project
         )
       end
 
@@ -83,6 +84,107 @@ describe MailService do
 
       def should_email(email)
         Notify.should_receive(:build_success_email).with(build.id, email)
+        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+      end
+    end
+
+    describe 'successful build and notify only broken builds' do
+      let(:project) {
+        FactoryGirl.create(:project,
+                           email_add_committer: true,
+                           email_only_broken_builds: true,
+                           email_recipients: "jeroen@example.com")
+      }
+      let(:commit) { FactoryGirl.create(:commit, project: project) }
+      let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
+
+      before do
+        mail.stub(
+          project: project
+        )
+      end
+
+      it do
+        should_email(commit.git_author_email)
+        should_email("jeroen@example.com")
+        mail.execute(build)
+      end
+
+      def should_email(email)
+        Notify.should_not_receive(:build_success_email).with(build.id, email)
+        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+      end
+    end
+
+    describe 'successful build and can test service' do
+      let(:project) {
+        FactoryGirl.create(:project,
+                           email_add_committer: true,
+                           email_only_broken_builds: false,
+                           email_recipients: "jeroen@example.com")
+      }
+      let(:commit) { FactoryGirl.create(:commit, project: project) }
+      let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
+
+      before do
+        mail.stub(
+          project: project
+        )
+        build
+      end
+
+      it do
+        mail.can_test?.should == true
+      end
+    end
+
+    describe 'successful build and cannot test service' do
+      let(:project) {
+        FactoryGirl.create(:project,
+                           email_add_committer: true,
+                           email_only_broken_builds: true,
+                           email_recipients: "jeroen@example.com")
+      }
+      let(:commit) { FactoryGirl.create(:commit, project: project) }
+      let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
+
+      before do
+        mail.stub(
+          project: project
+        )
+        build
+      end
+
+      it do
+        mail.can_test?.should == false
+      end
+    end
+
+    describe 'retried build should not receive email' do
+      let(:project) {
+        FactoryGirl.create(:project,
+                           email_add_committer: true,
+                           email_only_broken_builds: true,
+                           email_recipients: "jeroen@example.com")
+      }
+      let(:commit) { FactoryGirl.create(:commit, project: project) }
+      let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
+
+      before do
+        mail.stub(
+          project: project
+        )
+      end
+
+      it do
+        Build.retry(build)
+        should_email(commit.git_author_email)
+        should_email("jeroen@example.com")
+        mail.execute(build)
+      end
+
+      def should_email(email)
+        Notify.should_not_receive(:build_success_email).with(build.id, email)
         Notify.should_not_receive(:build_fail_email).with(build.id, email)
       end
     end

@@ -64,8 +64,6 @@ class Project < ActiveRecord::Base
 
   before_validation :set_default_values
 
-  after_initialize :build_missing_services
-
   class << self
     def base_build_script
       <<-eos
@@ -87,7 +85,9 @@ ls -la
         email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
       }
 
-      Project.new(params)
+      project = Project.new(params)
+      project.build_missing_services
+      project
     end
 
     def from_gitlab(user, page, per_page, scope = :owned)

@@ -94,6 +94,7 @@ module API
         }
 
         project = Project.new(filtered_params)
+        project.build_missing_services
         project.build_default_job
 
         if project.save
