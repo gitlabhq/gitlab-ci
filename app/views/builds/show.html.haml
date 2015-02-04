@@ -70,6 +70,8 @@
       %code.bash
         = preserve do
           = raw @build.trace_html
+          - if @build.active?
+            %i{:class => "icon-refresh icon-spin"}
 
   .col-md-3
     - if @build.coverage
@@ -152,4 +154,4 @@
 
 
 :javascript
-  new Build("#{build_url(@build)}", "#{@build.status}")
+  new Build("#{build_url(@build)}", "#{@build.status}", #{@build.trace_state.to_json})

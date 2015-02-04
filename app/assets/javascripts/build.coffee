@@ -1,7 +1,8 @@
 class Build
   @interval: null
+  @state: null
 
-  constructor: (build_url, build_status) ->
+  constructor: (build_url, build_status, build_state) ->
     clearInterval(Build.interval)
 
     if build_status == "running" || build_status == "pending"
@@ -21,15 +22,21 @@ class Build
       # Check for new build output if user still watching build page
       # Only valid for runnig build when output changes during time
       #
+      @state = build_state
+
       Build.interval = setInterval =>
         if window.location.href is build_url
           $.ajax
-            url: build_url
+            url: build_url + "/log.json?state=" + encodeURIComponent(JSON.stringify(@state))
             dataType: "json"
             success: (build) =>
               if build.status == "running"
-                $('#build-trace code').html build.trace_html
-                $('#build-trace code').append '<i class="icon-refresh icon-spin"/>'
+                @state = build.state
+                if build.state.append
+                  $('.icon-refresh').before build.html
+                else
+                  $('#build-trace code').html build.html
+                  $('#build-trace code').append '<i class="icon-refresh icon-spin"/>'
                 @checkAutoscroll()
               else
                 Turbolinks.visit build_url
