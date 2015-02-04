@@ -82,4 +82,16 @@ class Service < ActiveRecord::Base
       }
     end
   end
+
+  def self.boolean_accessor(*args)
+    self.prop_accessor(*args)
+
+    args.each do |arg|
+      class_eval %{
+        def #{arg}?
+          ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(#{arg})
+        end
+      }
+    end
+  end
 end

@@ -42,6 +42,7 @@ class Project < ActiveRecord::Base
   # Project services
   has_many :services, dependent: :destroy
   has_one :slack_service, dependent: :destroy
+  has_one :mail_service, dependent: :destroy
 
   accepts_nested_attributes_for :jobs, allow_destroy: true
 
@@ -84,7 +85,9 @@ ls -la
         email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
       }
 
-      Project.new(params)
+      project = Project.new(params)
+      project.build_missing_services
+      project
     end
 
     def from_gitlab(user, page, per_page, scope = :owned)
@@ -192,7 +195,7 @@ ls -la
   end
 
   def available_services_names
-    %w(slack)
+    %w(slack mail)
   end
 
   def build_missing_services

@@ -22,8 +22,28 @@ FactoryGirl.define do
     push_data do
       {
         ref: 'refs/heads/master',
-        before_sha: '76de212e80737a608d939f648d959671fb0a0142',
-        after_sha: '97de212e80737a608d939f648d959671fb0a0142'
+        before: '76de212e80737a608d939f648d959671fb0a0142',
+        after: '97de212e80737a608d939f648d959671fb0a0142',
+        user_name: 'Git User',
+        repository: {
+          name: 'test-data',
+          url: 'ssh://git@gitlab.com/test/test-data.git',
+          description: '',
+          homepage: 'http://gitlab.com/test/test-data'
+        },
+        commits: [
+          {
+            id: '97de212e80737a608d939f648d959671fb0a0142',
+            message: 'Test commit message',
+            timestamp: '2014-09-23T13:12:25+02:00',
+            url: 'https://gitlab.com/test/test-data/commit/97de212e80737a608d939f648d959671fb0a0142',
+            author: {
+              name: 'Git User',
+              email: 'git@user.com'
+            }
+          }
+        ],
+        total_commits_count: 1
       }
     end
   end
