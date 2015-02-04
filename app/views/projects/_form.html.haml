@@ -124,7 +124,9 @@
     .form-group
       = f.label :skip_refs, "Skip refs", class: 'control-label'
       .col-sm-10
-        = f.text_field :skip_refs, class: 'form-control', placeholder: 'branch1, branch2'
+        = f.text_field :skip_refs, class: 'form-control', placeholder: 'branch1, branch2, feature/*'
+        .light
+          You can specify git references to skip CI builds. Accepts strings and regex values
 
   .form-actions
     = f.submit 'Save changes', class: 'btn btn-save'

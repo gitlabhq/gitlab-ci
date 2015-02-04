@@ -132,4 +132,21 @@ describe Project do
     it { should include('gitlab-ci-token') }
     it { should include(project.gitlab_url[7..-1]) }
   end
+
+  describe "#skip_ref?" do
+    let(:project) { FactoryGirl.create(:project, skip_refs: "master, develop, feature/.*, hotfix/*") }
+
+    it 'returns true when item is not in list' do
+      expect(project.skip_ref?('someotherstring')).to eq false
+    end
+
+    it 'accepts string values' do
+      expect(project.skip_ref?('master')).to eq true
+    end
+
+    it 'accepts regex values' do
+      expect(project.skip_ref?('feature/some_feature')).to eq true
+      expect(project.skip_ref?('feature/ssh_fix')).to eq true
+    end
+  end
 end
