@@ -155,7 +155,11 @@ ls -la
 
   def skip_ref?(ref_name)
     if skip_refs.present?
-      skip_refs.delete(" ").split(",").include?(ref_name)
+      skip_refs.delete(" ").split(",").each do |ref|
+        return true unless ref_name !~ Regexp.new(ref)
+      end
+
+      false
     else
       false
     end
