@@ -14,6 +14,9 @@ gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
 gem "nested_form"
 
+# tag runners
+gem 'acts-as-taggable-on', '~> 3.4'
+
 # DB
 gem 'mysql2', group: :mysql
 gem 'pg',     group: :postgres
@@ -46,6 +49,9 @@ gem 'state_machine'
 
 # For API calls
 gem 'httparty', '0.11.0'
+
+# OAuth
+gem 'oauth2', '1.0.0'
 
 # API
 gem 'grape'

@@ -1,0 +1,16 @@
+.btn-group.pull-right
+  = link_to project_jobs_path(@project), class: "btn #{'active' unless params[:list]}" do
+    %i.icon-edit
+    Edit
+  = link_to project_jobs_path(@project, list: 'true'), class: "btn #{'active' if params[:list]}" do
+    %i.icon-list
+    List
+%p.slead
+  Jobs are scripts you want CI to run on each push to repository
+
+%hr
+
+- if params[:list]
+  = render 'list'
+- else
+  = render 'edit'

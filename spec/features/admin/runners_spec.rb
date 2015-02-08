@@ -22,6 +22,6 @@ describe "Admin Runners" do
       visit admin_runner_path(runner)
     end
 
-    it { page.should have_content runner.token }
+    it { find_field('runner_token').value.should eq runner.token }
   end
 end

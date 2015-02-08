@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141201153755) do
+ActiveRecord::Schema.define(version: 20150113001835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 20141201153755) do
     t.string   "before_sha"
     t.text     "push_data"
     t.integer  "runner_id"
-    t.float    "coverage"
     t.integer  "commit_id"
+    t.float    "coverage"
     t.text     "commands"
     t.integer  "job_id"
   end
@@ -58,12 +58,14 @@ ActiveRecord::Schema.define(version: 20141201153755) do
   add_index "commits", ["sha"], name: "index_commits_on_sha", using: :btree
 
   create_table "jobs", force: true do |t|
-    t.integer  "project_id",                null: false
+    t.integer  "project_id",                     null: false
     t.text     "commands"
-    t.boolean  "active",     default: true, null: false
+    t.boolean  "active",         default: true,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.boolean  "build_branches", default: true,  null: false
+    t.boolean  "build_tags",     default: false, null: false
   end
 
   add_index "jobs", ["project_id"], name: "index_jobs_on_project_id", using: :btree
@@ -115,6 +117,26 @@ ActiveRecord::Schema.define(version: 20141201153755) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
+
+  create_table "taggings", force: true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+
+  create_table "tags", force: true do |t|
+    t.string  "name"
+    t.integer "taggings_count", default: 0
+  end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "web_hooks", force: true do |t|
     t.string   "url",        null: false

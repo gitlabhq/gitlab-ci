@@ -7,6 +7,9 @@ describe API::API do
   let(:project) { FactoryGirl.create(:project) }
 
   describe "Builds API for runners" do
+    let(:shared_runner) { FactoryGirl.create(:runner, token: "SharedRunner") }
+    let(:shared_project) { FactoryGirl.create(:project, name: "SharedProject") }
+
     before do
       FactoryGirl.create :runner_project, project_id: project.id, runner_id: runner.id
     end
@@ -14,7 +17,8 @@ describe API::API do
     describe "POST /builds/register" do
       it "should start a build" do
         commit = FactoryGirl.create(:commit, project: project)
-        build = FactoryGirl.create(:build, commit: commit, status: 'pending' )
+        job = FactoryGirl.create :job, project: project
+        build = commit.create_builds.first
 
         post api("/builds/register"), token: runner.token
 
@@ -24,6 +28,24 @@ describe API::API do
 
       it "should return 404 error if no pending build found" do
         post api("/builds/register"), token: runner.token
+
+        response.status.should == 404
+      end
+
+      it "should return 404 error if no builds for specific runner" do
+        commit = FactoryGirl.create(:commit, project: shared_project)
+        FactoryGirl.create(:build, commit: commit, status: 'pending' )
+
+        post api("/builds/register"), token: runner.token
+
+        response.status.should == 404
+      end
+
+      it "should return 404 error if no builds for shared runner" do
+        commit = FactoryGirl.create(:commit, project: project)
+        FactoryGirl.create(:build, commit: commit, status: 'pending' )
+
+        post api("/builds/register"), token: shared_runner.token
 
         response.status.should == 404
       end

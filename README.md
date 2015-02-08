@@ -13,6 +13,10 @@ GitLab CI officially supports (recent versions of) these Linux distributions:
 
 * Ubuntu Linux
 * Debian/GNU Linux
+* CentOS
+* RedHat Enterprise Linux (please use the CentOS packages and instructions)
+* Scientific Linux (please use the CentOS packages and instructions)
+* Oracle Linux (please use the CentOS packages and instructions)
 
 Additionally GitLab CI requires:
 
@@ -34,13 +38,7 @@ Hardware requirements:
 * Merge request integration: see the status of the feature branch build within the Merge Request
 * Distributed by default: GitLab CI and build runners can run on separate machines providing more stability
 * Realtime logging: the current build log scrolls and updates every few seconds
-
-### Roadmap
-
-The following features are not yet in GitLab CI but merge requests are very welcome:
-
-* [Build artifacts access](http://feedback.gitlab.com/forums/176466-general/suggestions/4522830-allow-access-to-build-artifacts-of-gitlab-ci)
-* For parallel builds, deployments, branch specific builds and build metrics there is a [blog article with implementation steps](http://blog.gitlab.org/gitlab-ci-with-parallel-builds-and-deployments/)
+* Parallel builds: split a build over multiple runners so it executes quickly
 
 ### Installation
 
@@ -48,6 +46,7 @@ The following features are not yet in GitLab CI but merge requests are very welc
 * [Manual installation guide](doc/install/installation.md)
 * [Unofficial Docker Image by Sameer Naik](https://github.com/sameersbn/docker-gitlab-ci)
 * [Unofficial Docker Image by Anastas Dancha](https://registry.hub.docker.com/u/anapsix/gitlab-ci/) is available via `docker pull anapsix/gitlab-ci`
+* [GitLab Development Kit](https://gitlab.com/gitlab-org/gitlab-development-kit) is recommended for development work.
 
 ### Runners
 

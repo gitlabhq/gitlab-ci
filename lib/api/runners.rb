@@ -28,10 +28,18 @@ module API
       # Example Request:
       #   POST /runners/register
       post "register" do
-        authenticate_runners!
         required_attributes! [:token]
 
-        runner = Runner.create
+        runner =
+          if params[:token] == GitlabCi::REGISTRATION_TOKEN
+            # Create shared runner. Requires admin access
+            Runner.create
+          elsif project = Project.find_by(token: params[:token])
+            # Create a specific runner for project.
+            project.runners.create
+          end
+
+        return forbidden! unless runner
 
         if runner.id
           present runner, with: Entities::Runner

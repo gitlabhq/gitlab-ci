@@ -9,10 +9,7 @@ module LoginHelpers
   #
   # user - User instance to login with
   def login_with(user)
-    visit new_user_sessions_path
-    fill_in "user_session_email", with: 'test@test.com'
-    fill_in "user_session_password", with: "123456"
-    click_button "Sign in"
+    visit callback_user_sessions_path(code: "some_auth_code_here")
   end
 
   def logout

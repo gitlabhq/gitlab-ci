@@ -54,20 +54,16 @@
   max-width: 82%;
 }
 
-.table {
-  thead {
-    th {
-      background: #eee;
-      color: #555;
-      border-bottom: 1px solid #CCC !important;
-      border-top: 1px solid #CCC !important;
-    }
-  }
-}
-
 .page-title {
   color: #444;
   line-height: 1.5;
   margin-top: 0px;
   margin-bottom: 15px;
+}
+
+.slead {
+  margin-bottom: 18px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.4;
 }

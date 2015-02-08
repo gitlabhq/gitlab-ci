@@ -2,10 +2,11 @@
   = @project.name
   @
   = @commit.short_sha
-  .pull-right
-    = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
-      %i.icon-edit.icon-white
-      Edit Project
+  - if current_user.can_manage_project?(@project.gitlab_id)
+    .pull-right
+      = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
+        %i.icon-edit.icon-white
+        Edit Project
 
 %p
   = link_to project_commit_path(@project, @build.commit) do
@@ -36,12 +37,16 @@
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        Build for commit
-        %code #{@build.short_sha}
-        from
+        - if @build.for_tag?
+          Build for tag
+          %code #{@build.ref}
+        - else
+          Build for commit
+          %code #{@build.short_sha}
+          from
 
-        = link_to project_path(@build.project, ref: @build.ref) do
-          %span.label.label-primary= "#{@build.ref}"
+          = link_to project_path(@build.project, ref: @build.ref) do
+            %span.label.label-primary= "#{@build.ref}"
 
         - if @build.duration
           .pull-right
@@ -73,14 +78,16 @@
           Test coverage
         %h1 #{@build.coverage}%
 
+
     .build-widget
       %h4.title
         Build
-        .pull-right
-          - if @build.active?
-            = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
-          - else
-            = link_to "Retry", retry_project_build_path(@project, @build), class: 'btn btn-sm btn-primary', method: :post
+        - if current_user.can_manage_project?(@project.gitlab_id)
+          .pull-right
+            - if @build.active?
+              = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
+            - else
+              = link_to "Retry", retry_project_build_path(@project, @build), class: 'btn btn-sm btn-primary', method: :post
 
       - if @build.duration
         %p
@@ -117,6 +124,14 @@
       %p
         %span.attr-name Message:
         #{@build.commit.git_commit_message}
+
+    - if @build.tags.any?
+      .build-widget
+        %h4.title
+          Tags
+        - @build.tag_list.each do |tag|
+          %span.label.label-primary
+            = tag
 
     - if @builds.present?
       .build-widget

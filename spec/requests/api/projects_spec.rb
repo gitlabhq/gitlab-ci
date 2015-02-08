@@ -3,7 +3,7 @@ require 'spec_helper'
 describe API::API do
   include ApiHelpers
 
-  let(:gitlab_url) { GitlabCi.config.gitlab_server_urls.first }
+  let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
   let(:auth_opts) {
     {
       :email => "test@test.com",
@@ -52,6 +52,49 @@ describe API::API do
     end
   end
 
+  describe "POST /projects/:project_id/webhooks" do
+    let!(:project) { FactoryGirl.create(:project) }
+
+    context "Valid Webhook URL" do
+      let!(:webhook) { {:web_hook => "http://example.com/sth/1/ala_ma_kota" } }
+
+      before do
+        options.merge!(webhook)
+      end
+
+      it "should create webhook for specified project" do
+        post api("/projects/#{project.id}/webhooks"), options
+        response.status.should == 201
+        json_response["url"].should == webhook[:web_hook]
+      end
+
+      it "fails to create webhook for non existsing project" do
+        post api("/projects/non-existant-id/webhooks"), options
+        response.status.should == 404
+      end
+
+    end
+
+    context "Invalid Webhook URL" do
+      let!(:webhook) { {:web_hook => "ala_ma_kota" } }
+
+      before do
+        options.merge!(webhook)
+      end
+
+      it "fails to create webhook for not valid url" do
+        post api("/projects/#{project.id}/webhooks"), options
+        response.status.should == 400
+      end
+    end
+
+    context "Missed web_hook parameter" do
+      it "fails to create webhook for not provided url" do
+        post api("/projects/#{project.id}/webhooks"), options
+        response.status.should == 400
+      end
+    end
+  end
 
   describe "GET /projects/:id" do
     let!(:project) { FactoryGirl.create(:project) }

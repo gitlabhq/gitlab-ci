@@ -9,7 +9,7 @@
 
   %td
     = link_to admin_runner_path(runner) do
-      = runner.token
+      = runner.short_sha
   %td
     .runner-description
       = runner.description
@@ -26,15 +26,16 @@
     - else
       = runner.projects.count
   %td
-    %span.label.label-success
-      #{runner.builds.success.count}
-    %span /
-    %span.label.label-danger
-      #{runner.builds.failed.count}
+    #{runner.builds.count}
+  %td
+    - runner.tag_list.each do |tag|
+      %span.label.label-primary
+        = tag
   %td
     #{time_ago_in_words(runner.created_at)} ago
   %td
     .pull-right
-      = link_to 'Assign to all', assign_all_admin_runner_path(runner), class: 'btn btn-small assign-all-runner', title: 'Assign runner to all projects', method: :put, remote: true
+      = link_to 'Edit', admin_runner_path(runner), class: 'btn btn-small'
+      &nbsp;
       = link_to 'Remove', [:admin, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
 

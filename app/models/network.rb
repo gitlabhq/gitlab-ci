@@ -9,10 +9,10 @@ class Network
       headers: {"Content-Type" => "application/json"},
     }
 
-    endpoint = File.join(url, API_PREFIX, 'session.json')
-    response = self.class.post(endpoint, opts)
+    endpoint = File.join(url, API_PREFIX, 'user')
+    response = self.class.get(endpoint, opts)
 
-    if response.code == 201
+    if response.code == 200
       response.parsed_response
     else
       nil
@@ -68,6 +68,24 @@ class Network
     }
 
     query = "projects/#{project_id}.json"
+
+    endpoint = File.join(url, API_PREFIX, query)
+    response = self.class.get(endpoint, opts)
+
+    if response.code == 200
+      response.parsed_response
+    else
+      nil
+    end
+  end
+
+  def project_hooks(url, api_opts, project_id)
+    opts = {
+      query: api_opts,
+      headers: {"Content-Type" => "application/json"},
+    }
+
+    query = "projects/#{project_id}/hooks.json"
 
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.get(endpoint, opts)

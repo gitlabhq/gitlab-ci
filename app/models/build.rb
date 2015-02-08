@@ -40,38 +40,52 @@ class Build < ActiveRecord::Base
   scope :pending, ->() { where(status: "pending") }
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
+  scope :unstarted, ->() { where(runner_id: nil) }
+
+  acts_as_taggable
 
   # To prevent db load megabytes of data from trace
   default_scope -> { select(Build.columns_without_lazy) }
 
-  def self.columns_without_lazy
-    (column_names - LAZY_ATTRIBUTES).map do |column_name|
-      "#{table_name}.#{column_name}"
+  class << self
+    def columns_without_lazy
+      (column_names - LAZY_ATTRIBUTES).map do |column_name|
+        "#{table_name}.#{column_name}"
+      end
     end
-  end
 
-  def self.last_month
-    where('created_at > ?', Date.today - 1.month)
-  end
+    def last_month
+      where('created_at > ?', Date.today - 1.month)
+    end
 
-  def self.first_pending
-    pending.where(runner_id: nil).order('created_at ASC').first
-  end
+    def first_pending
+      pending.unstarted.order('created_at ASC').first
+    end
 
-  def self.create_from(build)
-    new_build = build.dup
-    new_build.status = :pending
-    new_build.runner_id = nil
-    new_build.save
-  end
+    def create_from(build)
+      new_build = build.dup
+      new_build.status = :pending
+      new_build.runner_id = nil
+      new_build.save
+    end
 
-  def self.retry(build)
-    Build.create(
-      commit_id: build.commit_id,
-      job_id: build.job_id,
-      status: :pending,
-      commands: build.commands
-    )
+    def retry(build)
+      new_build = Build.new(status: :pending)
+
+      if build.job
+        new_build.commands = build.job.commands
+        new_build.tag_list = build.job.tag_list
+      else
+        new_build.commands = build.commands
+      end
+
+      new_build.job_id = build.job_id
+      new_build.commit_id = build.commit_id
+      new_build.ref = build.ref
+      new_build.project_id = build.project_id
+      new_build.save
+      new_build
+    end
   end
 
   state_machine :status, initial: :pending do
@@ -121,12 +135,18 @@ class Build < ActiveRecord::Base
     state :canceled, value: 'canceled'
   end
 
-  delegate :ref, :sha, :short_sha, :before_sha,
+  delegate :sha, :short_sha, :before_sha,
     to: :commit, prefix: false
 
   def trace_html
     html = Ansi2html::convert(trace) if trace.present?
     html ||= ''
+  end
+
+  def trace
+    if project && read_attribute(:trace).present?
+      read_attribute(:trace).gsub(project.token, 'xxxxxx')
+    end
   end
 
   def started?
@@ -198,6 +218,24 @@ class Build < ActiveRecord::Base
   def job_name
     if job
       job.name
+    end
+  end
+
+  def ref
+    build_ref = read_attribute(:ref)
+
+    if build_ref.present?
+      build_ref
+    else
+      commit.ref
+    end
+  end
+
+  def for_tag?
+    if job && job.build_tags
+      true
+    else
+      false
     end
   end
 end

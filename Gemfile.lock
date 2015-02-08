@@ -29,6 +29,8 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
+    acts-as-taggable-on (3.4.3)
+      activerecord (>= 3.2, < 5)
     addressable (2.3.5)
     annotate (2.6.0)
       activerecord (>= 2.3.0)
@@ -85,6 +87,8 @@ GEM
     factory_girl_rails (4.3.0)
       factory_girl (~> 4.3.0)
       railties (>= 3.0.0)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
     ffaker (1.22.1)
     ffi (1.9.3)
     font-awesome-rails (3.2.1.3)
@@ -138,6 +142,7 @@ GEM
       railties (>= 3.1.0)
       turbolinks
     json (1.8.1)
+    jwt (1.2.0)
     kaminari (0.15.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -146,7 +151,7 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.1.2)
       launchy (~> 2.2)
-    libv8 (3.16.14.3)
+    libv8 (3.16.14.7)
     listen (2.4.0)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -160,11 +165,18 @@ GEM
     minitest (4.3.2)
     multi_json (1.10.1)
     multi_xml (0.5.5)
+    multipart-post (2.0.0)
     mysql2 (0.3.14)
     nested_form (0.3.2)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     nprogress-rails (0.1.2.3)
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
     pg (0.17.0)
     poltergeist (1.4.1)
       capybara (~> 2.1.0)
@@ -311,6 +323,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-deprecated_finders
   activerecord-session_store
+  acts-as-taggable-on (~> 3.4)
   annotate
   bootstrap-sass (~> 3.0)
   capybara
@@ -336,6 +349,7 @@ DEPENDENCIES
   mysql2
   nested_form
   nprogress-rails
+  oauth2 (= 1.0.0)
   pg
   poltergeist
   protected_attributes

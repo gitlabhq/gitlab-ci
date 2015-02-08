@@ -1,5 +1,4 @@
 class Admin::RunnerProjectsController < Admin::ApplicationController
-  before_filter :authenticate_user!
   layout 'project'
 
   def index

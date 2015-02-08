@@ -1,20 +1,17 @@
 class CreateCommitService
   def execute(project, params)
     before_sha = params[:before]
-    sha = params[:after]
-    ref = params[:ref]
+    sha = params[:checkout_sha] || params[:after]
+    origin_ref = params[:ref]
 
-    if ref && ref.include?('refs/heads/')
-      ref = ref.scan(/heads\/(.*)$/).flatten[0]
-    end
-
-    # Skip branch removal
-    if sha == Git::BLANK_SHA
+    unless origin_ref && sha.present?
       return false
     end
 
-    # Dont create commit if we already have one
-    if commit_exists?(project, sha)
+    ref = origin_ref.gsub(/\Arefs\/(tags|heads)\//, '')
+
+    # Skip branch removal
+    if sha == Git::BLANK_SHA
       return false
     end
 
@@ -22,27 +19,34 @@ class CreateCommitService
       return false
     end
 
-    data = {
-      ref: ref,
-      sha: sha,
-      before_sha: before_sha,
-      push_data: {
-        before: before_sha,
-        after: sha,
+    commit = project.commits.find_by(sha: sha)
+
+    # Create commit if not exists yet
+    unless commit
+      data = {
         ref: ref,
-        user_name: params[:user_name],
-        repository: params[:repository],
-        commits: params[:commits],
-        total_commits_count: params[:total_commits_count]
+        sha: sha,
+        before_sha: before_sha,
+        push_data: {
+          before: before_sha,
+          after: sha,
+          ref: ref,
+          user_name: params[:user_name],
+          repository: params[:repository],
+          commits: params[:commits],
+          total_commits_count: params[:total_commits_count]
+        }
       }
-    }
 
-    commit = project.commits.create(data)
-    commit.create_builds
+      commit = project.commits.create(data)
+    end
+
+    if origin_ref.start_with?('refs/tags/')
+      commit.create_builds_for_tag(ref)
+    else
+      commit.create_builds
+    end
+
     commit
-  end
-
-  def commit_exists?(project, sha)
-    project.commits.where(sha: sha).any?
   end
 end

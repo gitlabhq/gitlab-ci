@@ -1,7 +1,7 @@
 .clearfix.light
   .pull-left.fetch-status
     Fetched from GitLab (#{link_to current_user.url, current_user.url}) #{time_ago_in_words(current_user.sync_at)} ago.
-    = link_to gitlab_projects_path(reset_cache: true), remote: true, class: 'sync-now btn btn-xs btn-default' do
+    = link_to gitlab_projects_path(reset_cache: true), remote: true, class: 'sync-now btn btn-small btn-default' do
       %i.icon-refresh
       Sync now
     %br
