@@ -16,11 +16,12 @@ module API
 
         project = Project.find(params[:id])
 
-        if project.present? && current_user.can_access_project?(project.gitlab_id)
+        if project.present? 
+          && current_user.can_access_project?(project.gitlab_id)
           web_hook = project.web_hooks.new({url: params[:web_hook]})
 
           if web_hook.save
-            present web_hook, :with => Entities::WebHook
+            present web_hook, :with Entities::WebHook
           else
             errors = web_hook.errors.full_messages.join(", ")
             render_api_error!(errors, 400)
@@ -37,7 +38,8 @@ module API
       get ":id/jobs" do
         project = Project.find(params[:id])
 
-        if project.present? && current_user.can_access_project?(project.gitlab_id)
+        if project.present?
+          && current_user.can_access_project?(project.gitlab_id)
           project.jobs
         end
       end
@@ -55,11 +57,12 @@ module API
 
         project = Project.find(params[:id])
 
-        if project.present? && current_user.can_access_project?(project.gitlab_id)
-          job = project.jobs.new({name: params[:name], commands: params[:commands]})
-
+        if project.present? && 
+          current_user.can_access_project?(project.gitlab_id)
+          job_params = { name: params[:name], commands: params[:commands] }
+          job = project.jobs.new(job_params)
           if job.save
-            present job, :with => Entities::Job
+            present job, :with Entities::Job
           else
             errors = web_hook.errors.full_messages.join(", ")
             render_api_error!(errors, 400)
@@ -78,7 +81,7 @@ module API
         project = Project.find(params[:id])
         job     = project.jobs.find_by_id(params[:job_id])
 
-        not_found! if project.blank? or job.blank?
+        not_found! if project.blank? || job.blank?
         unauthorized! unless current_user.can_access_project?(project.gitlab_id)
         job.destroy
       end
