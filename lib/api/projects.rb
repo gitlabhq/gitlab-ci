@@ -38,10 +38,10 @@ module API
       get ":id/jobs" do
         project = Project.find(params[:id])
 
-        if project.present?
-          && current_user.can_access_project?(project.gitlab_id)
-          project.jobs
-        end
+        not_found! if project.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+
+        project.jobs
       end
 
       # Register new job for project
@@ -57,16 +57,16 @@ module API
 
         project = Project.find(params[:id])
 
-        if project.present? && 
-          current_user.can_access_project?(project.gitlab_id)
-          job_params = { name: params[:name], commands: params[:commands] }
-          job = project.jobs.new(job_params)
-          if job.save
-            present job, :with Entities::Job
-          else
-            errors = web_hook.errors.full_messages.join(", ")
-            render_api_error!(errors, 400)
-          end
+        not_found! if project.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+
+        job_params = { name: params[:name], commands: params[:commands] }
+        job = project.jobs.new(job_params)
+        if job.save
+          present job, :with Entities::Job
+        else
+          errors = web_hook.errors.full_messages.join(", ")
+          render_api_error!(errors, 400)
         end
       end
 
