@@ -13,19 +13,17 @@ module API
       #   POST /projects/:id/webhooks
       post ":id/webhooks" do
         required_attributes! [:web_hook]
-
         project = Project.find(params[:id])
 
-        if project.present? 
-          && current_user.can_access_project?(project.gitlab_id)
-          web_hook = project.web_hooks.new({url: params[:web_hook]})
+        not_found! if project.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
-          if web_hook.save
-            present web_hook, :with Entities::WebHook
-          else
-            errors = web_hook.errors.full_messages.join(", ")
-            render_api_error!(errors, 400)
-          end
+        web_hook = project.web_hooks.new({url: params[:web_hook]})
+        if web_hook.save
+          present web_hook, :with Entities::WebHook
+        else
+          errors = web_hook.errors.full_messages.join(", ")
+          render_api_error!(errors, 400)
         end
       end
 
@@ -78,11 +76,14 @@ module API
       # Example Request
       #   DELETE /projects/:id/jobs/:job_id
       delete ":id/jobs/:job_id" do
+        required_attributes! [:job_id]
+
         project = Project.find(params[:id])
         job     = project.jobs.find_by_id(params[:job_id])
 
         not_found! if project.blank? || job.blank?
         unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+
         job.destroy
       end
 
