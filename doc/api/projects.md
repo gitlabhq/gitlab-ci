@@ -150,7 +150,7 @@ Parameters:
   * `id` (required) - The ID of the Gitlab CI project
   * `runner_id` (required) - The ID of the Gitlab CI runner
 
-### List Project Jobs
+### List All Jobs for a Project
 
 List the jobs associated to a Gitlab CI Project (only via
 authorized user).
@@ -161,7 +161,7 @@ Parameters:
 
   * `id` (required) - The ID of the Gitlab CI project
 
-### Create a Job
+### Add a Job to a Project
 
 Adds a Job to a Gitlab CI Project (only via
 authorized user).
@@ -174,7 +174,7 @@ Parameters:
   * `name` (required) - The name of the Job to add
   * `commands` (required) - The script commands of the job
 
-### Remove Job from Project
+### Remove a Job from a Project
 
 Removes a Job from a Gitlab CI Project (only
 via authorized user).
