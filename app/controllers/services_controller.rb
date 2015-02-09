@@ -19,7 +19,7 @@ class ServicesController < ApplicationController
 
   def update
     if @service.update_attributes(service_params)
-      redirect_to edit_project_service_path(@project, @service.to_param)
+      redirect_to edit_project_service_path(@project, @service.to_param), notice: 'Service was successfully updated.'
     else
       render 'edit'
     end
