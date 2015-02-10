@@ -20,7 +20,7 @@ module API
 
         web_hook = project.web_hooks.new({url: params[:web_hook]})
         if web_hook.save
-          present web_hook, :with Entities::WebHook
+          present web_hook, with: Entities::WebHook
         else
           errors = web_hook.errors.full_messages.join(", ")
           render_api_error!(errors, 400)
@@ -61,7 +61,7 @@ module API
         job_params = { name: params[:name], commands: params[:commands] }
         job = project.jobs.new(job_params)
         if job.save
-          present job, :with Entities::Job
+          present job, with: Entities::Job
         else
           errors = web_hook.errors.full_messages.join(", ")
           render_api_error!(errors, 400)

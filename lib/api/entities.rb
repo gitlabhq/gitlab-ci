@@ -29,7 +29,7 @@ module API
     end
 
     class Job < Grape::Entity
-      expose :name
+      expose :name, :commands
     end
   end
 end
