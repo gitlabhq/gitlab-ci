@@ -20,12 +20,73 @@ module API
           web_hook = project.web_hooks.new({url: params[:web_hook]})
 
           if web_hook.save
-            present web_hook, :with => Entities::WebHook
+            present web_hook, with: Entities::WebHook
           else
             errors = web_hook.errors.full_messages.join(", ")
             render_api_error!(errors, 400)
           end
         end
+      end
+
+      # Retrieve all jobs for a project
+      #
+      # Parameters
+      #   id (required) - The ID of a project
+      # Example Request
+      #   GET /projects/:id/jobs
+      get ":id/jobs" do
+        project = Project.find(params[:id])
+
+        not_found! if project.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+
+      # present job, with: Entities::Job
+        project.jobs
+      end
+
+      # Add a new job to a project
+      #
+      # Parameters
+      #   id (required) - The ID of a project
+      #   name (required) - The job name
+      #   commands (required) - The command line script for the job
+      # Example Request
+      #   POST /projects/:id/jobs
+      post ":id/jobs" do
+        required_attributes! [:name, :commands]
+
+        project = Project.find(params[:id])
+
+        not_found! if project.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+
+        job_params = { name: params[:name], commands: params[:commands] }
+        job = project.jobs.new(job_params)
+        if job.save
+          present job, with: Entities::Job
+        else
+          errors = job.errors.full_messages.join(", ")
+          render_api_error!(errors, 400)
+        end
+      end
+
+      # Delete a job for a project
+      #
+      # Parameters
+      #   id (required) - The ID of a project
+      #   job_id (required) - The ID of the job to delete
+      # Example Request
+      #   DELETE /projects/:id/jobs/:job_id
+      delete ":id/jobs/:job_id" do
+        required_attributes! [:job_id]
+
+        project = Project.find(params[:id])
+        job     = project.jobs.find(params[:job_id])
+
+        not_found! if project.blank? || job.blank?
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+
+        job.destroy
       end
 
       # Retrieve all Gitlab CI projects that the user has access to
