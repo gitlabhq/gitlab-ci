@@ -18,7 +18,7 @@ module API
         not_found! if project.blank?
         unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
-        web_hook = project.web_hooks.new({url: params[:web_hook]})
+        web_hook = project.web_hooks.new(url: params[:web_hook])
         if web_hook.save
           present web_hook, with: Entities::WebHook
         else
