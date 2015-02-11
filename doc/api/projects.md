@@ -91,7 +91,7 @@ Parameters:
 
 Creates a Gitlab CI project using Gitlab project details.
 
-    POST /projects/:id
+    POST /projects
 
 Parameters:
 
