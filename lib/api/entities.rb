@@ -27,9 +27,5 @@ module API
     class WebHook < Grape::Entity
       expose :id, :project_id, :url
     end
-
-    class Job < Grape::Entity
-      expose :name, :commands
-    end
   end
 end
