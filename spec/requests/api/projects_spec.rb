@@ -52,6 +52,111 @@ describe API::API do
     end
   end
 
+  describe "POST /projects/:project_id/jobs" do
+    let!(:project) { FactoryGirl.create(:project) }
+    let(:job_info) {
+      {
+        :name => "A Job Name",
+        :command => "ls -lad",
+      }
+    }
+    let(:invalid_job_info) { {} }
+
+    context "Invalid Job Info" do
+      before do
+        options.merge!(invalid_job_info)
+      end
+
+      it "should error with invalid data" do
+        post api("/projects/#{project.id}/jobs"), options
+        response.status.should == 400
+      end
+    end
+
+    context "Valid Job Info" do
+      before do
+        options.merge!(job_info)
+      end
+
+      it "should create a job for specified project" do
+        post api("/projects/#{project.id}/jobs"), options
+        response.status.should == 201
+        json_response["name"].should == job_info[:name]
+        json_response["commands"].should == job_info[:commands]
+      end
+
+      it "fails to create job for non existsing project" do
+        post api("/projects/non-existant-id/jobs"), options
+        response.status.should == 404
+      end
+    end
+  end
+
+  describe "GET /projects/:project_id/jobs" do
+    let!(:project) { FactoryGirl.create(:project) }
+    let(:job_info) {
+      {
+        :name => "A Job Name",
+        :command => "ls -lad",
+      }
+    }
+
+    before do
+      options.merge!(job_info)
+    end
+
+    it "should list the project's jobs" do
+      post api("/projects/#{project.id}/jobs"), options
+      response.status.should == 201
+      get api("/projects/#{project.id}/jobs")
+      response.status.should == 200
+      json_response.count.should == 1
+      json_response.first["project_id"].should == project.id
+      json_response.first["name"].should == job_info[:name]
+      json_response.first["commands"].should == job_info[:commands]
+    end
+
+    it "fails to list jobs for non existsing project" do
+      get api("/projects/non-existant-id/jobs"), options
+      response.status.should == 404
+    end
+  end
+
+  describe "DELETE /projects/:id/jobs/:job_id" do
+    let!(:project) { FactoryGirl.create(:project) }
+
+    let(:job_info) {
+      {
+        :name => "A Job Name",
+        :command => "ls -lad",
+      }
+    }
+
+    before do
+      options.merge!(job_info)
+    end
+
+    it "should delete a project job" do
+      post api("/projects/#{project.id}/jobs"), options
+      response.status.should == 201
+      json_response["name"].should == job_info[:name]
+      json_response["commands"].should == job_info[:commands]
+      let!(:job_id) { json_response["id"] }
+      delete api("/projects/#{project.id}/jobs/#{job_id}")
+      response.status.should == 200
+    end
+
+    it "fails to delete a job for a non existsing project" do
+      delete api("/projects/non-existant-id/jobs/1")
+      response.status.should == 404
+    end
+
+    it "fails to delete a job for a non existsing job id" do
+      delete api("/projects/#{project.id}/jobs/1337")
+      response.status.should == 404
+    end
+  end
+
   describe "POST /projects/:project_id/webhooks" do
     let!(:project) { FactoryGirl.create(:project) }
 
