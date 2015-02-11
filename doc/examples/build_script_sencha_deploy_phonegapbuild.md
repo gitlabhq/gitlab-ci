@@ -19,7 +19,7 @@ HOWTO
 - chdir to your sencha app root
 - execute the script
 
-Dependancies
+Dependencies
 ------------
 
 - JSON.sh from https://github.com/dominictarr/JSON.sh
