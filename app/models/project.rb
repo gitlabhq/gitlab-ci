@@ -159,7 +159,7 @@ ls -la
   def skip_ref?(ref_name)
     if skip_refs.present?
       skip_refs.delete(" ").split(",").each do |ref|
-        return true unless ref_name !~ Regexp.new(ref)
+        return true if File.fnmatch(ref, ref_name)
       end
 
       false
