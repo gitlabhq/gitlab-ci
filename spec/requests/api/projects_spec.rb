@@ -59,6 +59,10 @@ describe API::API do
       {
         name: "A Job Name",
         commands: "ls -lad",
+        active: false,
+        build_branches: false,
+        build_tags: true,
+        tags: "release, deployment",
       }
     }
     let(:invalid_job_info) { {} }
@@ -84,6 +88,11 @@ describe API::API do
         response.status.should == 201
         json_response["name"].should == job_info[:name]
         json_response["commands"].should == job_info[:commands]
+        json_response["active"].should == job_info[:active]
+        json_response["build_branches"].should == job_info[:build_branches]
+        json_response["build_tags"].should == job_info[:build_tags]
+        json_response["tags"].first["name"].should == "deployment"
+        json_response["tags"].last["name"].should == "release"
       end
 
       it "fails to create job for non existsing project" do
@@ -135,8 +144,8 @@ describe API::API do
 
     let(:job_info) {
       {
-        name: "A Job Name",
         commands: "ls -lad",
+        name: "A Job Name",
       }
     }
 

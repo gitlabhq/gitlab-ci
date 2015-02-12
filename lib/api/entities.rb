@@ -29,7 +29,7 @@ module API
     end
 
     class Job < Grape::Entity
-      expose :id, :name, :commands
+      expose :id, :project_id, :commands, :active, :name, :build_branches, :build_tags, :tags
     end
   end
 end

@@ -173,6 +173,10 @@ Parameters:
   * `id` (required) - The ID of the Gitlab CI project
   * `name` (required) - The name of the Job to add
   * `commands` (required) - The script commands of the job
+  *  `active` (optional) - The command is active of not
+  *  `build_branches` (optional) - Trigger commit builds
+  *  `build_tags` (optional) - Trigger tag builds
+  *  `tags` (optional) - The tags associated with this job
 
 ### Remove a Job from a Project
 

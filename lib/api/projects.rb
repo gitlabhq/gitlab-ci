@@ -40,7 +40,6 @@ module API
         not_found! if project.blank?
         unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
-      # present job, with: Entities::Job
         project.jobs
       end
 
@@ -50,6 +49,10 @@ module API
       #   id (required) - The ID of a project
       #   name (required) - The job name
       #   commands (required) - The command line script for the job
+      #   active (optional) - The command is active of not
+      #   build_branches (optional) - Trigger commit builds
+      #   build_tags (optional) - Trigger tag builds
+      #   tags (optional) - The tags associated with this job
       # Example Request
       #   POST /projects/:id/jobs
       post ":id/jobs" do
@@ -60,7 +63,17 @@ module API
         not_found! if project.blank?
         unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
-        job_params = { name: params[:name], commands: params[:commands] }
+        job_params =
+        {
+          name: params[:name],
+          commands: params[:commands],
+        }
+
+        job_params[:active] = params[:active] unless params[:active].nil?
+        job_params[:build_branches] = params[:build_branches] unless params[:build_branches].nil?
+        job_params[:build_tags] = params[:build_tags] unless params[:build_tags].nil?
+        job_params[:tag_list] = params[:tags] unless params[:tags].nil?
+
         job = project.jobs.new(job_params)
         if job.save
           present job, with: Entities::Job
