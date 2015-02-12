@@ -17,3 +17,4 @@ tmp/*
 /db/*.sqlite3
 /log/*.log
 /vendor
+/.idea
