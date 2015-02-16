@@ -35,9 +35,11 @@
       .col-sm-10
         = job_form.text_area :commands, class: 'form-control', rows: 10, placeholder: "bundle exec rake spec"
         %p.light
-          All lines will be concatenated in one file and executed.
+          All lines will be concatenated into one file and executed.
           %br
-          If you change the working directory or the environment in one line - it will affect the next lines too
+          If you change the working directory or the environment this will affect all following lines too.
+          %br
+          = link_to("Example job scripts", "https://gitlab.com/gitlab-org/gitlab-ci/tree/master/doc/examples")
         = job_form.link_to_remove "Remove this job", class: 'btn btn-danger pull-right'
     %hr
   .clearfix
