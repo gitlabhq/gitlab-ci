@@ -6,7 +6,7 @@ this should be the highest numbered stable branch (example shown below).
 
 If this is unclear check the [GitLab Blog](http://blog.gitlab.org/) for installation guide links by version.
 
-## GitLab CI 5.2 requires GitLab 7.5 or newer
+## GitLab CI 7.8 requires GitLab 7.8 or newer
 
 # Setup:
 
@@ -106,7 +106,7 @@ You can use either MySQL or PostgreSQL.
 
     cd gitlab-ci
 
-    sudo -u gitlab_ci -H git checkout 5-2-stable
+    sudo -u gitlab_ci -H git checkout 7-8-stable
 
 ## 6. Setup application
 
