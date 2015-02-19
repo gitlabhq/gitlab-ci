@@ -1,10 +1,11 @@
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
   - GitLab CI has same version as GitLab since now
-  - Allow to pass description and tag list during Runner's registration
+  - Allow to pass description and tag list during Runner's registration (Kamil Trzciński)
   - Update documentation (API, Install, Update)
   - Skip refs field supports for wildcard branch name (ex. feature/*)
-  - Migrate E-mail notification to Services menu
+  - Migrate E-mail notification to Services menu (Kamil Trzciński)
+  - Added Slack notifications (Kamil Trzciński)
   - Disable turbolink on links pointing out to GitLab server
   - Add test coverage parsing example for pytest-cov
   - Upgrade raindrops gem
