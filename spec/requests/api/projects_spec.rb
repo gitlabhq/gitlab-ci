@@ -91,8 +91,7 @@ describe API::API do
         json_response["active"].should == job_info[:active]
         json_response["build_branches"].should == job_info[:build_branches]
         json_response["build_tags"].should == job_info[:build_tags]
-        json_response["tags"].first["name"].should == "deployment"
-        json_response["tags"].last["name"].should == "release"
+        json_response["tags"].should have(2).items
       end
 
       it "fails to create job for non existsing project" do
@@ -122,12 +121,21 @@ describe API::API do
       json_response.first["project_id"].should == project.id
     end
 
-    it "should add & list the project's new jobs" do
-      post api("/projects/#{project.id}/jobs"), options
-      response.status.should == 201
+    it "should delete default job, add & list the project's new jobs" do
+      # delete default job
       get api("/projects/#{project.id}/jobs"), options
       response.status.should == 200
-      json_response.count.should == 2
+      json_response.count.should == 1
+      job_id = json_response.first["id"]
+      delete api("/projects/#{project.id}/jobs/#{job_id}"), options
+      # add a new job
+      post api("/projects/#{project.id}/jobs"), options
+      response.status.should == 201
+      # get the new job
+      get api("/projects/#{project.id}/jobs"), options
+      # assert job
+      response.status.should == 200
+      json_response.count.should == 1
       json_response.first["project_id"].should == project.id
       json_response.first["name"].should == job_info[:name]
       json_response.first["commands"].should == job_info[:commands]
