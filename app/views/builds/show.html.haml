@@ -4,9 +4,9 @@
   = @commit.short_sha
   - if current_user.can_manage_project?(@project.gitlab_id)
     .pull-right
-      = link_to edit_project_path(@project), class: "btn btn-default btn-small" do
+      = link_to project_jobs_path(@project), class: "btn btn-default btn-small" do
         %i.icon-edit.icon-white
-        Edit Project
+        Edit Job
 
 %p
   = link_to project_commit_path(@project, @build.commit) do
