@@ -8,7 +8,7 @@ class Network
   def authenticate(url, api_opts)
     opts = {
       body: api_opts.to_json,
-      headers: {"Content-Type" => "application/json"},
+      headers: { "Content-Type" => "application/json" },
     }
 
     endpoint = File.join(url, API_PREFIX, 'user')
@@ -20,7 +20,7 @@ class Network
   def authenticate_by_token(url, api_opts)
     opts = {
       query: api_opts,
-      headers: {"Content-Type" => "application/json"},
+      headers: { "Content-Type" => "application/json" },
     }
 
     endpoint = File.join(url, API_PREFIX, 'user.json')
@@ -36,13 +36,13 @@ class Network
 
     opts = {
       query: api_opts,
-      headers: {"Content-Type" => "application/json"},
+      headers: { "Content-Type" => "application/json" },
     }
 
     query = if scope == :owned
-             'projects/owned.json'
+              'projects/owned.json'
             else
-             'projects.json'
+              'projects.json'
             end
 
     endpoint = File.join(url, API_PREFIX, query)
@@ -54,7 +54,7 @@ class Network
   def project(url, api_opts, project_id)
     opts = {
       query: api_opts,
-      headers: {"Content-Type" => "application/json"},
+      headers: { "Content-Type" => "application/json" },
     }
 
     query = "projects/#{project_id}.json"
@@ -68,7 +68,7 @@ class Network
   def project_hooks(url, api_opts, project_id)
     opts = {
       query: api_opts,
-      headers: {"Content-Type" => "application/json"},
+      headers: { "Content-Type" => "application/json" },
     }
 
     query = "projects/#{project_id}/hooks.json"
@@ -82,7 +82,7 @@ class Network
   def enable_ci(url, project_id, ci_opts, token)
     opts = {
       body: ci_opts.to_json,
-      headers: {"Content-Type" => "application/json"},
+      headers: { "Content-Type" => "application/json" },
     }
 
     query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
@@ -101,7 +101,7 @@ class Network
 
   def disable_ci(url, project_id, token)
     opts = {
-      headers: {"Content-Type" => "application/json"},
+      headers: { "Content-Type" => "application/json" },
     }
 
     query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"

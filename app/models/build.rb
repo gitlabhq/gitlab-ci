@@ -105,7 +105,7 @@ class Build < ActiveRecord::Base
       transition [:pending, :running] => :canceled
     end
 
-    after_transition :pending => :running do |build, transition|
+    after_transition pending: :running do |build, transition|
       build.update_attributes started_at: Time.now
     end
 

@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  rescue_from Network::UnauthorizedError, :with => :invalid_token
+  rescue_from Network::UnauthorizedError, with: :invalid_token
   before_filter :default_headers
   before_filter :check_config
 
