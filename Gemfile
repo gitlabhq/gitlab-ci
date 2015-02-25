@@ -32,7 +32,7 @@ gem 'haml-rails'
 
 # Background jobs
 gem 'slim'
-gem 'sinatra', :require => nil
+gem 'sinatra', require: nil
 gem 'sidekiq'
 
 # Scheduled
@@ -107,6 +107,7 @@ group :development, :test do
   gem "simplecov", require: false
   gem 'coveralls', require: false
   gem 'minitest', '4.3.2'
+  gem 'rubocop', '0.28.0', require: false
 end
 
 group :test do

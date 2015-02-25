@@ -15,11 +15,11 @@ module Ansi2html
   }
 
   STYLE_SWITCHES = {
-    :bold      => 0x01,
-    :italic    => 0x02,
-    :underline => 0x04,
-    :conceal   => 0x08,
-    :cross     => 0x10,
+    bold:       0x01,
+    italic:     0x02,
+    underline:  0x04,
+    conceal:    0x08,
+    cross:      0x10,
   }
 
   def self.convert(ansi)

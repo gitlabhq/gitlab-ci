@@ -35,9 +35,9 @@ class MailService < Service
 
   def fields
     [
-      {type: 'text', name: 'email_recipients', label: 'Recipients', help: 'Whitespace-separated list of recipient addresses'},
-      {type: 'checkbox', name: 'email_add_committer', label: 'Add committer to recipients list'},
-      {type: 'checkbox', name: 'email_only_broken_builds', label: 'Notify only broken builds'}
+      { type: 'text', name: 'email_recipients', label: 'Recipients', help: 'Whitespace-separated list of recipient addresses' },
+      { type: 'checkbox', name: 'email_add_committer', label: 'Add committer to recipients list' },
+      { type: 'checkbox', name: 'email_only_broken_builds', label: 'Notify only broken builds' }
     ]
   end
 
@@ -47,12 +47,12 @@ class MailService < Service
       return false unless build.commit.project_recipients.any?
 
       case build.status.to_sym
-        when :failed
-          true
-        when :success
-          !email_only_broken_builds
-        else
-          false
+      when :failed
+        true
+      when :success
+        !email_only_broken_builds
+      else
+        false
       end
     end
   end
@@ -65,11 +65,11 @@ class MailService < Service
 
     commit.project_recipients.each do |recipient|
       case build.status.to_sym
-        when :success
-          return if email_only_broken_builds
-          mailer.build_success_email(build.id, recipient)
-        when :failed
-          mailer.build_fail_email(build.id, recipient)
+      when :success
+        return if email_only_broken_builds
+        mailer.build_success_email(build.id, recipient)
+      when :failed
+        mailer.build_fail_email(build.id, recipient)
       end
     end
   end

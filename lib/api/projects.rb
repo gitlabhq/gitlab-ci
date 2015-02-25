@@ -17,10 +17,10 @@ module API
         project = Project.find(params[:project_id])
 
         if project.present? && current_user.can_access_project?(project.gitlab_id)
-          web_hook = project.web_hooks.new({url: params[:web_hook]})
+          web_hook = project.web_hooks.new({ url: params[:web_hook] })
 
           if web_hook.save
-            present web_hook, :with => Entities::WebHook
+            present web_hook, with: Entities::WebHook
           else
             errors = web_hook.errors.full_messages.join(", ")
             render_api_error!(errors, 400)
@@ -86,11 +86,11 @@ module API
         required_attributes! [:name, :gitlab_id, :gitlab_url, :ssh_url_to_repo]
 
         filtered_params = {
-          :name            => params[:name],
-          :gitlab_id       => params[:gitlab_id],
-          :gitlab_url      => params[:gitlab_url],
-          :default_ref     => params[:default_ref] || 'master',
-          :ssh_url_to_repo => params[:ssh_url_to_repo]
+          name:            params[:name],
+          gitlab_id:       params[:gitlab_id],
+          gitlab_url:      params[:gitlab_url],
+          default_ref:     params[:default_ref] || 'master',
+          ssh_url_to_repo: params[:ssh_url_to_repo]
         }
 
         project = Project.new(filtered_params)
@@ -98,7 +98,7 @@ module API
         project.build_default_job
 
         if project.save
-          present project, :with => Entities::Project
+          present project, with: Entities::Project
         else
           errors = project.errors.full_messages.join(", ")
           render_api_error!(errors, 400)
@@ -123,7 +123,7 @@ module API
           attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :default_ref, :ssh_url_to_repo]
 
           if project.update_attributes(attrs)
-            present project, :with => Entities::Project
+            present project, with: Entities::Project
           else
             errors = project.errors.full_messages.join(", ")
             render_api_error!(errors, 400)
@@ -165,14 +165,14 @@ module API
         unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
         options = {
-          :project_id => project.id,
-          :runner_id  => runner.id
+          project_id: project.id,
+          runner_id:  runner.id
         }
 
         runner_project = RunnerProject.new(options)
 
         if runner_project.save
-          present runner_project, :with => Entities::RunnerProject
+          present runner_project, with: Entities::RunnerProject
         else
           errors = project.errors.full_messages.join(", ")
           render_api_error!(errors, 400)
@@ -194,8 +194,8 @@ module API
         unauthorized! unless current_user.can_access_project?(project.gitlab_id)
 
         options = {
-          :project_id => project.id,
-          :runner_id  => runner.id
+          project_id: project.id,
+          runner_id:  runner.id
         }
 
         runner_project = RunnerProject.where(options).first

@@ -37,8 +37,8 @@ class SlackService < Service
 
   def fields
     [
-      {type: 'text', name: 'webhook', label: 'Webhook URL', placeholder: ''},
-      {type: 'checkbox', name: 'notify_only_broken_builds', label: 'Notify only broken builds'}
+      { type: 'text', name: 'webhook', label: 'Webhook URL', placeholder: '' },
+      { type: 'checkbox', name: 'notify_only_broken_builds', label: 'Notify only broken builds' }
     ]
   end
 
@@ -46,12 +46,12 @@ class SlackService < Service
     # slack notification is useful only for builds either successful or failed
     project.commits.order(id: :desc).any? do |commit|
       case commit.status.to_sym
-        when :failed
-          true
-        when :success
-          !notify_only_broken_builds?
-        else
-          false
+      when :failed
+        true
+      when :success
+        !notify_only_broken_builds?
+      else
+        false
       end
     end
   end
@@ -62,11 +62,11 @@ class SlackService < Service
     return unless commit.builds_without_retry.include?(build)
 
     case commit.status.to_sym
-      when :failed
-      when :success
-        return if notify_only_broken_builds?
-      else
-        return
+    when :failed
+    when :success
+      return if notify_only_broken_builds?
+    else
+      return
     end
 
     message = SlackMessage.new(commit)

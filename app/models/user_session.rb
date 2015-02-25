@@ -29,7 +29,7 @@ class UserSession
     user = block.call(url, Network.new, options)
 
     if user
-      return User.new(user.merge({"url" => url}))
+      return User.new(user.merge({ "url" => url }))
     else
       nil
     end

@@ -5,7 +5,7 @@ module API
     version 'v1', using: :path
 
     rescue_from ActiveRecord::RecordNotFound do
-      rack_response({'message' => '404 Not found'}.to_json, 404)
+      rack_response({ 'message' => '404 Not found' }.to_json, 404)
     end
 
     rescue_from :all do |exception|
@@ -18,7 +18,7 @@ module API
       message << "  " << trace.join("\n  ")
 
       API.logger.add Logger::FATAL, message
-      rack_response({'message' => '500 Internal Server Error'}, 500)
+      rack_response({ 'message' => '500 Internal Server Error' }, 500)
     end
 
     format :json

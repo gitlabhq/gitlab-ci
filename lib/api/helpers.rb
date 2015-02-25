@@ -6,8 +6,8 @@ module API
     def current_user
       @current_user ||= begin
         options = {
-          :private_token => (params[PRIVATE_TOKEN_PARAM] || env[PRIVATE_TOKEN_HEADER]),
-          :url => params[:url]
+          private_token: (params[PRIVATE_TOKEN_PARAM] || env[PRIVATE_TOKEN_HEADER]),
+          url: params[:url]
         }
         UserSession.new.authenticate_by_token(options)
       end
@@ -80,7 +80,7 @@ module API
     end
 
     def render_api_error!(message, status)
-      error!({'message' => message}, status)
+      error!({ 'message' => message }, status)
     end
 
     private

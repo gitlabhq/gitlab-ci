@@ -71,5 +71,5 @@ GitlabCi::Application.routes.draw do
     resources :builds, only: :index
   end
 
-  root :to => 'projects#index'
+  root to: 'projects#index'
 end
