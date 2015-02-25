@@ -1,3 +1,6 @@
+v7.9.0
+  - Reset user session if token is invalid
+
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
   - GitLab CI has same version as GitLab since now

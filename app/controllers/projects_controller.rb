@@ -21,6 +21,8 @@ class ProjectsController < ApplicationController
     @projects = Project.where(gitlab_id: @gl_projects.map(&:id)).order('name ASC')
     @total_count = @gl_projects.size
     @gl_projects.reject! { |gl_project| @projects.map(&:gitlab_id).include?(gl_project.id) }
+  rescue Network::UnauthorizedError
+    raise
   rescue
     @error = 'Failed to fetch GitLab projects'
   end

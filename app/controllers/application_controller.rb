@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  rescue_from Network::UnauthorizedError, :with => :invalid_token
   before_filter :default_headers
   before_filter :check_config
 
@@ -77,5 +78,10 @@ class ApplicationController < ActionController::Base
     end
   rescue Settingslogic::MissingSetting, NoMethodError
     redirect_to oauth2_help_path
+  end
+
+  def invalid_token
+    reset_session
+    redirect_to :root
   end
 end

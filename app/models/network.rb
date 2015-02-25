@@ -1,4 +1,6 @@
 class Network
+  class UnauthorizedError < StandardError; end
+
   include HTTParty
 
   API_PREFIX = '/api/v3/'
@@ -12,11 +14,7 @@ class Network
     endpoint = File.join(url, API_PREFIX, 'user')
     response = self.class.get(endpoint, opts)
 
-    if response.code == 200
-      response.parsed_response
-    else
-      nil
-    end
+    build_response(response)
   end
 
   def authenticate_by_token(url, api_opts)
@@ -28,11 +26,7 @@ class Network
     endpoint = File.join(url, API_PREFIX, 'user.json')
     response = self.class.get(endpoint, opts)
 
-    if response.code == 200
-      response.parsed_response
-    else
-      nil
-    end
+    build_response(response)
   end
 
 
@@ -54,11 +48,7 @@ class Network
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.get(endpoint, opts)
 
-    if response.code == 200
-      response.parsed_response
-    else
-      nil
-    end
+    build_response(response)
   end
 
   def project(url, api_opts, project_id)
@@ -72,11 +62,7 @@ class Network
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.get(endpoint, opts)
 
-    if response.code == 200
-      response.parsed_response
-    else
-      nil
-    end
+    build_response(response)
   end
 
   def project_hooks(url, api_opts, project_id)
@@ -90,11 +76,7 @@ class Network
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.get(endpoint, opts)
 
-    if response.code == 200
-      response.parsed_response
-    else
-      nil
-    end
+    build_response(response)
   end
 
   def enable_ci(url, project_id, ci_opts, token)
@@ -107,8 +89,11 @@ class Network
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.put(endpoint, opts)
 
-    if response.code == 200
+    case response.code
+    when 200
       true
+    when 401
+      raise UnauthorizedError
     else
       nil
     end
@@ -124,8 +109,17 @@ class Network
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.delete(endpoint, opts)
 
-    if response.code == 200
+    build_response(response)
+  end
+
+  private
+
+  def build_response(response)
+    case response.code
+    when 200
       response.parsed_response
+    when 401
+      raise UnauthorizedError
     else
       nil
     end
