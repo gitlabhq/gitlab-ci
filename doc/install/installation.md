@@ -222,7 +222,7 @@ production:
 
 
 Now you need Runners to process your builds.
-Checkout [runner repository](https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/README.md) for setup info.
+Checkout the #{link_to 'GitLab Runner section', 'https://about.gitlab.com/gitlab-ci/#gitlab-runner', target: '_blank'} to install it
 
 # Done!
 
