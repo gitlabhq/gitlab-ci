@@ -50,3 +50,28 @@ Returns:
   "token" : "12b68e90394084703135"
 }
 ```
+
+### Delete a runner
+
+
+__Authentication is done by runner token__
+
+Used to removing runners.
+
+    POST /runners/delete
+
+Parameters:
+
+  * `token` (required) - The runner token.
+
+Returns:
+
+```json
+{
+  "id" : 1,
+  "token" : "d14963981a428f70121777e50643d1",
+  "created_at" : "2015-02-26T11:39:39.232Z",
+  "updated_at" : "2015-02-26T11:39:39.232Z",
+  "description" : "awesome runner"
+}
+```

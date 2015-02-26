@@ -1,5 +1,6 @@
 v7.9.0
   - Reset user session if token is invalid
+  - Runner delete api endpoint
 
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
