@@ -79,4 +79,12 @@ describe API::API do
       response.status.should == 400
     end
   end
+
+  describe "DELETE /runners/delete" do
+    let!(:runner) { FactoryGirl.create(:runner) }
+    before { delete api("/runners/delete"), token: runner.token }
+
+    it { response.status.should == 200 }
+    it { Runner.count.should == 0 }
+  end
 end

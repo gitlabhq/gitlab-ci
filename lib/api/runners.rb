@@ -17,6 +17,18 @@ module API
         end
       end
 
+      # Delete runner
+      # Parameters:
+      #   token (required) - The unique token of runner
+      #
+      # Example Request:
+      #   GET /runners/delete
+      delete "delete" do
+        required_attributes! [:token]
+        authenticate_runner!
+        Runner.find_by_token(params[:token]).destroy
+      end
+
       # Register a new runner
       #
       # Note: This is an "internal" API called when setting up
