@@ -232,6 +232,18 @@ You will be asked to authorize with your GitLab credentials.
 
 **Enjoy!**
 
+# 10. Upgrading
+
+Retrieve the latest version of gitlab-ci:
+
+    cd home/gitlab_ci/gitlab-ci
+    git checkout --track origin/5-1-stable && git pull
+
+Migrate the database:
+
+    bundle exec rake db:migrate
+
+
 ## Advanced settings
 
 ### SMTP email settings
