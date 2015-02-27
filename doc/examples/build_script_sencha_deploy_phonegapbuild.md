@@ -34,7 +34,7 @@ Bash
 --------
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 8p8@Mobimentum 2013-09-04 Build a Sencha app and publish repo to user PhoneGapBuild
 
