@@ -7,7 +7,7 @@ upstream gitlab_ci {
 }
 
 server {
-  listen 80 default_server;         # e.g., listen 192.168.1.1:80;
+  listen default_server:80;         # e.g., listen 192.168.1.1:80;
   server_name ci.gitlab.org;     # e.g., server_name source.example.com;
   root /home/gitlab_ci/gitlab-ci/public;
 
