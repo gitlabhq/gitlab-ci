@@ -31,7 +31,7 @@ class Commit < ActiveRecord::Base
   end
 
   def last_build
-    builds.last
+    builds.order(:id).last
   end
 
   def retry
@@ -97,13 +97,13 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds
-    project.jobs.where(build_branches: true).active.map do |job|
+    project.jobs.where(build_branches: true).active.parallel.map do |job|
       create_build_from_job(job)
     end
   end
 
   def create_builds_for_tag(ref = '')
-    project.jobs.where(build_tags: true).active.map do |job|
+    project.jobs.where(build_tags: true).active.parallel.map do |job|
       create_build_from_job(job, ref)
     end
   end
@@ -130,6 +130,16 @@ class Commit < ActiveRecord::Base
 
   def retried_builds
     @retried_builds ||= (builds - builds_without_retry)
+  end
+
+  def run_deploy_job(ref)
+    if success? && !last_build.job.deploy?
+      project.jobs.deploy.active.each do |job|
+        if job.run_for_ref?(ref)
+          create_build_from_job(job)
+        end
+      end
+    end
   end
 
   def status

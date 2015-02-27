@@ -21,4 +21,16 @@ class Job < ActiveRecord::Base
 
   scope :active, ->() { where(active: true) }
   scope :archived, ->() { where(active: false) }
+  scope :parallel, ->(){ where(job_type: "parallel") }
+  scope :deploy, ->(){ where(job_type: "deploy") }
+
+  validate :refs, length: { maximum: 100 }
+  
+  def deploy?
+    job_type == "deploy"
+  end
+
+  def run_for_ref?(ref)
+    refs.blank? || refs.split(",").map{|ref| ref.strip}.include?(ref)
+  end
 end

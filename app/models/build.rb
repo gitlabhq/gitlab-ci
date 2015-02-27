@@ -117,6 +117,7 @@ class Build < ActiveRecord::Base
         WebHookService.new.build_end(build)
       end
 
+      build.commit.run_deploy_job(build.ref)
       project.execute_services(build)
 
       if project.coverage_enabled?

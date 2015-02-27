@@ -1,3 +1,11 @@
+%ul.nav.nav-tabs.append-bottom-20
+  %li{class: "active"}
+    = link_to 'Test (run in parallel)', project_jobs_path(@project)
+  %li
+    = link_to 'Deploy (run on success)', deploy_jobs_project_jobs_path(@project)
+  
+  
+
 .btn-group.pull-right
   = link_to project_jobs_path(@project), class: "btn #{'active' unless params[:list]}" do
     %i.icon-edit
