@@ -60,6 +60,13 @@ describe API::API do
         put api("/builds/#{build.id}"), token: runner.token
         response.status.should == 200
       end
+
+      it 'Should not override trace information when no trace is given' do
+        build.run!
+        build.update!(trace: 'hello_world')
+        put api("/builds/#{build.id}"), token: runner.token
+        expect(build.reload.trace).to eq 'hello_world'
+      end
     end
   end
 

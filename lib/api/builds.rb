@@ -32,7 +32,7 @@ module API
       put ":id" do
         authenticate_runner!
         build = Build.where(runner_id: current_runner.id).running.find(params[:id])
-        build.update_attributes(trace: params[:trace])
+        build.update_attributes(trace: params[:trace]) if params[:trace]
 
         case params[:state].to_s
         when 'success'
