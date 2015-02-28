@@ -15,8 +15,12 @@ module Charts
 
     def push(from, to, format)
       @labels << from.strftime(format)
-      @total << project.builds.where("? > builds.created_at AND builds.created_at > ?", to, from).count
-      @success << project.builds.where("? > builds.created_at AND builds.created_at > ?", to, from).success.count
+      @total << project.builds.
+        where('? > builds.created_at AND builds.created_at > ?', to, from).
+        count(:all)
+      @success << project.builds.
+        where('? > builds.created_at AND builds.created_at > ?', to, from).
+        success.count(:all)
     end
   end
 

@@ -74,4 +74,7 @@ GitlabCi::Application.configure do
   config.eager_load = true
 
   config.assets.js_compressor = :uglifier
+
+  # Do not dump schema after migrations.
+  config.active_record.dump_schema_after_migration = false
 end
