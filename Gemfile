@@ -87,6 +87,7 @@ group :development do
   gem 'annotate'
   gem 'quiet_assets'
   gem "letter_opener"
+  gem "spring-commands-rspec"
 end
 
 
@@ -97,6 +98,7 @@ group :development, :test do
   gem 'poltergeist'
   gem 'factory_girl_rails'
   gem "ffaker"
+  gem "byebug"
 
   gem 'shoulda-matchers'
   gem 'guard-rspec'
