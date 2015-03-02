@@ -2,6 +2,7 @@ v7.9.0
   - Reset user session if token is invalid
   - Runner delete api endpoint
   - Fix bug about showing edit button on commit page if user does not have permissions
+  - Implementation of deploy jobs after all parallel jobs(tests).
 
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
