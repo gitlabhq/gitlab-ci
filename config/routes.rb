@@ -1,11 +1,11 @@
 require 'sidekiq/web'
 
-GitlabCi::Application.routes.draw do
+Rails.application.routes.draw do
   # API
   API::API.logger Rails.logger
   mount API::API => '/api'
 
-  resource :help do 
+  resource :help do
     get :oauth2
   end
 

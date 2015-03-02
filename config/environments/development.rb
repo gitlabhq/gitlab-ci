@@ -31,4 +31,8 @@ GitlabCi::Application.configure do
   config.eager_load = false
 
   config.action_mailer.delivery_method = :letter_opener
+  # Adds additional error checking when serving assets at runtime.
+  # Checks for improperly declared sprockets dependencies.
+  # Raises helpful error messages.
+  config.assets.raise_runtime_errors = true
 end

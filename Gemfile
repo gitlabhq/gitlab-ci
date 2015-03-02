@@ -8,7 +8,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '4.0.10'
+gem 'rails', '4.1.9'
 gem 'protected_attributes'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
@@ -28,7 +28,7 @@ gem 'settingslogic'
 gem "unicorn", "~> 4.8.2"
 
 # Haml
-gem 'haml-rails'
+gem 'haml-rails','~> 0.5.3'
 
 # Background jobs
 gem 'slim'
@@ -92,6 +92,7 @@ end
 
 
 group :development, :test do
+  gem 'minitest'
   gem 'pry'
   gem 'rspec-rails'
   gem 'capybara'
@@ -108,7 +109,6 @@ group :development, :test do
 
   gem "simplecov", require: false
   gem 'coveralls', require: false
-  gem 'minitest', '4.3.2'
   gem 'rubocop', '0.28.0', require: false
 end
 
