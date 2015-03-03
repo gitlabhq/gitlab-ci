@@ -14,6 +14,8 @@ v7.8.0
   - Disable turbolink on links pointing out to GitLab server
   - Add test coverage parsing example for pytest-cov
   - Upgrade raindrops gem
+  - Allow to pass description and tag list during Runner's registration
+  - Added api for project jobs
 
 v5.4.2
   - Fix exposure of project token via build data

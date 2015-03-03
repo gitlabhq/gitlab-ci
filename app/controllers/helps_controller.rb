@@ -5,6 +5,10 @@ class HelpsController < ApplicationController
   end
 
   def oauth2
-    render layout: "empty"
+    if valid_config?
+      redirect_to root_path
+    else
+      render layout: 'empty'
+    end
   end
 end

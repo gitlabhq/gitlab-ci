@@ -16,9 +16,11 @@ describe Upgrader do
   end
 
   describe 'latest_version_raw' do
-    it 'should be latest version for GitLab 5' do
-      upgrader.stub(current_version_raw: "3.0.0")
-      upgrader.latest_version_raw.should == "v3.2.0"
+    it 'should be latest version for GitLab' do
+      upgrader.stub(current_version_raw: '3.0.0')
+      upgrader.stub(git_tags: [
+        '1b5bee25b51724214c7a3307ef94027ab93ec982        refs/tags/v7.8.1'])
+      upgrader.latest_version_raw.should == 'v7.8.1'
     end
   end
 end

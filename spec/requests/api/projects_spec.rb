@@ -6,16 +6,16 @@ describe API::API do
   let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
   let(:auth_opts) {
     {
-      :email => "test@test.com",
-      :password => "123456"
+      email: "test@test.com",
+      password: "123456"
     }
   }
   let(:private_token) { Network.new.authenticate(gitlab_url, auth_opts)["private_token"] }
 
   let(:options) {
     {
-      :private_token => private_token,
-      :url => gitlab_url
+      private_token: private_token,
+      url: gitlab_url
     }
   }
   
@@ -26,8 +26,8 @@ describe API::API do
   context "requests for scoped projects" do
     # NOTE: These ids are tied to the actual projects on demo.gitlab.com
     describe "GET /projects" do
-      let!(:project1) { FactoryGirl.create(:project, :name => "gitlabhq", :gitlab_id => 3) }
-      let!(:project2) { FactoryGirl.create(:project, :name => "gitlab-ci", :gitlab_id => 4) }
+      let!(:project1) { FactoryGirl.create(:project, name: "gitlabhq", gitlab_id: 3) }
+      let!(:project2) { FactoryGirl.create(:project, name: "gitlab-ci", gitlab_id: 4) }
 
       it "should return all projects on the CI instance" do
         get api("/projects"), options
@@ -40,8 +40,8 @@ describe API::API do
 
     describe "GET /projects/owned" do
       # NOTE: This user doesn't own any of these projects on demo.gitlab.com
-      let!(:project1) { FactoryGirl.create(:project, :name => "gitlabhq", :gitlab_id => 3) }
-      let!(:project2) { FactoryGirl.create(:project, :name => "random-project", :gitlab_id => 9898) }
+      let!(:project1) { FactoryGirl.create(:project, name: "gitlabhq", gitlab_id: 3) }
+      let!(:project2) { FactoryGirl.create(:project, name: "random-project", gitlab_id: 9898) }
 
       it "should return all projects on the CI instance" do
         get api("/projects/owned"), options
@@ -52,11 +52,141 @@ describe API::API do
     end
   end
 
+  describe "POST /projects/:project_id/jobs" do
+    let!(:project) { FactoryGirl.create(:project) }
+
+    let(:job_info) {
+      {
+        name: "A Job Name",
+        commands: "ls -lad",
+        active: false,
+        build_branches: false,
+        build_tags: true,
+        tags: "release, deployment",
+      }
+    }
+    let(:invalid_job_info) { {} }
+
+    context "Invalid Job Info" do
+      before do
+        options.merge!(invalid_job_info)
+      end
+
+      it "should error with invalid data" do
+        post api("/projects/#{project.id}/jobs"), options
+        response.status.should == 400
+      end
+    end
+
+    context "Valid Job Info" do
+      before do
+        options.merge!(job_info)
+      end
+
+      it "should create a job for specified project" do
+        post api("/projects/#{project.id}/jobs"), options
+        response.status.should == 201
+        json_response["name"].should == job_info[:name]
+        json_response["commands"].should == job_info[:commands]
+        json_response["active"].should == job_info[:active]
+        json_response["build_branches"].should == job_info[:build_branches]
+        json_response["build_tags"].should == job_info[:build_tags]
+        json_response["tags"].should have(2).items
+      end
+
+      it "fails to create job for non existsing project" do
+        post api("/projects/non-existant-id/jobs"), options
+        response.status.should == 404
+      end
+    end
+  end
+
+  describe "GET /projects/:project_id/jobs" do
+    let!(:project) { FactoryGirl.create(:project) }
+    let(:job_info) {
+      {
+        name: "A Job Name",
+        commands: "ls -lad",
+      }
+    }
+
+    before do
+      options.merge!(job_info)
+    end
+
+    it "should list the project's jobs" do
+      get api("/projects/#{project.id}/jobs"), options
+      response.status.should == 200
+      json_response.count.should == 1
+      json_response.first["project_id"].should == project.id
+    end
+
+    it "should delete default job, add & list the project's new jobs" do
+      # delete default job
+      get api("/projects/#{project.id}/jobs"), options
+      response.status.should == 200
+      json_response.count.should == 1
+      job_id = json_response.first["id"]
+      delete api("/projects/#{project.id}/jobs/#{job_id}"), options
+      # add a new job
+      post api("/projects/#{project.id}/jobs"), options
+      response.status.should == 201
+      # get the new job
+      get api("/projects/#{project.id}/jobs"), options
+      # assert job
+      response.status.should == 200
+      json_response.count.should == 1
+      json_response.first["project_id"].should == project.id
+      json_response.first["name"].should == job_info[:name]
+      json_response.first["commands"].should == job_info[:commands]
+    end
+
+    it "fails to list jobs for non existsing project" do
+      get api("/projects/non-existant-id/jobs"), options
+      response.status.should == 404
+    end
+  end
+
+  describe "DELETE /projects/:id/jobs/:job_id" do
+    let!(:project) { FactoryGirl.create(:project) }
+
+    let(:job_info) {
+      {
+        commands: "ls -lad",
+        name: "A Job Name",
+      }
+    }
+
+    before do
+      options.merge!(job_info)
+    end
+
+    it "should delete a project job" do
+      post api("/projects/#{project.id}/jobs"), options
+      response.status.should == 201
+      json_response["name"].should == job_info[:name]
+      json_response["commands"].should == job_info[:commands]
+      job_id = json_response["id"]
+      delete api("/projects/#{project.id}/jobs/#{job_id}"), options
+      response.status.should == 200
+    end
+
+    it "fails to delete a job for a non existsing project" do
+      delete api("/projects/non-existant-id/jobs/non-existant-job-id"), options
+      response.status.should == 404
+    end
+
+    it "fails to delete a job for a non existsing job id" do
+      delete api("/projects/#{project.id}/jobs/non-existant-job-id"), options
+      response.status.should == 404
+    end
+  end
+
   describe "POST /projects/:project_id/webhooks" do
     let!(:project) { FactoryGirl.create(:project) }
 
     context "Valid Webhook URL" do
-      let!(:webhook) { {:web_hook => "http://example.com/sth/1/ala_ma_kota" } }
+      let!(:webhook) { {web_hook: "http://example.com/sth/1/ala_ma_kota" } }
 
       before do
         options.merge!(webhook)
@@ -76,7 +206,7 @@ describe API::API do
     end
 
     context "Invalid Webhook URL" do
-      let!(:webhook) { {:web_hook => "ala_ma_kota" } }
+      let!(:webhook) { {web_hook: "ala_ma_kota" } }
 
       before do
         options.merge!(webhook)
@@ -117,7 +247,7 @@ describe API::API do
 
   describe "PUT /projects/:id" do
     let!(:project) { FactoryGirl.create(:project) }
-    let!(:project_info) { {:name => "An updated name!" } }
+    let!(:project_info) { {name: "An updated name!" } }
 
     before do
       options.merge!(project_info)
@@ -149,10 +279,10 @@ describe API::API do
   describe "POST /projects" do
     let(:project_info) {
       {
-        :name => "My project",
-        :gitlab_id => 1,
-        :gitlab_url => "http://example.com/testing/testing",
-        :ssh_url_to_repo => "ssh://example.com/testing/testing.git"
+        name: "My project",
+        gitlab_id: 1,
+        gitlab_url: "http://example.com/testing/testing",
+        ssh_url_to_repo: "ssh://example.com/testing/testing.git"
       }
     }
 
