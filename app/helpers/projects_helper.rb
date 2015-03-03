@@ -4,8 +4,8 @@ module ProjectsHelper
   end
 
   def success_ratio(success_builds, failed_builds)
-    failed_builds = failed_builds.count
-    success_builds = success_builds.count
+    failed_builds = failed_builds.count(:all)
+    success_builds = success_builds.count(:all)
 
     return 100 if failed_builds.zero?
 

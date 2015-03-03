@@ -63,9 +63,9 @@ describe Build do
     let(:create_from_build) { Build.create_from build }
 
     it ('there should be a pending task') do
-      Build.pending.count.should eq(0)
+      expect(Build.pending.count(:all)).to eq 0
       create_from_build
-      Build.pending.count.should > 0
+      expect(Build.pending.count(:all)).to be > 0
     end
   end
 

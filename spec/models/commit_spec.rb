@@ -56,9 +56,9 @@ describe Commit do
     end
 
     it "creates new build" do
-      commit.builds.count.should == 2
+      expect(commit.builds.count(:all)).to eq 2
       commit.retry
-      commit.builds.count.should == 3
+      expect(commit.builds.count(:all)).to eq 3
     end
   end
 
