@@ -183,8 +183,8 @@ class Commit < ActiveRecord::Base
   end
 
   def coverage
-    if project.coverage_enabled? && builds.size == 1
-      builds.first.coverage
+    if project.coverage_enabled? && builds.size > 0
+      builds.last.coverage
     end
   end
 
