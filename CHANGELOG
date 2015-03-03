@@ -2,6 +2,8 @@ v7.9.0
   - Reset user session if token is invalid
   - Runner delete api endpoint
   - Fix bug about showing edit button on commit page if user does not have permissions
+  - Allow to pass description and tag list during Runner's registration
+  - Added api for project jobs
 
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
@@ -14,8 +16,6 @@ v7.8.0
   - Disable turbolink on links pointing out to GitLab server
   - Add test coverage parsing example for pytest-cov
   - Upgrade raindrops gem
-  - Allow to pass description and tag list during Runner's registration
-  - Added api for project jobs
 
 v5.4.2
   - Fix exposure of project token via build data
