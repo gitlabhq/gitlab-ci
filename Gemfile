@@ -96,7 +96,7 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'poltergeist'
+  gem 'poltergeist', '~> 1.5.1'
   gem 'factory_girl_rails'
   gem "ffaker"
   gem "byebug"
