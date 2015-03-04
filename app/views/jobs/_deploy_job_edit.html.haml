@@ -8,20 +8,13 @@
             %li= msg
 
   = f.fields_for :jobs do |job_form|
-    - if job_form.object.job_type == "parallel" || job_form.object.new_record?
+    - if job_form.object.job_type == "deploy" || job_form.object.new_record?
+
+      = job_form.hidden_field :job_type, value: "deploy"
       .form-group
         = f.label :name, 'Name', class: 'control-label'
         .col-sm-10
-          = job_form.text_field :name, class: 'form-control', placeholder: "Ex. cucumber"
-      .form-group
-        = f.label :build_branches, 'Trigger', class: 'control-label'
-        .col-sm-10
-          .checkbox
-            = f.label :build_branches, 'Builds commits', class: ''
-            = job_form.check_box :build_branches
-          .checkbox
-            = f.label :build_tags, 'Build tags', class: ''
-            = job_form.check_box :build_tags
+          = job_form.text_field :name, class: 'form-control', placeholder: "Staging"
       .form-group
         = label_tag :tag_list, class: 'control-label' do
           Tags
@@ -30,6 +23,14 @@
           .help-block
             You can setup jobs to only use runners with specific tags.
             Leave blank if you want this job to use any runner
+
+      .form-group
+        = label_tag :refs, class: 'control-label' do
+          Refs
+        .col-sm-10  
+          = job_form.text_field :refs, class: 'form-control', placeholder: "master, staging"
+          .help-block
+            You can specify git references to run deploy jobs. Accepts strings only
 
       .form-group
         = f.label :commands, 'Script', class: 'control-label'

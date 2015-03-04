@@ -4,6 +4,7 @@ v7.9.0
   - Fix bug about showing edit button on commit page if user does not have permissions
   - Allow to pass description and tag list during Runner's registration
   - Added api for project jobs
+  - Implementation of deploy jobs after all parallel jobs(tests).
 
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL

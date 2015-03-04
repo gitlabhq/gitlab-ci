@@ -9,6 +9,9 @@ class JobsController < ApplicationController
   def index
   end
 
+  def deploy_jobs
+  end
+
   private
 
   def project

@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe Commit do
   let(:project) { FactoryGirl.create :project }
-  let(:commit) { FactoryGirl.create :commit }
+  let(:commit) { FactoryGirl.create :commit, project: project }
   let(:commit_with_project) { FactoryGirl.create :commit, project: project }
 
   it { should belong_to(:project) }
@@ -158,5 +158,22 @@ describe Commit do
     subject { commit_with_project.gitlab? }
 
     it { should eq(project.gitlab?) }
+  end
+
+  describe "run_deploy_job" do
+    before do
+      job = FactoryGirl.create :job, project: project
+      job1 = FactoryGirl.create :job, project: project
+      FactoryGirl.create :job, job_type: :deploy, project: project
+      FactoryGirl.create :build, commit: commit, status: :success, job: job
+      FactoryGirl.create :build, commit: commit, status: :success, job: job1
+      project.reload
+    end
+
+    it "creates new build for deploy" do
+      commit.run_deploy_job(commit.ref)
+
+      commit.builds.count.should == 3
+    end
   end
 end

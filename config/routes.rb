@@ -49,7 +49,11 @@ Rails.application.routes.draw do
     end
 
     resources :runners, only: [:index, :edit, :update, :destroy]
-    resources :jobs, only: [:index]
+    resources :jobs, only: [:index] do
+      collection do
+        get :deploy_jobs
+      end
+    end
   end
 
   resource :user_sessions do
