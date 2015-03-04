@@ -165,8 +165,6 @@ describe Commit do
       job = FactoryGirl.create :job, project: project
       job1 = FactoryGirl.create :job, project: project
       FactoryGirl.create :job, job_type: :deploy, project: project
-      # binding.pry
-
       FactoryGirl.create :build, commit: commit, status: :success, job: job
       FactoryGirl.create :build, commit: commit, status: :success, job: job1
       project.reload
