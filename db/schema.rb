@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150113001835) do
+ActiveRecord::Schema.define(version: 20150204001035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 20150113001835) do
     t.string   "before_sha"
     t.text     "push_data"
     t.integer  "runner_id"
-    t.float    "coverage"
     t.integer  "commit_id"
+    t.float    "coverage"
     t.text     "commands"
     t.integer  "job_id"
   end
