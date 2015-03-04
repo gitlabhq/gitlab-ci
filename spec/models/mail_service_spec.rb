@@ -28,7 +28,7 @@ describe MailService do
       end
 
       it do
-        should_email(commit.git_author_email)
+        should_email("git@example.com")
         mail.execute(build)
       end
 
@@ -50,7 +50,7 @@ describe MailService do
       end
 
       it do
-        should_email(commit.git_author_email)
+        should_email("git@example.com")
         mail.execute(build)
       end
 
@@ -77,7 +77,7 @@ describe MailService do
       end
 
       it do
-        should_email(commit.git_author_email)
+        should_email("git@example.com")
         should_email("jeroen@example.com")
         mail.execute(build)
       end

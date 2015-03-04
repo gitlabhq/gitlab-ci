@@ -25,6 +25,7 @@ FactoryGirl.define do
         before: '76de212e80737a608d939f648d959671fb0a0142',
         after: '97de212e80737a608d939f648d959671fb0a0142',
         user_name: 'Git User',
+        user_email: 'git@example.com',
         repository: {
           name: 'test-data',
           url: 'ssh://git@gitlab.com/test/test-data.git',
