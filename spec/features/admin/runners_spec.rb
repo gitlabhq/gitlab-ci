@@ -8,6 +8,9 @@ describe "Admin Runners" do
 
   describe "GET /admin/runners" do
     before do
+      runner = FactoryGirl.create(:runner)
+      commit = FactoryGirl.create(:commit)
+      FactoryGirl.create(:build, commit: commit, runner_id: runner.id)
       visit admin_runners_path
     end
 
