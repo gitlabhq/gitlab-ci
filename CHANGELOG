@@ -5,6 +5,7 @@ v7.9.0
   - Allow to pass description and tag list during Runner's registration
   - Added api for project jobs
   - Implementation of deploy jobs after all parallel jobs(tests).
+  - Add scroll up/down buttons for better mobile experience with large build traces
 
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
