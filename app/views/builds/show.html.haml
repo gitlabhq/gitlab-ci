@@ -12,7 +12,7 @@
   = link_to project_commit_path(@project, @build.commit) do
     &larr; Back to project commit
 %hr
-
+#up-build-trace
 - if @commit.matrix?
   %ul.nav.nav-tabs.append-bottom-10
     - @commit.builds_without_retry.each do |build|
@@ -66,10 +66,17 @@
         .autoscroll-container
           %button.btn.btn-success.btn-sm#autoscroll-button{:type => "button", :data => {:state => 'disabled'}} enable autoscroll
         .clearfix
+    .scroll-controls
+      = link_to '#up-build-trace', class: 'btn' do
+        %i.icon-angle-up
+      = link_to '#down-build-trace', class: 'btn' do
+        %i.icon-angle-down
+
     %pre.trace#build-trace
       %code.bash
         = preserve do
           = raw @build.trace_html
+    %div#down-build-trace
 
   .col-md-3
     - if @build.coverage
