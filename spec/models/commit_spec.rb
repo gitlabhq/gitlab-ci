@@ -173,7 +173,7 @@ describe Commit do
     it "creates new build for deploy" do
       commit.run_deploy_job(commit.ref)
 
-      commit.builds.count.should == 3
+      commit.builds.size.should == 3
     end
   end
 end
