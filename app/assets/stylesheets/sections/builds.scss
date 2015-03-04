@@ -25,6 +25,18 @@ pre.trace {
   z-index: 100;
 }
 
+.scroll-controls {
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
+  z-index: 100;
+
+  a {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
 .build-widget {
   padding: 10px;
   background: #f4f4f4;
