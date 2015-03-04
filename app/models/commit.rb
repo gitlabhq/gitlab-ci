@@ -92,7 +92,11 @@ class Commit < ActiveRecord::Base
 
   def project_recipients
     recipients = project.email_recipients.split(' ')
-    recipients << git_author_email if project.email_add_committer?
+
+    if project.email_add_committer? && push_data[:user_email].present?
+      recipients << push_data[:user_email]
+    end
+
     recipients.uniq
   end
 

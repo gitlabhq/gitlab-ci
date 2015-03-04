@@ -32,6 +32,7 @@ class CreateCommitService
           after: sha,
           ref: ref,
           user_name: params[:user_name],
+          user_email: params[:user_email],
           repository: params[:repository],
           commits: params[:commits],
           total_commits_count: params[:total_commits_count]

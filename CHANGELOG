@@ -11,6 +11,7 @@ v7.9.0
 
 v7.8.2
   - Fix the broken build failed email
+  - Notify only pusher instead of commiter
 
 v7.8.0
   - Fix OAuth login with GitLab installed in relative URL
