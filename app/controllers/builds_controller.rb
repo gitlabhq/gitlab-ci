@@ -14,7 +14,7 @@ class BuildsController < ApplicationController
 
       if commit
         # Redirect to commit page
-        redirect_to project_commit_path(commit.project, commit)
+        redirect_to project_show_commit_path(@project, sha: @build.commit.sha, ref: @build.commit.ref)
         return
       end
     end

@@ -11,7 +11,7 @@ describe "Commits" do
 
   describe "GET /:project/commits/:sha" do
     before do
-      visit project_commit_path(@project, @commit)
+      visit project_show_commit_path(@project, sha: @commit.sha, ref: @commit.ref)
     end
 
     it { page.should have_content @commit.sha[0..7] }

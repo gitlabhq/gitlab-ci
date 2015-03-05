@@ -19,7 +19,7 @@ class CreateCommitService
       return false
     end
 
-    commit = project.commits.find_by(sha: sha)
+    commit = project.commits.find_by_sha_and_ref(sha, ref)
 
     # Create commit if not exists yet
     unless commit
