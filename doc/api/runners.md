@@ -58,7 +58,7 @@ __Authentication is done by runner token__
 
 Used to removing runners.
 
-    POST /runners/delete
+    DELETE /runners/delete
 
 Parameters:
 
