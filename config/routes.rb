@@ -48,7 +48,13 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :runners, only: [:index, :edit, :update, :destroy]
+    resources :runners, only: [:index, :edit, :update, :destroy] do
+      member do
+        get :resume
+        get :pause
+      end
+    end
+
     resources :jobs, only: [:index] do
       collection do
         get :deploy_jobs
@@ -65,6 +71,8 @@ Rails.application.routes.draw do
     resources :runners, only: [:index, :show, :update, :destroy] do
       member do
         put :assign_all
+        get :resume
+        get :pause
       end
     end
 

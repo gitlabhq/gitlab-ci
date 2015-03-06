@@ -6,6 +6,8 @@ v7.9.0
   - Added api for project jobs
   - Implementation of deploy jobs after all parallel jobs(tests).
   - Add scroll up/down buttons for better mobile experience with large build traces
+  - Add runner last contact (Kamil Trzciński)
+  - Allow to pause runners - when paused runner will not receive any new build (Kamil Trzciński)
 
 v7.8.2
   - Fix the broken build failed email

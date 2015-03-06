@@ -6,6 +6,8 @@
       %span.label.label-success shared
     - else
       %span.label.label-info specific
+    - unless runner.active?
+      %span.label.label-danger paused
 
   %td
     = link_to admin_runner_path(runner) do
@@ -32,10 +34,17 @@
       %span.label.label-primary
         = tag
   %td
-    #{time_ago_in_words(runner.created_at)} ago
+    - if runner.contacted_at
+      #{time_ago_in_words(runner.contacted_at)} ago
+    - else
+      Never
   %td
     .pull-right
       = link_to 'Edit', admin_runner_path(runner), class: 'btn btn-small'
       &nbsp;
+      - if runner.active?
+        = link_to 'Pause', [:pause, :admin, runner], data: { confirm: "Are you sure?" }, method: :get, class: 'btn btn-danger btn-small'
+      - else
+        = link_to 'Resume', [:resume, :admin, runner], method: :get, class: 'btn btn-success btn-small'
       = link_to 'Remove', [:admin, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
 

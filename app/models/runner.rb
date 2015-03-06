@@ -2,11 +2,12 @@
 #
 # Table name: runners
 #
-#  id          :integer          not null, primary key
-#  token       :string(255)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  description :string(255)
+#  id           :integer          not null, primary key
+#  token        :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  contacted_at :datetime
+#  description  :string(255)
 #
 
 class Runner < ActiveRecord::Base
@@ -16,12 +17,14 @@ class Runner < ActiveRecord::Base
 
   has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 
-  attr_accessible :token, :description, :tag_list
+  attr_accessible :token, :description, :tag_list, :contacted_at, :active
 
   before_validation :set_default_values
 
   scope :specific, ->() { where(id: RunnerProject.select(:runner_id)) }
   scope :shared, ->() { where.not(id: RunnerProject.select(:runner_id)) }
+  scope :active, ->() { where(active: true) }
+  scope :paused, ->() { where(active: false) }
 
   acts_as_taggable
 
