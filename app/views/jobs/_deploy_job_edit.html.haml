@@ -21,7 +21,7 @@
         .col-sm-10
           = job_form.text_field :tag_list, class: 'form-control'
           .help-block
-            You can setup jobs to only use runners with specific tags.
+            This job will only use runners that contain all these tags.
             Leave blank if you want this job to use any runner
 
       .form-group
@@ -30,7 +30,7 @@
         .col-sm-10  
           = job_form.text_field :refs, class: 'form-control', placeholder: "master, staging"
           .help-block
-            You can specify git references to run deploy jobs. Accepts strings only
+            Run only when the above git refs strings match the branch or tag that was pushed.
 
       .form-group
         = f.label :commands, 'Script', class: 'control-label'
@@ -39,7 +39,7 @@
           %p.light
             All lines will be concatenated into one file and executed.
             %br
-            If you change the working directory or the environment this will affect all following lines too.
+            If you change the working directory or the environment this will affect all following lines.
             %br
             = link_to("Example job scripts", "https://gitlab.com/gitlab-org/gitlab-ci/tree/master/doc/examples")
           = job_form.link_to_remove "Remove this job", class: 'btn btn-danger pull-right'
