@@ -6,10 +6,11 @@ These script can be run to tests of GitLab CE on a [configured](configure_a_runn
 # Build script used at ci.gitlab.org to test the private GitLab B.V. repo at dev.gitlab.org
 
 ```bash
-export PATH=~/bin:/usr/local/bin:/usr/bin:/bin
-
+export PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin
 ruby -v
+which ruby
 gem install bundler --no-ri --no-rdoc
+
 cp config/database.yml.mysql config/database.yml
 cp config/gitlab.yml.example config/gitlab.yml
 sed "s/username\:.*$/username\: runner/" -i config/database.yml
@@ -17,8 +18,9 @@ sed "s/password\:.*$/password\: 'password'/" -i config/database.yml
 sed "s/gitlabhq_test/gitlabhq_test_$((RANDOM/5000))/" -i config/database.yml
 touch log/application.log
 touch log/test.log
-bundle --without postgres
-bundle exec rake test RAILS_ENV=test 
+bundle install --without postgres production --jobs $(nproc)
+bundle exec rake db:create RAILS_ENV=test
+RAILS_ENV=test SIMPLECOV=true bundle exec rake test
 ```
 
 # Build script on [GitHost.io](https://gitlab-ce.githost.io/projects/4/) to test the [GitLab.com repo](https://gitlab.com/gitlab-org/gitlab-ce)
