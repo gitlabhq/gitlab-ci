@@ -11,6 +11,7 @@ module API
       #   POST /builds/register
       post "register" do
         authenticate_runner!
+        update_runner_last_contact
         required_attributes! [:token]
         build = RegisterBuildService.new.execute(current_runner)
 
@@ -31,6 +32,7 @@ module API
       #   PUT /builds/:id
       put ":id" do
         authenticate_runner!
+        update_runner_last_contact
         build = Build.where(runner_id: current_runner.id).running.find(params[:id])
         build.update_attributes(trace: params[:trace]) if params[:trace]
 
