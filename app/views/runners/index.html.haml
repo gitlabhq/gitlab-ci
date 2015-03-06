@@ -20,11 +20,21 @@
     %li
       Start runner!
 
+  %h4 Each runner can be in one of the following states:
+  %div
+    %ul
+      %li
+        %span.label.label-success active
+        \- runner is active and can process any new build
+      %li
+        %span.label.label-danger paused
+        \- runner is paused and will not receive any new build
 
 %table.table
   %thead
     %tr
       %th ID
+      %th Type
       %th Runner token
       %th Description
       %th Last build
