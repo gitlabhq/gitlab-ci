@@ -14,7 +14,10 @@
       %span.label.label-primary
         = tag
   %td
-    #{time_ago_in_words(runner.created_at)} ago
+    - if runner.contacted_at
+      #{time_ago_in_words(runner.contacted_at)} ago
+    - else
+      Never
   %td
     .pull-right
       = link_to 'Edit', edit_project_runner_path(@project, runner), class: 'btn btn-small'
