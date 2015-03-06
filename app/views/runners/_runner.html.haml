@@ -2,6 +2,12 @@
   %td
     %strong ##{runner.id}
   %td
+    - if runner.active?
+      %span.label.label-success active
+    - else
+      %span.label.label-danger paused
+
+  %td
     = runner.short_sha
   %td
     .runner-description
@@ -22,6 +28,10 @@
     .pull-right
       = link_to 'Edit', edit_project_runner_path(@project, runner), class: 'btn btn-small'
       &nbsp;
+      - if runner.active?
+        = link_to 'Pause', [:pause, @project, runner], data: { confirm: "Are you sure?" }, method: :get, class: 'btn btn-danger btn-small'
+      - else
+        = link_to 'Resume', [:resume, @project, runner], method: :get, class: 'btn btn-success btn-small'
       - if runner.only_for?(@project)
         = link_to 'Remove', [@project, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
 

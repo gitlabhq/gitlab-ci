@@ -13,6 +13,8 @@ module API
         authenticate_runner!
         update_runner_last_contact
         required_attributes! [:token]
+        not_found! unless current_runner.active?
+
         build = RegisterBuildService.new.execute(current_runner)
 
         if build

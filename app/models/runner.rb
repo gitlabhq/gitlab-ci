@@ -17,12 +17,14 @@ class Runner < ActiveRecord::Base
 
   has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 
-  attr_accessible :token, :description, :tag_list, :contacted_at
+  attr_accessible :token, :description, :tag_list, :contacted_at, :active
 
   before_validation :set_default_values
 
   scope :specific, ->() { where(id: RunnerProject.select(:runner_id)) }
   scope :shared, ->() { where.not(id: RunnerProject.select(:runner_id)) }
+  scope :active, ->() { where(active: true) }
+  scope :paused, ->() { where(active: false) }
 
   acts_as_taggable
 
