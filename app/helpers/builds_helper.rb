@@ -28,8 +28,10 @@ module BuildsHelper
   def build_status_alert_class(build)
     if build.success?
       'alert-success'
-    elsif build.failed? || build.canceled?
+    elsif build.failed?
       'alert-danger'
+    elsif build.canceled?
+      'alert-disabled'
     else
       'alert-warning'
     end
