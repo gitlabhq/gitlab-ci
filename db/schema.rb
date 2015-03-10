@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306135341) do
+ActiveRecord::Schema.define(version: 20150310001733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20150306135341) do
     t.integer  "gitlab_id"
     t.boolean  "allow_git_fetch",          default: true,  null: false
     t.string   "email_recipients",         default: "",    null: false
-    t.boolean  "email_add_committer",      default: true,  null: false
+    t.boolean  "email_add_pusher",         default: true,  null: false
     t.boolean  "email_only_broken_builds", default: true,  null: false
     t.string   "skip_refs"
     t.string   "coverage_regex"

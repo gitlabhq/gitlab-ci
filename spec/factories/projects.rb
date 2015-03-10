@@ -17,7 +17,7 @@
 #  gitlab_id                :integer
 #  allow_git_fetch          :boolean          default(TRUE), not null
 #  email_recipients         :string(255)      default(""), not null
-#  email_add_committer      :boolean          default(TRUE), not null
+#  email_add_pusher      :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
 #  skip_refs                :string(255)
 #  coverage_regex           :string(255)

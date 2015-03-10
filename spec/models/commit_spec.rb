@@ -79,43 +79,41 @@ describe Commit do
   describe :project_recipients do
 
     context 'always sending notification' do
-      it 'should return git_author_email as only recipient when no additional recipients are given' do
+      it 'should return commit_pusher_email as only recipient when no additional recipients are given' do
         project = FactoryGirl.create :project,
-          email_add_committer: true,
+          email_add_pusher: true,
           email_recipients: ''
         commit =  FactoryGirl.create :commit, project: project
-        expected = 'git_author_email'
-        commit.stub(:git_author_email) { expected }
+        expected = 'commit_pusher_email'
+        commit.stub(:push_data) { { user_email: expected } }
         commit.project_recipients.should == [expected]
       end
 
-      it 'should return git_author_email and additional recipients' do
+      it 'should return commit_pusher_email and additional recipients' do
         project = FactoryGirl.create :project,
-          email_add_committer: true,
+          email_add_pusher: true,
           email_recipients: 'rec1 rec2'
         commit = FactoryGirl.create :commit, project: project
-        expected = 'git_author_email'
-        commit.stub(:git_author_email) { expected }
+        expected = 'commit_pusher_email'
+        commit.stub(:push_data) { { user_email: expected } }
         commit.project_recipients.should == ['rec1', 'rec2', expected]
       end
 
       it 'should return recipients' do
         project = FactoryGirl.create :project,
-          email_add_committer: false,
+          email_add_pusher: false,
           email_recipients: 'rec1 rec2'
         commit = FactoryGirl.create :commit, project: project
-        expected = 'git_author_email'
-        commit.stub(:git_author_email) { expected }
         commit.project_recipients.should == ['rec1', 'rec2']
       end
 
       it 'should return unique recipients only' do
         project = FactoryGirl.create :project,
-          email_add_committer: true,
+          email_add_pusher: true,
           email_recipients: 'rec1 rec1 rec2'
         commit = FactoryGirl.create :commit, project: project
         expected = 'rec2'
-        commit.stub(:git_author_email) { expected }
+        commit.stub(:push_data) { { user_email: expected } }
         commit.project_recipients.should == ['rec1', 'rec2']
       end
     end
