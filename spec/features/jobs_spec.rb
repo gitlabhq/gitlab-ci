@@ -23,4 +23,14 @@ describe "Jobs" do
       it { page.should have_content 'successfully updated'}
     end
   end
+
+  describe "GET /projects/:id/jobs/deploy_jobs" do
+    before do
+      visit deploy_jobs_project_jobs_path(@project)
+    end
+
+    it { page.should have_content @project.name } 
+    it { page.should have_link 'Add a job' }
+    it { page.should have_content 'Deploy jobs are scripts you want CI to run on succeeding all parallel builds' }
+  end
 end
