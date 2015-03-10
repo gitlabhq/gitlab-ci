@@ -23,8 +23,8 @@ defaults: &defaults
     # Send emails only on broken builds (default: true)
     # all_broken_builds: true
     # 
-    # Add committer to recipients list (default: false)
-    # add_committer: true
+    # Add pusher to recipients list (default: false)
+    # add_pusher: true
     
   gravatar:
     enabled: true

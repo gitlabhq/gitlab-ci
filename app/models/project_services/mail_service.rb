@@ -14,7 +14,7 @@
 
 class MailService < Service
   delegate :email_recipients, :email_recipients=,
-           :email_add_committer, :email_add_committer=,
+           :email_add_pusher, :email_add_pusher=,
            :email_only_broken_builds, :email_only_broken_builds=, to: :project, prefix: false
 
   before_save :update_project
@@ -36,7 +36,7 @@ class MailService < Service
   def fields
     [
       { type: 'text', name: 'email_recipients', label: 'Recipients', help: 'Whitespace-separated list of recipient addresses' },
-      { type: 'checkbox', name: 'email_add_committer', label: 'Add committer to recipients list' },
+      { type: 'checkbox', name: 'email_add_pusher', label: 'Add pusher to recipients list' },
       { type: 'checkbox', name: 'email_only_broken_builds', label: 'Notify only broken builds' }
     ]
   end

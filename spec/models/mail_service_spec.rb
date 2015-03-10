@@ -17,7 +17,7 @@ describe MailService do
     let(:mail)   { MailService.new }
 
     describe 'failed build' do
-      let(:project) { FactoryGirl.create(:project, email_add_committer: true) }
+      let(:project) { FactoryGirl.create(:project, email_add_pusher: true) }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
@@ -39,7 +39,7 @@ describe MailService do
     end
 
     describe 'successfull build' do
-      let(:project) { FactoryGirl.create(:project, email_add_committer: true, email_only_broken_builds: false) }
+      let(:project) { FactoryGirl.create(:project, email_add_pusher: true, email_only_broken_builds: false) }
       let(:commit) { FactoryGirl.create(:commit, project: project) }
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
@@ -63,7 +63,7 @@ describe MailService do
     describe 'successfull build and project has email_recipients' do
       let(:project) {
         FactoryGirl.create(:project,
-                           email_add_committer: true,
+                           email_add_pusher: true,
                            email_only_broken_builds: false,
                            email_recipients: "jeroen@example.com")
       }
@@ -91,7 +91,7 @@ describe MailService do
     describe 'successful build and notify only broken builds' do
       let(:project) {
         FactoryGirl.create(:project,
-                           email_add_committer: true,
+                           email_add_pusher: true,
                            email_only_broken_builds: true,
                            email_recipients: "jeroen@example.com")
       }
@@ -119,7 +119,7 @@ describe MailService do
     describe 'successful build and can test service' do
       let(:project) {
         FactoryGirl.create(:project,
-                           email_add_committer: true,
+                           email_add_pusher: true,
                            email_only_broken_builds: false,
                            email_recipients: "jeroen@example.com")
       }
@@ -141,7 +141,7 @@ describe MailService do
     describe 'successful build and cannot test service' do
       let(:project) {
         FactoryGirl.create(:project,
-                           email_add_committer: true,
+                           email_add_pusher: true,
                            email_only_broken_builds: true,
                            email_recipients: "jeroen@example.com")
       }
@@ -163,7 +163,7 @@ describe MailService do
     describe 'retried build should not receive email' do
       let(:project) {
         FactoryGirl.create(:project,
-                           email_add_committer: true,
+                           email_add_pusher: true,
                            email_only_broken_builds: true,
                            email_recipients: "jeroen@example.com")
       }
