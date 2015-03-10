@@ -160,7 +160,7 @@ describe Commit do
     it { should eq(project.gitlab?) }
   end
 
-  describe "run_deploy_job" do
+  describe "create_deploy_builds" do
     before do
       job = FactoryGirl.create :job, project: project
       job1 = FactoryGirl.create :job, project: project
@@ -171,7 +171,7 @@ describe Commit do
     end
 
     it "creates new build for deploy" do
-      commit.run_deploy_job(commit.ref)
+      commit.create_deploy_builds(commit.ref)
 
       commit.builds.size.should == 3
     end

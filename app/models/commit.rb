@@ -132,7 +132,7 @@ class Commit < ActiveRecord::Base
     @retried_builds ||= (builds - builds_without_retry)
   end
 
-  def run_deploy_job(ref)
+  def create_deploy_builds(ref)
     if success? && !last_build.job.deploy?
       project.jobs.deploy.active.each do |job|
         if job.run_for_ref?(ref)
