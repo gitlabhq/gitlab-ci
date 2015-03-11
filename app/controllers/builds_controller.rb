@@ -41,7 +41,7 @@ class BuildsController < ApplicationController
     build = Build.retry(@build)
 
     if params[:return_to]
-      redirect_to params[:return_to]
+      redirect_to URI.parse(params[:return_to]).path
     else
       redirect_to project_build_path(project, build)
     end
