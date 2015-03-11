@@ -83,6 +83,7 @@ gem 'nprogress-rails'
 
 
 group :development do
+  gem 'brakeman', require: false
   gem 'rack-mini-profiler', require: false
   gem 'annotate'
   gem 'quiet_assets'
