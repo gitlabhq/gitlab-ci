@@ -19,9 +19,9 @@ up-to-date and install it.
     sudo apt-get upgrade
 
 **Note:**
-During this installation some files will need to be edited manually. If 
-you are familiar with vim set it as default editor with the commands 
-below. If you are not familiar with vim please skip this and keep using 
+During this installation some files will need to be edited manually. If
+you are familiar with vim set it as default editor with the commands
+below. If you are not familiar with vim please skip this and keep using
 the default editor.
 
     # Install vim
@@ -30,8 +30,8 @@ the default editor.
 
 Install the required packages:
 
-    sudo apt-get install wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev libicu-dev openssl
-    sudo apt-get install redis-server 
+    sudo apt-get install wget curl gcc checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libreadline6-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev openssh-server git-core libyaml-dev postfix libpq-dev libicu-dev openssl nodejs
+    sudo apt-get install redis-server
 
 # 2. Ruby
 
@@ -74,10 +74,10 @@ You can use either MySQL or PostgreSQL.
 
     # Grant proper permissions to the MySQL User
     mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
-    
+
     # Logout MYSQL
     mysql> exit;
-    
+
 ### PostgreSQL
 
     # Install the database packages
@@ -98,7 +98,7 @@ You can use either MySQL or PostgreSQL.
     # Try connecting to the new database with the new user
     sudo -u gitlab_ci -H psql -d gitlab_ci_production
 
-## 5. Get code 
+## 5. Get code
 
     cd /home/gitlab_ci/
 
@@ -128,7 +128,7 @@ You can use either MySQL or PostgreSQL.
     sudo chmod -R u+rwX  tmp/pids/
 
 ### Install gems
- 
+
     # For MySQL (note, the option says "without ... postgres")
     sudo -u gitlab_ci -H bundle install --without development test postgres --deployment
 
@@ -148,10 +148,10 @@ You can use either MySQL or PostgreSQL.
 
     # Setup tables
     sudo -u gitlab_ci -H bundle exec rake setup RAILS_ENV=production
-    
+
     # Setup schedules
     sudo -u gitlab_ci -H bundle exec whenever -w RAILS_ENV=production
-   
+
 
 ## 7. Install Init Script
 
