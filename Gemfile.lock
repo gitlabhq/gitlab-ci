@@ -176,7 +176,6 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.1.2)
       launchy (~> 2.2)
-    libv8 (3.16.14.7)
     listen (2.4.0)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -254,7 +253,6 @@ GEM
     redis (3.0.6)
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
-    ref (1.0.5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rspec (2.14.1)
@@ -333,9 +331,6 @@ GEM
     term-ansicolor (1.2.2)
       tins (~> 0.8)
     terminal-table (1.4.5)
-    therubyracer (0.12.0)
-      libv8 (~> 3.16.14.0)
-      ref
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
@@ -426,7 +421,6 @@ DEPENDENCIES
   spring-commands-rspec
   stamp
   state_machine
-  therubyracer
   turbolinks
   uglifier (>= 1.0.3)
   unicorn (~> 4.8.2)
