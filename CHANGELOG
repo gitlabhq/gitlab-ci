@@ -1,3 +1,6 @@
+v7.10.0
+  - Projects sorting by last commit date
+
 v7.9.0
   - Reset user session if token is invalid
   - Runner delete api endpoint

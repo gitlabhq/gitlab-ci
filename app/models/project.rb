@@ -113,6 +113,12 @@ ls -la
         "AND runner_projects.runner_id = #{runner.id}").
       where('runner_projects.project_id' => nil)
     end
+
+    def ordered_by_last_commit_date
+      last_commit_subquery = "(SELECT project_id, MAX(created_at) created_at FROM commits GROUP BY project_id)"
+      joins("LEFT JOIN #{last_commit_subquery} AS last_commit ON projects.id = last_commit.project_id").
+        order("CASE WHEN last_commit.created_at IS NULL THEN 1 ELSE 0 END, last_commit.created_at DESC")
+    end
   end
 
   def set_default_values

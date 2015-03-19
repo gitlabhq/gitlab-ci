@@ -27,10 +27,20 @@
 
 FactoryGirl.define do
   factory :project_without_token, class: Project do
-    name 'GitLab / gitlab-shell'
+    sequence :name do |n|
+      "GitLab / gitlab-shell#{n}"
+    end
+
     default_ref 'master'
-    gitlab_url 'http://demo.gitlabhq.com/gitlab/gitlab-shell'
-    ssh_url_to_repo 'git@demo.gitlab.com:gitlab/gitlab-shell.git'
+    
+    sequence :gitlab_url do |n|
+      "http://demo.gitlabhq.com/gitlab/gitlab-shell#{n}"
+    end
+    
+    sequence :ssh_url_to_repo do |n|
+      "git@demo.gitlab.com:gitlab/gitlab-shell#{n}.git"
+    end
+    
     gitlab_id 8
 
     factory :project do
