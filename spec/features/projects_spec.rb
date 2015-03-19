@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Projects" do
   before do
     login_as :user
-    @project = FactoryGirl.create :project
+    @project = FactoryGirl.create :project, name: "GitLab / gitlab-shell"
   end
 
   describe "GET /projects", js: true do
@@ -12,7 +12,7 @@ describe "Projects" do
       visit projects_path
     end
 
-    it { page.should have_content @project.name }
+    it { page.should have_content "GitLab / gitlab-shell" }
   end
 
   describe "GET /projects/:id" do

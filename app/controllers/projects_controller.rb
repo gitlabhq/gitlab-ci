@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
   layout 'project', except: [:index, :gitlab]
 
   def index
-    @projects = Project.public_only.page(params[:page]) unless current_user
+    @projects = Project.ordered_by_last_commit_date.public_only.page(params[:page]) unless current_user
   end
 
   def gitlab
@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     @page = (params[:page] || 1).to_i
     @per_page = 100
     @gl_projects = current_user.gitlab_projects(@page, @per_page)
-    @projects = Project.where(gitlab_id: @gl_projects.map(&:id)).order('name ASC')
+    @projects = Project.where(gitlab_id: @gl_projects.map(&:id)).ordered_by_last_commit_date
     @total_count = @gl_projects.size
     @gl_projects.reject! { |gl_project| @projects.map(&:gitlab_id).include?(gl_project.id) }
   rescue Network::UnauthorizedError
