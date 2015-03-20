@@ -19,6 +19,6 @@ class CommitsController < ApplicationController
   end
 
   def commit
-    @commit ||= project.commits.find_by(sha: params[:id])
+    @commit ||= Project.find(params[:project_id]).commits.find_by_sha_and_ref!(params[:id], params[:ref_id])
   end
 end

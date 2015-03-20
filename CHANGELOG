@@ -13,6 +13,7 @@ v7.9.0
   - Allow to pause runners - when paused runner will not receive any new build (Kamil Trzciński)
   - Add brakeman (security scanner for Ruby on Rails)
   - Changed a color of the canceled builds
+  - Fix of show the same commits in different branches
 
 v7.8.2
   - Fix the broken build failed email
