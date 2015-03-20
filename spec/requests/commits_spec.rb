@@ -6,9 +6,9 @@ describe "Commits" do
     @commit = FactoryGirl.create :commit, project: @project
   end
 
-  describe "GET /:project/commits/:id/status.json" do
+  describe "GET /:project/refs/:ref_name/commits/:id/status.json" do
     before do
-      get status_project_commit_path(@project, @commit), format: :json
+      get status_project_ref_commit_path(@project, @commit.ref, @commit.sha), format: :json
     end
 
     it { response.status.should == 200 }

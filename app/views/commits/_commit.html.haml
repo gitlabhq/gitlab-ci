@@ -3,7 +3,7 @@
     = commit.status
 
   %td.build-link
-    = link_to project_show_commit_path(commit.project, sha: commit.sha, ref: commit.ref) do
+    = link_to project_ref_commit_path(commit.project, commit.ref, commit.sha) do
       %strong #{commit.short_sha}
 
   %td.build-message

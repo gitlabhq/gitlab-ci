@@ -44,7 +44,7 @@ class SlackMessage
   def attachment_message
     out = "<#{RoutesHelper.project_url(project)}|#{project_name}>: "
     if commit.matrix?
-      out << "Commit <#{RoutesHelper.project_show_commit_url(project, sha: commit.sha, ref: commit.ref)}|\##{commit.id}> "
+      out << "Commit <#{RoutesHelper.project_ref_commit_url(project, commit.ref, commit.sha)}|\##{commit.id}> "
     else
       build = commit.builds_without_retry.first
       out << "Build <#{RoutesHelper.project_build_url(project, build)}|\##{build.id}> "
