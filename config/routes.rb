@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     end
 
     resource :charts, only: [:show]
-    
+
     resources :refs, constraints: { ref_id: /.*/ }, only: [] do
       resources :commits, only: [:show] do
         member do
@@ -63,6 +63,8 @@ Rails.application.routes.draw do
         get :deploy_jobs
       end
     end
+
+    resources :events, only: [:index]
   end
 
   resource :user_sessions do

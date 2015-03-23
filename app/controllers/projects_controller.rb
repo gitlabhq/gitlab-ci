@@ -63,6 +63,10 @@ class ProjectsController < ApplicationController
 
   def update
     if project.update_attributes(params[:project])
+      project.events.create(
+        user_id: current_user.id,
+        description: "User #{current_user.username} updated projects settings"
+      )
       redirect_to project, notice: 'Project was successfully updated.'
     else
       render action: "edit"
