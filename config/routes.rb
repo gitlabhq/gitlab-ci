@@ -81,6 +81,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :events, only: [:index]
+
     resources :projects do
       resources :runner_projects
     end

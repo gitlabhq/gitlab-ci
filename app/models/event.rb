@@ -4,4 +4,7 @@ class Event < ActiveRecord::Base
   validates :description,
     presence: true,
     length: { in: 5..200 }
+
+  scope :admin, ->(){ where(is_admin: true) }
+  scope :project_wide, ->(){ where(is_admin: false) }
 end

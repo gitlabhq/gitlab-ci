@@ -77,6 +77,11 @@ class ProjectsController < ApplicationController
     project.destroy
     Network.new.disable_ci(current_user.url, project.gitlab_id, current_user.private_token)
 
+     Event.admin.create(
+      description: "Project '#{@project.name}' has been removed by #{current_user.username}",
+      user_id: current_user.id
+    )
+
     redirect_to projects_url
   end
 

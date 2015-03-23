@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20150320001810) do
   create_table "events", force: true do |t|
     t.integer  "project_id"
     t.integer  "user_id"
+    t.integer  "is_admin"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
