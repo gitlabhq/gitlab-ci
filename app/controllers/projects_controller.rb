@@ -63,10 +63,9 @@ class ProjectsController < ApplicationController
 
   def update
     if project.update_attributes(params[:project])
-      project.events.create(
-        user_id: current_user.id,
-        description: "User #{current_user.username} updated projects settings"
-      )
+      
+      EventService.new.change_project_settings(current_user, project)
+      
       redirect_to project, notice: 'Project was successfully updated.'
     else
       render action: "edit"
@@ -77,10 +76,7 @@ class ProjectsController < ApplicationController
     project.destroy
     Network.new.disable_ci(current_user.url, project.gitlab_id, current_user.private_token)
 
-     Event.admin.create(
-      description: "Project '#{@project.name}' has been removed by #{current_user.username}",
-      user_id: current_user.id
-    )
+    EventService.new.remove_project(current_user, project)
 
     redirect_to projects_url
   end

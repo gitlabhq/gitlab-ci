@@ -20,10 +20,7 @@ class CreateProjectService
       end
     end
 
-    Event.admin.create(
-      description: "Project '#{@project.name}' has been created by #{current_user.username}",
-      user_id: current_user.id
-    )
+    EventService.new.create_project(current_user, @project)
 
     @project
   end
