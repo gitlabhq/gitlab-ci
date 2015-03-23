@@ -5,6 +5,8 @@ v7.10.0
 v7.9.1
   - [Security] Adding explicit is_shared parameter to runner
   - [Security] By default new projects are not served by shared runners
+  - Events for admin
+  - Events per projects
 
 v7.9.0
   - Reset user session if token is invalid
