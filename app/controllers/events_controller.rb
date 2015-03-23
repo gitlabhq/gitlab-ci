@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  EVENTS_PER_PAGE = 50
+  EVENTS_PER_PAGE = 1
 
   before_filter :authenticate_user!
   before_filter :project
@@ -8,8 +8,7 @@ class EventsController < ApplicationController
   layout 'project'
 
   def index
-    page = (params[:page] || 1).to_i
-    @events = project.events.order("created_at DESC").page(page).per(EVENTS_PER_PAGE)
+    @events = project.events.order("created_at DESC").page(params[:page]).per(EVENTS_PER_PAGE)
   end
 
   private
