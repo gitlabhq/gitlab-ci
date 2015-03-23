@@ -16,7 +16,6 @@ class EventService
   end
 
   def change_project_settings(user, project)
-    binding.pry
     create(
       project_id: project.id,
       user_id: user.id,
