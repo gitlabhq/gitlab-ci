@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  EVENTS_PER_PAGE = 1
+  EVENTS_PER_PAGE = 50
 
   before_filter :authenticate_user!
   before_filter :project
