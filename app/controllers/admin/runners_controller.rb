@@ -13,7 +13,7 @@ class Admin::RunnersController < Admin::ApplicationController
   end
 
   def update
-    @runner.update_attributes(params[:runner])
+    @runner.update_attributes(runner_params)
 
     respond_to do |format|
       format.js
@@ -55,5 +55,9 @@ class Admin::RunnersController < Admin::ApplicationController
 
   def runner
     @runner ||= Runner.find(params[:id])
+  end
+
+  def runner_params
+    params.require(:runner).permit(:token, :description, :tag_list, :contacted_at, :active)
   end
 end

@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
     :email_recipients, :email_add_pusher, :email_only_broken_builds, :coverage_regex,
-    :jobs_attributes
+    :jobs_attributes, :shared_runners_enabled
 
   has_many :commits, dependent: :destroy
   has_many :builds, through: :commits, dependent: :destroy
