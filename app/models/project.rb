@@ -119,6 +119,11 @@ ls -la
       joins("LEFT JOIN #{last_commit_subquery} AS last_commit ON projects.id = last_commit.project_id").
         order("CASE WHEN last_commit.created_at IS NULL THEN 1 ELSE 0 END, last_commit.created_at DESC")
     end
+
+    def search(query)
+      where('LOWER(projects.name) LIKE :query',
+            query: "%#{query.try(:downcase)}%")
+    end
   end
 
   def set_default_values

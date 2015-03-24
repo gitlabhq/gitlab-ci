@@ -22,9 +22,28 @@ describe "Admin Runners" do
     let(:runner) { FactoryGirl.create :runner }
 
     before do
+      FactoryGirl.create(:project, name: "foo")
+      FactoryGirl.create(:project, name: "bar")
       visit admin_runner_path(runner)
     end
 
-    it { find_field('runner_token').value.should eq runner.token }
+    describe 'runner info' do
+      it { find_field('runner_token').value.should eq runner.token }
+    end
+
+    describe 'projects' do
+      it { page.should have_content("foo") }
+      it { page.should have_content("bar") }
+    end
+
+    describe 'search' do
+      before do
+        fill_in 'search', with: 'foo'
+        click_button 'Search'
+      end
+
+      it { page.should have_content("foo") }
+      it { page.should_not have_content("bar") }
+    end
   end
 end

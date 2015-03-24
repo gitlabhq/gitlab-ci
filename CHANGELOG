@@ -1,5 +1,6 @@
 v7.10.0
   - Projects sorting by last commit date
+  - Add project search at runner page
 
 v7.9.0
   - Reset user session if token is invalid

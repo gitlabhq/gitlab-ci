@@ -30,7 +30,7 @@ describe Project do
 
   it { should have_many(:commits) }
 
-  it { should validate_presence_of :name }  
+  it { should validate_presence_of :name }
   it { should validate_presence_of :timeout }
   it { should validate_presence_of :default_ref }
 
@@ -160,5 +160,12 @@ describe Project do
     it 'accepts glob pattern syntax' do
       expect(project.skip_ref?('feature/some_feature')).to eq true
     end
+  end
+
+  describe :search do
+    let!(:project) { FactoryGirl.create(:project, name: "foo") }
+
+    it { Project.search('fo').should include(project) }
+    it { Project.search('bar').should be_empty }
   end
 end
