@@ -1,3 +1,11 @@
+v7.10.0
+  - Projects sorting by last commit date
+  - Add project search at runner page
+
+v7.9.1
+  - [Security] Adding explicit is_shared parameter to runner
+  - [Security] By default new projects are not served by shared runners
+
 v7.9.0
   - Reset user session if token is invalid
   - Runner delete api endpoint

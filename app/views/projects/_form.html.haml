@@ -61,6 +61,13 @@
             = f.check_box :public
             %span.light Anyone can see project and builds
     .form-group
+      = f.label :shared_runners_enabled, 'Allow shared runners', class: 'control-label'
+      .col-sm-10
+        .checkbox
+          = f.label :shared_runners_enabled do
+            = f.check_box :shared_runners_enabled
+            %span.light Allow run builds on shared runners
+    .form-group
       = f.label :coverage_regex, "Test coverage parsing", class: 'control-label'
       .col-sm-10
         .input-group
