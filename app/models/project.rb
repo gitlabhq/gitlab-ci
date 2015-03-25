@@ -21,6 +21,7 @@
 #  email_only_broken_builds :boolean          default(TRUE), not null
 #  skip_refs                :string(255)
 #  coverage_regex           :string(255)
+#  shared_runners_enabled   :boolean          default(FALSE)
 #
 
 class Project < ActiveRecord::Base

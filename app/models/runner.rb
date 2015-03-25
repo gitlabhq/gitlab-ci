@@ -6,8 +6,10 @@
 #  token        :string(255)
 #  created_at   :datetime
 #  updated_at   :datetime
-#  contacted_at :datetime
 #  description  :string(255)
+#  contacted_at :datetime
+#  active       :boolean          default(TRUE), not null
+#  is_shared    :boolean          default(FALSE)
 #
 
 class Runner < ActiveRecord::Base

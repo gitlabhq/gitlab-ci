@@ -11,6 +11,8 @@
 #  name           :string(255)
 #  build_branches :boolean          default(TRUE), not null
 #  build_tags     :boolean          default(FALSE), not null
+#  job_type       :string(255)      default("parallel")
+#  refs           :string(255)
 #
 
 class Job < ActiveRecord::Base

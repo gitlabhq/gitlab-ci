@@ -17,10 +17,11 @@
 #  gitlab_id                :integer
 #  allow_git_fetch          :boolean          default(TRUE), not null
 #  email_recipients         :string(255)      default(""), not null
-#  email_add_pusher      :boolean          default(TRUE), not null
+#  email_add_pusher         :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
 #  skip_refs                :string(255)
 #  coverage_regex           :string(255)
+#  shared_runners_enabled   :boolean          default(FALSE)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
