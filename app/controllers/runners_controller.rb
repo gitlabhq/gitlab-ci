@@ -15,9 +15,6 @@ class RunnersController < ApplicationController
   end
 
   def update
-    runner_params = params[:runner]
-    runner_params.delete(:token)
-
     if @runner.update_attributes(runner_params)
       redirect_to edit_project_runner_path(@project, @runner), notice: 'Runner was successfully updated.'
     else
@@ -57,5 +54,9 @@ class RunnersController < ApplicationController
 
   def set_runner
     @runner ||= @project.runners.find(params[:id])
+  end
+
+  def runner_params
+    params.require(:runner).permit(:description, :tag_list, :contacted_at, :active)
   end
 end
