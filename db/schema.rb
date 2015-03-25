@@ -66,6 +66,10 @@ ActiveRecord::Schema.define(version: 20150320001810) do
     t.datetime "updated_at"
   end
 
+  add_index "events", ["created_at"], name: "index_events_on_created_at", using: :btree
+  add_index "events", ["is_admin"], name: "index_events_on_is_admin", using: :btree
+  add_index "events", ["project_id"], name: "index_events_on_project_id", using: :btree
+
   create_table "jobs", force: true do |t|
     t.integer  "project_id",                          null: false
     t.text     "commands"

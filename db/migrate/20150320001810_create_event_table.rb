@@ -7,6 +7,10 @@ class CreateEventTable < ActiveRecord::Migration
       t.text    :description
 
       t.timestamps
+      
+      t.index :created_at
+      t.index :is_admin
+      t.index :project_id
     end
   end
 end
