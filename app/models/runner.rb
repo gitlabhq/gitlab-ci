@@ -30,7 +30,9 @@ class Runner < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
 
-  def assign_to(project, current_user)
+  def assign_to(project, current_user = nil)
+    self.is_shared = false if shared?
+    self.save
     project.runner_projects.create!(runner_id: self.id)
   end
 
@@ -42,6 +44,10 @@ class Runner < ActiveRecord::Base
 
   def shared?
     is_shared
+  end
+
+  def specific?
+    !shared?
   end
 
   def only_for?(project)
