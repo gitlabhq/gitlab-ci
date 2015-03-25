@@ -32,7 +32,7 @@ class Runner < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
 
-  def assign_to(project, current_user)
+  def assign_to(project, current_user = nil)
     project.runner_projects.create!(runner_id: self.id)
   end
 
