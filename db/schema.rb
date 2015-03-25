@@ -13,22 +13,25 @@
 
 ActiveRecord::Schema.define(version: 20150324001227) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "builds", force: true do |t|
     t.integer  "project_id"
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace",       limit: 2147483647
+    t.text     "trace"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sha"
     t.datetime "started_at"
     t.string   "tmp_file"
     t.string   "before_sha"
-    t.text     "push_data",   limit: 16777215
+    t.text     "push_data"
     t.integer  "runner_id"
     t.integer  "commit_id"
-    t.float    "coverage",    limit: 24
+    t.float    "coverage"
     t.text     "commands"
     t.integer  "job_id"
   end
@@ -53,15 +56,6 @@ ActiveRecord::Schema.define(version: 20150324001227) do
   add_index "commits", ["project_id", "sha"], name: "index_commits_on_project_id_and_sha", using: :btree
   add_index "commits", ["project_id"], name: "index_commits_on_project_id", using: :btree
   add_index "commits", ["sha"], name: "index_commits_on_sha", using: :btree
-
-  create_table "events", force: true do |t|
-    t.integer  "project_id"
-    t.integer  "user_id"
-    t.integer  "is_admin"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "jobs", force: true do |t|
     t.integer  "project_id",                          null: false
