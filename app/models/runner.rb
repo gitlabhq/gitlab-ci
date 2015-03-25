@@ -17,12 +17,10 @@ class Runner < ActiveRecord::Base
 
   has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 
-  attr_accessible :token, :description, :tag_list, :contacted_at, :active
-
   before_validation :set_default_values
 
-  scope :specific, ->() { where(id: RunnerProject.select(:runner_id)) }
-  scope :shared, ->() { where.not(id: RunnerProject.select(:runner_id)) }
+  scope :specific, ->() { where(is_shared: false) }
+  scope :shared, ->() { where(is_shared: true) }
   scope :active, ->() { where(active: true) }
   scope :paused, ->() { where(active: false) }
 
@@ -43,7 +41,7 @@ class Runner < ActiveRecord::Base
   end
 
   def shared?
-    runner_projects.blank?
+    is_shared
   end
 
   def only_for?(project)

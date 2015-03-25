@@ -47,7 +47,8 @@ module API
             # Create shared runner. Requires admin access
             Runner.create(
               description: params[:description],
-              tag_list: params[:tag_list]
+              tag_list: params[:tag_list],
+              is_shared: true
             )
           elsif project = Project.find_by(token: params[:token])
             # Create a specific runner for project.
