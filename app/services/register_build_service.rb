@@ -6,9 +6,8 @@ class RegisterBuildService
 
     builds =
       if current_runner.shared?
-        # don't run projects which are assigned to specific runners
-        projects = RunnerProject.pluck(:project_id)
-        builds.where.not(project_id: projects)
+        # don't run projects which have not enables shared runners
+        builds.includes(:project).where(projects: { shared_runners_enabled: true })
       else
         # do run projects which are only assigned to this runner
         builds.where(project_id: current_runner.projects)

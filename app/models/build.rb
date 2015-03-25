@@ -26,6 +26,7 @@ class Build < ActiveRecord::Base
   LAZY_ATTRIBUTES = ['trace']
 
   belongs_to :commit
+  belongs_to :project
   belongs_to :runner
   belongs_to :job
 
