@@ -31,4 +31,15 @@ describe Runner do
       expect(runner.display_name).to eq runner.token
     end
   end
+
+  describe :assign_to do
+    let!(:project) { FactoryGirl.create :project }
+    let!(:shared_runner) { FactoryGirl.create(:runner, is_shared: true) }
+
+    before { shared_runner.assign_to(project) }
+
+    it { shared_runner.should be_specific }
+    it { shared_runner.projects.should == [project] }
+    it { shared_runner.only_for?(project).should be_true }
+  end
 end
