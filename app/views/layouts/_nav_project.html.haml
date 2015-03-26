@@ -28,3 +28,7 @@
     = link_to edit_project_path(@project) do
       %i.icon-cogs
       Settings
+  = nav_link path: 'events#index' do
+    = link_to project_events_path(@project) do
+      %i.icon-book
+      Events

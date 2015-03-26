@@ -39,6 +39,7 @@ class Project < ActiveRecord::Base
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
   has_many :jobs, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   # Project services
   has_many :services, dependent: :destroy

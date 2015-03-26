@@ -63,6 +63,9 @@ class ProjectsController < ApplicationController
 
   def update
     if project.update_attributes(params[:project])
+      
+      EventService.new.change_project_settings(current_user, project)
+      
       redirect_to project, notice: 'Project was successfully updated.'
     else
       render action: "edit"
@@ -72,6 +75,8 @@ class ProjectsController < ApplicationController
   def destroy
     project.destroy
     Network.new.disable_ci(current_user.url, project.gitlab_id, current_user.private_token)
+
+    EventService.new.remove_project(current_user, project)
 
     redirect_to projects_url
   end

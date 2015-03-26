@@ -20,6 +20,8 @@ class CreateProjectService
       end
     end
 
+    EventService.new.create_project(current_user, @project)
+
     @project
   end
 end
