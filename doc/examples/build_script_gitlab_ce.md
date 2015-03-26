@@ -51,3 +51,22 @@ cp config/gitlab.yml.example config/gitlab.yml
 RAILS_ENV=test bundle exec rake db:drop db:create
 RAILS_ENV=test bundle exec rake test
 ```
+
+# Troubleshooting
+
+## InvalidByteSequenceError
+
+Test pass locally but on CI there is an error with encoding.
+One of the possible solutions for error: `Encoding::InvalidByteSequenceError: "\xF0" on US-ASCII` during build is setting the correct locale in the build job:
+
+```
+export LC_CTYPE=en_US.UTF-8
+
+```
+
+or
+
+```
+export LANG=en_US.UTF-8
+```
+
