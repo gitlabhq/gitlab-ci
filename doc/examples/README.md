@@ -28,8 +28,7 @@ The build command is run from [GitlabCi::Build#command](https://gitlab.com/gitla
 # Configuring runner examples
 
 + [For Ruby](configure/ruby.md)
-
-We welcome contributions of examples for other environments.
++ We welcome contributions of examples for other environments.
 
 Please see [cookbook-gitlab-test](https://gitlab.com/gitlab-org/cookbook-gitlab-test/blob/master/README.md)
 for instructions how to prepare a server to run CI tests for GitLab.
