@@ -48,6 +48,8 @@ class CreateCommitService
       commit.create_builds
     end
 
+    commit.create_deploy_builds(ref)
+
     commit
   end
 end

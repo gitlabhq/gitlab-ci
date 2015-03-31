@@ -137,7 +137,7 @@ class Commit < ActiveRecord::Base
   end
 
   def create_deploy_builds(ref)
-    if success? && !last_build.job.deploy?
+    if builds.empty? || (success? && !last_build.job.deploy?)
       project.jobs.deploy.active.each do |job|
         if job.run_for_ref?(ref)
           create_build_from_job(job)
