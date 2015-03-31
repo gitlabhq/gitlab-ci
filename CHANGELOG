@@ -5,6 +5,7 @@ v7.10.0
   - Events for admin
   - Events per projects
   - Search for runners in admin area
+  - Developers can cancel and retry jobs
 
 v7.9.2
   - [Security] Already existing projects should not be served by shared runners

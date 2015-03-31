@@ -31,5 +31,15 @@
     "owner_id":1, 
     "path":"gitlab", 
     "updated_at":"2013-03-20T13:29:13Z"
+  },
+  "permissions":{
+    "project_access": {
+      "access_level": 10,
+      "notification_level": 3
+    },
+    "group_access": {
+      "access_level": 50,
+      "notification_level": 3
+    }
   }
 }

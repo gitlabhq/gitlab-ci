@@ -1,5 +1,7 @@
 # User object is stored in session
 class User
+  DEVELOPER_ACCESS = 30
+
   attr_reader :attributes
 
   def initialize(hash)
@@ -33,12 +35,23 @@ class User
   end
 
   def can_access_project?(project_gitlab_id)
-    opts = {
-      private_token: self.private_token,
-    }
+    !!project_info(project_gitlab_id)
+  end
 
-    Rails.cache.fetch(cache_key(project_gitlab_id, sync_at)) do
-      !!Network.new.project(self.url, opts, project_gitlab_id)
+  # Indicate if user has developer access or higher
+  def has_developer_access?(project_gitlab_id)
+    data = project_info(project_gitlab_id)
+
+    return false unless data && data["permissions"]
+
+    permissions = data["permissions"]
+
+    if permissions["project_access"] && permissions["project_access"]["access_level"] >= DEVELOPER_ACCESS
+      return true
+    end
+
+    if permissions["group_access"] && permissions["group_access"]["access_level"] >= DEVELOPER_ACCESS
+      return true
     end
   end
 
@@ -49,6 +62,18 @@ class User
 
     Rails.cache.fetch(cache_key('manage', project_gitlab_id, sync_at)) do
       !!Network.new.project_hooks(self.url, opts, project_gitlab_id)
+    end
+  end
+
+  private
+
+  def project_info(project_gitlab_id)
+    opts = {
+      private_token: self.private_token,
+    }
+
+    Rails.cache.fetch(cache_key("project_info", project_gitlab_id, sync_at)) do
+      Network.new.project(self.url, opts, project_gitlab_id)
     end
   end
 end
