@@ -5,6 +5,7 @@ v7.10.0
 
 v7.9.2
   - [Security] Already existing projects should not be served by shared runners
+  - Ability to run deploy job without test jobs (every push will trigger deploy job)
 
 v7.9.1
   - [Security] Adding explicit is_shared parameter to runner

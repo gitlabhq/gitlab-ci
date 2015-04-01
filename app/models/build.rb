@@ -118,7 +118,10 @@ class Build < ActiveRecord::Base
         WebHookService.new.build_end(build)
       end
 
-      build.commit.create_deploy_builds(build.ref)
+      if build.commit.success? && !build.job.deploy?
+        build.commit.create_deploy_builds(build.ref)
+      end
+
       project.execute_services(build)
 
       if project.coverage_enabled?
