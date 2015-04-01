@@ -40,7 +40,7 @@ class Job < ActiveRecord::Base
     includes = false
     # extract the refs - split by ","
     # is tricky because they can be in a regex too
-    refs.scan(/\w+|\/+.*?\/+/).map{|re| re.strip}.each do |re|
+    refs.scan(/\w+|\/+.*?\/+/).map(&:strip).each do |re|
       # is regexp or not
       if re.start_with?("/") && re.end_with?("/")
         includes = !ref.match(/#{re.delete("/")}/i).nil?
@@ -50,6 +50,6 @@ class Job < ActiveRecord::Base
 
       break if includes == true
     end
-    return includes
+    includes
   end
 end
