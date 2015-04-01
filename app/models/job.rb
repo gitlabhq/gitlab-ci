@@ -26,13 +26,30 @@ class Job < ActiveRecord::Base
   scope :parallel, ->(){ where(job_type: "parallel") }
   scope :deploy, ->(){ where(job_type: "deploy") }
 
-  validate :refs, length: { maximum: 100 }
-  
+  validate :refs, length: { maximum: 255 }
+
   def deploy?
     job_type == "deploy"
   end
 
   def run_for_ref?(ref)
-    refs.blank? || refs.split(",").map{|ref| ref.strip}.include?(ref)
+    refs.blank? || refs_include_ref?(ref)
+  end
+
+  def refs_include_ref?(ref)
+    includes = false
+    # extract the refs - split by ","
+    # is tricky because they can be in a regex too
+    refs.scan(/\w+|\/+.*?\/+/).map{|re| re.strip}.each do |re|
+      # is regexp or not
+      if re.start_with?("/") && re.end_with?("/")
+        includes = !ref.match(/#{re.delete("/")}/i).nil?
+      else
+        includes = ref == re
+      end
+
+      break if includes == true
+    end
+    return includes
   end
 end

@@ -27,10 +27,14 @@
       .form-group
         = label_tag :refs, class: 'control-label' do
           Refs
-        .col-sm-10  
-          = job_form.text_field :refs, class: 'form-control', placeholder: "master, staging"
+        .col-sm-10
+          = job_form.text_field :refs, class: 'form-control', placeholder: "master, staging, /testing-v.*/"
           .help-block
             Run only when the above git refs strings match the branch or tag that was pushed.
+            %br
+            You can use RegExp like "/stable-v.*/" to match a ref like "stable-v0.1.0". The RegExp is always case insensitive.
+            %br
+            NOTE: It's important to surround you regex with "/"!
 
       .form-group
         = f.label :commands, 'Script', class: 'control-label'
