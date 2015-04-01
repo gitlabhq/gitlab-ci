@@ -30,15 +30,14 @@ describe Job do
     end
 
     it "allows run for any ref in refs params" do
-      job = FactoryGirl.create :job, project: project, refs: "master, staging, /testing.*/, /^unstable$/, /unstable-v[0-9]{1,}.[0-9]{1,}.[0-9]{1,}/"
+      job = FactoryGirl.create :job, project: project, refs: "master, staging, tags/testing*"
       job.run_for_ref?("master").should be_true
       job.run_for_ref?("staging").should be_true
-      job.run_for_ref?("staging-v0.1.0").should be_false
-      job.run_for_ref?("testing").should be_true
-      job.run_for_ref?("testing-v0.1.0").should be_true
-      job.run_for_ref?("unstable").should be_true
-      job.run_for_ref?("unstable-v0.1.0").should be_true
-      job.run_for_ref?("unstable-0.1.0").should be_false
+      job.run_for_ref?("testing").should be_false
+      job.run_for_ref?("tags/testing").should be_true
+      job.run_for_ref?("tags/testing-v0.1.0").should be_true
+      job.run_for_ref?("tags/unstable-v0.1.0").should be_false
+      job.run_for_ref?("feature/feature-one").should be_false
       job.run_for_ref?("anything").should be_false
     end
   end

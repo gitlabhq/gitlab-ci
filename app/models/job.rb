@@ -33,23 +33,14 @@ class Job < ActiveRecord::Base
   end
 
   def run_for_ref?(ref)
-    refs.blank? || refs_include_ref?(ref)
-  end
-
-  def refs_include_ref?(ref)
-    includes = false
-    # extract the refs - split by ","
-    # is tricky because they can be in a regex too
-    refs.scan(/\w+|\/+.*?\/+/).map(&:strip).each do |re|
-      # is regexp or not
-      if re.start_with?("/") && re.end_with?("/")
-        includes = !ref.match(/#{re.delete("/")}/i).nil?
-      else
-        includes = ref == re
+    if !refs.blank?
+      refs.split(",").map(&:strip).each do |refsVal|
+        return true if File.fnmatch(refsVal, ref)
       end
 
-      break if includes == true
+      false
+    else
+      true
     end
-    includes
   end
 end
