@@ -48,7 +48,9 @@ class CreateCommitService
       commit.create_builds
     end
 
-    commit.create_deploy_builds(ref)
+    if commit.builds.empty?
+      commit.create_deploy_builds(ref)
+    end
 
     commit
   end

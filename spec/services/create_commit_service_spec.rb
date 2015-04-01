@@ -20,5 +20,18 @@ describe CreateCommitService do
 
       it { should be_false }
     end
+
+    context "deploy builds" do
+      it "calls create_deploy_builds if there are no builds" do
+        project.jobs.destroy_all
+        Commit.any_instance.should_receive(:create_deploy_builds)
+        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312') 
+      end
+
+      it "does not call create_deploy_builds if there is build" do
+        Commit.any_instance.should_not_receive(:create_deploy_builds)
+        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312') 
+      end
+    end
   end
 end

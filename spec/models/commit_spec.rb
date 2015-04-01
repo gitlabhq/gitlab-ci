@@ -159,7 +159,7 @@ describe Commit do
   end
 
   describe "create_deploy_builds" do
-    it "creates deploy build for projects without test jobs" do
+    it "creates deploy build" do
       FactoryGirl.create :job, job_type: :deploy, project: project
       project.reload
 
@@ -167,32 +167,6 @@ describe Commit do
       commit.builds.reload
 
       commit.builds.size.should == 1
-    end
-
-    it "creates new build for deploy if all jobs succeed" do
-      job = FactoryGirl.create :job, project: project
-      job1 = FactoryGirl.create :job, project: project
-      FactoryGirl.create :job, job_type: :deploy, project: project
-      FactoryGirl.create :build, commit: commit, status: :success, job: job
-      FactoryGirl.create :build, commit: commit, status: :success, job: job1
-      project.reload
-
-      commit.create_deploy_builds(commit.ref)
-
-      commit.builds.size.should == 3
-    end
-
-    it "does not create deploy build if one job failed" do
-      job = FactoryGirl.create :job, project: project
-      job1 = FactoryGirl.create :job, project: project
-      FactoryGirl.create :job, job_type: :deploy, project: project
-      FactoryGirl.create :build, commit: commit, status: :failed, job: job
-      FactoryGirl.create :build, commit: commit, status: :success, job: job1
-      project.reload
-
-      commit.create_deploy_builds(commit.ref)
-
-      commit.builds.size.should == 2
     end
   end
 end
