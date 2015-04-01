@@ -34,8 +34,8 @@ class Job < ActiveRecord::Base
 
   def run_for_ref?(ref)
     if !refs.blank?
-      refs.split(",").map(&:strip).each do |refsVal|
-        return true if File.fnmatch(refsVal, ref)
+      refs.split(",").map(&:strip).each do |refs_val|
+        return true if File.fnmatch(refs_val, ref)
       end
 
       false
