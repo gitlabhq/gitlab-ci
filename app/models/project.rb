@@ -107,7 +107,7 @@ ls -la
     end
 
     def already_added?(project)
-      where(gitlab_url: project.web_url).any?
+      where(gitlab_id: project.id).any?
     end
 
     def unassigned(runner)
