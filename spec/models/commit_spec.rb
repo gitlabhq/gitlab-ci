@@ -159,19 +159,14 @@ describe Commit do
   end
 
   describe "create_deploy_builds" do
-    before do
-      job = FactoryGirl.create :job, project: project
-      job1 = FactoryGirl.create :job, project: project
+    it "creates deploy build" do
       FactoryGirl.create :job, job_type: :deploy, project: project
-      FactoryGirl.create :build, commit: commit, status: :success, job: job
-      FactoryGirl.create :build, commit: commit, status: :success, job: job1
       project.reload
-    end
 
-    it "creates new build for deploy" do
       commit.create_deploy_builds(commit.ref)
+      commit.builds.reload
 
-      commit.builds.size.should == 3
+      commit.builds.size.should == 1
     end
   end
 end
