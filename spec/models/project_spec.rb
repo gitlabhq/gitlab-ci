@@ -133,6 +133,11 @@ describe Project do
     it { parsed_project.name.should eq("GitLab / api.gitlab.org") }
     it { parsed_project.gitlab_id.should eq(189) }
     it { parsed_project.gitlab_url.should eq("http://localhost:3000/gitlab/api-gitlab-org") }
+
+    it "parses plain hash" do
+      data = YAML.load(project_dump)
+      Project.parse(data).name.should eq("GitLab / api.gitlab.org")
+    end
   end
 
   describe :repo_url_with_auth do

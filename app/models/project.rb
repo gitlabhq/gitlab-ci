@@ -75,11 +75,11 @@ ls -la
     end
 
     def parse(project_params)
-      project = YAML.load(project_params)
-
-      unless project.is_a?(OpenStruct)
-        project = OpenStruct.new(project)
-      end
+      project = if project_params.is_a?(String)
+                  YAML.load(project_params)
+                else
+                  project_params
+                end
 
       params = {
         name:                    project.name_with_namespace,

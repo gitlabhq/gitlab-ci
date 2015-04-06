@@ -30,7 +30,6 @@ class CreateProjectService
       end
 
       @project.update(settings)
-
     end
 
     EventService.new.create_project(current_user, @project)
