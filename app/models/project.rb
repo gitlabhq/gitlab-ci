@@ -74,8 +74,12 @@ ls -la
       eos
     end
 
-    def parse(project_yaml)
-      project = YAML.load(project_yaml)
+    def parse(project_params)
+      project = YAML.load(project_params)
+
+      unless project.is_a?(OpenStruct)
+        project = OpenStruct.new(project)
+      end
 
       params = {
         name:                    project.name_with_namespace,
