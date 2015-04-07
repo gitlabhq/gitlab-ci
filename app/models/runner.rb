@@ -28,6 +28,11 @@ class Runner < ActiveRecord::Base
 
   acts_as_taggable
 
+  def self.search(query)
+    where('LOWER(runners.token) LIKE :query OR LOWER(runners.description) like :query',
+          query: "%#{query.try(:downcase)}%")
+  end
+
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
   end

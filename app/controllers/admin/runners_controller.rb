@@ -2,7 +2,9 @@ class Admin::RunnersController < Admin::ApplicationController
   before_filter :runner, except: :index
 
   def index
-    @runners = Runner.page(params[:page]).per(30)
+    @runners = Runner.all
+    @runners = @runners.search(params[:search]) if params[:search].present?
+    @runners = @runners.page(params[:page]).per(30)
   end
 
   def show

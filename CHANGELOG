@@ -4,6 +4,7 @@ v7.10.0
   - Fix GitLab and CI projects collision
   - Events for admin
   - Events per projects
+  - Search for runners in admin area
 
 v7.9.2
   - [Security] Already existing projects should not be served by shared runners

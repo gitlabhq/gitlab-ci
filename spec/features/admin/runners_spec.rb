@@ -16,6 +16,19 @@ describe "Admin Runners" do
 
     it { page.has_text? "Manage Runners" }
     it { page.has_text? "To register a new runner" }
+
+    describe 'search' do
+      before do
+        FactoryGirl.create :runner, description: 'foo'
+        FactoryGirl.create :runner, description: 'bar'
+
+        fill_in 'search', with: 'foo'
+        click_button 'Search'
+      end
+
+      it { page.should have_content("foo") }
+      it { page.should_not have_content("bar") }
+    end
   end
 
   describe "GET /admin/runners/:id" do
