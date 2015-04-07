@@ -14,7 +14,20 @@ describe WebHookService do
   end
 
   context 'build_data' do
-    it { build_data(build).should include :build_id, :project_id, :ref, :build_status, :build_started_at, :build_finished_at, :before_sha, :project_name, :gitlab_url }
+    it "contains all needed fields" do
+      build_data(build).should include(
+        :build_id,
+        :project_id,
+        :ref,
+        :build_status,
+        :build_started_at,
+        :build_finished_at,
+        :before_sha,
+        :project_name,
+        :gitlab_url,
+        :build_name
+      )
+    end
   end
 
   def build_data(build)
