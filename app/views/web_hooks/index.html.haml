@@ -28,7 +28,8 @@
             %span.monospace= hook.url
         %td
           .pull-right
-            = link_to 'Test Hook', test_project_web_hook_path(@project, hook), class: "btn btn-small btn-grouped"
+            - if @project.commits.any?
+              = link_to 'Test Hook', test_project_web_hook_path(@project, hook), class: "btn btn-small btn-grouped"
             = link_to 'Remove', project_web_hook_path(@project, hook), data: { confirm: 'Are you sure?'}, method: :delete, class: "btn btn-remove btn-small btn-grouped"
 
 %h4 Web Hook data example
