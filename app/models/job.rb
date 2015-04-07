@@ -26,13 +26,21 @@ class Job < ActiveRecord::Base
   scope :parallel, ->(){ where(job_type: "parallel") }
   scope :deploy, ->(){ where(job_type: "deploy") }
 
-  validate :refs, length: { maximum: 100 }
-  
+  validate :refs, length: { maximum: 255 }
+
   def deploy?
     job_type == "deploy"
   end
 
   def run_for_ref?(ref)
-    refs.blank? || refs.split(",").map{|ref| ref.strip}.include?(ref)
+    if !refs.blank?
+      refs.split(",").map(&:strip).each do |refs_val|
+        return true if File.fnmatch(refs_val, ref)
+      end
+
+      false
+    else
+      true
+    end
   end
 end

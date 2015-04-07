@@ -27,10 +27,12 @@
       .form-group
         = label_tag :refs, class: 'control-label' do
           Refs
-        .col-sm-10  
-          = job_form.text_field :refs, class: 'form-control', placeholder: "master, staging"
+        .col-sm-10
+          = job_form.text_field :refs, class: 'form-control', placeholder: "master, staging, feature/*, tags/testing*"
           .help-block
             Run only when the above git refs strings match the branch or tag that was pushed.
+            %br
+            Accepts strings and glob pattern syntax
 
       .form-group
         = f.label :commands, 'Script', class: 'control-label'
