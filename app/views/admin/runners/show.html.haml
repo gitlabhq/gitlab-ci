@@ -1,11 +1,15 @@
-%h4
-  - if @runner.shared?
-    %span.runner-state.runner-state-shared
-      Shared
-  - else
-    %span.runner-state.runner-state-specific
-      Specific
-  Runner ##{@runner.id}
+= content_for :title do
+  %h3.project-title
+    Runner ##{@runner.id}
+    .pull-right
+      - if @runner.shared?
+        %span.runner-state.runner-state-shared
+          Shared
+      - else
+        %span.runner-state.runner-state-specific
+          Specific
+
+  
 
 - if @runner.shared?
   .bs-callout.bs-callout-success

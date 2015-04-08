@@ -1,10 +1,11 @@
-%h4.page-title
-  Project: #{@project.name}
-  - if current_user.can_manage_project?(@project.gitlab_id)
-    .pull-right
-      = link_to project_jobs_path(@project), class: "btn btn-default btn-small" do
-        %i.icon-edit.icon-white
-        Edit Job
+= content_for :title do
+  %h3.project-title
+    Project: #{@project.name}
+    - if current_user.can_manage_project?(@project.gitlab_id)
+      .pull-right
+        = link_to project_jobs_path(@project), class: "btn btn-default btn-small" do
+          %i.icon-edit.icon-white
+          Edit Job
 
 %p
   = link_to admin_projects_path do
