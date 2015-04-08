@@ -1,4 +1,9 @@
-%h3.page-title Events
+= content_for :title do
+  %h3.project-title
+    Events
+    .pull-right
+      %small
+        = pluralize(@events.total_count, 'event')
 
 %table.table
   %thead

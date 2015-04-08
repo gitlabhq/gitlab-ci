@@ -3,10 +3,6 @@ class Admin::ProjectsController < Admin::ApplicationController
     @projects = Project.ordered_by_last_commit_date.page(params[:page]).per(30)
   end
 
-  def show
-    project
-  end
-
   def destroy
     project.destroy
 

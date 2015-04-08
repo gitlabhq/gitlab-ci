@@ -1,0 +1,18 @@
+%ul.nav.nav-pills.nav-stacked.admin-menu
+  = nav_link path: 'projects' do
+    = link_to admin_projects_path do
+      %i.icon-list-alt
+      Projects
+  = nav_link path: 'events' do
+    = link_to admin_events_path do
+      %i.icon-bar-chart
+      Events
+  = nav_link path: 'runners#index' do
+    = link_to admin_runners_path do
+      %i.icon-cog
+      Runners
+  = nav_link path: 'builds' do
+    = link_to admin_builds_path do
+      %i.icon-link
+      Builds
+ 
