@@ -29,5 +29,6 @@ module API
     mount Commits
     mount Runners
     mount Projects
+    mount Forks
   end
 end

@@ -7,6 +7,7 @@ module StubGitlabCalls
     stub_project_8_hooks
     stub_projects
     stub_projects_owned
+    stub_ci_enable
   end
 
   def stub_js_gitlab_calls
@@ -69,6 +70,12 @@ module StubGitlabCalls
 
   def stub_projects_owned
     stub_request(:get, "#{gitlab_url}api/v3/projects/owned.json?archived=false&private_token=Wvjy2Krpb7y8xi93owUz").
+      with(:headers => {'Content-Type'=>'application/json'}).
+      to_return(:status => 200, :body => "", :headers => {})
+  end
+
+  def stub_ci_enable
+    stub_request(:put, "#{gitlab_url}api/v3/projects/2/services/gitlab-ci.json?private_token=Wvjy2Krpb7y8xi93owUz").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => "", :headers => {})
   end
