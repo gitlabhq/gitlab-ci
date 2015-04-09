@@ -14,8 +14,6 @@ class WebHook < ActiveRecord::Base
 
   belongs_to :project
 
-  attr_accessible :url
-
   # HTTParty timeout
   default_timeout 10
 

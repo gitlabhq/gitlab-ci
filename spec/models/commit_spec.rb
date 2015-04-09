@@ -30,14 +30,6 @@ describe Commit do
   it { should respond_to :git_author_email }
   it { should respond_to :short_sha }
 
-  it { should allow_mass_assignment_of(:project_id) }
-  it { should allow_mass_assignment_of(:ref) }
-  it { should allow_mass_assignment_of(:sha) }
-  it { should allow_mass_assignment_of(:before_sha) }
-  it { should allow_mass_assignment_of(:push_data) }
-  it { should allow_mass_assignment_of(:status) }
-  it { should allow_mass_assignment_of(:project_name) }
-
   describe :last_build do
     subject { commit.last_build }
     before do

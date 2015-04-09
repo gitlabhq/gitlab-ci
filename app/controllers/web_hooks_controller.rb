@@ -12,7 +12,7 @@ class WebHooksController < ApplicationController
   end
 
   def create
-    @web_hook = @project.web_hooks.new(params[:web_hook])
+    @web_hook = @project.web_hooks.new(web_hook_params)
     @web_hook.save
 
     if @web_hook.valid?
@@ -43,5 +43,9 @@ class WebHooksController < ApplicationController
 
   def project
     @project = Project.find(params[:project_id])
+  end
+
+  def web_hook_params
+    params.require(:web_hook).permit(:url)
   end
 end

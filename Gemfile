@@ -9,7 +9,6 @@ def linux_only(require_as)
 end
 
 gem 'rails', '4.1.9'
-gem 'protected_attributes'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
 gem "nested_form"

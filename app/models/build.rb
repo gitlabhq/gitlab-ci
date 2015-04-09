@@ -30,9 +30,6 @@ class Build < ActiveRecord::Base
   belongs_to :runner
   belongs_to :job
 
-  attr_accessible :status, :finished_at, :trace, :started_at, :runner_id,
-    :commit_id, :coverage, :commands, :job_id
-
   validates :commit, presence: true
   validates :status, presence: true
   validates :coverage, numericality: true, allow_blank: true

@@ -10,8 +10,6 @@
 #
 
 class RunnerProject < ActiveRecord::Base
-  attr_accessible :project_id, :runner_id
-
   belongs_to :runner
   belongs_to :project
 
