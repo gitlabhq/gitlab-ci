@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = CreateProjectService.new.execute(current_user, params[:project], project_url(":project_id"))
+    @project = CreateProjectService.new.execute(current_user, project_params, project_url(":project_id"))
 
     if @project.persisted?
       redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
@@ -62,7 +62,7 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    if project.update_attributes(params[:project])
+    if project.update_attributes(project_params)
       
       EventService.new.change_project_settings(current_user, project)
       
@@ -109,5 +109,13 @@ class ProjectsController < ApplicationController
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
+
+  def project_params
+    params.require(:project).permit(:name, :path, :timeout, :token, :timeout_in_minutes,
+    :default_ref, :gitlab_url, :always_build, :polling_interval,
+    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
+    :email_recipients, :email_add_pusher, :email_only_broken_builds, :coverage_regex,
+    :jobs_attributes, :shared_runners_enabled)
   end
 end

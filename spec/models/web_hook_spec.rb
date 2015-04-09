@@ -16,10 +16,6 @@ describe WebHook do
     it { should belong_to :project }
   end
 
-  describe "Mass assignment" do
-    it { should_not allow_mass_assignment_of(:project_id) }
-  end
-
   describe "Validations" do
     it { should validate_presence_of(:url) }
 

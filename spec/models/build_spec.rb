@@ -38,13 +38,6 @@ describe Build do
   it { should respond_to :pending? }
   it { should respond_to :trace_html }
 
-  it { should allow_mass_assignment_of(:commit_id) }
-  it { should allow_mass_assignment_of(:status) }
-  it { should allow_mass_assignment_of(:started_at) }
-  it { should allow_mass_assignment_of(:finished_at) }
-  it { should allow_mass_assignment_of(:trace) }
-  it { should allow_mass_assignment_of(:runner_id) }
-
   describe :first_pending do
     let(:first) { FactoryGirl.create :build, commit: commit, status: 'pending', created_at: Date.yesterday }
     let(:second) { FactoryGirl.create :build, commit: commit, status: 'pending' }

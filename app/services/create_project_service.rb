@@ -21,7 +21,7 @@ class CreateProjectService
     if forked_project
       # Copy jobs
       @project.jobs = forked_project.jobs.map do |job|
-        Job.new(job.attributes)
+        Job.new(job.attributes.except("id"))
       end
 
       # Copy settings
