@@ -6,6 +6,7 @@ v7.10.0
   - Events per projects
   - Search for runners in admin area
   - UI improvements: created separated admin section, removed useless project show page
+  - Runners sorting in admin area (by id)
   
 v7.9.3
   - Contains no changes
