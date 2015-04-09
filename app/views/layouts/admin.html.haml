@@ -4,12 +4,11 @@
   %body{ :'data-page' => body_data_page }
     = render 'layouts/nav'
     = render 'layouts/info'
-    .container
-      %h3 
-        - if content_for?(:title)
-          = yield(:title)
-        
-    %hr
+    - if content_for?(:title)
+      .container.container-title
+        = yield(:title)
+      %hr
+
     .container
       .row
         .col-md-2.append-bottom-20
