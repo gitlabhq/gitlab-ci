@@ -2,7 +2,8 @@ class BuildsController < ApplicationController
   before_filter :authenticate_user!, except: [:status]
   before_filter :project
   before_filter :authorize_access_project!, except: [:status]
-  before_filter :authorize_manage_project!, except: [:status, :show]
+  before_filter :authorize_manage_project!, except: [:status, :show, :retry, :cancel]
+  before_filter :authorize_project_developer!, only: [:retry, :cancel]
   before_filter :build, except: [:show]
 
   def show

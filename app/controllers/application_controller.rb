@@ -48,6 +48,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def authorize_project_developer!
+    unless current_user.has_developer_access?(@project.gitlab_id)
+      return page_404
+    end
+  end
+
   def authorize_manage_project!
     unless current_user.can_manage_project?(@project.gitlab_id)
       return page_404
