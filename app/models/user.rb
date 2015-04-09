@@ -65,6 +65,15 @@ class User
     end
   end
 
+  def authorized_runners
+    Runner.specific.joins(:runner_projects).
+      where(runner_projects: { project_id: authorized_projects } )
+  end
+
+  def authorized_projects
+    @authorized_projects ||= Project.where(gitlab_id: gitlab_projects.map(&:id))
+  end
+
   private
 
   def project_info(project_gitlab_id)

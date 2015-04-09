@@ -1,37 +1,33 @@
-%tr{id: dom_id(runner)}
-  %td
-    %strong ##{runner.id}
-  %td
-    - if runner.active?
-      %span.label.label-success active
-    - else
-      %span.label.label-danger paused
-
-  %td
-    = runner.short_sha
-  %td
-    .runner-description
-      = runner.description
-  %td
-    - if build = runner.builds.last
-      = link_to "##{build.id}", [build.project,  build]
-  %td
-    - runner.tag_list.each do |tag|
-      %span.label.label-primary
-        = tag
-  %td
-    - if runner.contacted_at
-      #{time_ago_in_words(runner.contacted_at)} ago
-    - else
-      Never
-  %td
+%li.runner{id: dom_id(runner)}
+  %h4
+    = runner_status_icon(runner)
+    %span.monospace
+      = runner.short_sha
     .pull-right
-      = link_to 'Edit', edit_project_runner_path(@project, runner), class: 'btn btn-small'
-      &nbsp;
-      - if runner.active?
-        = link_to 'Pause', [:pause, @project, runner], data: { confirm: "Are you sure?" }, method: :get, class: 'btn btn-danger btn-small'
-      - else
-        = link_to 'Resume', [:resume, @project, runner], method: :get, class: 'btn btn-success btn-small'
-      - if runner.only_for?(@project)
-        = link_to 'Remove', [@project, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+      - if @runners.include?(runner)
+        = link_to 'Edit', edit_project_runner_path(@project, runner), class: 'btn btn-small'
+        - if runner.active?
+          = link_to 'Pause', [:pause, @project, runner], data: { confirm: "Are you sure?" }, method: :get, class: 'btn btn-danger btn-small'
+        - else
+          = link_to 'Resume', [:resume, @project, runner], method: :get, class: 'btn btn-success btn-small'
+        - if runner.only_for?(@project)
+          = link_to 'Remove', [@project, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+        - else
+          - runner_project = @project.runner_projects.find_by(runner_id: runner)
+          = link_to 'Disable for this project', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+      - elsif runner.specific?
+        = form_for [@project, @project.runner_projects.new] do |f|
+          = f.hidden_field :runner_id, value: runner.id
+          = f.submit 'Enable for this project', class: 'btn btn-small'
+  .pull-right
+    %small.light
+      \##{runner.id}
+  - if runner.description.present?
+    %p.runner-description
+      = runner.description
+  - if runner.tag_list.present?
+    %p
+      - runner.tag_list.each do |tag|
+        %span.label.label-primary
+          = tag
 

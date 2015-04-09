@@ -1,26 +1,11 @@
-%p.slead
-  A 'runner' is a process which runs a build.
-  You can setup as many runners as you need.
-  %br
-  Runners can be placed on separate users, servers, and even on your local machine.
+.light
+  %p
+    A 'runner' is a process which runs a build.
+    You can setup as many runners as you need.
+    %br
+    Runners can be placed on separate users, servers, and even on your local machine.
 
-.bs-callout.help-callout
-  %h4 How to setup a new project specific runner
-
-  %ol
-    %li
-      Install GitLab Runner software.
-      Checkout the #{link_to 'GitLab Runner section', 'https://about.gitlab.com/gitlab-ci/#gitlab-runner', target: '_blank'} to install it
-    %li
-      Specify following URL during runner setup:
-      %code #{root_url(only_path: false)}
-    %li
-      Use the following registration token during setup:
-      %code #{@project.token}
-    %li
-      Start runner!
-
-  %h4 Each runner can be in one of the following states:
+  %p Each runner can be in one of the following states:
   %div
     %ul
       %li
@@ -30,17 +15,11 @@
         %span.label.label-danger paused
         \- runner is paused and will not receive any new build
 
-%table.table
-  %thead
-    %tr
-      %th ID
-      %th Type
-      %th Runner token
-      %th Description
-      %th Last build
-      %th Tags
-      %th Last contact
-      %th
+%hr
 
-  = render @runners
-= paginate @runners
+%p.lead To start serving your builds you can either add specific runners to your project or use shared runners
+.row
+  .col-sm-6
+    = render 'specific_runners'
+  .col-sm-6
+    = render 'shared_runners'
