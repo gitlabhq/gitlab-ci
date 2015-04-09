@@ -1,46 +1,60 @@
 # Jobs
-Jobs are user shell scripts. On each push to the GitLab the CI creates builds for each jobs. Every build will be served by runners where user shell script from job will be performed. There are two types of job: test (run in parallel) and deploy (run on success).
+
+Jobs are user-created shell scripts. On each push to GitLab the CI creates builds for each job.
+Every build is served by runners on which the shell scripts from these jobs are ran.
+There are two types of jobs: test jobs (ran in parallel) and deploy jobs (ran on success).
 
 ### Test job (run in parallel)
 
 ![Jobs](job.png)
 
-This kind of jobs run in parallel and it can be usefull for test suite. For example, to saving your time you can run one part of suite in one build and second part in another build.
+These kind of jobs run in parallel and can be useful for test suites.
+For example, to save time you can run one part of your test suite in one build
+and a second part in another build.
+
 Fields:
 
-`name` - an arbitrary name of job
+`name` - an arbitrary name of a job
 
-`builds commit` (checkbox) - it should be checked if you want to create build when regular commit or branch is pushed.
+`builds commit` (checkbox) - check this if you want to create a build on
+pushes of regular commits and branches
 
-`build tag` (checkbox) - it should be checked if you want to create build when tag is pushed.
+`build tag` (checkbox) - check this if you want to start a build on each tag pushed
 
-_For example in GitLab, we created job for building packages. And we want this packages to be builded when we push new tag. In this case we disabled `builds commit` and enabled `build tag`._
+_For example, for GitLab we created a job for building packages. We want packages to be built when we push
+new tags. So what we did is disable `builds commit` and we enabled `build tag`._
 
-`tags` - the list of tags (ex. "ruby mysql silenium"), only runner which contains the same set of tags can perform this build.
-Script - shell script. Example for rails projects:
+`tags` - the list of tags (ex. "ruby mysql silenium"), only runners that contain the same set of tags can perform this build.
+
+Script - your shell script to run. Example for rails projects:
 
 ```
 export PATH=~/bin:/usr/local/bin:/usr/bin:/bin
-gem install bundler 
+gem install bundler
 cp config/database.yml.mysql config/database.yml
 cp config/application.yml.example config/application.yml
 bundle
-RAILS_ENV=test bundle exec rake db:setup 
+RAILS_ENV=test bundle exec rake db:setup
 RAILS_ENV=test bundle exec rake spec
 ```
 
 
-### Deploy job (run on success)
+### Deploy jobs (ran on success)
 
 ![Deploy jobs](deploy_job.png)
 
-This type of jobs runs after all test jobs succeded. It is usefull for deploy. For example, you want to make sure that whole test suite passes before deploy. Fields:
+This type of jobs runs after all test jobs pass.
+It is especially useful for deploying applications.
+For example, if you want to make sure that whole test suite passes before each deploy.
 
-`name` - an arbitrary name of job
+Fields:
 
-`tags` - If you want to only one runner could run deploy you can rich it by setting appropriate tags. It can be usefull because most likely you will need to grant runner with special permissions.
+`name` - an arbitrary name of the deploy job
 
-`refs` - You can specify git refs which should trigger deploy job
+`tags` - Just like test jobs, you probably have a specific runner in mind
+that can deploy your code, as this runner needs special permissions, for instance.
+Here you can set the tags for the runners that are allowed to run the deploy job.
 
-`script` - Shell script to run.
+`refs` - Here you can specify git refs that should trigger a deploy job
 
+`script` - The actual shell script to run.
