@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = CreateProjectService.new.execute(current_user, project_params, project_url(":project_id"))
+    @project = CreateProjectService.new.execute(current_user, params[:project], project_url(":project_id"))
 
     if @project.persisted?
       redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
