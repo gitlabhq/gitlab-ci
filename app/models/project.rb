@@ -179,6 +179,11 @@ ls -la
     end
   end
 
+  def create_commit_for_tag?(tag)
+    jobs.where(build_tags: true).active.parallel.any? ||
+    jobs.active.deploy.any?{ |job| job.run_for_ref?(tag)}
+  end
+
   def coverage_enabled?
     coverage_regex.present?
   end
