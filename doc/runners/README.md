@@ -1,5 +1,3 @@
-- you can't make a specific runner a shared runner
-
 # Runners
 
 In GitLab CI, Runners run your [jobs](jobs/README.md).
@@ -26,13 +24,17 @@ runners. For example, if you want to deploy a certain project, you can setup
 a specific runner to have the right credentials for this.
 
 Projects with high demand of CI activity can also benefit from using specific runners.
-By having dedicated runners you are guarenteed that the runner is not being held
+By having dedicated runners you are guaranteed that the runner is not being held
 up by another project's jobs.
+
+You can set up a specific runner to be used by multiple projects. The difference
+with a shared runner is that you have to enable each project explicitly for
+the runner to be able to run its jobs.
 
 Specific runners do not get shared with forked projects automatically.
 A fork does copy the CI settings (jobs, allow shared, etc) of the cloned repository.
 
-# Creating a Runner
+# Creating and Registering a Runner
 
 There are several ways to create a runner. Only after creation, upon
 registration its status as Shared or Specific is determined.
@@ -45,7 +47,27 @@ You can only register a Shared Runner if you have admin access to the GitLab ins
 
 ## Registering a Shared Runner
 
+You can only register a shared runner if you are an admin on the linked
+GitLab instance.
 
+Grab the shared-runner token on the `admin/runners` page of your GitLab CI
+instance.
+
+![shared token](shared_runner.png)
+
+Now simply register the runner as any runner:
+
+```
+sudo /opt/gitlab-runner/bin/setup -C /home/gitlab-runner
+```
+
+Then restart the Upstart script:
+```
+sudo service gitlab-runner restart
+```
+
+Note that you will have to enable `Allows shared runners` for each project
+that you want to make use of a shared runner. This is by default `off`.
 
 ## Registering a Specific Runner
 
@@ -57,9 +79,9 @@ Registering a specific can be done in two ways:
 There are several ways to create a runner instance. The steps below only
 concern registering the runner on GitLab CI.
 
-### Creating a Specific Runner with Project Registration token
+###  Registering a Specific Runner with a Project Registration token
 
-To create a specific runner without admin rights to the GitLab instance,
+To create a specific runner without having admin rights to the GitLab instance,
 visit the project you want to make the runner work for in GitLab CI.
 
 Click on the runner tab and use the registration token you find there to
@@ -67,10 +89,33 @@ setup a specific runner for this project.
 
 ![project runners in GitLab CI](project_specific.png)
 
+To register the runner, run the command below and follow instructions:
+
+```
+sudo /opt/gitlab-runner/bin/setup -C /home/gitlab-runner
+```
+
+Then restart the Upstart script:
+```
+sudo service gitlab-runner restart
+```
+
+###  Making an existing Shared Runner Specific
+
+If you are an admin on your GitLab instance,
+you can make any shared runner a specific runner, _but you can not
+make a specific runner a shared runner_.
+
+To make a shared runner specific, go to the runner page (`/admin/runners`)
+and find your runner. Add any projects on the left to make this runner
+run exclusively for these projects, therefore making it a specific runner.
+
+![making a shared runner specific](shared_to_specific_admin.png)
+
 ## Using Shared Runners Effectively
 
 If you are planning to use shared runners, there are several things you
-should keep in consideration.
+should keep in mind.
 
 ### Use Tags
 
