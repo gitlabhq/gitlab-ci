@@ -1,3 +1,5 @@
+- you can't make a specific runner a shared runner
+
 # Runners
 
 In GitLab CI, Runners run your [jobs](jobs/README.md).
@@ -29,6 +31,41 @@ up by another project's jobs.
 
 Specific runners do not get shared with forked projects automatically.
 A fork does copy the CI settings (jobs, allow shared, etc) of the cloned repository.
+
+# Creating a Runner
+
+There are several ways to create a runner. Only after creation, upon
+registration its status as Shared or Specific is determined.
+
+[See the documentation for](https://about.gitlab.com/gitlab-ci/#gitlab-runner)
+the different methods of creating a Runner instance.
+
+After creating the runner, you can either register it as `Shared` or as `Specific`.
+You can only register a Shared Runner if you have admin access to the GitLab instance.
+
+## Registering a Shared Runner
+
+
+
+## Registering a Specific Runner
+
+Registering a specific can be done in two ways:
+
+1. Creating a runner with the project registration token
+1. Converting a shared runner into a specific runner (one-way, admin only)
+
+There are several ways to create a runner instance. The steps below only
+concern registering the runner on GitLab CI.
+
+### Creating a Specific Runner with Project Registration token
+
+To create a specific runner without admin rights to the GitLab instance,
+visit the project you want to make the runner work for in GitLab CI.
+
+Click on the runner tab and use the registration token you find there to
+setup a specific runner for this project.
+
+![project runners in GitLab CI](project_specific.png)
 
 ## Using Shared Runners Effectively
 
@@ -65,3 +102,13 @@ Whenever a project is forked, it copies the settings of the jobs that relate
 to it. This means that if you have shared runners setup for a project and
 someone forks that project, the shared runners will also serve jobs of this
 project.
+
+# Attack vectors in runners
+
+Mentioned briefly earlier, but the following things of runners can be exploited.
+We're always looking for contributions that can mitigate these.
+
+- anyone that can run a job on a runner can access any code it runs
+- when setting `Allow running on shared runners` anyone that can run their
+code on a shared runner can access any code
+-
