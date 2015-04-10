@@ -15,6 +15,10 @@ class CreateCommitService
       return false
     end
 
+    if origin_ref.start_with?('refs/tags/') && !project.create_commit_for_tag?(ref)
+      return false
+    end
+
     if project.skip_ref?(ref)
       return false
     end

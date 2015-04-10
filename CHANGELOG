@@ -8,6 +8,7 @@ v7.10.0
   - UI improvements: created separated admin section, removed useless project show page
   - Runners sorting in admin area (by id)
   - Remove protected_attributes gem
+  - Skip commit creation if there is no appropriate job
   
 v7.9.3
   - Contains no changes
