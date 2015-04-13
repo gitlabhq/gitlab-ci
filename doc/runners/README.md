@@ -1,7 +1,8 @@
 # Runners
 
 In GitLab CI, Runners run your [jobs](jobs/README.md).
-A runner is an isolated (virtual) machine that gets activated by the coordinator.
+A runner is an isolated (virtual) machine that picks up builds
+through the coordinator API of GitLab CI.
 
 A runner can be specific to a certain project or serve any project
 in GitLab CI. A runner that serves all projects is called a shared runner.
@@ -9,7 +10,7 @@ in GitLab CI. A runner that serves all projects is called a shared runner.
 ## Shared vs. Specific Runners
 
 A runner that is specific only runs for the specified project. A shared runner
-can run jobs for every project that has enable the option
+can run jobs for every project that has enabled the option
 `Allow shared runners`.
 
 **Shared runners** are useful for jobs that have similar requirements,
