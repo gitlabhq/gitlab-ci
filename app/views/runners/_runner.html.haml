@@ -3,18 +3,15 @@
     = runner_status_icon(runner)
     %span.monospace
       = runner.short_sha
+      - if @runners.include?(runner)
+        %small
+          =link_to edit_project_runner_path(@project, runner) do
+            %i.fa.icon-edit.btn
+          
     .pull-right
       - if @runners.include?(runner)
-        = link_to 'Edit', edit_project_runner_path(@project, runner), class: 'btn btn-small'
-        - if runner.active?
-          = link_to 'Pause', [:pause, @project, runner], data: { confirm: "Are you sure?" }, method: :get, class: 'btn btn-danger btn-small'
-        - else
-          = link_to 'Resume', [:resume, @project, runner], method: :get, class: 'btn btn-success btn-small'
-        - if runner.only_for?(@project)
-          = link_to 'Remove', [@project, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
-        - else
-          - runner_project = @project.runner_projects.find_by(runner_id: runner)
-          = link_to 'Disable for this project', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+        - runner_project = @project.runner_projects.find_by(runner_id: runner)
+        = link_to 'Disable for this project', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
       - elsif runner.specific?
         = form_for [@project, @project.runner_projects.new] do |f|
           = f.hidden_field :runner_id, value: runner.id

@@ -18,12 +18,12 @@
 
 
 - if @runners.any?
-  %h4 Runners activated for this project
+  %h4.underlined-title Runners activated for this project
   %ul.bordered-list
     = render @runners
 
 - if @specific_runners.any?
-  %h4 Available specific runners
+  %h4.underlined-title Available specific runners
   %ul.bordered-list
     = render @specific_runners
   = paginate @specific_runners

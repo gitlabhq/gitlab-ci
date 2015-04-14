@@ -15,7 +15,7 @@
   This application has no shared runners yet.
   Please use specific runners or ask administrator to create one
 - else
-  %h4 Available shared runners - #{@shared_runners_count}
+  %h4.underlined-title Available shared runners - #{@shared_runners_count}
   %ul.bordered-list
     = render @shared_runners.first(10)
   - if @shared_runners_count > 10
