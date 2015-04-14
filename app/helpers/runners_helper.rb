@@ -8,7 +8,7 @@ module RunnersHelper
 
     status =
       if runner.active?
-        if runner.contacted_at > 1.hour.ago
+        if runner.contacted_at > 3.hour.ago
           :online
         else
           :offline

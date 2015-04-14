@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get :status, to: 'projects#badge'
       get :integration
       post :build
+      post :toggle_shared_runners
     end
 
     resources :services, only: [:index, :edit, :update] do
