@@ -3,16 +3,12 @@ module RunnersHelper
     unless runner.contacted_at
       return content_tag :i, nil,
         class: "icon-warning-sign",
-        title: "New runner. Has no connect yet"
+        title: "New runner. Has not connected yet"
     end
 
     status =
       if runner.active?
-        if runner.contacted_at > 3.hour.ago
-          :online
-        else
-          :offline
-        end
+        runner.contacted_at > 3.hour.ago ? :online : :offline
       else
         :paused
       end
