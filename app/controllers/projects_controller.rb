@@ -116,7 +116,7 @@ class ProjectsController < ApplicationController
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
     :email_recipients, :email_add_pusher, :email_only_broken_builds, :coverage_regex,
-    {jobs_attributes: [:id, :name, :build_branches, :build_tags, :tag_list, :commands, :refs, :_destroy]},
+    { jobs_attributes: [:id, :name, :build_branches, :build_tags, :tag_list, :commands, :refs, :_destroy] },
     :shared_runners_enabled)
   end
 end
