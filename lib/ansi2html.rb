@@ -188,7 +188,7 @@ module Ansi2html
       color_name = COLOR[color_index]
       return nil if color_name.nil?
 
-      return get_color_class(["term", prefix, color_name])
+      get_color_class(["term", prefix, color_name])
     end
 
     def set_fg_color_256(command_stack)
@@ -212,11 +212,11 @@ module Ansi2html
       return unless color_index >= 0
       return unless color_index <= 255
 
-      return get_color_class(["xterm", prefix, color_index])
+      get_color_class(["xterm", prefix, color_index])
     end
 
     def get_color_class(segments)
-      return [segments].flatten.compact.join('-')
+      [segments].flatten.compact.join('-')
     end
   end
 end
