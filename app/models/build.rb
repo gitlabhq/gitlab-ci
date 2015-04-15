@@ -115,7 +115,7 @@ class Build < ActiveRecord::Base
         WebHookService.new.build_end(build)
       end
 
-      if build.commit.success? && !build.job.deploy?
+      if build.commit.success? && !(build.job && build.job.deploy?)
         build.commit.create_deploy_builds(build.ref)
       end
 
