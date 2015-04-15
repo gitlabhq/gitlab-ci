@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150330001111) do
+ActiveRecord::Schema.define(version: 20150415142013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,8 +81,10 @@ ActiveRecord::Schema.define(version: 20150330001111) do
     t.boolean  "build_tags",     default: false,      null: false
     t.string   "job_type",       default: "parallel"
     t.string   "refs"
+    t.datetime "deleted_at"
   end
 
+  add_index "jobs", ["deleted_at"], name: "index_jobs_on_deleted_at", using: :btree
   add_index "jobs", ["project_id"], name: "index_jobs_on_project_id", using: :btree
 
   create_table "projects", force: true do |t|

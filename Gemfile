@@ -79,6 +79,9 @@ gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'nprogress-rails'
 
+# Soft deletion
+gem "paranoia", "~> 2.0"
+
 
 group :development do
   gem 'brakeman', require: false
