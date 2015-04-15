@@ -63,9 +63,9 @@ class ProjectsController < ApplicationController
 
   def update
     if project.update_attributes(project_params)
-      
+
       EventService.new.change_project_settings(current_user, project)
-      
+
       redirect_to project, notice: 'Project was successfully updated.'
     else
       render action: "edit"
@@ -116,6 +116,7 @@ class ProjectsController < ApplicationController
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
     :email_recipients, :email_add_pusher, :email_only_broken_builds, :coverage_regex,
-    :jobs_attributes, :shared_runners_enabled)
+    {jobs_attributes: [:name, :build_branches, :build_tags, :tag_list, :commands, :refs]},
+    :shared_runners_enabled)
   end
 end
