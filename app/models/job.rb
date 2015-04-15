@@ -16,6 +16,8 @@
 #
 
 class Job < ActiveRecord::Base
+  acts_as_paranoid
+  
   belongs_to :project
   has_many :builds
 

@@ -201,6 +201,8 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
+    paranoia (2.1.1)
+      activerecord (~> 4.0)
     parser (2.2.0.2)
       ast (>= 1.1, < 3.0)
     pg (0.17.0)
@@ -396,6 +398,7 @@ DEPENDENCIES
   nested_form
   nprogress-rails
   oauth2 (= 1.0.0)
+  paranoia (~> 2.0)
   pg
   poltergeist (~> 1.5.1)
   pry

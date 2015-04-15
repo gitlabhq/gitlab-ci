@@ -28,7 +28,7 @@ class Build < ActiveRecord::Base
   belongs_to :commit
   belongs_to :project
   belongs_to :runner
-  belongs_to :job
+  belongs_to :job, -> { with_deleted }
 
   validates :commit, presence: true
   validates :status, presence: true
@@ -115,7 +115,7 @@ class Build < ActiveRecord::Base
         WebHookService.new.build_end(build)
       end
 
-      if build.commit.success? && !build.job.deploy?
+      if build.commit.success? && !(build.job && build.job.deploy?)
         build.commit.create_deploy_builds(build.ref)
       end
 
