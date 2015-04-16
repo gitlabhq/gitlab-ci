@@ -66,7 +66,7 @@ class User
   end
 
   def authorized_runners
-    Runner.specific.joins(:runner_projects).
+    Runner.specific.includes(:runner_projects).
       where(runner_projects: { project_id: authorized_projects } )
   end
 
