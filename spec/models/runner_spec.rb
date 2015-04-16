@@ -22,8 +22,8 @@ describe Runner do
     end
 
     it 'should return the token if it does not have a description' do
-      runner = FactoryGirl.build(:runner)
-      expect(runner.display_name).to eq runner.token
+      runner = FactoryGirl.create(:runner)
+      expect(runner.display_name).to eq runner.description
     end
 
     it 'should return the token if the description is an empty string' do
@@ -34,12 +34,32 @@ describe Runner do
 
   describe :assign_to do
     let!(:project) { FactoryGirl.create :project }
-    let!(:shared_runner) { FactoryGirl.create(:runner, is_shared: true) }
+    let!(:shared_runner) { FactoryGirl.create(:shared_runner) }
 
     before { shared_runner.assign_to(project) }
 
     it { shared_runner.should be_specific }
     it { shared_runner.projects.should == [project] }
     it { shared_runner.only_for?(project).should be_true }
+  end
+
+  describe "belongs_to_one_project?" do
+    it "returns false if there are two projects runner assigned to" do
+      runner = FactoryGirl.create(:specific_runner)
+      project = FactoryGirl.create(:project)
+      project1 = FactoryGirl.create(:project)
+      project.runners << runner
+      project1.runners << runner
+
+      runner.belongs_to_one_project?.should be_false
+    end
+
+    it "returns true" do
+      runner = FactoryGirl.create(:specific_runner)
+      project = FactoryGirl.create(:project)
+      project.runners << runner
+
+      runner.belongs_to_one_project?.should be_true
+    end
   end
 end

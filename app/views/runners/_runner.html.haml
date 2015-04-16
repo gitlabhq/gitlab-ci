@@ -10,8 +10,11 @@
           
     .pull-right
       - if @runners.include?(runner)
-        - runner_project = @project.runner_projects.find_by(runner_id: runner)
-        = link_to 'Disable for this project', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+        - if runner.belongs_to_one_project?
+          = link_to 'Remove runner', [@project, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+        - else
+          - runner_project = @project.runner_projects.find_by(runner_id: runner)
+          = link_to 'Disable for this project', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
       - elsif runner.specific?
         = form_for [@project, @project.runner_projects.new] do |f|
           = f.hidden_field :runner_id, value: runner.id

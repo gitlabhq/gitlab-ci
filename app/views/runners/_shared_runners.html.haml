@@ -16,7 +16,7 @@
   Please use specific runners or ask administrator to create one
 - else
   %h4.underlined-title Available shared runners - #{@shared_runners_count}
-  %ul.bordered-list
+  %ul.bordered-list.available-shared-runners
     = render @shared_runners.first(10)
   - if @shared_runners_count > 10
     .light
