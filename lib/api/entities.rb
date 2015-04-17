@@ -17,7 +17,8 @@ module API
     end
 
     class Project < Grape::Entity
-      expose :id, :name, :timeout, :token, :default_ref, :gitlab_url, :always_build, :polling_interval, :public, :ssh_url_to_repo, :gitlab_id
+      expose :id, :name, :timeout, :token, :default_ref, :gitlab_url,
+        :always_build, :polling_interval, :public, :ssh_url_to_repo, :gitlab_id
     end
 
     class RunnerProject < Grape::Entity
@@ -29,7 +30,13 @@ module API
     end
 
     class Job < Grape::Entity
-      expose :id, :project_id, :commands, :active, :name, :build_branches, :build_tags, :tags
+      expose :id, :project_id, :commands, :active, :name, :build_branches,
+        :build_tags, :tags, :job_type, :tag_list
+    end
+
+    class DeployJob < Grape::Entity
+      expose :id, :project_id, :commands, :active, :name,
+        :refs, :tags, :job_type, :refs, :tag_list
     end
   end
 end

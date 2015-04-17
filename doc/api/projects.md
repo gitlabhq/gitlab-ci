@@ -161,7 +161,7 @@ Parameters:
 
   * `id` (required) - The ID of the Gitlab CI project
 
-### Add a Job to a Project
+### Add a parallel Job to a Project
 
 Adds a Job to a Gitlab CI Project (only via
 authorized user).
@@ -173,10 +173,26 @@ Parameters:
   * `id` (required) - The ID of the Gitlab CI project
   * `name` (required) - The name of the Job to add
   * `commands` (required) - The script commands of the job
-  *  `active` (optional) - The command is active of not
-  *  `build_branches` (optional) - Trigger commit builds
-  *  `build_tags` (optional) - Trigger tag builds
-  *  `tags` (optional) - The tags associated with this job
+  * `active` (optional) - The command is active of not
+  * `build_branches` (optional) - Trigger commit builds
+  * `build_tags` (optional) - Trigger tag builds
+  * `tags` (optional) - The tags associated with this job
+
+### Add a deploy Job to a Project
+
+Adds a deploy Job to a Gitlab CI Project (only via
+authorized user).
+
+    POST /projects/:id/deploy_jobs
+
+Parameters:
+
+  * `id` (required) - The ID of the Gitlab CI project
+  * `name` (required) - The name of the Job to add
+  * `commands` (required) - The script commands of the job
+  * `active` (optional) - The command is active of not
+  * `refs` (optional) - The list of refs
+  * `tags` (optional) - The tags associated with this job
 
 ### Remove a Job from a Project
 

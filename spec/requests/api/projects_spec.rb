@@ -101,6 +101,54 @@ describe API::API do
     end
   end
 
+  describe "POST /projects/:project_id/deploy_jobs" do
+    let!(:project) { FactoryGirl.create(:project) }
+
+    let(:job_info) {
+      {
+        name: "A Job Name",
+        commands: "ls -lad",
+        active: false,
+        refs: "master",
+        tags: "release, deployment",
+      }
+    }
+    let(:invalid_job_info) { {} }
+
+    context "Invalid Job Info" do
+      before do
+        options.merge!(invalid_job_info)
+      end
+
+      it "should error with invalid data" do
+        post api("/projects/#{project.id}/deploy_jobs"), options
+        response.status.should == 400
+      end
+    end
+
+    context "Valid Job Info" do
+      before do
+        options.merge!(job_info)
+      end
+
+      it "should create a job for specified project" do
+        post api("/projects/#{project.id}/deploy_jobs"), options
+        response.status.should == 201
+        json_response["name"].should == job_info[:name]
+        json_response["commands"].should == job_info[:commands]
+        json_response["active"].should == job_info[:active]
+        json_response["refs"].should == job_info[:refs]
+        json_response["tags"].should have(2).items
+      end
+
+      it "fails to create job for non existsing project" do
+        post api("/projects/non-existant-id/deploy_jobs"), options
+        response.status.should == 404
+      end
+    end
+  end
+
+
   describe "GET /projects/:project_id/jobs" do
     let!(:project) { FactoryGirl.create(:project) }
     let(:job_info) {

@@ -83,6 +83,45 @@ module API
         end
       end
 
+      # Add a new deploy job to a project
+      #
+      # Parameters
+      #   id (required) - The ID of a project
+      #   name (required) - The job name
+      #   commands (required) - The command line script for the job
+      #   active (optional) - The command is active of not
+      #   refs (optional) - The list of refs
+      #   tags (optional) - The tags associated with this job
+      # Example Request
+      #   POST /projects/:id/deploy_jobs
+      post ":id/deploy_jobs" do
+        required_attributes! [:name, :commands]
+
+        project = Project.find(params[:id])
+
+        not_found! if project.blank?
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
+
+        job_params =
+        {
+          name: params[:name],
+          commands: params[:commands],
+          job_type: "deploy"
+        }
+
+        job_params[:active] = params[:active] unless params[:active].nil?
+        job_params[:refs] = params[:refs] unless params[:refs].nil?
+        job_params[:tag_list] = params[:tags] unless params[:tags].nil?
+
+        job = project.jobs.new(job_params)
+        if job.save
+          present job, with: Entities::DeployJob
+        else
+          errors = job.errors.full_messages.join(", ")
+          render_api_error!(errors, 400)
+        end
+      end
+
       # Delete a job for a project
       #
       # Parameters
