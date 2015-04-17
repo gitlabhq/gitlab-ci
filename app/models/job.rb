@@ -13,6 +13,7 @@
 #  build_tags     :boolean          default(FALSE), not null
 #  job_type       :string(255)      default("parallel")
 #  refs           :string(255)
+#  deleted_at     :datetime
 #
 
 class Job < ActiveRecord::Base
