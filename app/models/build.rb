@@ -79,7 +79,6 @@ class Build < ActiveRecord::Base
 
       new_build.job_id = build.job_id
       new_build.commit_id = build.commit_id
-      new_build.ref = build.ref
       new_build.project_id = build.project_id
       new_build.save
       new_build
@@ -133,7 +132,7 @@ class Build < ActiveRecord::Base
     state :canceled, value: 'canceled'
   end
 
-  delegate :sha, :short_sha, :before_sha,
+  delegate :sha, :short_sha, :before_sha, :ref,
     to: :commit, prefix: false
 
   def trace_html
@@ -216,16 +215,6 @@ class Build < ActiveRecord::Base
   def job_name
     if job
       job.name
-    end
-  end
-
-  def ref
-    build_ref = read_attribute(:ref)
-
-    if build_ref.present?
-      build_ref
-    else
-      commit.ref
     end
   end
 
