@@ -38,7 +38,7 @@ module API
         project = Project.find(params[:id])
 
         not_found! if project.blank?
-        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         project.jobs
       end
@@ -61,7 +61,7 @@ module API
         project = Project.find(params[:id])
 
         not_found! if project.blank?
-        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         job_params =
         {
@@ -97,7 +97,7 @@ module API
         job     = project.jobs.find(params[:job_id])
 
         not_found! if project.blank? || job.blank?
-        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         job.destroy
       end
@@ -193,7 +193,7 @@ module API
       put ":id" do
         project = Project.find(params[:id])
 
-        if project.present? && current_user.can_access_project?(project.gitlab_id)
+        if project.present? && current_user.can_manage_project?(project.gitlab_id)
           attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :default_ref, :ssh_url_to_repo]
 
           if project.update_attributes(attrs)
@@ -216,7 +216,7 @@ module API
       delete ":id" do
         project = Project.find(params[:id])
 
-        if project.present? && current_user.can_access_project?(project.gitlab_id)
+        if project.present? && current_user.can_manage_project?(project.gitlab_id)
           project.destroy
         else
           not_found!
