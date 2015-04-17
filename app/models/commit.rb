@@ -117,7 +117,6 @@ class Commit < ActiveRecord::Base
     build.tag_list = job.tag_list
     build.project_id = project_id
     build.job = job
-    build.ref = ref
     build.save
     build
   end
