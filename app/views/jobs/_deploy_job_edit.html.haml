@@ -12,11 +12,11 @@
 
       = job_form.hidden_field :job_type, value: "deploy"
       .form-group
-        = f.label :name, 'Name', class: 'control-label'
+        = job_form.label :name, 'Name', class: 'control-label'
         .col-sm-10
           = job_form.text_field :name, class: 'form-control', placeholder: "Staging"
       .form-group
-        = label_tag :tag_list, class: 'control-label' do
+        = job_form.label :tag_list, class: 'control-label' do
           Tags
         .col-sm-10
           = job_form.text_field :tag_list, class: 'form-control'
@@ -25,7 +25,7 @@
             Leave blank if you want this job to use any runner
 
       .form-group
-        = label_tag :refs, class: 'control-label' do
+        = job_form.label :refs, class: 'control-label' do
           Refs
         .col-sm-10
           = job_form.text_field :refs, class: 'form-control', placeholder: "master, staging, feature/*, tags/testing*"
@@ -35,7 +35,7 @@
             Accepts strings and glob pattern syntax
 
       .form-group
-        = f.label :commands, 'Script', class: 'control-label'
+        = job_form.label :commands, 'Script', class: 'control-label'
         .col-sm-10
           = job_form.text_area :commands, class: 'form-control', rows: 10, placeholder: "bundle exec rake spec"
           %p.light

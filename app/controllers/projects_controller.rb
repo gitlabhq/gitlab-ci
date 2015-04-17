@@ -66,7 +66,7 @@ class ProjectsController < ApplicationController
 
       EventService.new.change_project_settings(current_user, project)
 
-      redirect_to project, notice: 'Project was successfully updated.'
+      redirect_to :back, notice: 'Project was successfully updated.'
     else
       render action: "edit"
     end
