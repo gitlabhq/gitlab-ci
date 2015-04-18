@@ -1,3 +1,6 @@
+sidekiq_wirker_fix
+	- added sidekiq.yml
+	- integrated in script/background_jobs
 v7.10.0
   - Projects sorting by last commit date
   - Add project search at runner page

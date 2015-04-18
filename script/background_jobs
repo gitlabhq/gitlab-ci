@@ -4,6 +4,7 @@ cd $(dirname $0)/..
 app_root=$(pwd)
 sidekiq_pidfile="$app_root/tmp/pids/sidekiq.pid"
 sidekiq_logfile="$app_root/log/sidekiq.log"
+sidekiq_config="$app_root/config/sidekiq.yml"
 gitlab_ci_user=$(ls -l config.ru | awk '{print $3}')
 
 function stop
@@ -27,7 +28,7 @@ function restart
 
 function start_sidekiq
 {
-  bundle exec sidekiq -q runner,common,default -e $RAILS_ENV -P $sidekiq_pidfile -d -L $sidekiq_logfile >> $sidekiq_logfile 2>&1
+  bundle exec sidekiq -q runner,common,default -e $RAILS_ENV -P $sidekiq_pidfile -d -L $sidekiq_logfile -C $sidekiq_config >> $sidekiq_logfile 2>&1
 }
 
 case "$1" in
