@@ -9,6 +9,7 @@ v7.10.0
   - Runners sorting in admin area (by id)
   - Remove protected_attributes gem
   - Skip commit creation if there is no appropriate job
+  - [Security][API] User can manage projects with manage access only
   
 v7.9.3
   - Contains no changes
