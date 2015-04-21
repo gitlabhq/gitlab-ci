@@ -90,12 +90,11 @@ ls -la
       project
     end
 
-    def from_gitlab(user, page, per_page, scope = :owned)
+    def from_gitlab(user, scope = :owned, options)
       opts = { private_token: user.private_token }
-      opts[:per_page] = per_page if per_page.present?
-      opts[:page]     = page     if page.present?
+      opts.merge! options
 
-      projects = Network.new.projects(user.url, opts, scope)
+      projects = Network.new.projects(user.url, opts.compact, scope)
 
       if projects
         projects.map { |pr| OpenStruct.new(pr) }

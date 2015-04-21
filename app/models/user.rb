@@ -8,9 +8,9 @@ class User
     @attributes = hash
   end
 
-  def gitlab_projects(page = 1, per_page = 100)
-    Rails.cache.fetch(cache_key(page, per_page)) do
-      Project.from_gitlab(self, page, per_page, :authorized)
+  def gitlab_projects(search = nil, page = 1, per_page = 100)
+    Rails.cache.fetch(cache_key(page, per_page, search)) do
+      Project.from_gitlab(self, :authorized, { page: page, per_page: per_page, search: search })
     end
   end
 

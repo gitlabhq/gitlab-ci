@@ -108,7 +108,7 @@ module API
       #   GET /projects
       get do
         gitlab_projects = Project.from_gitlab(
-          current_user, params[:page], params[:per_page], :authorized
+          current_user, :authorized, { page: params[:page], per_page: params[:per_page] }
         )
         ids = gitlab_projects.map { |project| project.id }
 
@@ -122,7 +122,7 @@ module API
       #   GET /projects/owned
       get "owned" do
         gitlab_projects = Project.from_gitlab(
-          current_user, params[:page], params[:per_page], :owned
+          current_user, :owned, { page: params[:page], per_page: params[:per_page] }
         )
         ids = gitlab_projects.map { |project| project.id }
 
