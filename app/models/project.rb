@@ -94,7 +94,7 @@ ls -la
       opts = { private_token: user.private_token }
       opts.merge! options
 
-      projects = Network.new.projects(user.url, opts.compact, scope)
+      projects = Network.new.projects(opts.compact, scope)
 
       if projects
         projects.map { |pr| OpenStruct.new(pr) }

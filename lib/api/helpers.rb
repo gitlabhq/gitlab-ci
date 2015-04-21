@@ -7,8 +7,7 @@ module API
     def current_user
       @current_user ||= begin
         options = {
-          private_token: (params[PRIVATE_TOKEN_PARAM] || env[PRIVATE_TOKEN_HEADER]),
-          url: params[:url]
+          private_token: (params[PRIVATE_TOKEN_PARAM] || env[PRIVATE_TOKEN_HEADER])
         }
         UserSession.new.authenticate_by_token(options)
       end

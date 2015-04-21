@@ -8,7 +8,7 @@
   .projects
     %p.fetch-status.light
       %i.icon-refresh.icon-spin
-      Please wait while we fetch from GitLab (#{current_user.url})
+      Please wait while we fetch from GitLab (#{GitlabCi.config.gitlab_server.url})
   :javascript
     $.get("#{gitlab_projects_path}")
 - else

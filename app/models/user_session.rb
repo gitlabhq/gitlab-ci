@@ -3,17 +3,15 @@ class UserSession
   include StaticModel
   extend ActiveModel::Naming
 
-  attr_accessor :url
-
   def authenticate(auth_opts)
-    authenticate_via(auth_opts) do |url, network, options|
-      network.authenticate(url, options)
+    authenticate_via(auth_opts) do |network, options|
+      network.authenticate(options)
     end
   end
 
   def authenticate_by_token(auth_opts)
-    result = authenticate_via(auth_opts) do |url, network, options|
-      network.authenticate_by_token(url, options)
+    result = authenticate_via(auth_opts) do |network, options|
+      network.authenticate_by_token(options)
     end
 
     result
@@ -22,14 +20,10 @@ class UserSession
   private
 
   def authenticate_via(options, &block)
-    url = options.delete(:url)
-
-    return nil unless GitlabCi.config.gitlab_server.url.include?(url)
-
-    user = block.call(url, Network.new, options)
+    user = block.call(Network.new, options)
 
     if user
-      return User.new(user.merge({ "url" => url }))
+      return User.new(user)
     else
       nil
     end

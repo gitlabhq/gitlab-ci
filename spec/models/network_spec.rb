@@ -4,7 +4,7 @@ describe Network do
   let(:network) { Network.new }
 
   describe :enable_ci do
-    subject { network.enable_ci '', '', '', '' }
+    subject { network.enable_ci '', '', '' }
 
     context 'on success' do
       before do
@@ -29,7 +29,7 @@ describe Network do
 
   describe :disable_ci do
     let(:response) { double }
-    subject { network.disable_ci '', '', '' }
+    subject { network.disable_ci '', '' }
 
     context 'on success' do
       let(:parsed_response) { 'parsed' }

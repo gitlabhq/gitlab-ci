@@ -82,7 +82,7 @@ describe ProjectsController do
     it "searches projects" do
       allow(controller).to receive(:reset_cache) { true }
       allow(controller).to receive(:current_user) { user }
-      Network.any_instance.should_receive(:projects).with(anything(), hash_including(search: 'str'), :authorized)
+      Network.any_instance.should_receive(:projects).with(hash_including(search: 'str'), :authorized)
 
       xhr :get, :gitlab, { search: "str", format: "js" }.with_indifferent_access
 

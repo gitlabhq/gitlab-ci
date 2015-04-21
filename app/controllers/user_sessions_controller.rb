@@ -18,7 +18,7 @@ class UserSessionsController < ApplicationController
     token = client.auth_code.get_token(params[:code], redirect_uri: callback_user_sessions_url).token
     
     @user_session = UserSession.new
-    user = @user_session.authenticate(access_token: token, url: GitlabCi.config.gitlab_server.url)
+    user = @user_session.authenticate(access_token: token)
 
     if user && sign_in(user)
       redirect_to root_path

@@ -11,7 +11,7 @@ describe API::API do
       password: "123456"
     }
   }
-  let(:private_token) { Network.new.authenticate(gitlab_url, auth_opts)["private_token"] }
+  let(:private_token) { Network.new.authenticate(auth_opts)["private_token"] }
 
   let(:options) {
     {
