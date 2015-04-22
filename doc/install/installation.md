@@ -222,7 +222,7 @@ production:
 
 
 Now you need Runners to process your builds.
-Checkout the #{link_to 'GitLab Runner section', 'https://about.gitlab.com/gitlab-ci/#gitlab-runner', target: '_blank'} to install it
+Checkout the [Gitlab Runner section](https://about.gitlab.com/gitlab-ci/#gitlab-runner) to install it
 
 # Done!
 
