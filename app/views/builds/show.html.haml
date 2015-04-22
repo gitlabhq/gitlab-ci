@@ -1,5 +1,5 @@
 %h4.page-title
-  = @project.name
+  = link_to @project.name, @project
   @
   = @commit.short_sha
   - if current_user.can_manage_project?(@project.gitlab_id)
