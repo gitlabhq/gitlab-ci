@@ -10,20 +10,20 @@
   = f.fields_for :jobs do |job_form|
     - if job_form.object.job_type == "parallel" || job_form.object.new_record?
       .form-group
-        = f.label :name, 'Name', class: 'control-label'
+        = job_form.label :name, 'Name', class: 'control-label'
         .col-sm-10
           = job_form.text_field :name, class: 'form-control', placeholder: "Ex. cucumber"
       .form-group
-        = f.label :build_branches, 'Trigger', class: 'control-label'
+        = job_form.label :build_branches, 'Trigger', class: 'control-label'
         .col-sm-10
           .checkbox
-            = f.label :build_branches, 'Builds commits', class: ''
+            = job_form.label :build_branches, 'Builds commits', class: ''
             = job_form.check_box :build_branches
           .checkbox
-            = f.label :build_tags, 'Build tags', class: ''
+            = job_form.label :build_tags, 'Build tags', class: ''
             = job_form.check_box :build_tags
       .form-group
-        = label_tag :tag_list, class: 'control-label' do
+        = job_form.label :tag_list, class: 'control-label' do
           Tags
         .col-sm-10
           = job_form.text_field :tag_list, class: 'form-control'
@@ -32,7 +32,7 @@
             Leave blank if you want this job to use any runner
 
       .form-group
-        = f.label :commands, 'Script', class: 'control-label'
+        = job_form.label :commands, 'Script', class: 'control-label'
         .col-sm-10
           = job_form.text_area :commands, class: 'form-control', rows: 10, placeholder: "bundle exec rake spec"
           %p.light
