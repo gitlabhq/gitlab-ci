@@ -1,4 +1,7 @@
-%p
+- content_for :header do
+  %h1{style: "background: #c40834; color: #FFF; font: normal 20px Helvetica, Arial, sans-serif; margin: 0; padding: 5px 10px; line-height: 32px; font-size: 16px;"}
+    GitLab CI (build failed)
+%h3
   Build failed for
   = link_to project_url(@project) do
     = @project.name
