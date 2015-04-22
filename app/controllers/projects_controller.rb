@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  PROJECTS_PER_PAGE = 100
+
   before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
   before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy]
   before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
@@ -16,8 +18,8 @@ class ProjectsController < ApplicationController
   def gitlab
     current_user.reset_cache if params[:reset_cache]
     @page = (params[:page] || 1).to_i
-    @per_page = 100
-    @gl_projects = current_user.gitlab_projects(@page, @per_page)
+    @per_page = PROJECTS_PER_PAGE
+    @gl_projects = current_user.gitlab_projects(params[:search], @page, @per_page)
     @projects = Project.where(gitlab_id: @gl_projects.map(&:id)).ordered_by_last_commit_date
     @total_count = @gl_projects.size
     @gl_projects.reject! { |gl_project| @projects.map(&:gitlab_id).include?(gl_project.id) }

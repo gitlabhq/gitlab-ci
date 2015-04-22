@@ -42,3 +42,16 @@
     border-radius: 0;
   }
 }
+
+.search{
+  width: 300px;
+
+  .search-input{
+    height: 35px;
+  }
+
+  form{
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

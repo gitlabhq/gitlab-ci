@@ -13,6 +13,7 @@ describe "Projects" do
     end
 
     it { page.should have_content "GitLab / gitlab-shell" }
+    it { page.should have_selector ".search input#search" }
   end
 
   describe "GET /projects/:id" do

@@ -42,7 +42,7 @@ describe ProjectsController do
     end
   end
 
-  describe "POST /:projects" do
+  describe "POST /projects" do
     let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
 
@@ -64,6 +64,30 @@ describe ProjectsController do
 
       Project.exists?(gitlab_id: 189).should be_true
       expect(response.code).to eq('302')
+    end
+  end
+
+  describe "GET /gitlab" do
+    let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
+
+    let (:user_data) do
+      data = JSON.parse File.read(Rails.root.join('spec/support/gitlab_stubs/user.json'))
+      data.merge("url" => gitlab_url)
+    end
+
+    let(:user) do
+      User.new(user_data)
+    end
+
+    it "searches projects" do
+      allow(controller).to receive(:reset_cache) { true }
+      allow(controller).to receive(:current_user) { user }
+      Network.any_instance.should_receive(:projects).with(anything(), hash_including(search: 'str'), :authorized)
+
+      xhr :get, :gitlab, { search: "str", format: "js" }.with_indifferent_access
+
+      expect(response).to be_success
+      expect(response.code).to eq('200')
     end
   end
 end

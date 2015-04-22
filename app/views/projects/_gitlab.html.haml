@@ -1,7 +1,10 @@
 .clearfix.light
   .pull-left.fetch-status
-    Fetched from GitLab (#{link_to current_user.url, current_user.url, no_turbolink}) #{time_ago_in_words(current_user.sync_at)} ago.
-    = link_to gitlab_projects_path(reset_cache: true), remote: true, class: 'sync-now btn btn-small btn-default' do
+    Fetched from GitLab (#{link_to current_user.url, current_user.url, no_turbolink})
+    - if params[:search].present?
+      by keyword: "#{params[:search]}",
+    #{time_ago_in_words(current_user.sync_at)} ago.
+    = link_to gitlab_projects_path(reset_cache: true, search: params[:search]), remote: true, class: 'sync-now btn btn-small btn-default' do
       %i.icon-refresh
       Sync now
     %br
@@ -48,7 +51,7 @@
   &nbsp;
   - if @total_count == @per_page
     %li
-      = link_to gitlab_projects_path(page: @page + 1), class: 'btn', remote: true do
+      = link_to gitlab_projects_path(page: @page + 1, search: params[:search]), class: 'btn', remote: true do
         Next
         %i.icon-angle-right
 
