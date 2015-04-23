@@ -17,7 +17,7 @@ describe API::API do
       }
     }
 
-    let(:private_token) { Network.new.authenticate(gitlab_url, auth_opts)["private_token"] }
+    let(:private_token) { Network.new.authenticate(auth_opts)["private_token"] }
     let(:options) {
       {
         :private_token => private_token,

@@ -61,7 +61,7 @@ class User
     }
 
     Rails.cache.fetch(cache_key('manage', project_gitlab_id, sync_at)) do
-      !!Network.new.project_hooks(self.url, opts, project_gitlab_id)
+      !!Network.new.project_hooks(opts, project_gitlab_id)
     end
   end
 
@@ -82,7 +82,7 @@ class User
     }
 
     Rails.cache.fetch(cache_key("project_info", project_gitlab_id, sync_at)) do
-      Network.new.project(self.url, opts, project_gitlab_id)
+      Network.new.project(opts, project_gitlab_id)
     end
   end
 end

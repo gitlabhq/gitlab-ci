@@ -13,7 +13,7 @@ class CreateProjectService
         project_url: project_route.gsub(":project_id", @project.id.to_s),
       }
 
-      unless Network.new.enable_ci(current_user.url, @project.gitlab_id, opts, current_user.private_token)
+      unless Network.new.enable_ci(@project.gitlab_id, opts, current_user.private_token)
         raise ActiveRecord::Rollback
       end
     end

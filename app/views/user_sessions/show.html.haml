@@ -12,4 +12,4 @@
 
   %p
     %span.light GitLab profile:
-    %strong= link_to @user.username, @user.url + '/u/' + @user.username, target: "_blank"
+    %strong= link_to @user.username, GitlabCi.config.gitlab_server.url + '/u/' + @user.username, target: "_blank"

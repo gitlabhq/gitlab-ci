@@ -1,6 +1,6 @@
 .clearfix.light
   .pull-left.fetch-status
-    Fetched from GitLab (#{link_to current_user.url, current_user.url, no_turbolink})
+    Fetched from GitLab (#{link_to GitlabCi.config.gitlab_server.url, GitlabCi.config.gitlab_server.url, no_turbolink})
     - if params[:search].present?
       by keyword: "#{params[:search]}",
     #{time_ago_in_words(current_user.sync_at)} ago.

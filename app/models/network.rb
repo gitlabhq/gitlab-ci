@@ -5,38 +5,35 @@ class Network
 
   API_PREFIX = '/api/v3/'
 
-  def authenticate(url, api_opts)
+  def authenticate(api_opts)
     opts = {
-      body: api_opts.to_json,
-      headers: { "Content-Type" => "application/json" },
+      body: api_opts.to_json
     }
 
     endpoint = File.join(url, API_PREFIX, 'user')
-    response = self.class.get(endpoint, opts)
+    response = self.class.get(endpoint, default_opts.merge(opts))
 
     build_response(response)
   end
 
-  def authenticate_by_token(url, api_opts)
+  def authenticate_by_token(api_opts)
     opts = {
-      query: api_opts,
-      headers: { "Content-Type" => "application/json" },
+      query: api_opts
     }
 
     endpoint = File.join(url, API_PREFIX, 'user.json')
-    response = self.class.get(endpoint, opts)
+    response = self.class.get(endpoint, default_opts.merge(opts))
 
     build_response(response)
   end
 
 
-  def projects(url, api_opts, scope = :owned)
+  def projects(api_opts, scope = :owned)
     # Dont load archived projects
     api_opts.merge!(archived: false)
 
     opts = {
-      query: api_opts,
-      headers: { "Content-Type" => "application/json" },
+      query: api_opts
     }
 
     query = if scope == :owned
@@ -46,48 +43,45 @@ class Network
             end
 
     endpoint = File.join(url, API_PREFIX, query)
-    response = self.class.get(endpoint, opts)
+    response = self.class.get(endpoint, default_opts.merge(opts))
 
     build_response(response)
   end
 
-  def project(url, api_opts, project_id)
+  def project(api_opts, project_id)
     opts = {
-      query: api_opts,
-      headers: { "Content-Type" => "application/json" },
+      query: api_opts
     }
 
     query = "projects/#{project_id}.json"
 
     endpoint = File.join(url, API_PREFIX, query)
-    response = self.class.get(endpoint, opts)
+    response = self.class.get(endpoint, default_opts.merge(opts))
 
     build_response(response)
   end
 
-  def project_hooks(url, api_opts, project_id)
+  def project_hooks(api_opts, project_id)
     opts = {
-      query: api_opts,
-      headers: { "Content-Type" => "application/json" },
+      query: api_opts
     }
 
     query = "projects/#{project_id}/hooks.json"
 
     endpoint = File.join(url, API_PREFIX, query)
-    response = self.class.get(endpoint, opts)
+    response = self.class.get(endpoint, default_opts.merge(opts))
 
     build_response(response)
   end
 
-  def enable_ci(url, project_id, ci_opts, token)
+  def enable_ci(project_id, api_opts, token)
     opts = {
-      body: ci_opts.to_json,
-      headers: { "Content-Type" => "application/json" },
+      body: api_opts.to_json
     }
 
     query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
     endpoint = File.join(url, API_PREFIX, query)
-    response = self.class.put(endpoint, opts)
+    response = self.class.put(endpoint, default_opts.merge(opts))
 
     case response.code
     when 200
@@ -99,20 +93,26 @@ class Network
     end
   end
 
-  def disable_ci(url, project_id, token)
-    opts = {
-      headers: { "Content-Type" => "application/json" },
-    }
-
+  def disable_ci(project_id, token)
     query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
 
     endpoint = File.join(url, API_PREFIX, query)
-    response = self.class.delete(endpoint, opts)
+    response = self.class.delete(endpoint, default_opts)
 
     build_response(response)
   end
 
   private
+
+  def url
+    GitlabCi.config.gitlab_server.url
+  end
+
+  def default_opts
+    {
+      headers: { "Content-Type" => "application/json" },
+    }
+  end
 
   def build_response(response)
     case response.code
