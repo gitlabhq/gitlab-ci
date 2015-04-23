@@ -56,5 +56,6 @@
         %i.icon-angle-right
 
 :coffeescript
+  NProgress.done()
   $('.gitlab-projects-pagination').on 'ajax:before', ->
     $('.projects').html('<h1><i class="icon-spinner icon-spin"/></h1>')

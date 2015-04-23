@@ -11,4 +11,5 @@
   $('.search .navbar-form').submit ->
     query = $('.search .navbar-form .search-input').val()
     $.get '#{gitlab_projects_path}' + '?search=' + query
+    NProgress.start()
     false
