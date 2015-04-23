@@ -25,7 +25,7 @@
 
     %td.duration
       - if build.duration
-        #{distance_of_time_in_words build.duration}
+        #{duration_in_words(build.finished_at, build.started_at)}
 
     %td.timestamp
       - if build.finished_at

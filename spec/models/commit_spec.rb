@@ -161,4 +161,22 @@ describe Commit do
       commit.builds.size.should == 1
     end
   end
+
+  describe "#finished_at" do
+    let(:project) { FactoryGirl.create :project }
+    let(:commit) { FactoryGirl.create :commit, project: project }
+
+    it "returns finished_at of latest build" do
+      build = FactoryGirl.create :build, commit: commit, finished_at: Time.now - 60
+      build1 = FactoryGirl.create :build, commit: commit, finished_at: Time.now - 120
+
+      commit.finished_at.to_i.should == build.finished_at.to_i
+    end
+
+    it "returns nil if there is no finished build" do
+      build = FactoryGirl.create :not_started_build, commit: commit
+
+      commit.finished_at.should be_nil
+    end
+  end
 end

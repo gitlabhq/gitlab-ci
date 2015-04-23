@@ -16,7 +16,7 @@
 
   %td.duration
     - if commit.duration > 0
-      #{distance_of_time_in_words commit.duration}
+      #{time_interval_in_words commit.duration}
 
   %td.timestamp
     - if commit.finished_at

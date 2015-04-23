@@ -51,7 +51,7 @@
   - if @commit.duration > 0
     %small.pull-right
       %i.icon-time
-      #{distance_of_time_in_words @commit.duration}
+      #{time_interval_in_words @commit.duration}
 
 %table.builds
   %thead
