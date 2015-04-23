@@ -52,7 +52,7 @@
           .pull-right
             %span
               %i.icon-time
-              #{distance_of_time_in_words @build.duration}
+              #{duration_in_words(@build.finished_at, @build.started_at)}
 
       .clearfix
         = @build.status
@@ -99,7 +99,7 @@
       - if @build.duration
         %p
           %span.attr-name Duration:
-          #{distance_of_time_in_words @build.duration}
+          #{duration_in_words(@build.finished_at, @build.started_at)}
       %p
         %span.attr-name Created:
         #{time_ago_in_words(@build.created_at)} ago

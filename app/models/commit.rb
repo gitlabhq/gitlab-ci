@@ -190,7 +190,7 @@ class Commit < ActiveRecord::Base
   end
 
   def finished_at
-    @finished_at ||= builds.order('finished_at ASC').first.try(:finished_at)
+    @finished_at ||= builds.order('finished_at DESC').first.try(:finished_at)
   end
 
   def coverage
