@@ -53,6 +53,10 @@ class Runner < ActiveRecord::Base
     is_shared
   end
 
+  def belongs_to_one_project?
+    runner_projects.count == 1
+  end
+
   def specific?
     !shared?
   end

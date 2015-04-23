@@ -10,3 +10,25 @@
     background: #3498db;
   }
 }
+
+.runner-status-online {
+  color: green;
+}
+
+.runner-status-offline {
+  color: gray;
+}
+
+.runner-status-paused {
+  color: red;
+}
+
+.runner {
+  .btn {
+    padding: 1px 6px;
+  }
+
+  h4 {
+    font-weight: normal;
+  }
+}

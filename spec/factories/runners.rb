@@ -16,6 +16,16 @@
 
 FactoryGirl.define do
   factory :runner do
-    token "MyString"
+    sequence :description do |n|
+      "My runner#{n}"
+    end
+
+    factory :shared_runner do
+      is_shared true
+    end
+
+    factory :specific_runner do
+      is_shared false
+    end
   end
 end

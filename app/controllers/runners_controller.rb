@@ -8,7 +8,11 @@ class RunnersController < ApplicationController
   layout 'project'
 
   def index
-    @runners = @project.runners.order('id DESC').page(params[:page]).per(20)
+    @runners = @project.runners.order('id DESC')
+    @specific_runners = current_user.authorized_runners.
+      where.not(id:  @runners).order('runners.id DESC').page(params[:page]).per(20)
+    @shared_runners = Runner.shared.active
+    @shared_runners_count = @shared_runners.count(:all)
   end
 
   def edit

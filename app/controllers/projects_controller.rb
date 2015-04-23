@@ -2,9 +2,9 @@ class ProjectsController < ApplicationController
   PROJECTS_PER_PAGE = 100
 
   before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
-  before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy]
+  before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy, :toggle_shared_runners]
   before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
-  before_filter :authorize_manage_project!, only: [:edit, :integration, :update, :destroy]
+  before_filter :authorize_manage_project!, only: [:edit, :integration, :update, :destroy, :toggle_shared_runners]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:badge]
   protect_from_forgery except: :build
@@ -65,7 +65,6 @@ class ProjectsController < ApplicationController
 
   def update
     if project.update_attributes(project_params)
-
       EventService.new.change_project_settings(current_user, project)
 
       redirect_to :back, notice: 'Project was successfully updated.'
@@ -99,6 +98,11 @@ class ProjectsController < ApplicationController
     image = ImageForBuildService.new.execute(@project, params)
 
     send_file image.path, filename: image.name, disposition: 'inline'
+  end
+
+  def toggle_shared_runners
+    project.toggle!(:shared_runners_enabled)
+    redirect_to :back
   end
 
   protected
