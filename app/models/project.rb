@@ -37,6 +37,7 @@ class Project < ActiveRecord::Base
 
   # Project services
   has_many :services, dependent: :destroy
+  has_one :hip_chat_service, dependent: :destroy
   has_one :slack_service, dependent: :destroy
   has_one :mail_service, dependent: :destroy
 
@@ -210,7 +211,7 @@ ls -la
   end
 
   def available_services_names
-    %w(slack mail)
+    %w(slack mail hip_chat)
   end
 
   def build_missing_services

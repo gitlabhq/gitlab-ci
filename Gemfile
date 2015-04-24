@@ -63,6 +63,9 @@ gem "default_value_for", "~> 3.0.0"
 # Slack integration
 gem "slack-notifier", "~> 1.0.0"
 
+# HipChat integration
+gem 'hipchat', '~> 1.5.0'
+
 # Other
 gem 'rake'
 gem 'foreman'
