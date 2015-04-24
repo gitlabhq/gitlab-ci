@@ -1,5 +1,4 @@
-
-# How you build script is run
+# How your build script is run
 
 The runner runs the line below before it runs the commands in your build script:
 
