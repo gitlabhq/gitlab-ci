@@ -25,7 +25,9 @@ class RegisterBuildService
       end
 
     if build
-      ActiveRecord::Base.transaction do
+      # In case when 2 runners try to assign the same build, second runner will be declined
+      # with StateMachine::InvalidTransition in run! method.
+      build.with_lock do
         build.runner_id = current_runner.id
         build.save!
         build.run!
@@ -33,5 +35,8 @@ class RegisterBuildService
     end
 
     build
+
+  rescue StateMachine::InvalidTransition
+    nil
   end
 end
