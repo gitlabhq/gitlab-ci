@@ -7,7 +7,7 @@ class Network
 
   def authenticate(api_opts)
     opts = {
-      body: api_opts.to_json
+      query: api_opts
     }
 
     endpoint = File.join(url, API_PREFIX, 'user')

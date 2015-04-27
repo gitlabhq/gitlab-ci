@@ -40,7 +40,7 @@ module StubGitlabCalls
   def stub_oauth_user
     f = File.read(Rails.root.join('spec/support/gitlab_stubs/user.json'))
 
-    stub_request(:get, "#{gitlab_url}api/v3/user").
+    stub_request(:get, "#{gitlab_url}api/v3/user?access_token=some_token").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
   end

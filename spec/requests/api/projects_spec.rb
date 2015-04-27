@@ -4,13 +4,7 @@ describe API::API do
   include ApiHelpers
 
   let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
-  let(:auth_opts) {
-    {
-      email: "test@test.com",
-      password: "123456"
-    }
-  }
-  let(:private_token) { Network.new.authenticate(auth_opts)["private_token"] }
+  let(:private_token) { Network.new.authenticate(access_token: "some_token")["private_token"] }
 
   let(:options) {
     {
