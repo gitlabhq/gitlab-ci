@@ -3,6 +3,7 @@ v7.11.0
   - Projects search on dashboard page
   - Improved runners page
   - Running and Pending tabs on admin builds page
+  - Fix [ci skip] tag, so you can skip CI triggering now
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
