@@ -92,6 +92,12 @@ describe API::API do
         post api("/projects/non-existant-id/jobs"), options
         response.status.should == 404
       end
+
+      it "non-manager is not authorized" do
+        User.any_instance.stub(:can_manage_project?).and_return(false)
+        post api("/projects/#{project.id}/jobs"), options
+        response.status.should == 401
+      end
     end
   end
 
@@ -138,6 +144,12 @@ describe API::API do
       it "fails to create job for non existsing project" do
         post api("/projects/non-existant-id/deploy_jobs"), options
         response.status.should == 404
+      end
+
+      it "non-manager is not authorized" do
+        User.any_instance.stub(:can_manage_project?).and_return(false)
+        post api("/projects/#{project.id}/deploy_jobs"), options
+        response.status.should == 401
       end
     end
   end
@@ -204,12 +216,9 @@ describe API::API do
     end
 
     it "should delete a project job" do
-      post api("/projects/#{project.id}/jobs"), options
-      response.status.should == 201
-      json_response["name"].should == job_info[:name]
-      json_response["commands"].should == job_info[:commands]
-      job_id = json_response["id"]
-      delete api("/projects/#{project.id}/jobs/#{job_id}"), options
+      job = FactoryGirl.create(:job, project: project)
+
+      delete api("/projects/#{project.id}/jobs/#{job.id}"), options
       response.status.should == 200
     end
 
@@ -221,6 +230,15 @@ describe API::API do
     it "fails to delete a job for a non existsing job id" do
       delete api("/projects/#{project.id}/jobs/non-existant-job-id"), options
       response.status.should == 404
+    end
+
+    it "non-manager is not authorized" do
+      User.any_instance.stub(:can_manage_project?).and_return(false)
+      job = FactoryGirl.create(:job, project: project)
+
+      delete api("/projects/#{project.id}/jobs/#{job.id}"), options
+
+      response.status.should == 401
     end
   end
 
@@ -245,6 +263,11 @@ describe API::API do
         response.status.should == 404
       end
 
+      it "non-manager is not authorized" do
+        User.any_instance.stub(:can_manage_project?).and_return(false)
+        post api("/projects/#{project.id}/webhooks"), options
+        response.status.should == 401
+      end
     end
 
     context "Invalid Webhook URL" do
@@ -305,6 +328,12 @@ describe API::API do
       put api("/projects/non-existant-id"), options
       response.status.should == 404
     end
+
+    it "non-manager is not authorized" do
+      User.any_instance.stub(:can_manage_project?).and_return(false)
+      put api("/projects/#{project.id}"), options
+      response.status.should == 401
+    end
   end
 
   describe "DELETE /projects/:id" do
@@ -315,6 +344,17 @@ describe API::API do
       response.status.should == 200
 
       expect { project.reload }.to raise_error
+    end
+
+    it "non-manager is not authorized" do
+      User.any_instance.stub(:can_manage_project?).and_return(false)
+      delete api("/projects/#{project.id}"), options
+      response.status.should == 401
+    end
+
+    it "is getting not found error" do
+      delete api("/projects/not-existing_id"), options
+      response.status.should == 404
     end
   end
 
@@ -372,6 +412,12 @@ describe API::API do
         post api("/projects/non-existing/runners/#{runner.id}"), options
         response.status.should == 404
       end
+
+      it "non-manager is not authorized" do
+        User.any_instance.stub(:can_manage_project?).and_return(false)
+        post api("/projects/#{project.id}/runners/#{runner.id}"), options
+        response.status.should == 401
+      end
     end
 
     describe "DELETE /projects/:id/runners/:id" do
@@ -389,6 +435,12 @@ describe API::API do
 
         project.reload
         project.runners.should be_empty
+      end
+
+      it "non-manager is not authorized" do
+        User.any_instance.stub(:can_manage_project?).and_return(false)
+        post api("/projects/#{project.id}/runners/#{runner.id}"), options
+        response.status.should == 401
       end
     end
   end
