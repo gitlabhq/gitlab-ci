@@ -58,10 +58,6 @@ class Commit < ActiveRecord::Base
     project.gitlab?
   end
 
-  def ci_skip?
-    !!(git_commit_message =~ /(\[ci skip\])/)
-  end
-
   def git_author_name
     commit_data[:author][:name] if commit_data && commit_data[:author]
   end

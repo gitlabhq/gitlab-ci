@@ -54,20 +54,6 @@ describe Commit do
     end
   end
 
-  describe :ci_skip? do
-    let(:project) { FactoryGirl.create(:project) }
-    let(:commit) { FactoryGirl.create(:commit, project: project) }
-
-    it 'true if commit message contains [ci skip]' do
-      commit.stub(:git_commit_message) { 'Small typo [ci skip]' }
-      commit.ci_skip?.should == true
-    end
-
-    it 'false if commit message does not contain [ci skip]' do
-      commit.ci_skip?.should == false
-    end
-  end
-
   describe :project_recipients do
 
     context 'always sending notification' do
