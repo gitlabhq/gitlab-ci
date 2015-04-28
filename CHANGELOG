@@ -1,3 +1,6 @@
+v7.10.1
+  - Fix failing migration when update to 7.10 from 7.8 and older versions
+
 v7.10.0
   - Projects sorting by last commit date
   - Add project search at runner page
