@@ -16,15 +16,15 @@ module API
 
         project = Project.find(params[:project_id])
 
-        if project.present? && current_user.can_access_project?(project.gitlab_id)
-          web_hook = project.web_hooks.new({ url: params[:web_hook] })
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
+        
+        web_hook = project.web_hooks.new({ url: params[:web_hook] })
 
-          if web_hook.save
-            present web_hook, with: Entities::WebHook
-          else
-            errors = web_hook.errors.full_messages.join(", ")
-            render_api_error!(errors, 400)
-          end
+        if web_hook.save
+          present web_hook, with: Entities::WebHook
+        else
+          errors = web_hook.errors.full_messages.join(", ")
+          render_api_error!(errors, 400)
         end
       end
 
@@ -37,7 +37,6 @@ module API
       get ":id/jobs" do
         project = Project.find(params[:id])
 
-        not_found! if project.blank?
         unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         project.jobs
@@ -60,7 +59,6 @@ module API
 
         project = Project.find(params[:id])
 
-        not_found! if project.blank?
         unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         job_params =
@@ -99,7 +97,6 @@ module API
 
         project = Project.find(params[:id])
 
-        not_found! if project.blank?
         unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         job_params =
@@ -133,10 +130,10 @@ module API
         required_attributes! [:job_id]
 
         project = Project.find(params[:id])
-        job     = project.jobs.find(params[:job_id])
 
-        not_found! if project.blank? || job.blank?
         unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
+
+        job = project.jobs.find(params[:job_id])
 
         job.destroy
       end
@@ -178,11 +175,9 @@ module API
       get ":id" do
         project = Project.find(params[:id])
 
-        if current_user.can_access_project?(project.gitlab_id)
-          present project, with: Entities::Project
-        else
-          unauthorized!
-        end
+        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+
+        present project, with: Entities::Project
       end
 
       # Create Gitlab CI project using Gitlab project info
@@ -232,17 +227,15 @@ module API
       put ":id" do
         project = Project.find(params[:id])
 
-        if project.present? && current_user.can_manage_project?(project.gitlab_id)
-          attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :default_ref, :ssh_url_to_repo]
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
-          if project.update_attributes(attrs)
-            present project, with: Entities::Project
-          else
-            errors = project.errors.full_messages.join(", ")
-            render_api_error!(errors, 400)
-          end
+        attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :default_ref, :ssh_url_to_repo]
+
+        if project.update_attributes(attrs)
+          present project, with: Entities::Project
         else
-          not_found!
+          errors = project.errors.full_messages.join(", ")
+          render_api_error!(errors, 400)
         end
       end
 
@@ -255,11 +248,9 @@ module API
       delete ":id" do
         project = Project.find(params[:id])
 
-        if project.present? && current_user.can_manage_project?(project.gitlab_id)
-          project.destroy
-        else
-          not_found!
-        end
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
+
+        project.destroy
       end
 
       # Link a Gitlab CI project to a runner
@@ -270,12 +261,10 @@ module API
       # Example Request:
       #   POST /projects/:id/runners/:runner_id
       post ":id/runners/:runner_id" do
-        project = Project.find_by_id(params[:id])
-        runner  = Runner.find_by_id(params[:runner_id])
+        project = Project.find(params[:id])
+        runner  = Runner.find(params[:runner_id])
 
-        not_found! if project.blank? or runner.blank?
-
-        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         options = {
           project_id: project.id,
@@ -300,18 +289,17 @@ module API
       # Example Request:
       #   DELETE /projects/:id/runners/:runner_id
       delete ":id/runners/:runner_id" do
-        project = Project.find_by_id(params[:id])
-        runner  = Runner.find_by_id(params[:runner_id])
+        project = Project.find(params[:id])
+        runner  = Runner.find(params[:runner_id])
 
-        not_found! if project.blank? or runner.blank?
-        unauthorized! unless current_user.can_access_project?(project.gitlab_id)
+        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
         options = {
           project_id: project.id,
           runner_id:  runner.id
         }
 
-        runner_project = RunnerProject.where(options).first
+        runner_project = RunnerProject.find_by(options)
 
         if runner_project.present?
           runner_project.destroy

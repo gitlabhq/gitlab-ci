@@ -10,11 +10,7 @@ module API
         authenticate!
         runners = Runner.all
 
-        if runners.present?
-          present runners, with: Entities::Runner
-        else
-          not_found!
-        end
+        present runners, with: Entities::Runner
       end
 
       # Delete runner
