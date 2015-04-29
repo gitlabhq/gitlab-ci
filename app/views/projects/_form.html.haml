@@ -25,6 +25,11 @@
             %strong git fetch
             .light Faster
     .form-group
+      = f.label :cache_pattern , 'Cache pattern', class: 'control-label'
+      .col-sm-10
+        = f.text_field :cache_pattern, class: 'form-control', placeholder: 'node_modules, .tox'
+        .light Cached files will be excluded from "git clean" before "git fetch"
+    .form-group
       = f.label :timeout_in_minutes, 'Timeout', class: 'control-label'
       .col-sm-10
         = f.number_field :timeout_in_minutes, class: 'form-control', min: '0'

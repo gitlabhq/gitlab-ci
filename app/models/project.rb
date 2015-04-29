@@ -22,6 +22,7 @@
 #  skip_refs                :string(255)
 #  coverage_regex           :string(255)
 #  shared_runners_enabled   :boolean          default(FALSE)
+#  cache_pattern            :string(255)      default(""), not null
 #
 
 class Project < ActiveRecord::Base
@@ -161,6 +162,14 @@ ls -la
 
   def timeout_in_minutes=(value)
     self.timeout = value.to_i * 60
+  end
+
+  def cache_pattern_list
+    self.cache_pattern.split(',').map(&:strip)
+  end
+
+  def cache_pattern_list=(value)
+    self.cache_pattern = value.join(', ')
   end
 
   def skip_ref?(ref_name)
