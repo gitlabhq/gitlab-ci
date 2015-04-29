@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 20150504010250) do
     t.string   "skip_refs"
     t.string   "coverage_regex"
     t.boolean  "shared_runners_enabled",   default: false
+    t.string   "cache_pattern"
   end
 
   create_table "runner_projects", force: true do |t|
