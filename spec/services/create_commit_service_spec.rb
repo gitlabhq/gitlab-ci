@@ -73,5 +73,22 @@ describe CreateCommitService do
         result.should be_persisted
       end
     end
+
+    describe :ci_skip? do
+      it "skips commit creation if there is [ci skip] tag in commit message" do
+        commits = [{message: "some message[ci skip]"}]
+        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312', commits: commits)
+        result.should be_false
+      end
+
+      it "does not skips commit creation if there is no [ci skip] tag in commit message" do
+        project.jobs.first.update(build_tags: true)
+
+        commits = [{message: "some message"}]
+
+        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312', commits: commits)
+        result.should be_persisted
+      end
+    end
   end
 end
