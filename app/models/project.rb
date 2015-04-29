@@ -165,7 +165,7 @@ ls -la
   end
 
   def cache_pattern_list
-    self.cache_pattern.split(',').map(&:strip)
+    cache_pattern.split(',').map(&:strip)
   end
 
   def cache_pattern_list=(value)
