@@ -47,21 +47,34 @@ class HipChatService < Service
     commit = build.commit
     return unless commit
     return unless commit.builds_without_retry.include? build
+    return if commit.success? and notify_only_broken_builds?
+    return if commit.running?
 
     msg = HipChatMessage.new(build)
-    HipChatNotifierWorker.perform_async(hipchat_room, hipchat_token, msg.to_s, {
-      message_format: 'html',
-      color: msg.color,
-      notify: notify_only_broken_builds? && msg.notify?
-    })
+    opts = default_options.merge(
+      token: hipchat_token,
+      room: hipchat_room,
+      server: server_url,
+      color: msg.status_color,
+      notify: msg.notify?
+    )
+    HipChatNotifierWorker.perform_async(msg.to_s, opts)
   end
 
   private
 
   def default_options
     {
-      hipchat_server: 'https://api.hipchat.com'
+      service_name: 'GitLab CI',
+      message_format: 'html'
     }
   end
 
+  def server_url
+    if hipchat_server.blank?
+      'https://api.hipchat.com'
+    else
+      hipchat_server
+    end
+  end
 end

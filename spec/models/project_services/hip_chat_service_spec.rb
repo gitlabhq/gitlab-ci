@@ -41,7 +41,20 @@ describe HipChatService do
       service.execute(build)
       HipChatNotifierWorker.drain
 
-      WebMock.should have_requested(:post, api_url).once
+      expect( WebMock ).to have_requested(:post, api_url).once
+    end
+
+    it "calls the worker with expected arguments" do
+      expect( HipChatNotifierWorker ).to receive(:perform_async) \
+        .with(an_instance_of(String), hash_including(
+          token: 'a1b2c3d4e5f6',
+          room: 123,
+          server: 'https://api.hipchat.com',
+          color: 'red',
+          notify: true
+        ))
+
+      service.execute(build)
     end
   end
 end
