@@ -7,6 +7,7 @@ v7.11.0
   - Add HipChat notifications
   - Clean up project advanced settings.
   - Add a GitLab project path parameter to the project API
+  - Remove projects IDs from dashboard
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions

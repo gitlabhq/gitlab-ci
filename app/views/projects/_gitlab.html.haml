@@ -16,7 +16,6 @@
 %table.table.projects-table
   %thead
     %tr
-      %th ID
       %th Project Name
       %th Last commit
       %th Access
@@ -26,8 +25,6 @@
 
   - @gl_projects.sort_by(&:name_with_namespace).each do |project|
     %tr.light
-      %td
-        \-
       %td
         = project.name_with_namespace
       %td
