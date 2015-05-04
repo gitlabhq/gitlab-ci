@@ -34,12 +34,12 @@ describe "Projects" do
     it { page.should have_content 'Build Schedule' }
 
     it "updates configuration" do
-      fill_in 'Name', with: 'Documentcloud / Underscore1'
+      fill_in 'Skip refs', with: 'deploy'
       click_button 'Save changes'
 
-      page.should have_content 'successfully updated'
+      page.should have_content 'was successfully updated'
 
-      find_field('Name').value.should eq 'Documentcloud / Underscore1'
+      find_field('Skip refs').value.should eq 'deploy'
     end
   end
 

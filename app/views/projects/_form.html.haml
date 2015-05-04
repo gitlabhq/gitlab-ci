@@ -83,25 +83,9 @@
   %fieldset
     %legend Advanced settings
     .form-group
-      = f.label :name, class: 'control-label'
-      .col-sm-10
-        = f.text_field :name, class: 'form-control', placeholder: 'my-project'
-    .form-group
-      = f.label :gitlab_url, "GitLab url to project", class: 'control-label'
-      .col-sm-10
-        = f.text_field :gitlab_url, class: 'form-control', placeholder: 'http://gitlab.domain.com/project-slug'
-    .form-group
-      = f.label :gitlab_id, "GitLab project id", class: 'control-label'
-      .col-sm-10
-        = f.text_field :gitlab_id, class: 'form-control', placeholder: '17'
-    .form-group
       = f.label :token, "CI token", class: 'control-label'
       .col-sm-10
         = f.text_field :token, class: 'form-control', placeholder: 'xEeFCaDAB89'
-    .form-group
-      = f.label :url, "CI project URL", class: 'control-label'
-      .col-sm-10
-        = text_field_tag :url, project_url(@project), class: 'form-control', readonly: true
     .form-group
       = f.label :skip_refs, "Skip refs", class: 'control-label'
       .col-sm-10

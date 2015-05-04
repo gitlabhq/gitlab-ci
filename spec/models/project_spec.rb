@@ -9,7 +9,7 @@
 #  updated_at               :datetime
 #  token                    :string(255)
 #  default_ref              :string(255)
-#  gitlab_url               :string(255)
+#  path                    :string(255)
 #  always_build             :boolean          default(FALSE), not null
 #  polling_interval         :integer
 #  public                   :boolean          default(FALSE), not null
@@ -132,7 +132,7 @@ describe Project do
     it { parsed_project.should be_kind_of(Project) }
     it { parsed_project.name.should eq("GitLab / api.gitlab.org") }
     it { parsed_project.gitlab_id.should eq(189) }
-    it { parsed_project.gitlab_url.should eq("http://localhost:3000/gitlab/api-gitlab-org") }
+    it { parsed_project.gitlab_url.should eq("http://demo.gitlab.com/gitlab/api-gitlab-org") }
 
     it "parses plain hash" do
       data = YAML.load(project_dump)

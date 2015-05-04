@@ -9,7 +9,7 @@
 #  updated_at               :datetime
 #  token                    :string(255)
 #  default_ref              :string(255)
-#  gitlab_url               :string(255)
+#  path                     :string(255)
 #  always_build             :boolean          default(FALSE), not null
 #  polling_interval         :integer
 #  public                   :boolean          default(FALSE), not null
@@ -47,7 +47,7 @@ class Project < ActiveRecord::Base
   # Validations
   #
   validates_presence_of :name, :timeout, :token, :default_ref,
-    :gitlab_url, :ssh_url_to_repo, :gitlab_id
+    :path, :ssh_url_to_repo, :gitlab_id
 
   validates_uniqueness_of :name
 
@@ -79,7 +79,7 @@ ls -la
       params = {
         name:                    project.name_with_namespace,
         gitlab_id:               project.id,
-        gitlab_url:              project.web_url,
+        path:                    project.path_with_namespace,
         default_ref:             project.default_branch || 'master',
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_pusher:        GitlabCi.config.gitlab_ci.add_pusher,
@@ -128,10 +128,6 @@ ls -la
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
-  end
-
-  def gitlab?
-    gitlab_url.present?
   end
 
   def tracked_refs
@@ -234,6 +230,10 @@ ls -la
         logger.error(e)
       end
     end
+  end
+
+  def gitlab_url
+    File.join(GitlabCi.config.gitlab_server.url, path)
   end
 
   def setup_finished?
