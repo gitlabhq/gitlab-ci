@@ -156,6 +156,9 @@ GEM
     hashie (2.0.5)
     highline (1.6.21)
     hike (1.2.3)
+    hipchat (1.5.0)
+      httparty
+      mimemagic
     httparty (0.11.0)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
@@ -186,6 +189,7 @@ GEM
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
     mime-types (2.4.3)
+    mimemagic (0.3.0)
     mini_portile (0.5.2)
     minitest (5.5.1)
     multi_json (1.11.0)
@@ -390,6 +394,7 @@ DEPENDENCIES
   growl
   guard-rspec
   haml-rails (~> 0.5.3)
+  hipchat (~> 1.5.0)
   httparty (= 0.11.0)
   jquery-rails
   jquery-turbolinks

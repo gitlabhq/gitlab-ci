@@ -50,7 +50,8 @@ class ServicesController < ApplicationController
   def service_params
     params.require(:service).permit(
       :type, :active, :webhook, :notify_only_broken_builds,
-      :email_recipients, :email_only_broken_builds, :email_add_pusher
+      :email_recipients, :email_only_broken_builds, :email_add_pusher,
+      :hipchat_token, :hipchat_room, :hipchat_server
     )
   end
 end
