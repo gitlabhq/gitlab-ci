@@ -71,6 +71,4 @@ class HipChatMessage
       "Unknown"
     end
   end
-
 end
-
