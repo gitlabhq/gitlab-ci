@@ -9,7 +9,7 @@
 #  updated_at               :datetime
 #  token                    :string(255)
 #  default_ref              :string(255)
-#  gitlab_url               :string(255)
+#  path               :string(255)
 #  always_build             :boolean          default(FALSE), not null
 #  polling_interval         :integer
 #  public                   :boolean          default(FALSE), not null
@@ -34,8 +34,8 @@ FactoryGirl.define do
 
     default_ref 'master'
     
-    sequence :gitlab_url do |n|
-      "http://demo.gitlabhq.com/gitlab/gitlab-shell#{n}"
+    sequence :path do |n|
+      "gitlab/gitlab-shell#{n}"
     end
     
     sequence :ssh_url_to_repo do |n|

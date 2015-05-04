@@ -12,9 +12,8 @@
             %i.icon-globe
             Public
 
-        - if @project.gitlab_url.present?
-          .pull-right
-            = link_to 'View on GitLab', @project.gitlab_url, no_turbolink.merge( class: 'btn btn-small' )
+        .pull-right
+          = link_to 'View on GitLab', @project.gitlab_url, no_turbolink.merge( class: 'btn btn-small' )
     %hr
     .container
       - if current_user && current_user.can_manage_project?(@project.gitlab_id)

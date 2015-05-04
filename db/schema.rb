@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150417000045) do
+ActiveRecord::Schema.define(version: 20150504010250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20150417000045) do
     t.datetime "updated_at"
     t.string   "token"
     t.string   "default_ref"
-    t.string   "gitlab_url"
+    t.string   "path"
     t.boolean  "always_build",             default: false, null: false
     t.integer  "polling_interval"
     t.boolean  "public",                   default: false, null: false

@@ -111,7 +111,7 @@ describe Commit do
   describe :compare? do
     subject { commit_with_project.compare? }
 
-    context 'if project.gitlab_url and commit.before_sha are not nil' do
+    context 'if commit.before_sha are not nil' do
       it { should be_true }
     end
   end
@@ -128,12 +128,6 @@ describe Commit do
 
     it { should have(8).items }
     it { commit.sha.should start_with(subject) }
-  end
-
-  describe :gitlab? do
-    subject { commit_with_project.gitlab? }
-
-    it { should eq(project.gitlab?) }
   end
 
   describe "create_deploy_builds" do

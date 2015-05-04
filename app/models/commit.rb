@@ -51,11 +51,7 @@ class Commit < ActiveRecord::Base
   end
 
   def compare?
-    gitlab? && !new_branch?
-  end
-
-  def gitlab?
-    project.gitlab?
+    !new_branch?
   end
 
   def git_author_name

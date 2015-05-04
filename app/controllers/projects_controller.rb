@@ -118,10 +118,9 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :path, :timeout, :token, :timeout_in_minutes,
-    :default_ref, :gitlab_url, :always_build, :polling_interval,
-    :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch, :skip_refs,
-    :email_recipients, :email_add_pusher, :email_only_broken_builds, :coverage_regex, :shared_runners_enabled,
-    { jobs_attributes: [:id, :name, :build_branches, :build_tags, :tag_list, :commands, :refs, :_destroy, :job_type] })
+    params.require(:project).permit(:path, :timeout, :timeout_in_minutes, :default_ref, :always_build,
+      :polling_interval, :public, :ssh_url_to_repo, :allow_git_fetch, :skip_refs, :email_recipients,
+      :email_add_pusher, :email_only_broken_builds, :coverage_regex, :shared_runners_enabled, :token,
+      { jobs_attributes: [:id, :name, :build_branches, :build_tags, :tag_list, :commands, :refs, :_destroy, :job_type] })
   end
 end

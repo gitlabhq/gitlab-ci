@@ -185,7 +185,7 @@ module API
       # Parameters:
       #   name (required)            - The name of the project
       #   gitlab_id (required)       - The gitlab id of the project
-      #   gitlab_url (required)      - The gitlab web url to the project
+      #   path (required)            - The gitlab project path, ex. randx/six
       #   ssh_url_to_repo (required) - The gitlab ssh url to the repo
       #   default_ref                - The branch to run against (defaults to `master`)
       # Example Request:
@@ -196,7 +196,8 @@ module API
         filtered_params = {
           name:            params[:name],
           gitlab_id:       params[:gitlab_id],
-          gitlab_url:      params[:gitlab_url],
+          # we accept gitlab_url for backward compatibility for a while (added to 7.11)
+          path:            params[:post] || params[:gitlab_url].sub(/.*\/(.*\/.*)$/, '\1'),
           default_ref:     params[:default_ref] || 'master',
           ssh_url_to_repo: params[:ssh_url_to_repo]
         }
@@ -219,7 +220,7 @@ module API
       #   id (required)   - The ID of a project
       #   name            - The name of the project
       #   gitlab_id       - The gitlab id of the project
-      #   gitlab_url      - The gitlab web url to the project
+      #   path            - The gitlab project path, ex. randx/six
       #   ssh_url_to_repo - The gitlab ssh url to the repo
       #   default_ref     - The branch to run against (defaults to `master`)
       # Example Request:
@@ -229,7 +230,12 @@ module API
 
         unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
 
-        attrs = attributes_for_keys [:name, :gitlab_id, :gitlab_url, :default_ref, :ssh_url_to_repo]
+        attrs = attributes_for_keys [:name, :gitlab_id, :path, :gitlab_url, :default_ref, :ssh_url_to_repo]
+
+        # we accept gitlab_url for backward compatibility for a while (added to 7.11)
+        if attrs[:gitlab_url] && !attrs[:path]
+          attrs[:path] = attrs[:gitlab_url].sub(/.*\/(.*\/.*)$/, '\1')
+        end
 
         if project.update_attributes(attrs)
           present project, with: Entities::Project

@@ -27,7 +27,7 @@ describe API::API do
         data: {
           id:                  2,
           name_with_namespace: "Gitlab.org / Underscore",
-          web_url:             "http://example.com/gitlab-org/underscore",
+          path_with_namespace: "gitlab-org/underscore",
           default_branch:      "master",
           ssh_url_to_repo:     "git@example.com:gitlab-org/underscore"
         }

@@ -69,19 +69,11 @@ class SlackMessage
   end
 
   def commit_sha_link
-    if commit.project.gitlab?
-      "#{project.gitlab_url}/commit/#{commit.sha}"
-    else
-      commit.ref
-    end
+    "#{project.gitlab_url}/commit/#{commit.sha}"
   end
 
   def commit_ref_link
-    if commit.project.gitlab?
-      "#{project.gitlab_url}/commits/#{commit.ref}"
-    else
-      commit.ref
-    end
+    "#{project.gitlab_url}/commits/#{commit.ref}"
   end
 
   def attachment_color
