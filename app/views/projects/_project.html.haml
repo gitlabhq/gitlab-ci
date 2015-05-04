@@ -1,8 +1,6 @@
 - last_commit = project.last_commit
 %tr.alert{class: commit_status_alert_class(last_commit) }
   %td
-    = project.id
-  %td
     = link_to project do
       %strong= project.name
   %td
