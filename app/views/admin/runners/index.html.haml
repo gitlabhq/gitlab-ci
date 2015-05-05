@@ -1,11 +1,3 @@
-= content_for :title do
-  %h3.project-title
-    Manage Runners
-
-    .pull-right
-      %small
-        = pluralize(@runners.total_count, 'runner')
-
 %p.lead
   %span To register new runner you should enter the following registration token. With this token the runner will request a unique runner token and use that for future communication.
   %code #{GitlabCi::REGISTRATION_TOKEN}

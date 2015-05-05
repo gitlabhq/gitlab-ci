@@ -11,8 +11,12 @@
     = link_to admin_runners_path do
       %i.icon-cog
       Runners
+      %small.pull-right
+        = Runner.count(:all)
   = nav_link path: 'builds' do
     = link_to admin_builds_path do
       %i.icon-link
       Builds
+      %small.pull-right
+        = Build.count(:all)
  
