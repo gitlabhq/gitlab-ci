@@ -1,25 +1,45 @@
 Build script to run the tests of GitLab CE
 =================================
 
-These script can be run to tests of GitLab CE on a [configured](configure_a_runner_to_run_the_gitlab_ce_test_suite.md) runner.
-
 # Build script used at ci.gitlab.org to test the private GitLab B.V. repo at dev.gitlab.org
 
+This build script can run both with the docker or shell executor in [gitlab-ci-multi-runner](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner).
+
+If you are using a shell executor, runner must be configured to have mysql and ruby, see a [configuration example](https://gitlab.com/gitlab-org/gitlab-ci/blob/master/doc/examples/configure/ruby.md).
+
 ```bash
-export PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin
+if [ -f /.dockerinit ]; then
+    wget -q http://ftp.de.debian.org/debian/pool/main/p/phantomjs/phantomjs_1.9.0-1+b1_amd64.deb
+    dpkg -i phantomjs_1.9.0-1+b1_amd64.deb
+
+    apt-get update -qq
+    apt-get install -y -qq libicu-dev libkrb5-dev cmake nodejs
+
+    cp config/database.yml.mysql config/database.yml
+    sed -i 's/username:.*/username: root/g' config/database.yml
+    sed -i 's/password:.*/password:/g' config/database.yml
+    sed -i 's/# socket:.*/host: postgres/g' config/database.yml
+
+    cp config/resque.yml.example config/resque.yml
+    sed -i 's/localhost/redis/g' config/resque.yml
+else
+    export PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin
+    cp config/database.yml.mysql config/database.yml
+    sed "s/username\:.*$/username\: runner/" -i config/database.yml
+    sed "s/password\:.*$/password\: 'password'/" -i config/database.yml
+    sed "s/gitlabhq_test/gitlabhq_test_$((RANDOM/5000))/" -i config/database.yml
+fi
+
 ruby -v
 which ruby
 gem install bundler --no-ri --no-rdoc
 
-cp config/database.yml.mysql config/database.yml
 cp config/gitlab.yml.example config/gitlab.yml
-sed "s/username\:.*$/username\: runner/" -i config/database.yml
-sed "s/password\:.*$/password\: 'password'/" -i config/database.yml
-sed "s/gitlabhq_test/gitlabhq_test_$((RANDOM/5000))/" -i config/database.yml
 touch log/application.log
 touch log/test.log
-bundle install --without postgres production --jobs $(nproc)
-bundle exec rake db:create RAILS_ENV=test
+
+bundle install --without postgres production --jobs $(nproc) --path .bundle
+RAILS_ENV=test bundle exec rake db:create
 RAILS_ENV=test SIMPLECOV=true bundle exec rake test
 ```
 
