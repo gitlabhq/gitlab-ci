@@ -18,7 +18,7 @@ describe Notify do
     end
 
     it 'contains name of project' do
-      should have_body_text /Build successful/
+      should have_body_text /build successful/
     end
   end
 
@@ -30,7 +30,7 @@ describe Notify do
     end
 
     it 'contains name of project' do
-      should have_body_text /Build failed/
+      should have_body_text /build failed/
     end
   end
 end
