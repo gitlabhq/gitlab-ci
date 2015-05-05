@@ -22,6 +22,7 @@ if [ -f /.dockerinit ]; then
 
     cp config/resque.yml.example config/resque.yml
     sed -i 's/localhost/redis/g' config/resque.yml
+    FLAGS=(--deployment --path /cache)
 else
     export PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin
     cp config/database.yml.mysql config/database.yml
@@ -38,7 +39,7 @@ cp config/gitlab.yml.example config/gitlab.yml
 touch log/application.log
 touch log/test.log
 
-bundle install --without postgres production --jobs $(nproc) --path .bundle
+bundle install --without postgres production --jobs $(nproc)  "${FLAGS[@]}"
 RAILS_ENV=test bundle exec rake db:create
 RAILS_ENV=test SIMPLECOV=true bundle exec rake test
 ```
