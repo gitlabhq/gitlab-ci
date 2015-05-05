@@ -2,6 +2,7 @@ class Notify < ActionMailer::Base
   include Emails::Builds
 
   add_template_helper ApplicationHelper
+  add_template_helper GitlabHelper
 
   default_url_options[:host]     = GitlabCi.config.gitlab_ci.host
   default_url_options[:protocol] = GitlabCi.config.gitlab_ci.protocol
