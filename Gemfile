@@ -85,6 +85,9 @@ gem 'nprogress-rails'
 # Soft deletion
 gem "paranoia", "~> 2.0"
 
+# Colored output to console
+gem "colored"
+
 
 group :development do
   gem 'brakeman', require: false

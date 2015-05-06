@@ -81,6 +81,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
+    colored (1.2)
     columnize (0.9.0)
     connection_pool (1.2.0)
     coveralls (0.7.0)
@@ -380,6 +381,7 @@ DEPENDENCIES
   byebug
   capybara
   coffee-rails (~> 4.0.0)
+  colored
   coveralls
   database_cleaner
   default_value_for (~> 3.0.0)
