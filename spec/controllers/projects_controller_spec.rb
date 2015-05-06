@@ -59,11 +59,23 @@ describe ProjectsController do
       allow(controller).to receive(:reset_cache) { true }
       allow(controller).to receive(:current_user) { user }
       Network.any_instance.stub(:enable_ci).and_return(true)
+      Network.any_instance.stub(:project_hooks).and_return(true)
 
       post :create, { project: project_dump }.with_indifferent_access
 
-      Project.exists?(gitlab_id: 189).should be_true
       expect(response.code).to eq('302')
+      expect(assigns(:project)).not_to be_a_new(Project)
+    end
+
+    it "shows error" do
+      allow(controller).to receive(:reset_cache) { true }
+      allow(controller).to receive(:current_user) { user }
+      User.any_instance.stub(:can_manage_project?).and_return(false)
+
+      post :create, { project: project_dump }.with_indifferent_access
+
+      expect(response.code).to eq('302')
+      expect(flash[:alert]).to include("You have to have at least master role to enable CI for this project")
     end
   end
 
