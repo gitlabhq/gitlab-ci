@@ -7,7 +7,7 @@ This archive will be saved in backup_path (see `config/application.yml`).
 The filename will be `[TIMESTAMP]_gitlab_ci_backup.tar.gz`. This timestamp can be used to restore an specific backup.
 You can only restore a backup to exactly the same version of GitLab CI that you created it on, for example 7.10.1.
 
-*If you are intrested in GitLab backup please follow this link https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/raketasks/backup_restore.md*
+*If you are interested in GitLab backup please follow to the [GitLab backup documentation](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/raketasks/backup_restore.md)*
 
 ```
 # use this command if you've installed GitLab CI with the Omnibus package
