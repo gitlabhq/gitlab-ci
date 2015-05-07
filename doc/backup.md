@@ -4,8 +4,10 @@
 
 A backup creates an archive file that contains the database.
 This archive will be saved in backup_path (see `config/application.yml`).
-The filename will be `[TIMESTAMP]_gitlab_ci_backup.tar`. This timestamp can be used to restore an specific backup.
+The filename will be `[TIMESTAMP]_gitlab_ci_backup.tar.gz`. This timestamp can be used to restore an specific backup.
 You can only restore a backup to exactly the same version of GitLab CI that you created it on, for example 7.10.1.
+
+*If you are intrested in GitLab backup please follow this link https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/raketasks/backup_restore.md*
 
 ```
 # use this command if you've installed GitLab CI with the Omnibus package
@@ -22,7 +24,7 @@ Example output:
 Dumping database ... 
 Dumping PostgreSQL database gitlab_ci_development ... [DONE]
 done
-Creating backup archive: 1430930060_gitlab_ci_backup.tar ... done
+Creating backup archive: 1430930060_gitlab_ci_backup.tar.gz ... done
 Uploading backup archive to remote storage  ... skipped
 Deleting tmp directories ... done
 done
@@ -31,7 +33,7 @@ Deleting old backups ... skipping
 
 ## Upload backups to remote (cloud) storage
 
-You can let the backup script upload the '.tar' file it creates.
+You can let the backup script upload the '.tar.gz' file it creates.
 It uses the [Fog library](http://fog.io/) to perform the upload.
 In the example below we use Amazon S3 for storage.
 But Fog also lets you use [other storage providers](http://fog.io/storage/).
