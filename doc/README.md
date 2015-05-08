@@ -6,5 +6,5 @@
 + [Update](update/README.md)
 + [Jobs](jobs/README.md)
 + [Runners](runners/README.md)
-+ [Permissions](permissions/README.md)
-+ [Rake Tasks](raketasks/README.md)
++ [Permissions](permissions/README.md) User permissions
++ [Rake Tasks](raketasks/README.md) Backup and restore take tasks
