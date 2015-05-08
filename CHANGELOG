@@ -14,6 +14,9 @@ v7.11.0
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
 
+sidekiq_wirker_fix
+	- added sidekiq.yml
+	- integrated in script/background_jobs
 v7.10.0
   - Projects sorting by last commit date
   - Add project search at runner page
