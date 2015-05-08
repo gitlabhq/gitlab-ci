@@ -124,55 +124,58 @@ If you use an Omnibus package please see the [instructions in the readme to back
 If you have a cookbook installation there should be a copy of your configuration in Chef.
 If you have an installation from source, please consider backing up your `application.yml` file, any SSL keys and certificates, and your [SSH host keys](https://superuser.com/questions/532040/copy-ssh-keys-from-one-server-to-another-server/532079#532079).
 
+
 ## Restore a previously created backup
 
 You can only restore a backup to exactly the same version of GitLab CI that you created it on, for example 7.10.1.
 
-```
-# Omnibus package installation
-sudo gitlab-ci-rake backup:restore
+### Installation from source
 
-# installation from source
+```
 sudo -u gitlab_ci -H bundle exec rake backup:restore RAILS_ENV=production
 ```
 
-Options:
+Options
 
 ```
 BACKUP=timestamp_of_backup (required if more than one backup exists)
-force=yes (do not ask if the authorized_keys file should get regenerated)
 ```
 
-Example output:
+### Omnibus package installation
 
+We will assume that you have installed GitLab CI from an omnibus package and run
+`sudo gitlab-ctl reconfigure` at least once.
+
+First make sure your backup tar file is in `/var/opt/gitlab/backups`.
+
+```shell
+sudo cp 1393513186_gitlab_ci_backup.tar.gz /var/opt/gitlab/backups/
 ```
-Unpacking backup ... done
-Restoring database ... 
-Restoring PostgreSQL database gitlab_ci_development ... SET
-...
 
-ALTER TABLE
-ALTER TABLE
+Next, restore the backup by running the restore command. You need to specify the
+timestamp of the backup you are restoring.
 
-...
+```shell
+# Stop processes that are connected to the database
+sudo gitlab-ctl stop unicorn
+sudo gitlab-ctl stop sidekiq
 
-CREATE INDEX
-REVOKE
-REVOKE
-GRANT
-GRANT
-[DONE]
-done
-Deleting tmp directories ... done
-done
+# This command will overwrite the contents of your GitLab CI database!
+sudo gitlab-ci-rake backup:restore BACKUP=1393513186
 
+# Start GitLab
+sudo gitlab-ctl start
 ```
+
+If there is a GitLab version mismatch between your backup tar file and the installed
+version of GitLab, the restore command will abort with an error. Install a package for
+the [required version](https://www.gitlab.com/downloads/archives/) and try again.
+
+
 
 ## Configure cron to make daily backups
 
-For Omnibus package installations, see https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#scheduling-a-backup .
-
-For installation from source:
+### For installation from source:
 ```
 cd /home/git/gitlab
 sudo -u gitlab_ci -H editor config/application.yml # Enable keep_time in the backup section to automatically delete old backups
@@ -188,3 +191,30 @@ Add the following lines at the bottom:
 
 The `CRON=1` environment setting tells the backup script to suppress all progress output if there are no errors.
 This is recommended to reduce cron spam.
+
+### Omnibus package installation
+
+To schedule a cron job that backs up your GitLab CI, use the root user:
+
+```
+sudo su -
+crontab -e
+```
+
+There, add the following line to schedule the backup for everyday at 2 AM:
+
+```
+0 2 * * * /opt/gitlab/bin/gitlab-ci-rake backup:create CRON=1
+```
+
+You may also want to set a limited lifetime for backups to prevent regular
+backups using all your disk space.  To do this add the following lines to
+`/etc/gitlab/gitlab.rb` and reconfigure:
+
+```
+# limit backup lifetime to 7 days - 604800 seconds
+gitlab_ci['backup_keep_time'] = 604800
+```
+
+NOTE: This cron job does not [backup your omnibus-gitlab configuration](#backup-and-restore-omnibus-gitlab-configuration).
+
