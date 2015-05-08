@@ -51,3 +51,15 @@ Settings['gravatar'] ||= Settingslogic.new({})
 Settings.gravatar['enabled']     = true if Settings.gravatar['enabled'].nil?
 Settings.gravatar['plain_url'] ||= 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm'
 Settings.gravatar['ssl_url']   ||= 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=mm'
+
+#
+# Backup
+#
+Settings['backup'] ||= Settingslogic.new({})
+Settings.backup['keep_time']  ||= 0
+Settings.backup['path']         = File.expand_path(Settings.backup['path'] || "tmp/backups/", Rails.root)
+Settings.backup['upload'] ||= Settingslogic.new({ 'remote_directory' => nil, 'connection' => nil })
+# Convert upload connection settings to use symbol keys, to make Fog happy
+if Settings.backup['upload']['connection']
+  Settings.backup['upload']['connection'] = Hash[Settings.backup['upload']['connection'].map { |k, v| [k.to_sym, v] }]
+end

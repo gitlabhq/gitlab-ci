@@ -10,6 +10,7 @@ v7.11.0
   - Remove projects IDs from dashboard
   - UI fix: Remove page headers from the admin area
   - Improve Email templates
+  - Add backup/restore utility
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
