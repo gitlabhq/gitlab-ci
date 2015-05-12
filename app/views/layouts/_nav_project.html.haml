@@ -8,7 +8,7 @@
     = link_to project_charts_path(@project) do
       %i.icon-bar-chart
       Charts
-  = nav_link path: 'runners#index' do
+  = nav_link path: ['runners#index', 'runners#show'] do
     = link_to project_runners_path(@project) do
       %i.icon-cog
       Runners
