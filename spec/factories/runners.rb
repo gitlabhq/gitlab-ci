@@ -20,6 +20,8 @@ FactoryGirl.define do
       "My runner#{n}"
     end
 
+    platform "darwin"
+
     factory :shared_runner do
       is_shared true
     end

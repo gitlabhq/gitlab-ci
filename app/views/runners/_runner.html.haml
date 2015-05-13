@@ -2,7 +2,7 @@
   %h4
     = runner_status_icon(runner)
     %span.monospace
-      = runner.short_sha
+      = link_to runner.short_sha, [@project, runner]
       - if @runners.include?(runner)
         %small
           =link_to edit_project_runner_path(@project, runner) do

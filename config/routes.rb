@@ -52,7 +52,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :runners, only: [:index, :edit, :update, :destroy] do
+    resources :runners, only: [:index, :edit, :update, :destroy, :show] do
       member do
         get :resume
         get :pause

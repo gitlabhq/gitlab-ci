@@ -18,6 +18,7 @@ module API
         build = RegisterBuildService.new.execute(current_runner)
 
         if build
+          update_runner_info
           present build, with: Entities::Build
         else
           not_found!
