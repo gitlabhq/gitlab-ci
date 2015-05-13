@@ -15,7 +15,7 @@ module API
     end
 
     def current_runner
-      @runner ||= Runner.find_by_token(params[:token])
+      @runner ||= Runner.find_by_token(params[:token].to_s)
     end
 
     def authenticate!
