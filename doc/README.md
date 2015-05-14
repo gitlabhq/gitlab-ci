@@ -8,3 +8,4 @@
 + [Runners](runners/README.md)
 + [Permissions](permissions/README.md) User permissions
 + [Rake Tasks](raketasks/README.md) Backup and restore take tasks
++ [Migrating to packaged CI](migration_to_omnibus/README.md)

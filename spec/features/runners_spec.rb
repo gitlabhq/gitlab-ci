@@ -72,4 +72,21 @@ describe "Runners" do
       @project.reload.shared_runners_enabled.should be_true
     end
   end
+
+  describe "show page" do
+    before do
+      @project = FactoryGirl.create :project
+      stub_js_gitlab_calls
+      @specific_runner = FactoryGirl.create :specific_runner
+      @project.runners << @specific_runner
+    end
+
+    it "shows runner information" do
+      visit project_runners_path(@project)
+
+      click_on @specific_runner.short_sha
+
+      page.should have_content(@specific_runner.platform)
+    end
+  end
 end

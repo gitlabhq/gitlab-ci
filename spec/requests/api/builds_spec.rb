@@ -20,10 +20,11 @@ describe API::API do
         job = FactoryGirl.create :job, project: project
         build = commit.create_builds.first
 
-        post api("/builds/register"), token: runner.token
+        post api("/builds/register"), token: runner.token, info: {platform: :darwin}
 
         response.status.should == 201
         json_response['sha'].should == build.sha
+        runner.reload.platform.should == "darwin"
       end
 
       it "should return 404 error if no pending build found" do
