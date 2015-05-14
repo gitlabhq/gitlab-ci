@@ -10,7 +10,7 @@ class User
 
   def gitlab_projects(search = nil, page = 1, per_page = 100)
     Rails.cache.fetch(cache_key(page, per_page, search)) do
-      Project.from_gitlab(self, :authorized, { page: page, per_page: per_page, search: search })
+      Project.from_gitlab(self, :authorized, { page: page, per_page: per_page, search: search, ci_enabled_first: true })
     end
   end
 
