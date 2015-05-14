@@ -12,6 +12,7 @@ v7.11.0
   - Improve Email templates
   - Add backup/restore utility
   - Coordinator stores information(version, platform, revision, etc.) about runners.
+  - Fixed pagination on dashboard
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
