@@ -33,19 +33,23 @@ FactoryGirl.define do
     end
 
     default_ref 'master'
-    
+
     sequence :path do |n|
       "gitlab/gitlab-shell#{n}"
     end
-    
+
     sequence :ssh_url_to_repo do |n|
       "git@demo.gitlab.com:gitlab/gitlab-shell#{n}.git"
     end
-    
+
     gitlab_id 8
 
     factory :project do
       token 'iPWx6WM4lhHNedGfBpPJNP'
+    end
+
+    factory :public_project do
+      public true
     end
 
     before :create do |project|

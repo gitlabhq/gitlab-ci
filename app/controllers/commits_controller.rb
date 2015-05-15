@@ -1,8 +1,9 @@
 class CommitsController < ApplicationController
-  before_filter :authenticate_user!, except: [:status]
+  before_filter :authenticate_user!, except: [:status, :show]
+  before_filter :authenticate_public_page!, only: :show
   before_filter :project
   before_filter :commit
-  before_filter :authorize_access_project!, except: [:status]
+  before_filter :authorize_access_project!, except: [:status, :show]
 
   def show
     @builds = @commit.builds

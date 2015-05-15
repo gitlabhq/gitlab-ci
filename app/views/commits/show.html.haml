@@ -2,7 +2,7 @@
   = @project.name
   @
   #{gitlab_commit_link(@project, @commit.sha)}
-  - if current_user.can_manage_project?(@project.gitlab_id)
+  - if current_user && current_user.can_manage_project?(@project.gitlab_id)
     .pull-right
       = link_to project_jobs_path(@project), class: "btn btn-default btn-small" do
         %i.icon-edit.icon-white
