@@ -126,6 +126,14 @@ ls -la
     end
   end
 
+  def any_runners?
+    if runners.active.any?
+      return true
+    end
+
+    shared_runners_enabled && Runner.shared.active.any?
+  end
+
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
   end

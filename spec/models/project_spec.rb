@@ -174,4 +174,29 @@ describe Project do
     it { Project.search('fo').should include(project) }
     it { Project.search('bar').should be_empty }
   end
+
+  describe :any_runners do
+    it "there are no runners available" do
+      project = FactoryGirl.create(:project)
+      project.any_runners?.should be_false
+    end
+
+    it "there is a specific runner" do
+      project = FactoryGirl.create(:project)
+      project.runners << FactoryGirl.create(:specific_runner)
+      project.any_runners?.should be_true
+    end
+
+    it "there is a shared runner" do
+      project = FactoryGirl.create(:project, shared_runners_enabled: true)
+      FactoryGirl.create(:shared_runner)
+      project.any_runners?.should be_true
+    end
+
+    it "there is a shared runner, but they are prohibited to use" do
+      project = FactoryGirl.create(:project)
+      FactoryGirl.create(:shared_runner)
+      project.any_runners?.should be_false
+    end
+  end
 end
