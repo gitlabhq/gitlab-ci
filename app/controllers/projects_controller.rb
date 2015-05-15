@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   PROJECTS_PER_PAGE = 100
 
   before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
+  before_filter :authenticate_public_page!, only: :show
   before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy, :toggle_shared_runners]
   before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
   before_filter :authorize_manage_project!, only: [:edit, :integration, :update, :destroy, :toggle_shared_runners]
@@ -30,16 +31,6 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    unless @project.public
-      unless current_user
-        redirect_to(new_user_sessions_path(return_to: request.fullpath)) and return
-      end
-
-      unless current_user.can_access_project?(@project.gitlab_id)
-        page_404 and return
-      end
-    end
-
     @ref = params[:ref]
 
     @commits = @project.commits

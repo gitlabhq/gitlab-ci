@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe "Builds" do
   before do
-    login_as :user
     @project = FactoryGirl.create :project
     @commit = FactoryGirl.create :commit, project: @project
     @build = FactoryGirl.create :build, commit: @commit
@@ -10,6 +9,7 @@ describe "Builds" do
 
   describe "GET /:project/builds/:id" do
     before do
+      login_as :user
       visit project_build_path(@project, @build)
     end
 
@@ -20,6 +20,7 @@ describe "Builds" do
 
   describe "GET /:project/builds/:id/cancel" do
     before do
+      login_as :user
       @build.run!
       visit cancel_project_build_path(@project, @build)
     end
@@ -30,6 +31,7 @@ describe "Builds" do
 
   describe "POST /:project/builds/:id/retry" do
     before do
+      login_as :user
       @build.cancel!
       visit project_build_path(@project, @build)
       click_link 'Retry'
@@ -37,5 +39,17 @@ describe "Builds" do
 
     it { page.should have_content 'pending' }
     it { page.should have_content 'Cancel' }
+  end
+
+  describe "Show page public accessible" do
+    before do
+      @project = FactoryGirl.create :public_project
+      @commit = FactoryGirl.create :commit, project: @project
+      @build = FactoryGirl.create :build, commit: @commit
+      stub_gitlab_calls
+      visit project_build_path(@project, @build)
+    end
+
+    it { page.should have_content @commit.sha[0..7] }
   end
 end

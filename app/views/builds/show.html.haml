@@ -2,7 +2,7 @@
   = link_to @project.name, @project
   @
   = @commit.short_sha
-  - if current_user.can_manage_project?(@project.gitlab_id)
+  - if current_user && current_user.can_manage_project?(@project.gitlab_id)
     .pull-right
       = link_to project_jobs_path(@project), class: "btn btn-default btn-small" do
         %i.icon-edit.icon-white
@@ -89,7 +89,7 @@
     .build-widget
       %h4.title
         Build
-        - if current_user.has_developer_access?(@project.gitlab_id)
+        - if current_user && current_user.has_developer_access?(@project.gitlab_id)
           .pull-right
             - if @build.active?
               = link_to "Cancel", cancel_project_build_path(@project, @build), class: 'btn btn-sm btn-danger'
