@@ -1,3 +1,7 @@
+v7.12.0
+  - Fix pagination on dashboard
+  - Remove ID column from runners list in the admin area
+
 v7.11.0
   - Deploy Jobs API calls
   - Projects search on dashboard page
@@ -12,7 +16,6 @@ v7.11.0
   - Improve Email templates
   - Add backup/restore utility
   - Coordinator stores information(version, platform, revision, etc.) about runners.
-  - Fixed pagination on dashboard
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
