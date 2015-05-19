@@ -7,7 +7,7 @@
         %small
           =link_to edit_project_runner_path(@project, runner) do
             %i.fa.icon-edit.btn
-          
+
     .pull-right
       - if @runners.include?(runner)
         - if runner.belongs_to_one_project?
