@@ -5,7 +5,7 @@
       - if params[:search].present?
         by keyword: "#{params[:search]}",
       #{time_ago_in_words(current_user.sync_at)} ago.
-      = link_to gitlab_projects_path(reset_cache: true, search: params[:search]), remote: true, class: 'sync-now btn btn-small btn-default' do
+      = link_to gitlab_projects_path(reset_cache: true, search: params[:search]), class: 'sync-now btn btn-small btn-default reset-cache' do
         %i.icon-refresh
         Sync now
       %br

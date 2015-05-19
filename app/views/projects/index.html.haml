@@ -12,6 +12,9 @@
   :coffeescript
     $.get '#{gitlab_projects_path}', (data) ->
       $(".projects").html data.html
+    $('.projects').on 'click', '.reset-cache', ->
+      $.get '#{gitlab_projects_path}', { reset_cache: true }, (data) ->
+        $(".projects").html data.html
     Pager.init "#{gitlab_projects_path}", #{ProjectsController::PROJECTS_BATCH}, false
     
 - else
