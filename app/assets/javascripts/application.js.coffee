@@ -15,6 +15,8 @@
 #= require jquery_ujs
 #= require turbolinks
 #= require jquery.turbolinks
+#= require jquery.endless-scroll
+#= require pager
 #= require nprogress
 #= require nprogress-turbolinks
 #= require jquery_nested_form

@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  PROJECTS_PER_PAGE = 100
+  PROJECTS_BATCH = 10
 
   before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
   before_filter :authenticate_public_page!, only: :show
@@ -17,13 +17,20 @@ class ProjectsController < ApplicationController
   end
 
   def gitlab
+    @limit, @offset = (params[:limit] || PROJECTS_BATCH).to_i, (params[:offset] || 0).to_i
+    @page = @offset == 0 ? 1 : (@offset / @limit + 1)
+
     current_user.reset_cache if params[:reset_cache]
-    @page = (params[:page] || 1).to_i
-    @per_page = PROJECTS_PER_PAGE
-    @gl_projects = current_user.gitlab_projects(params[:search], @page, @per_page)
+
+    @gl_projects = current_user.gitlab_projects(params[:search], @page, @limit)
     @projects = Project.where(gitlab_id: @gl_projects.map(&:id)).ordered_by_last_commit_date
     @total_count = @gl_projects.size
     @gl_projects.reject! { |gl_project| @projects.map(&:gitlab_id).include?(gl_project.id) }
+    respond_to do |format|
+      format.json do
+        pager_json("projects/gitlab", @total_count)
+      end
+    end
   rescue Network::UnauthorizedError
     raise
   rescue
