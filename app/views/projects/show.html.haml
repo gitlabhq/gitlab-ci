@@ -1,5 +1,10 @@
 = render 'shared/guide' unless @project.setup_finished?
 
+- unless @project.any_runners?
+  .alert.alert-danger
+    There are no runners available.
+    = link_to "Add a runner", project_runners_path(@project)
+
 %ul.nav.nav-tabs.append-bottom-20
   %li{class: ref_tab_class}
     = link_to 'All commits', project_path(@project)
