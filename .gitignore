@@ -16,5 +16,4 @@ tmp/*
 /.bundle
 /db/*.sqlite3
 /log/*.log
-/vendor
 /.idea

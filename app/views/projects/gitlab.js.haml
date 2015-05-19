@@ -1,6 +1,0 @@
-- if @error
-  :plain
-    $(".projects").html("#{@error}");
-- else
-  :plain
-    $(".projects").html("#{escape_javascript(render("gitlab"))}");
