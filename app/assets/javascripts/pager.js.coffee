@@ -2,12 +2,12 @@
   init: (@url, @limit = 0, preload, @disable = false) ->
     if preload
       @offset = 0
-      @getOld()
+      @getItems()
     else
       @offset = @limit
     @initLoadMore()
 
-  getOld: ->
+  getItems: ->
     $(".loading").show()
     $.ajax
       type: "GET"
@@ -39,4 +39,4 @@
       callback: (i) =>
         unless $(".loading").is(':visible')
           $(".loading").show()
-          Pager.getOld()
+          Pager.getItems()
