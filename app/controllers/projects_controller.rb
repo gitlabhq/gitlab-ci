@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  PROJECTS_BATCH = 10
+  PROJECTS_BATCH = 100
 
   before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
   before_filter :authenticate_public_page!, only: :show

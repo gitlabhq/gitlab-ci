@@ -9,7 +9,10 @@
 
 :coffeescript
   $('.search .navbar-form').submit ->
-    query = $('.search .navbar-form .search-input').val()
-    $.get '#{gitlab_projects_path}' + '?search=' + query
     NProgress.start()
+    query = $('.search .navbar-form .search-input').val()
+    $.get '#{gitlab_projects_path}', { search: query }, (data) ->
+      $(".projects").html data.html
+      NProgress.done()
+    Pager.init "#{gitlab_projects_path}" + "?search=" + query, #{ProjectsController::PROJECTS_BATCH}, false
     false

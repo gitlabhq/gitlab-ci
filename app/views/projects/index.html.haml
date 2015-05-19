@@ -15,6 +15,7 @@
     $('.projects').on 'click', '.reset-cache', ->
       $.get '#{gitlab_projects_path}', { reset_cache: true }, (data) ->
         $(".projects").html data.html
+      false
     Pager.init "#{gitlab_projects_path}", #{ProjectsController::PROJECTS_BATCH}, false
     
 - else
