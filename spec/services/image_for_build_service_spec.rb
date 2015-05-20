@@ -14,16 +14,16 @@ describe ImageForBuildService do
       let(:image) { service.execute(project, ref: 'master') }
 
       it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/running.png') }
-      it { image.name.should == 'running.png' }
+      it { image.path.to_s.should include('public/build-running.svg') }
+      it { image.name.should == 'build-running.svg' }
     end
 
     context 'unknown branch name' do
       let(:image) { service.execute(project, ref: 'feature') }
 
       it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/unknown.png') }
-      it { image.name.should == 'unknown.png' }
+      it { image.path.to_s.should include('public/build-unknown.svg') }
+      it { image.name.should == 'build-unknown.svg' }
     end
 
     context 'commit sha' do
@@ -31,16 +31,16 @@ describe ImageForBuildService do
       let(:image) { service.execute(project, sha: build.sha) }
 
       it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/running.png') }
-      it { image.name.should == 'running.png' }
+      it { image.path.to_s.should include('public/build-running.svg') }
+      it { image.name.should == 'build-running.svg' }
     end
 
     context 'unknown commit sha' do
       let(:image) { service.execute(project, sha: '0000000') }
 
       it { image.should be_kind_of(OpenStruct) }
-      it { image.path.to_s.should include('public/unknown.png') }
-      it { image.name.should == 'unknown.png' }
+      it { image.path.to_s.should include('public/build-unknown.svg') }
+      it { image.name.should == 'build-unknown.svg' }
     end
   end
 end
