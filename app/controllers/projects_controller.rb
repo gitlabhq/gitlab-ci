@@ -99,7 +99,7 @@ class ProjectsController < ApplicationController
   def badge
     image = ImageForBuildService.new.execute(@project, params)
 
-    send_file image.path, filename: image.name, disposition: 'inline'
+    send_file image.path, filename: image.name, disposition: 'inline', type:"image/svg+xml"
   end
 
   def toggle_shared_runners
