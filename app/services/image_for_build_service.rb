@@ -8,7 +8,7 @@ class ImageForBuildService
         commit = project.last_commit_for_ref(params[:ref])
         image_for_commit(commit)
       else
-        'unknown.png'
+        'build-unknown.svg'
       end
 
     image_path = Rails.root.join('public', image_name)
@@ -22,12 +22,8 @@ class ImageForBuildService
   private
 
   def image_for_commit(commit)
-    return 'unknown.png' unless commit
+    return 'build-unknown.svg' unless commit
 
-    if commit.status == 'pending'
-      'running.png'
-    else
-      commit.status + ".png"
-    end
+    'build-' + commit.status + ".svg"
   end
 end
