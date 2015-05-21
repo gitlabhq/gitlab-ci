@@ -20,6 +20,7 @@ v7.11.0
   - Coordinator stores information(version, platform, revision, etc.) about runners.
   - Fixed pagination on dashboard
   - Public accessible build and commit pages of public projects
+  - Fix vulnerability in the API when MySQL is used
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
