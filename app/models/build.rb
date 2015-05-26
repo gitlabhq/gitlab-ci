@@ -185,6 +185,10 @@ class Build < ActiveRecord::Base
     project.allow_git_fetch
   end
 
+  def cache_pattern_list
+    project.cache_pattern_list
+  end
+
   def update_coverage
     coverage = extract_coverage(trace, project.coverage_regex)
 
