@@ -14,7 +14,6 @@
 #  commit_id   :integer
 #  coverage    :float
 #  commands    :text
-#  job_id      :integer
 #
 
 class Build < ActiveRecord::Base
@@ -23,7 +22,6 @@ class Build < ActiveRecord::Base
   belongs_to :commit
   belongs_to :project
   belongs_to :runner
-  belongs_to :job, -> { with_deleted }
 
   validates :commit, presence: true
   validates :status, presence: true
@@ -64,15 +62,8 @@ class Build < ActiveRecord::Base
 
     def retry(build)
       new_build = Build.new(status: :pending)
-
-      if build.job
-        new_build.commands = build.job.commands
-        new_build.tag_list = build.job.tag_list
-      else
-        new_build.commands = build.commands
-      end
-
-      new_build.job_id = build.job_id
+      new_build.commands = build.commands
+      new_build.tag_list = build.tag_list
       new_build.commit_id = build.commit_id
       new_build.project_id = build.project_id
       new_build.save

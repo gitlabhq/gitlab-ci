@@ -29,11 +29,6 @@ module API
       expose :id, :project_id, :url
     end
 
-    class Job < Grape::Entity
-      expose :id, :project_id, :commands, :active, :name, :build_branches,
-        :build_tags, :tags, :job_type, :tag_list
-    end
-
     class DeployJob < Grape::Entity
       expose :id, :project_id, :commands, :active, :name,
         :refs, :tags, :job_type, :refs, :tag_list

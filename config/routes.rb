@@ -61,12 +61,6 @@ Rails.application.routes.draw do
 
     resources :runner_projects, only: [:create, :destroy]
 
-    resources :jobs, only: [:index] do
-      collection do
-        get :deploy_jobs
-      end
-    end
-
     resources :events, only: [:index]
   end
 

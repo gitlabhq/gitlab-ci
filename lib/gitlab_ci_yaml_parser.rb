@@ -5,7 +5,7 @@ class GitlabCiYamlParser
 
   def initialize(config)
     @before_script = ["pwd"]
-    @jobs = [{script: "ls -la", runner: "", name: "Rspec"}]
+    @jobs = [{script: "ruby -v", runner: "", name: "Rspec"}]
     @on_success = [script: "cap deploy production", refs: [], name: "Deploy"]
   end
 

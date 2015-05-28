@@ -15,7 +15,6 @@
 class Commit < ActiveRecord::Base
   belongs_to :project
   has_many :builds, dependent: :destroy
-  has_many :jobs, through: :builds
 
   serialize :push_data
 
@@ -102,7 +101,7 @@ class Commit < ActiveRecord::Base
     @builds_without_retry ||=
       begin
         grouped_builds = builds.group_by(&:name)
-        grouped_builds.map do |job, builds|
+        grouped_builds.map do |name, builds|
           builds.sort_by(&:id).last
         end
       end

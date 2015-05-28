@@ -126,7 +126,7 @@ describe Project do
     let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:parsed_project) { Project.parse(project_dump) }
 
-    before { parsed_project.build_default_job }
+    #before { parsed_project.build_default_job }
 
     it { parsed_project.should be_valid }
     it { parsed_project.should be_kind_of(Project) }

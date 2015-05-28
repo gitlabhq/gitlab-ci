@@ -32,7 +32,6 @@ class Project < ActiveRecord::Base
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
-  has_many :jobs, dependent: :destroy
   has_many :events, dependent: :destroy
 
   # Project services
@@ -40,8 +39,6 @@ class Project < ActiveRecord::Base
   has_one :hip_chat_service, dependent: :destroy
   has_one :slack_service, dependent: :destroy
   has_one :mail_service, dependent: :destroy
-
-  accepts_nested_attributes_for :jobs, allow_destroy: true
 
   #
   # Validations
@@ -54,8 +51,6 @@ class Project < ActiveRecord::Base
   validates :polling_interval,
     presence: true,
     if: ->(project) { project.always_build.present? }
-
-  validate :validate_jobs
 
   scope :public_only, ->() { where(public: true) }
 
@@ -190,18 +185,6 @@ ls -la
 
   def coverage_enabled?
     coverage_regex.present?
-  end
-
-  def build_default_job
-    jobs.build(commands: Project.base_build_script)
-  end
-
-  def validate_jobs
-    remaining_jobs = jobs.reject(&:marked_for_destruction?)
-
-    if remaining_jobs.empty?
-      errors.add(:jobs, "At least one foo")
-    end
   end
 
   # Build a clone-able repo url

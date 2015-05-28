@@ -47,8 +47,7 @@ Returns:
     "runner_id": 1,
     "coverage": null,
     "commit_id": 3,
-    "commands": "git submodule update --init\nls -la\n",
-    "job_id": 3
+    "commands": "git submodule update --init\nls -la\n"
   }]
 }]
 ```
@@ -98,8 +97,7 @@ Returns:
     "runner_id": 1,
     "coverage": null,
     "commit_id": 3,
-    "commands": "git submodule update --init\nls -la\n",
-    "job_id": 3
+    "commands": "git submodule update --init\nls -la\n"
   }]
 }
 ```

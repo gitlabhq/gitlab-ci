@@ -14,7 +14,6 @@
 #  commit_id   :integer
 #  coverage    :float
 #  commands    :text
-#  job_id      :integer
 #
 
 require 'spec_helper'

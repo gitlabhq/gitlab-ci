@@ -12,10 +12,6 @@
     = link_to project_runners_path(@project) do
       %i.icon-cog
       Runners
-  = nav_link path: ['jobs#index', 'jobs#deploy_jobs'] do
-    = link_to project_jobs_path(@project) do
-      %i.icon-code
-      Jobs
   = nav_link path: 'web_hooks#index' do
     = link_to project_web_hooks_path(@project) do
       %i.icon-link

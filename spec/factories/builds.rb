@@ -14,7 +14,6 @@
 #  commit_id   :integer
 #  coverage    :float
 #  commands    :text
-#  job_id      :integer
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

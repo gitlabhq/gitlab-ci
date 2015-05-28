@@ -28,116 +28,6 @@ module API
         end
       end
 
-      # Retrieve all jobs for a project
-      #
-      # Parameters
-      #   id (required) - The ID of a project
-      # Example Request
-      #   GET /projects/:id/jobs
-      get ":id/jobs" do
-        project = Project.find(params[:id])
-
-        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
-
-        project.jobs
-      end
-
-      # Add a new job to a project
-      #
-      # Parameters
-      #   id (required) - The ID of a project
-      #   name (required) - The job name
-      #   commands (required) - The command line script for the job
-      #   active (optional) - The command is active of not
-      #   build_branches (optional) - Trigger commit builds
-      #   build_tags (optional) - Trigger tag builds
-      #   tags (optional) - The tags associated with this job
-      # Example Request
-      #   POST /projects/:id/jobs
-      post ":id/jobs" do
-        required_attributes! [:name, :commands]
-
-        project = Project.find(params[:id])
-
-        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
-
-        job_params =
-        {
-          name: params[:name],
-          commands: params[:commands],
-        }
-
-        job_params[:active] = params[:active] unless params[:active].nil?
-        job_params[:build_branches] = params[:build_branches] unless params[:build_branches].nil?
-        job_params[:build_tags] = params[:build_tags] unless params[:build_tags].nil?
-        job_params[:tag_list] = params[:tags] unless params[:tags].nil?
-
-        job = project.jobs.new(job_params)
-        if job.save
-          present job, with: Entities::Job
-        else
-          errors = job.errors.full_messages.join(", ")
-          render_api_error!(errors, 400)
-        end
-      end
-
-      # Add a new deploy job to a project
-      #
-      # Parameters
-      #   id (required) - The ID of a project
-      #   name (required) - The job name
-      #   commands (required) - The command line script for the job
-      #   active (optional) - The command is active of not
-      #   refs (optional) - The list of refs
-      #   tags (optional) - The tags associated with this job
-      # Example Request
-      #   POST /projects/:id/deploy_jobs
-      post ":id/deploy_jobs" do
-        required_attributes! [:name, :commands]
-
-        project = Project.find(params[:id])
-
-        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
-
-        job_params =
-        {
-          name: params[:name],
-          commands: params[:commands],
-          job_type: "deploy"
-        }
-
-        job_params[:active] = params[:active] unless params[:active].nil?
-        job_params[:refs] = params[:refs] unless params[:refs].nil?
-        job_params[:tag_list] = params[:tags] unless params[:tags].nil?
-
-        job = project.jobs.new(job_params)
-        if job.save
-          present job, with: Entities::DeployJob
-        else
-          errors = job.errors.full_messages.join(", ")
-          render_api_error!(errors, 400)
-        end
-      end
-
-      # Delete a job for a project
-      #
-      # Parameters
-      #   id (required) - The ID of a project
-      #   job_id (required) - The ID of the job to delete
-      # Example Request
-      #   DELETE /projects/:id/jobs/:job_id
-      delete ":id/jobs/:job_id" do
-        required_attributes! [:job_id]
-
-        project = Project.find(params[:id])
-
-        unauthorized! unless current_user.can_manage_project?(project.gitlab_id)
-
-        job = project.jobs.find(params[:job_id])
-
-        job.destroy
-      end
-
       # Retrieve all Gitlab CI projects that the user has access to
       #
       # Example Request:
@@ -204,7 +94,6 @@ module API
 
         project = Project.new(filtered_params)
         project.build_missing_services
-        project.build_default_job
 
         if project.save
           present project, with: Entities::Project
