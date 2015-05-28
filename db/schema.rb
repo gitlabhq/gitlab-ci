@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602000240) do
+
+ActiveRecord::Schema.define(version: 20150528011001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +30,8 @@ ActiveRecord::Schema.define(version: 20150602000240) do
     t.float    "coverage"
     t.text     "commands"
     t.integer  "job_id"
+    t.string   "name"
+    t.boolean  "deploy",      default: false
   end
 
   add_index "builds", ["commit_id"], name: "index_builds_on_commit_id", using: :btree

@@ -93,30 +93,15 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds
-    project.jobs.where(build_branches: true).active.parallel.map do |job|
-      create_build_from_job(job)
+    builds_config.builds.each do |build_attrs|
+      builds.create!({project: project}.merge(build_attrs))
     end
-  end
-
-  def create_builds_for_tag(ref = '')
-    project.jobs.where(build_tags: true).active.parallel.map do |job|
-      create_build_from_job(job, ref)
-    end
-  end
-
-  def create_build_from_job(job, ref = '')
-    build = builds.new(commands: job.commands)
-    build.tag_list = job.tag_list
-    build.project_id = project_id
-    build.job = job
-    build.save
-    build
   end
 
   def builds_without_retry
     @builds_without_retry ||=
       begin
-        grouped_builds = builds.group_by(&:job)
+        grouped_builds = builds.group_by(&:name)
         grouped_builds.map do |job, builds|
           builds.sort_by(&:id).last
         end
@@ -127,12 +112,22 @@ class Commit < ActiveRecord::Base
     @retried_builds ||= (builds - builds_without_retry)
   end
 
-  def create_deploy_builds(ref)
-    project.jobs.deploy.active.each do |job|
-      if job.run_for_ref?(ref)
-        create_build_from_job(job)
-      end
+  def create_deploy_builds
+    builds_config.deploy_builds.each do |build_attrs|
+      refs = build_attrs.delete(:refs)
+      next unless refs.empty? || refs_matches?(refs, ref)
+      builds.create!({project: project}.merge(build_attrs))
     end
+  end
+
+  # refs - list of refs. Glob syntax is supported. Ex. ["feature*", "bug"]
+  # ref - ref that should be checked
+  def refs_matches?(refs, ref)
+    refs.map(&:strip).each do |ref_pattern|
+      return true if File.fnmatch(ref_pattern, ref)
+    end
+
+    false
   end
 
   def status
@@ -193,5 +188,9 @@ class Commit < ActiveRecord::Base
 
   def matrix?
     builds_without_retry.size > 1
+  end
+
+  def builds_config
+    @builds_config ||= GitlabCiYamlParser.new(push_data[:ci_yaml_file])
   end
 end

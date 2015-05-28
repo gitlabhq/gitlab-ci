@@ -135,7 +135,7 @@ describe Commit do
       FactoryGirl.create :job, job_type: :deploy, project: project
       project.reload
 
-      commit.create_deploy_builds(commit.ref)
+      commit.create_deploy_builds
       commit.builds.reload
 
       commit.builds.size.should == 1

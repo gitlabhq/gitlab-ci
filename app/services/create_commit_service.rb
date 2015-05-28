@@ -43,18 +43,15 @@ class CreateCommitService
           user_email: params[:user_email],
           repository: params[:repository],
           commits: params[:commits],
-          total_commits_count: params[:total_commits_count]
+          total_commits_count: params[:total_commits_count],
+          ci_yaml_file: params[:ci_yaml_file]
         }
       }
 
       commit = project.commits.create(data)
     end
 
-    if origin_ref.start_with?('refs/tags/')
-      commit.create_builds_for_tag(ref)
-    else
-      commit.create_builds
-    end
+    commit.create_builds
 
     if commit.builds.empty?
       commit.create_deploy_builds(ref)

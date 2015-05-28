@@ -21,9 +21,9 @@
           %i{class: build_icon_css_class(build)}
           %span
             Build ##{build.id}
-            - if build.job_name
+            - if build.name
               &middot;
-              = build.job_name
+              = build.name
 
     - unless @commit.builds_without_retry.include?(@build)
       %li.active
@@ -150,8 +150,8 @@
                 = link_to build_url(build) do
                   %span ##{build.id}
               %td
-                - if build.job_name
-                  = build.job_name
+                - if build.name
+                  = build.name
               %td.status= build.status
 
 

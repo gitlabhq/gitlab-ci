@@ -12,7 +12,7 @@ class HipChatMessage
       lines.push("<a href=\"#{RoutesHelper.project_ref_commit_url(project, commit.ref, commit.sha)}\">Commit ##{commit.id}</a></br>")
     else
       first_build = commit.builds_without_retry.first
-      lines.push("<a href=\"#{RoutesHelper.project_build_url(project, first_build)}\">Build '#{first_build.job_name}' ##{first_build.id}</a></br>")
+      lines.push("<a href=\"#{RoutesHelper.project_build_url(project, first_build)}\">Build '#{first_build.name}' ##{first_build.id}</a></br>")
     end
     lines.push("#{commit.short_sha} #{commit.git_author_name} - #{commit.git_commit_message}</br>")
     lines.push("#{humanized_status(commit_status)} in #{commit.duration} second(s).")

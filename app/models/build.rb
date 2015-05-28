@@ -109,8 +109,8 @@ class Build < ActiveRecord::Base
         WebHookService.new.build_end(build)
       end
 
-      if build.commit.success? && !(build.job && build.job.deploy?)
-        build.commit.create_deploy_builds(build.ref)
+      if build.commit.success? && !build.deploy?
+        build.commit.create_deploy_builds
       end
 
       project.execute_services(build)
@@ -204,12 +204,6 @@ class Build < ActiveRecord::Base
     rescue => ex
       # if bad regex or something goes wrong we dont want to interrupt transition
       # so we just silentrly ignore error for now
-    end
-  end
-
-  def job_name
-    if job
-      job.name
     end
   end
 
