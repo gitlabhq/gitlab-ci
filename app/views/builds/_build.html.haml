@@ -7,7 +7,7 @@
       %strong Build ##{build.id}
 
   %td
-    - if build.for_tag?
+    - if build.commit.tag?
       Tag
       &middot;
       #{build.ref}

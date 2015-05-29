@@ -92,8 +92,11 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds
-    builds_config.builds.each do |build_attrs|
-      builds.create!({project: project}.merge(build_attrs))
+    filter_param = tag? ? :tags : :branches
+    config_processor.builds.each do |build_attrs|
+      if build_attrs[filter_param]
+        builds.create!({project: project}.merge(build_attrs.extract!(:name, :commands, :tag_list)))
+      end
     end
   end
 
@@ -112,21 +115,9 @@ class Commit < ActiveRecord::Base
   end
 
   def create_deploy_builds
-    builds_config.deploy_builds.each do |build_attrs|
-      refs = build_attrs.delete(:refs)
-      next unless refs.empty? || refs_matches?(refs, ref)
+    config_processor.deploy_builds_for_ref(ref).each do |build_attrs|
       builds.create!({project: project}.merge(build_attrs))
     end
-  end
-
-  # refs - list of refs. Glob syntax is supported. Ex. ["feature*", "bug"]
-  # ref - ref that should be checked
-  def refs_matches?(refs, ref)
-    refs.map(&:strip).each do |ref_pattern|
-      return true if File.fnmatch(ref_pattern, ref)
-    end
-
-    false
   end
 
   def status
@@ -189,7 +180,7 @@ class Commit < ActiveRecord::Base
     builds_without_retry.size > 1
   end
 
-  def builds_config
-    @builds_config ||= GitlabCiYamlParser.new(push_data[:ci_yaml_file])
+  def config_processor
+    @config_processor ||= GitlabCiYamlProcessor.new(push_data[:ci_yaml_file])
   end
 end

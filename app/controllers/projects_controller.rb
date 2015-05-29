@@ -121,7 +121,7 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:path, :timeout, :timeout_in_minutes, :default_ref, :always_build,
-      :polling_interval, :public, :ssh_url_to_repo, :allow_git_fetch, :skip_refs, :email_recipients,
+      :polling_interval, :public, :ssh_url_to_repo, :allow_git_fetch, :email_recipients,
       :email_add_pusher, :email_only_broken_builds, :coverage_regex, :shared_runners_enabled, :token)
   end
 end

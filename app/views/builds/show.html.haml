@@ -32,7 +32,7 @@
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        - if @build.for_tag?
+        - if @build.commit.tag?
           Build for tag
           %code #{@build.ref}
         - else

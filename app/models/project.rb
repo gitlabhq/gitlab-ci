@@ -166,23 +166,6 @@ ls -la
     self.timeout = value.to_i * 60
   end
 
-  def skip_ref?(ref_name)
-    if skip_refs.present?
-      skip_refs.delete(" ").split(",").each do |ref|
-        return true if File.fnmatch(ref, ref_name)
-      end
-
-      false
-    else
-      false
-    end
-  end
-
-  def create_commit_for_tag?(tag)
-    jobs.where(build_tags: true).active.parallel.any? ||
-    jobs.active.deploy.any?{ |job| job.run_for_ref?(tag)}
-  end
-
   def coverage_enabled?
     coverage_regex.present?
   end

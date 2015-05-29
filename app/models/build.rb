@@ -197,12 +197,4 @@ class Build < ActiveRecord::Base
       # so we just silentrly ignore error for now
     end
   end
-
-  def for_tag?
-    if job && job.build_tags
-      true
-    else
-      false
-    end
-  end
 end
