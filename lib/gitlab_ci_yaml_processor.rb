@@ -9,36 +9,6 @@ class GitlabCiYamlProcessor
     @deploy_jobs = @config[:deploy_jobs] || []
   end
 
-  def normalized_jobs
-    @jobs.map do |job|
-      if job.is_a?(String)
-        { script: job, runner: "", name: job[0..10], branches: true, tags: true }
-      else
-        {
-          script: job[:script],
-          runner: job[:runner] || "",
-          name: job[:name] || job[:script][0..10],
-          branches: job[:branches] || true,
-          tags: job[:tags] || true
-        }
-      end
-    end
-  end
-
-  def normalized_deploy_jobs
-    @deploy_jobs.map do |job|
-      if job.is_a?(String)
-        { script: job, refs: "", name: job[0..10].strip }
-      else
-        {
-          script: job[:script],
-          refs: job[:refs] || "",
-          name: job[:name] || job[:script][0..10].strip
-        }
-      end
-    end
-  end
-
   def builds
     normalized_jobs.map do |job|
       {
@@ -57,7 +27,7 @@ class GitlabCiYamlProcessor
         name: job[:name],
         commands: "#{@before_script.join("\n")}\n#{job[:script]}",
         deploy: true,
-        refs: job[:refs].split(",").map(&:strip)
+        refs: job[:refs]
       }
     end
   end
@@ -92,5 +62,35 @@ class GitlabCiYamlProcessor
     end
 
     false
+  end
+
+  def normalized_jobs
+    @jobs.map do |job|
+      if job.is_a?(String)
+        { script: job, runner: "", name: job[0..10], branches: true, tags: true }
+      else
+        {
+          script: job[:script],
+          runner: job[:runner] || "",
+          name: job[:name] || job[:script][0..10],
+          branches: job[:branches].nil? ? true : job[:branches],
+          tags: job[:tags].nil? ? true : job[:tags]
+        }
+      end
+    end
+  end
+
+  def normalized_deploy_jobs
+    @deploy_jobs.map do |job|
+      if job.is_a?(String)
+        { script: job, refs: [], name: job[0..10].strip }
+      else
+        {
+          script: job[:script],
+          refs: (job[:refs] || "").split(",").map(&:strip),
+          name: job[:name] || job[:script][0..10].strip
+        }
+      end
+    end
   end
 end
