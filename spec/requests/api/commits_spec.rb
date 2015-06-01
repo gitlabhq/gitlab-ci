@@ -43,7 +43,8 @@ describe API::API, 'Commits' do
               "email" => "jordi@softcatala.org",
             }
           }
-        ]
+        ],
+        ci_yaml_file: gitlab_ci_yaml
       }
     }
 

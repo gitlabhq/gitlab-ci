@@ -4,76 +4,90 @@ describe SlackMessage do
   subject { SlackMessage.new(commit) }
 
   let(:project) { FactoryGirl.create :project }
-  let(:commit)  { FactoryGirl.create :commit, project: project }
-  let(:job)     { FactoryGirl.create :job, project: project }
-  let(:build)   { FactoryGirl.create :build, commit: commit, job: job, status: 'success' }
 
-  context 'when build succeeded' do
-    let(:color) { 'good' }
+  context "One build" do
+    let(:commit) do
+      commit = FactoryGirl.create(:commit, project: project)
+      commit.push_data[:ci_yaml_file] = YAML.dump({jobs: ["ls"]})
+      commit.save
+      commit
+    end
 
-    before { build }
+    let(:build) do 
+      commit.create_builds
+      commit.builds.first
+    end
 
-    it 'returns a message with succeeded build' do
-      subject.color.should == color
-      subject.fallback.should include('Build')
-      subject.fallback.should include("\##{build.id}")
-      subject.fallback.should include('succeeded')
-      subject.attachments.first[:fields].should be_empty
+    context 'when build succeeded' do
+      let(:color) { 'good' }
+
+      it 'returns a message with succeeded build' do
+        build.update(status: "success")
+
+        subject.color.should == color
+        subject.fallback.should include('Build')
+        subject.fallback.should include("\##{build.id}")
+        subject.fallback.should include('succeeded')
+        subject.attachments.first[:fields].should be_empty
+      end
+    end
+
+    context 'when build failed' do
+      let(:color) { 'danger' }
+
+      it 'returns a message with failed build' do
+        build.update(status: "failed")
+
+        subject.color.should == color
+        subject.fallback.should include('Build')
+        subject.fallback.should include("\##{build.id}")
+        subject.fallback.should include('failed')
+        subject.attachments.first[:fields].should be_empty
+      end
     end
   end
 
-  context 'when build failed' do
-    let(:color) { 'danger' }
+  context "Several builds" do
+    let(:commit) {commit = FactoryGirl.create(:commit, project: project)}
 
-    before do
-      build.status = 'failed'
-      build.save
+    let(:build) do 
+      commit.builds.first
     end
 
-    it 'returns a message with failed build' do
-      subject.color.should == color
-      subject.fallback.should include('Build')
-      subject.fallback.should include("\##{build.id}")
-      subject.fallback.should include('failed')
-      subject.attachments.first[:fields].should be_empty
-    end
-  end
+    context 'when all matrix builds succeeded' do
+      let(:color) { 'good' }
 
-  context 'when all matrix builds succeeded' do
-    let(:job2)     { FactoryGirl.create :job, project: project }
-    let(:build2)   { FactoryGirl.create :build, commit: commit, job: job2, status: 'success' }
-    let(:color)    { 'good' }
+      it 'returns a message with success' do
+        commit.create_builds
+        commit.builds.update_all(status: "success")
+        commit.reload
 
-    before { build; build2 }
-
-    it 'returns a message with success' do
-      subject.color.should == color
-      subject.fallback.should include('Commit')
-      subject.fallback.should include("\##{commit.id}")
-      subject.fallback.should include('succeeded')
-      subject.attachments.first[:fields].should be_empty
-    end
-  end
-
-  context 'when one of matrix builds failed' do
-    let(:job2)     { FactoryGirl.create :job, project: project, name: 'Test JOB' }
-    let(:build2)   { FactoryGirl.create :build, id: 10, commit: commit, job: job2, status: 'success' }
-    let(:color)    { 'danger' }
-
-    before do
-      build
-      build2.status = 'failed'
-      build2.save
+        subject.color.should == color
+        subject.fallback.should include('Commit')
+        subject.fallback.should include("\##{commit.id}")
+        subject.fallback.should include('succeeded')
+        subject.attachments.first[:fields].should be_empty
+      end
     end
 
-    it 'returns a message with information about failed build' do
-      subject.color.should == color
-      subject.fallback.should include('Commit')
-      subject.fallback.should include("\##{commit.id}")
-      subject.fallback.should include('failed')
-      subject.attachments.first[:fields].size.should == 1
-      subject.attachments.first[:fields].first[:title].should == build2.name
-      subject.attachments.first[:fields].first[:value].should include("\##{build2.id}")
+    context 'when one of matrix builds failed' do
+      let(:color) { 'danger' }
+
+      it 'returns a message with information about failed build' do
+        commit.create_builds
+        first_build = commit.builds.first
+        second_build = commit.builds.last
+        first_build.update(status: "success")
+        second_build.update(status: "failed")
+        
+        subject.color.should == color
+        subject.fallback.should include('Commit')
+        subject.fallback.should include("\##{commit.id}")
+        subject.fallback.should include('failed')
+        subject.attachments.first[:fields].size.should == 1
+        subject.attachments.first[:fields].first[:title].should == second_build.name
+        subject.attachments.first[:fields].first[:value].should include("\##{second_build.id}")
+      end
     end
   end
 end

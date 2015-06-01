@@ -3,16 +3,16 @@ class GitlabCiYamlProcessor
 
   def initialize(config)
     @config = YAML.load(config).deep_symbolize_keys
-    @skip_refs = @config[:skip_refs] || []
+    @skip_refs = @config[:skip_refs] || ""
     @before_script = @config[:before_script] || []
-    @jobs = @config[:jobs]
-    @deploy_jobs = @config[:deploy_jobs]
+    @jobs = @config[:jobs] || []
+    @deploy_jobs = @config[:deploy_jobs] || []
   end
 
   def normalized_jobs
     @jobs.map do |job|
       if job.is_a?(String)
-        {script: job, runner: "", name: job[0..10], branches: true, tags: true}
+        { script: job, runner: "", name: job[0..10], branches: true, tags: true }
       else
         {
           script: job[:script],
@@ -28,12 +28,12 @@ class GitlabCiYamlProcessor
   def normalized_deploy_jobs
     @deploy_jobs.map do |job|
       if job.is_a?(String)
-        {script: job, refs: [], name: job[0..10].strip}
+        { script: job, refs: "", name: job[0..10].strip }
       else
         {
           script: job[:script],
-          refs: job[:refs] || [],
-          name: job[:name] || job[:script][0..10]
+          refs: job[:refs] || "",
+          name: job[:name] || job[:script][0..10].strip
         }
       end
     end
@@ -57,7 +57,7 @@ class GitlabCiYamlProcessor
         name: job[:name],
         commands: "#{@before_script.join("\n")}\n#{job[:script]}",
         deploy: true,
-        refs: job[:refs]
+        refs: job[:refs].split(",").map(&:strip)
       }
     end
   end
@@ -87,7 +87,7 @@ class GitlabCiYamlProcessor
   # refs - list of refs. Glob syntax is supported. Ex. ["feature*", "bug"]
   # ref - ref that should be checked
   def refs_matches?(refs, ref)
-    refs.map(&:strip).each do |ref_pattern|
+    refs.each do |ref_pattern|
       return true if File.fnmatch(ref_pattern, ref)
     end
 

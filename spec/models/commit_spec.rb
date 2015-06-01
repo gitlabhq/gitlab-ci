@@ -132,8 +132,8 @@ describe Commit do
 
   describe "create_deploy_builds" do
     it "creates deploy build" do
-      FactoryGirl.create :job, job_type: :deploy, project: project
-      project.reload
+      config_processor = GitlabCiYamlProcessor.new(gitlab_ci_yaml)
+      commit.stub(:config_processor).and_return(config_processor)
 
       commit.create_deploy_builds
       commit.builds.reload

@@ -1,0 +1,24 @@
+# Refs to skip
+skip_refs: “deploy-*”
+
+# Run before each script
+before_script: 
+  - ls
+
+# Parallel jobs, each line is parallel build
+jobs: 
+  - script: "rake spec"
+    runner: "ruby,postgres"
+    name: "Rspec"
+  - script: "rake spinach"
+    runner: "ruby,mysql"
+    name: "Spinach"
+    tags: true
+    branches: false
+
+# Parallel deploy jobs
+deploy_jobs: 
+  - "cap deploy production"
+  - script: "cap deploy staging"
+    refs: staging
+    name: "Deploy to staging"

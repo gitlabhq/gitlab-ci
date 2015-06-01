@@ -17,8 +17,8 @@ describe API::API do
     describe "POST /builds/register" do
       it "should start a build" do
         commit = FactoryGirl.create(:commit, project: project)
-        job = FactoryGirl.create :job, project: project
-        build = commit.create_builds.first
+        commit.create_builds
+        build = commit.builds.first
 
         post api("/builds/register"), token: runner.token, info: {platform: :darwin}
 

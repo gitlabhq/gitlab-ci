@@ -6,7 +6,14 @@ describe CreateCommitService do
 
   describe :execute do
     context 'valid params' do
-      let(:commit) { service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312') }
+      let(:commit) do 
+        service.execute(project,
+          ref: 'refs/heads/master',
+          before: '00000000',
+          after: '31das312',
+          ci_yaml_file: gitlab_ci_yaml
+        ) 
+      end
 
       it { commit.should be_kind_of(Commit) }
       it { commit.should be_valid }
@@ -15,61 +22,50 @@ describe CreateCommitService do
       it { commit.builds.first.should be_kind_of(Build) }
     end
 
-    context 'without params' do
-      subject { service.execute(project, {}) }
-
-      it { should be_false }
-    end
-
     context "deploy builds" do
       it "calls create_deploy_builds if there are no builds" do
-        project.jobs.destroy_all
+        config = YAML.dump({jobs: [], build_jobs: ["ls"]})
         Commit.any_instance.should_receive(:create_deploy_builds)
-        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312')
+        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312', ci_yaml_file: config)
       end
 
       it "does not call create_deploy_builds if there is build" do
+        config = YAML.dump({jobs: ["ls"], build_jobs: ["ls"]})
         Commit.any_instance.should_not_receive(:create_deploy_builds)
-        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312')
+        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312', ci_yaml_file: config)
       end
     end
 
     context "skip tag if there is no build for it" do
-      it "does not create commit if there is no appropriate job" do
-        project.jobs
-
-        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312')
-        result.should be_false
-      end
-
       it "creates commit if there is appropriate job" do
-        project.jobs.first.update(build_tags: true)
-
-        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312')
+        result = service.execute(project,
+          ref: 'refs/tags/0_1',
+          before: '00000000',
+          after: '31das312',
+          ci_yaml_file: gitlab_ci_yaml
+        )
         result.should be_persisted
       end
 
       it "does not create commit if there is no appropriate job nor deploy job" do
-        project.jobs.first.update(build_tags: false)
-        FactoryGirl.create(:deploy_job, project: project, refs: "release")
-
-        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312')
+        result = service.execute(project,
+          ref: 'refs/tags/0_1',
+          before: '00000000',
+          after: '31das312',
+          ci_yaml_file: YAML.dump({})
+        )
         result.should be_false
       end
 
       it "creates commit if there is no appropriate job but deploy job has right ref setting" do
-        project.jobs.first.update(build_tags: false)
-        FactoryGirl.create(:deploy_job, project: project, refs: "0_1")
+        config = YAML.dump({deploy_jobs: [{script: "ls", refs: "0_1"}]})
 
-        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312')
-        result.should be_persisted
-      end
-
-      it "creates commit if there is no appropriate job and deploy job has no ref setting" do
-        project.jobs.first.update(build_tags: true)
-        FactoryGirl.create(:deploy_job, project: project)
-
-        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312')
+        result = service.execute(project,
+          ref: 'refs/heads/0_1',
+          before: '00000000',
+          after: '31das312',
+          ci_yaml_file: config
+        )
         result.should be_persisted
       end
     end
@@ -77,16 +73,27 @@ describe CreateCommitService do
     describe :ci_skip? do
       it "skips commit creation if there is [ci skip] tag in commit message" do
         commits = [{message: "some message[ci skip]"}]
-        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312', commits: commits)
+        result = service.execute(project,
+          ref: 'refs/tags/0_1',
+          before: '00000000',
+          after: '31das312',
+          commits: commits,
+          ci_yaml_file: gitlab_ci_yaml
+        )
         result.should be_false
       end
 
       it "does not skips commit creation if there is no [ci skip] tag in commit message" do
-        project.jobs.first.update(build_tags: true)
-
         commits = [{message: "some message"}]
 
-        result = service.execute(project, ref: 'refs/tags/0_1', before: '00000000', after: '31das312', commits: commits)
+        result = service.execute(project,
+          ref: 'refs/tags/0_1',
+          before: '00000000',
+          after: '31das312',
+          commits: commits,
+          ci_yaml_file: gitlab_ci_yaml
+        )
+        
         result.should be_persisted
       end
     end

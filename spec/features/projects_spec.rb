@@ -34,12 +34,12 @@ describe "Projects" do
     it { page.should have_content 'Build Schedule' }
 
     it "updates configuration" do
-      fill_in 'Skip refs', with: 'deploy'
+      fill_in 'Timeout', with: '70'
       click_button 'Save changes'
 
       page.should have_content 'was successfully updated'
 
-      find_field('Skip refs').value.should eq 'deploy'
+      find_field('Timeout').value.should eq '70'
     end
   end
 

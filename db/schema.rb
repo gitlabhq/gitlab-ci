@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 20150529012113) do
     t.text     "push_data"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "origin_ref"
     t.boolean  "tag",        default: false
   end
 

@@ -95,7 +95,7 @@ class Commit < ActiveRecord::Base
     filter_param = tag? ? :tags : :branches
     config_processor.builds.each do |build_attrs|
       if build_attrs[filter_param]
-        builds.create!({project: project}.merge(build_attrs.extract!(:name, :commands, :tag_list)))
+        builds.create!({ project: project }.merge(build_attrs.extract!(:name, :commands, :tag_list)))
       end
     end
   end
@@ -116,7 +116,7 @@ class Commit < ActiveRecord::Base
 
   def create_deploy_builds
     config_processor.deploy_builds_for_ref(ref).each do |build_attrs|
-      builds.create!({project: project}.merge(build_attrs))
+      builds.create!({ project: project }.merge(build_attrs))
     end
   end
 
