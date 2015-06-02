@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529012113) do
+ActiveRecord::Schema.define(version: 20150601043222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 20150529012113) do
     t.string   "skip_refs"
     t.string   "coverage_regex"
     t.boolean  "shared_runners_enabled",   default: false
+    t.text     "generated_yaml_config"
   end
 
   create_table "runner_projects", force: true do |t|

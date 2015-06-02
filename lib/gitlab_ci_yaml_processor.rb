@@ -27,7 +27,8 @@ class GitlabCiYamlProcessor
         name: job[:name],
         commands: "#{@before_script.join("\n")}\n#{job[:script]}",
         deploy: true,
-        refs: job[:refs]
+        refs: job[:refs],
+        tag_list: job[:runner]
       }
     end
   end
@@ -70,7 +71,7 @@ class GitlabCiYamlProcessor
         { script: job, runner: "", name: job[0..10], branches: true, tags: true }
       else
         {
-          script: job[:script],
+          script: job[:script].strip,
           runner: job[:runner] || "",
           name: job[:name] || job[:script][0..10],
           branches: job[:branches].nil? ? true : job[:branches],
@@ -86,9 +87,10 @@ class GitlabCiYamlProcessor
         { script: job, refs: [], name: job[0..10].strip }
       else
         {
-          script: job[:script],
+          script: job[:script].strip,
           refs: (job[:refs] || "").split(",").map(&:strip),
-          name: job[:name] || job[:script][0..10].strip
+          name: job[:name] || job[:script][0..10].strip,
+          runner: job[:runner] || "",
         }
       end
     end
