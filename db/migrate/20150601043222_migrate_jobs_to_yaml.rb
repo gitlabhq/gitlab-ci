@@ -1,3 +1,7 @@
+# Migration tested on MySQL and PostgreSQL.
+# Can be performed online without errors.
+# This migration will loop through all projects and jobs, so it can take some time.
+
 class MigrateJobsToYaml < ActiveRecord::Migration
   def up
     select_all("SELECT * FROM projects").each do |project|
