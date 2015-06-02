@@ -25,7 +25,7 @@ class MigrateJobsToYaml < ActiveRecord::Migration
       # Create Jobs
       select_all(sql).each do |job|
         config[:jobs] << {
-          script: job["commands"].split("\n").map(&:strip),
+          script: job["commands"] && job["commands"].split("\n").map(&:strip),
           name: job["name"],
           branches: parse_boolean_value(job["build_branches"]),
           tags: parse_boolean_value(job["build_tags"]),
@@ -36,7 +36,7 @@ class MigrateJobsToYaml < ActiveRecord::Migration
       # Create Deploy Jobs
       select_all(sql.sub("parallel", 'deploy')).each do |job|
         config[:deploy_jobs] << {
-          script: job["commands"].split("\n").map(&:strip),
+          script: job["commands"] && job["commands"].split("\n").map(&:strip),
           name: job["name"],
           refs: job["refs"],
           runner: job["tags"]
