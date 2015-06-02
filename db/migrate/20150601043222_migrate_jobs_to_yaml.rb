@@ -6,7 +6,7 @@ class MigrateJobsToYaml < ActiveRecord::Migration
       concatenate_expression = if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL' 
                                  "string_agg(tags.name, ',')"
                                else
-                                 "GROUP_CONCAT(string SEPARATOR ' ')"
+                                 "GROUP_CONCAT(tags.name SEPARATOR ',')"
                                end
 
       sql = "SELECT j.*, #{concatenate_expression} tags
