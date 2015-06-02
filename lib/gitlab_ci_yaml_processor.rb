@@ -13,7 +13,7 @@ class GitlabCiYamlProcessor
     normalized_jobs.map do |job|
       {
         name: job[:name],
-        commands: "#{@before_script.join("\n")}\n#{job[:script]}",
+        commands: "#{normalized_script(@before_script)}\n#{job[:script]}",
         tag_list: job[:runner],
         branches: job[:branches],
         tags: job[:tag]
@@ -25,7 +25,7 @@ class GitlabCiYamlProcessor
     normalized_deploy_jobs.map do |job|
       {
         name: job[:name],
-        commands: "#{@before_script.join("\n")}\n#{job[:script]}",
+        commands: "#{normalized_script(@before_script)}\n#{job[:script]}",
         deploy: true,
         refs: job[:refs],
         tag_list: job[:runner]
@@ -71,7 +71,7 @@ class GitlabCiYamlProcessor
         { script: job, runner: "", name: job[0..10], branches: true, tags: true }
       else
         {
-          script: job[:script].strip,
+          script: normalized_script(job[:script]),
           runner: job[:runner] || "",
           name: job[:name] || job[:script][0..10],
           branches: job[:branches].nil? ? true : job[:branches],
@@ -87,12 +87,20 @@ class GitlabCiYamlProcessor
         { script: job, refs: [], name: job[0..10].strip }
       else
         {
-          script: job[:script].strip,
+          script: normalized_script(job[:script]),
           refs: (job[:refs] || "").split(",").map(&:strip),
           name: job[:name] || job[:script][0..10].strip,
           runner: job[:runner] || "",
         }
       end
+    end
+  end
+
+  def normalized_script(script)
+    if script.is_a? Array
+      script.map(&:strip).join("\n")
+    else
+      script.strip
     end
   end
 end

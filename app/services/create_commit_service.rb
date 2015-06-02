@@ -3,7 +3,8 @@ class CreateCommitService
     before_sha = params[:before]
     sha = params[:checkout_sha] || params[:after]
     origin_ref = params[:ref]
-    config_processor = build_config_processor(params[:ci_yaml_file])
+    yaml_config = params[:ci_yaml_file] || project.generated_yaml_config
+    config_processor = build_config_processor(yaml_config)
 
     unless origin_ref && sha.present?
       return false
@@ -46,7 +47,7 @@ class CreateCommitService
           repository: params[:repository],
           commits: params[:commits],
           total_commits_count: params[:total_commits_count],
-          ci_yaml_file: params[:ci_yaml_file]
+          ci_yaml_file: yaml_config
         }
       }
 
