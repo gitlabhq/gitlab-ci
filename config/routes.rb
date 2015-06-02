@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get :integration
       post :build
       post :toggle_shared_runners
+      get :dumped_yaml
     end
 
     resources :services, only: [:index, :edit, :update] do
