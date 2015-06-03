@@ -73,7 +73,7 @@ You can use either MySQL or PostgreSQL.
     mysql> CREATE USER 'gitlab_ci'@'localhost' IDENTIFIED BY '$password';
 
     # Grant proper permissions to the MySQL User
-    mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
+    mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
 
     # Logout MYSQL
     mysql> exit;
