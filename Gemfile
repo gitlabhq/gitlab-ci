@@ -88,6 +88,10 @@ gem "paranoia", "~> 2.0"
 # Colored output to console
 gem "colored"
 
+# for aws storage
+gem "fog", "~> 1.14"
+gem "unf"
+
 
 group :development do
   gem 'brakeman', require: false
