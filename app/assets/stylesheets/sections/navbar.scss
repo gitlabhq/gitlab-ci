@@ -15,7 +15,6 @@
   .brand,
   .nav > li > a {
     color: #fff;
-    text-shadow: 0 1px 0 #167;
 
     &:hover, &:focus, &:active {
       background: none;
@@ -27,13 +26,13 @@
 
     img {
       position: absolute;
-      top: -2px;
-      width: 24px;
-      @include border-radius(4px);
+      top: -8px;
+      width: 32px;
+      @include border-radius(32px);
     }
 
     span {
-      margin-left: 35px;
+      margin-left: 42px;
     }
   }
 
