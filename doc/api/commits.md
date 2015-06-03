@@ -46,8 +46,7 @@ Returns:
     "before_sha": "96906f2bceb04c7323f8514aa5ad8cb1313e2898",
     "runner_id": 1,
     "coverage": null,
-    "commit_id": 3,
-    "commands": "git submodule update --init\nls -la\n"
+    "commit_id": 3
   }]
 }]
 ```
@@ -96,8 +95,7 @@ Returns:
     "before_sha": "96906f2bceb04c7323f8514aa5ad8cb1313e2898",
     "runner_id": 1,
     "coverage": null,
-    "commit_id": 3,
-    "commands": "git submodule update --init\nls -la\n"
+    "commit_id": 3
   }]
 }
 ```
