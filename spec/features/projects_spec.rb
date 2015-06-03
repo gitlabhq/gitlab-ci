@@ -52,6 +52,7 @@ describe "Projects" do
     it { page.should have_content 'Builds chart for last week' }
     it { page.should have_content 'Builds chart for last month' }
     it { page.should have_content 'Builds chart for last year' }
-    it { page.should have_content 'Build duration in minutes for last 30 commits' }
+    it { page.should have_content 
+         'Build duration in minutes for last 30 commits' }
   end
 end
