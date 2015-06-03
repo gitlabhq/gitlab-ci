@@ -38,11 +38,11 @@
       Never
   %td
     .pull-right
-      = link_to 'Edit', admin_runner_path(runner), class: 'btn btn-small'
+      = link_to 'Edit', admin_runner_path(runner), class: 'btn btn-sm'
       &nbsp;
       - if runner.active?
-        = link_to 'Pause', [:pause, :admin, runner], data: { confirm: "Are you sure?" }, method: :get, class: 'btn btn-danger btn-small'
+        = link_to 'Pause', [:pause, :admin, runner], data: { confirm: "Are you sure?" }, method: :get, class: 'btn btn-danger btn-sm'
       - else
-        = link_to 'Resume', [:resume, :admin, runner], method: :get, class: 'btn btn-success btn-small'
-      = link_to 'Remove', [:admin, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small'
+        = link_to 'Resume', [:resume, :admin, runner], method: :get, class: 'btn btn-success btn-sm'
+      = link_to 'Remove', [:admin, runner], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-sm'
 

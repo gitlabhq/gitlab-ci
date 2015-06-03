@@ -36,7 +36,7 @@
           %td
             #{time_ago_in_words(runner_project.created_at)} ago
           %td
-            = link_to 'Disable', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-small right'
+            = link_to 'Disable', [@project, runner_project], data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger btn-sm right'
   .col-md-4
     %h5 Available
     %table.table
@@ -54,4 +54,4 @@
           %td
             = form_for [@project, @runner_project] do |f|
               = f.hidden_field :runner_id, value: runner.id
-              = f.submit 'Add', class: 'btn btn-small'
+              = f.submit 'Add', class: 'btn btn-sm'
