@@ -1,6 +1,6 @@
 ## Configuraton of your builds with .gitlab-ci.yaml
 
-Sinse 7.12 version GitLab CI uses special yaml file for configuration your builds. This yaml file should be placed in the root of your repository and should be named as .gitlab-ci.yml. This file contains 4 main sections: skep_refs, before_script, jobs and deploy_jobs. Example of configuration file:
+From version 7.12, GitLab CI uses a .gitlab-ci.yml file for the configuration of your builds. It is place in the root of your repository and contains four main sections: skep_refs, before_script, jobs and deploy_jobs. Here is an example of how it looks:
 
 ```
 skip_refs: staging
@@ -23,7 +23,7 @@ deploy_jobs:
 Let's have a close look at each section.
 
 ### skip_refs
-This parameter defines ref or list of refs to skip. You can use glob pattern syntax as well. Example: "staging,feature-*"
+This parameter defines the ref or list of refs to skip. You can use glob pattern syntax as well. Example: "staging,feature-*"
 
 ### jobs
 Here you can specify parameters of your builds. There are serveral ways you can configure it. Using hash:
@@ -41,21 +41,21 @@ jobs:
     bundle updata
     bundle exec rspec
 ```
-you can also fill commands like array:
+you can also fill commands like an array:
 ```
 - script:
   - bundle update
   - bundle exec rspec
 ```
-And there is one more way to specify build configuration, using string:
+And there is one more way to specify build configuration, using a string:
 ```
 jobs:
 - bundle exec rspec
 ```
-In this way, name of build will be taken from this command line.
+In this way, the name of the build will be taken from command line.
 
 ## deploy_jobs
-Deploy Jobs define the builds that will be run when all job succedded. Define using hash:
+Deploy Jobs that will be run when all other jobs have succeeded. Define them using a hash:
 
 ```
 deploy_jobs:
@@ -69,7 +69,7 @@ deploy_jobs:
 
 `script` can be a multiline script or array like for regular jobs.
 
-You can also define deploy jobs with string:
+You can also define deploy jobs with a string:
 
 ```
 deploy_jobs:
@@ -77,4 +77,4 @@ deploy_jobs:
 ```
 
 ## before_script
-This section is used for defining command that should be run before all builds, including deploy builds. Can be an array or multiline string.
+`before_script` is used to define the command that should be ran before all builds, including deploy builds. This can be an array or a multiline string.
