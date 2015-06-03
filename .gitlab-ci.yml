@@ -1,14 +1,15 @@
 jobs:
 - script: |
     export PATH=~/bin:/usr/local/bin:/usr/bin:/bin
+    export RAILS_ENV=test
     ruby -v
-    gem install bundler
+    gem install bundler --no-ri --no-rdoc
     cp config/database.yml.mysql config/database.yml
     cp config/application.yml.example config/application.yml
-    ! 'sed "s/username\:.*$/username\: runner/" -i config/database.yml'
-    ! 'sed "s/password\:.*$/password\: ''password''/" -i config/database.yml'
-    bundle --without postgres
-    RAILS_ENV=test bundle exec rake db:setup
+    sed "s/username\:.*$/username\: runner/" -i config/database.yml
+    sed "s/password\:.*$/password\: 'password'/" -i config/database.yml
+    bundle --without postgres --jobs $(($(nproc) + 1))
+    bundle exec rake db:setup
     SIMPLECOV=true RAILS_ENV=test bundle exec rake spec
   name: Specs
   branches: true
@@ -17,16 +18,20 @@ jobs:
 - script: |
     export PATH=~/bin:/usr/local/bin:/usr/bin:/bin
     ruby -v
-    gem install bundler
-    cp config/database.yml.mysql config/database.yml
-    cp config/application.yml.example config/application.yml
-    ! 'sed "s/username\:.*$/username\: runner/" -i config/database.yml'
-    ! 'sed "s/password\:.*$/password\: ''password''/" -i config/database.yml'
+    gem install bundler 
     bundle --without postgres
     bundle exec rubocop
   name: Rubocop
   branches: true
-  tags: false
+  runner: 
+- script: |
+    export PATH=~/bin:/usr/local/bin:/usr/bin:/bin
+    ruby -v
+    gem install bundler 
+    bundle --without postgres
+    bundle exec brakeman
+  name: Brakeman
+  branches: true
   runner: 
 deploy_jobs: []
 skip_refs: ''
