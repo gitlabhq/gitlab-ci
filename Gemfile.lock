@@ -340,7 +340,7 @@ GEM
       temple (~> 0.6.6)
       tilt (>= 1.3.3, < 2.1)
     slop (3.4.7)
-    spring (1.3.3)
+    spring (1.3.6)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
     sprockets (2.11.0)
@@ -452,6 +452,7 @@ DEPENDENCIES
   sinatra
   slack-notifier (~> 1.0.0)
   slim
+  spring (~> 1.3.6)
   spring-commands-rspec
   stamp
   state_machine

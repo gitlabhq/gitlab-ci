@@ -104,6 +104,7 @@ end
 
 
 group :development, :test do
+  gem 'spring', '~> 1.3.6'
   gem 'minitest'
   gem 'pry'
   gem 'rspec-rails'
