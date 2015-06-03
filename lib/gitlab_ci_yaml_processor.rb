@@ -84,7 +84,7 @@ class GitlabCiYamlProcessor
   def normalized_deploy_jobs
     @deploy_jobs.map do |job|
       if job.is_a?(String)
-        { script: job, refs: [], name: job[0..10].strip }
+        { script: job, runner: "", refs: [], name: job[0..10].strip }
       else
         {
           script: normalized_script(job[:script]),

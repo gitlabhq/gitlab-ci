@@ -68,7 +68,8 @@ describe GitlabCiYamlProcessor do
         commands: "\nls",
         name: "ls",
         deploy: true,
-        refs: []
+        refs: [],
+        tag_list: ""
       }
     end
 
@@ -84,7 +85,8 @@ describe GitlabCiYamlProcessor do
         commands: "pwd\nls",
         name: "ls",
         deploy: true,
-        refs: []
+        refs: [],
+        tag_list: ""
       }
     end
 
@@ -100,7 +102,8 @@ describe GitlabCiYamlProcessor do
         commands: "pwd\nls",
         name: "Rspec",
         deploy: true,
-        refs: ["master", "deploy"]
+        refs: ["master", "deploy"],
+        tag_list: ""
       }
     end
   end

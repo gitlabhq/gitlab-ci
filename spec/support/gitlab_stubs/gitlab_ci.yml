@@ -14,7 +14,7 @@ jobs:
     runner: "ruby,mysql"
     name: "Spinach"
     tags: true
-    branches: false
+    branches: true
 
 # Parallel deploy jobs
 deploy_jobs: 
