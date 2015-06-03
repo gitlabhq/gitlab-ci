@@ -13,7 +13,6 @@
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
   factory :commit do
     ref 'master'
@@ -44,7 +43,8 @@ FactoryGirl.define do
             }
           }
         ],
-        total_commits_count: 1
+        total_commits_count: 1,
+        ci_yaml_file: File.read(Rails.root.join('spec/support/gitlab_stubs/gitlab_ci.yml'))
       }
     end
   end

@@ -3,6 +3,8 @@ class CreateCommitService
     before_sha = params[:before]
     sha = params[:checkout_sha] || params[:after]
     origin_ref = params[:ref]
+    yaml_config = params[:ci_yaml_file] || project.generated_yaml_config
+    config_processor = build_config_processor(yaml_config)
 
     unless origin_ref && sha.present?
       return false
@@ -19,11 +21,11 @@ class CreateCommitService
       return false
     end
 
-    if origin_ref.start_with?('refs/tags/') && !project.create_commit_for_tag?(ref)
+    if origin_ref.start_with?('refs/tags/') && !config_processor.create_commit_for_tag?(ref)
       return false
     end
 
-    if project.skip_ref?(ref)
+    if config_processor.skip_ref?(ref)
       return false
     end
 
@@ -34,6 +36,7 @@ class CreateCommitService
       data = {
         ref: ref,
         sha: sha,
+        tag: origin_ref.start_with?('refs/tags/'),
         before_sha: before_sha,
         push_data: {
           before: before_sha,
@@ -43,23 +46,26 @@ class CreateCommitService
           user_email: params[:user_email],
           repository: params[:repository],
           commits: params[:commits],
-          total_commits_count: params[:total_commits_count]
+          total_commits_count: params[:total_commits_count],
+          ci_yaml_file: yaml_config
         }
       }
 
       commit = project.commits.create(data)
     end
 
-    if origin_ref.start_with?('refs/tags/')
-      commit.create_builds_for_tag(ref)
-    else
-      commit.create_builds
-    end
+    commit.create_builds
 
     if commit.builds.empty?
-      commit.create_deploy_builds(ref)
+      commit.create_deploy_builds
     end
 
     commit
+  end
+
+  private
+
+  def build_config_processor(config_data)
+    @builds_config ||= GitlabCiYamlProcessor.new(config_data)
   end
 end

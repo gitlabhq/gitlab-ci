@@ -218,3 +218,11 @@ gitlab_ci['backup_keep_time'] = 604800
 
 NOTE: This cron job does not [backup your omnibus-gitlab configuration](#backup-and-restore-omnibus-gitlab-configuration).
 
+## Known issues
+
+If you’ve been using GitLab CI since 7.11 or before using MySQL and the official installation guide, you will probably get the following error while making a backup: `Dumping MySQL database gitlab_ci_production ... mysqldump: Got error: 1044: Access denied for user 'gitlab_ci'@'localhost' to database 'gitlab_ci_production' when using LOCK TABLES` .This can be resolved by adding a LOCK TABLES permission to the gitlab_ci MySQL user. Add this permission with:
+```
+$ mysql -u root -p 
+mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
+```
+

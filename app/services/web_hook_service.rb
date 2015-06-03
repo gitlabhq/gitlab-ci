@@ -18,7 +18,7 @@ class WebHookService
     data = {}
     data.merge!({
       build_id: build.id,
-      build_name: build.job_name,
+      build_name: build.name,
       build_status: build.status,
       build_started_at: build.started_at,
       build_finished_at: build.finished_at,

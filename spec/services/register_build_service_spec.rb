@@ -3,9 +3,8 @@ require 'spec_helper'
 describe RegisterBuildService do
   let!(:service) { RegisterBuildService.new }
   let!(:project) { FactoryGirl.create :project }
-  let!(:job) { FactoryGirl.create :job, project: project }
   let!(:commit) { FactoryGirl.create :commit, project: project }
-  let!(:pending_build) { commit.create_build_from_job(job) }
+  let!(:pending_build) { FactoryGirl.create :build, project: project, commit: commit }
   let!(:shared_runner) { FactoryGirl.create(:runner, is_shared: true) }
   let!(:specific_runner) { FactoryGirl.create(:runner, is_shared: false) }
 

@@ -2,12 +2,7 @@
   = link_to @project.name, @project
   @
   = @commit.short_sha
-  - if current_user && current_user.can_manage_project?(@project.gitlab_id)
-    .pull-right
-      = link_to project_jobs_path(@project), class: "btn btn-default btn-small" do
-        %i.icon-edit.icon-white
-        Edit Job
-
+  
 %p
   = link_to project_ref_commit_path(@project, @commit.ref, @commit.sha) do
     &larr; Back to project commit
@@ -21,9 +16,9 @@
           %i{class: build_icon_css_class(build)}
           %span
             Build ##{build.id}
-            - if build.job_name
+            - if build.name
               &middot;
-              = build.job_name
+              = build.name
 
     - unless @commit.builds_without_retry.include?(@build)
       %li.active
@@ -37,7 +32,7 @@
   .col-md-9
     .build-head.alert{class: build_status_alert_class(@build)}
       %h4
-        - if @build.for_tag?
+        - if @build.commit.tag?
           Build for tag
           %code #{@build.ref}
         - else
@@ -150,8 +145,8 @@
                 = link_to build_url(build) do
                   %span ##{build.id}
               %td
-                - if build.job_name
-                  = build.job_name
+                - if build.name
+                  = build.name
               %td.status= build.status
 
 

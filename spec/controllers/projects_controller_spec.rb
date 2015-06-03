@@ -11,7 +11,8 @@ describe ProjectsController do
         ref: 'master',
         before: '2aa371379db71ac89ae20843fcff3b3477cf1a1d',
         after: '1c8a9df454ef68c22c2a33cca8232bb50849e5c5',
-        token: @project.token
+        token: @project.token,
+        ci_yaml_file: gitlab_ci_yaml
 
 
       expect(response).to be_success
@@ -23,14 +24,15 @@ describe ProjectsController do
         ref: 'master',
         before: '2aa371379db71ac89ae20843fcff3b3477cf1a1d',
         after: '0000000000000000000000000000000000000000',
-        token: @project.token
+        token: @project.token,
+        ci_yaml_file: gitlab_ci_yaml
 
       expect(response).not_to be_success
       expect(response.code).to eq('400')
     end
 
     it 'should respond 400 if some params missed' do
-      post :build, id: @project.id, token: @project.token
+      post :build, id: @project.id, token: @project.token, ci_yaml_file: gitlab_ci_yaml
       expect(response).not_to be_success
       expect(response.code).to eq('400')
     end
@@ -43,7 +45,7 @@ describe ProjectsController do
   end
 
   describe "POST /projects" do
-    let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
+    let(:project_dump) { YAML.load File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:gitlab_url) { GitlabCi.config.gitlab_server.url }
 
     let (:user_data) do
@@ -61,7 +63,7 @@ describe ProjectsController do
       Network.any_instance.stub(:enable_ci).and_return(true)
       Network.any_instance.stub(:project_hooks).and_return(true)
 
-      post :create, { project: project_dump }.with_indifferent_access
+      post :create, { project: JSON.dump(project_dump.to_h) }.with_indifferent_access
 
       expect(response.code).to eq('302')
       expect(assigns(:project)).not_to be_a_new(Project)
@@ -72,7 +74,7 @@ describe ProjectsController do
       allow(controller).to receive(:current_user) { user }
       User.any_instance.stub(:can_manage_project?).and_return(false)
 
-      post :create, { project: project_dump }.with_indifferent_access
+      post :create, { project: JSON.dump(project_dump.to_h) }.with_indifferent_access
 
       expect(response.code).to eq('302')
       expect(flash[:alert]).to include("You have to have at least master role to enable CI for this project")

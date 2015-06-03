@@ -28,7 +28,8 @@ ActiveRecord::Schema.define(version: 20150602000240) do
     t.integer  "commit_id"
     t.float    "coverage"
     t.text     "commands"
-    t.integer  "job_id"
+    t.string   "name"
+    t.boolean  "deploy",      default: false
   end
 
   add_index "builds", ["commit_id"], name: "index_builds_on_commit_id", using: :btree
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(version: 20150602000240) do
     t.text     "push_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "tag",        default: false
   end
 
   add_index "commits", ["project_id", "sha"], name: "index_commits_on_project_id_and_sha", using: :btree
@@ -100,6 +102,7 @@ ActiveRecord::Schema.define(version: 20150602000240) do
     t.string   "skip_refs"
     t.string   "coverage_regex"
     t.boolean  "shared_runners_enabled",   default: false
+    t.text     "generated_yaml_config"
   end
 
   create_table "runner_projects", force: true do |t|
