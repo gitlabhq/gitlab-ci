@@ -29,6 +29,7 @@ RSpec.configure do |config|
   config.include LoginHelpers, type: :feature
 
   config.include StubGitlabCalls
+  config.include StubGitlabData
 
   # ## Mock Framework
   #

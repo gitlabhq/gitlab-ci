@@ -15,7 +15,6 @@
 class Commit < ActiveRecord::Base
   belongs_to :project
   has_many :builds, dependent: :destroy
-  has_many :jobs, through: :builds
 
   serialize :push_data
 
@@ -93,31 +92,19 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds
-    project.jobs.where(build_branches: true).active.parallel.map do |job|
-      create_build_from_job(job)
+    filter_param = tag? ? :tags : :branches
+    config_processor.builds.each do |build_attrs|
+      if build_attrs[filter_param]
+        builds.create!({ project: project }.merge(build_attrs.extract!(:name, :commands, :tag_list)))
+      end
     end
-  end
-
-  def create_builds_for_tag(ref = '')
-    project.jobs.where(build_tags: true).active.parallel.map do |job|
-      create_build_from_job(job, ref)
-    end
-  end
-
-  def create_build_from_job(job, ref = '')
-    build = builds.new(commands: job.commands)
-    build.tag_list = job.tag_list
-    build.project_id = project_id
-    build.job = job
-    build.save
-    build
   end
 
   def builds_without_retry
     @builds_without_retry ||=
       begin
-        grouped_builds = builds.group_by(&:job)
-        grouped_builds.map do |job, builds|
+        grouped_builds = builds.group_by(&:name)
+        grouped_builds.map do |name, builds|
           builds.sort_by(&:id).last
         end
       end
@@ -127,11 +114,9 @@ class Commit < ActiveRecord::Base
     @retried_builds ||= (builds - builds_without_retry)
   end
 
-  def create_deploy_builds(ref)
-    project.jobs.deploy.active.each do |job|
-      if job.run_for_ref?(ref)
-        create_build_from_job(job)
-      end
+  def create_deploy_builds
+    config_processor.deploy_builds_for_ref(ref).each do |build_attrs|
+      builds.create!({ project: project }.merge(build_attrs))
     end
   end
 
@@ -193,5 +178,9 @@ class Commit < ActiveRecord::Base
 
   def matrix?
     builds_without_retry.size > 1
+  end
+
+  def config_processor
+    @config_processor ||= GitlabCiYamlProcessor.new(push_data[:ci_yaml_file])
   end
 end

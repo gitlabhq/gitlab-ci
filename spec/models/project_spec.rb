@@ -126,8 +126,7 @@ describe Project do
     let(:project_dump) { YAML.load File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:parsed_project) { Project.parse(project_dump) }
 
-    before { parsed_project.build_default_job }
-
+    
     it { parsed_project.should be_valid }
     it { parsed_project.should be_kind_of(Project) }
     it { parsed_project.name.should eq("GitLab / api.gitlab.org") }
@@ -149,22 +148,6 @@ describe Project do
     it { should include(project.token) }
     it { should include('gitlab-ci-token') }
     it { should include(project.gitlab_url[7..-1]) }
-  end
-
-  describe "#skip_ref?" do
-    let(:project) { FactoryGirl.create(:project, skip_refs: "master, develop, feature/*") }
-
-    it 'returns true when item is not in list' do
-      expect(project.skip_ref?('someotherstring')).to eq false
-    end
-
-    it 'accepts string values' do
-      expect(project.skip_ref?('master')).to eq true
-    end
-
-    it 'accepts glob pattern syntax' do
-      expect(project.skip_ref?('feature/some_feature')).to eq true
-    end
   end
 
   describe :search do

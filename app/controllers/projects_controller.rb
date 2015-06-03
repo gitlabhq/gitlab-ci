@@ -3,9 +3,9 @@ class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!, except: [:build, :badge, :index, :show]
   before_filter :authenticate_public_page!, only: :show
-  before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy, :toggle_shared_runners]
+  before_filter :project, only: [:build, :integration, :show, :badge, :edit, :update, :destroy, :toggle_shared_runners, :dumped_yaml]
   before_filter :authorize_access_project!, except: [:build, :gitlab, :badge, :index, :show, :new, :create]
-  before_filter :authorize_manage_project!, only: [:edit, :integration, :update, :destroy, :toggle_shared_runners]
+  before_filter :authorize_manage_project!, only: [:edit, :integration, :update, :destroy, :toggle_shared_runners, :dumped_yaml]
   before_filter :authenticate_token!, only: [:build]
   before_filter :no_cache, only: [:badge]
   protect_from_forgery except: :build
@@ -109,6 +109,10 @@ class ProjectsController < ApplicationController
     redirect_to :back
   end
 
+  def dumped_yaml
+    send_data @project.generated_yaml_config, filename: '.gitlab-ci.yml'
+  end
+
   protected
 
   def project
@@ -123,8 +127,7 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:path, :timeout, :timeout_in_minutes, :default_ref, :always_build,
-      :polling_interval, :public, :ssh_url_to_repo, :allow_git_fetch, :skip_refs, :email_recipients,
-      :email_add_pusher, :email_only_broken_builds, :coverage_regex, :shared_runners_enabled, :token,
-      { jobs_attributes: [:id, :name, :build_branches, :build_tags, :tag_list, :commands, :refs, :_destroy, :job_type] })
+      :polling_interval, :public, :ssh_url_to_repo, :allow_git_fetch, :email_recipients,
+      :email_add_pusher, :email_only_broken_builds, :coverage_regex, :shared_runners_enabled, :token)
   end
 end

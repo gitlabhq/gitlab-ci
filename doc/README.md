@@ -4,8 +4,8 @@
 + [Examples](examples/README.md)
 + [Install](install/installation.md)
 + [Update](update/README.md)
-+ [Jobs](jobs/README.md)
 + [Runners](runners/README.md)
++ [Builds Configuration](builds_configuration/README.md)
 + [Permissions](permissions/README.md) User permissions
 + [Rake Tasks](raketasks/README.md) Backup and restore take tasks
 + [Migrating to packaged CI](migration_to_omnibus/README.md)

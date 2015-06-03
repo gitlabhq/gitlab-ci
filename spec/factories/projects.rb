@@ -51,9 +51,5 @@ FactoryGirl.define do
     factory :public_project do
       public true
     end
-
-    before :create do |project|
-      project.build_default_job
-    end
   end
 end

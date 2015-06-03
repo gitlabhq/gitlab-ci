@@ -5,7 +5,6 @@ class CreateProjectService
     @project = Project.parse(params)
 
     Project.transaction do
-      @project.build_default_job
       @project.save!
 
       opts = {
@@ -19,11 +18,6 @@ class CreateProjectService
     end
 
     if forked_project
-      # Copy jobs
-      @project.jobs = forked_project.jobs.map do |job|
-        Job.new(job.attributes.except("id"))
-      end
-
       # Copy settings
       settings = forked_project.attributes.select do |attr_name, value|
         ["public", "shared_runners_enabled", "allow_git_fetch"].include? attr_name

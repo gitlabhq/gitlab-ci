@@ -11,7 +11,8 @@ describe ProjectsController do
         ref: 'master',
         before: '2aa371379db71ac89ae20843fcff3b3477cf1a1d',
         after: '1c8a9df454ef68c22c2a33cca8232bb50849e5c5',
-        token: @project.token
+        token: @project.token,
+        ci_yaml_file: gitlab_ci_yaml
 
 
       expect(response).to be_success
@@ -23,14 +24,15 @@ describe ProjectsController do
         ref: 'master',
         before: '2aa371379db71ac89ae20843fcff3b3477cf1a1d',
         after: '0000000000000000000000000000000000000000',
-        token: @project.token
+        token: @project.token,
+        ci_yaml_file: gitlab_ci_yaml
 
       expect(response).not_to be_success
       expect(response.code).to eq('400')
     end
 
     it 'should respond 400 if some params missed' do
-      post :build, id: @project.id, token: @project.token
+      post :build, id: @project.id, token: @project.token, ci_yaml_file: gitlab_ci_yaml
       expect(response).not_to be_success
       expect(response.code).to eq('400')
     end

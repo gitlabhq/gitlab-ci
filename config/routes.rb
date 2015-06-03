@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get :integration
       post :build
       post :toggle_shared_runners
+      get :dumped_yaml
     end
 
     resources :services, only: [:index, :edit, :update] do
@@ -60,12 +61,6 @@ Rails.application.routes.draw do
     end
 
     resources :runner_projects, only: [:create, :destroy]
-
-    resources :jobs, only: [:index] do
-      collection do
-        get :deploy_jobs
-      end
-    end
 
     resources :events, only: [:index]
   end

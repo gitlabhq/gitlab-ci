@@ -7,17 +7,16 @@
       %strong Build ##{build.id}
 
   %td
-    - if build.job
-      - if build.for_tag?
-        Tag
-        &middot;
-        #{build.ref}
-      - else
-        Commit
-        &middot;
-        #{build.short_sha}
+    - if build.commit.tag?
+      Tag
+      &middot;
+      #{build.ref}
+    - else
+      Commit
+      &middot;
+      #{build.short_sha}
   %td
-    = build.job_name
+    = build.name
     - if build.tags.any?
       .pull-right
         - build.tag_list.each do |tag|
