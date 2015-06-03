@@ -49,11 +49,13 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    unless current_user.can_manage_project?(YAML.load(params["project"])[:id])
+    project_data = OpenStruct.new(JSON.parse(params["project"]))
+
+    unless current_user.can_manage_project?(project_data.id)
       return redirect_to root_path, alert: 'You have to have at least master role to enable CI for this project'
     end
 
-    @project = CreateProjectService.new.execute(current_user, params[:project], project_url(":project_id"))
+    @project = CreateProjectService.new.execute(current_user, project_data, project_url(":project_id"))
 
     if @project.persisted?
       redirect_to project_path(@project, show_guide: true), notice: 'Project was successfully created.'
