@@ -5,6 +5,7 @@ v7.12.0
   - Remove ID column from runners list in the admin area
   - Increase default timeout for builds to 60 minutes
   - Using .gitlab-ci.yml file instead of jobs
+  - Link to the runner from the build page for admin user
 
 v7.11.0
   - Deploy Jobs API calls
