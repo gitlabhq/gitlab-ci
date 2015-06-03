@@ -66,6 +66,7 @@ class Build < ActiveRecord::Base
       new_build.tag_list = build.tag_list
       new_build.commit_id = build.commit_id
       new_build.project_id = build.project_id
+      new_build.name = build.name
       new_build.save
       new_build
     end
