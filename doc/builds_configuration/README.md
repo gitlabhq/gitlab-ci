@@ -1,15 +1,12 @@
-## Configuraton of your builds with .gitlab-ci.yaml
+## Configuraton of your builds with .gitlab-ci.yml
 
 From version 7.12, GitLab CI uses a .gitlab-ci.yml file for the configuration of your builds. It is place in the root of your repository and contains four main sections: skep_refs, before_script, jobs and deploy_jobs. Here is an example of how it looks:
 
-```
+```yaml
 skip_refs: staging
 before_script: |
-  export PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin
-  gem install bundler
-  cp config/database.yml.mysql config/database.yml
-  bundle install --without postgres production --jobs $(nproc)
-  bundle exec rake db:create RAILS_ENV=test
+  bundle install
+  bundle exec rake db:setup
 jobs:
 - script: "bundle exec rspec"
   name: Rspec
@@ -27,7 +24,8 @@ This parameter defines the ref or list of refs to skip. You can use glob pattern
 
 ### jobs
 Here you can specify parameters of your builds. There are serveral ways you can configure it. Using hash:
-```
+
+```yaml
 jobs:
 - script: "bundle exec rspec" # (required) - commands to run
   name: Rspec                 # (optional) - name of build
@@ -35,20 +33,26 @@ jobs:
   branches: true              # (optional) - make builds for regular branches
   tags: true                  # (optional) - make builds for tags
 ```
+
 `script` can also cantain several commands using YAML multiline string:
-```
+
+```yaml
 - script: |
     bundle updata
     bundle exec rspec
 ```
+
 you can also fill commands like an array:
-```
+
+```yaml
 - script:
   - bundle update
   - bundle exec rspec
 ```
+
 And there is one more way to specify build configuration, using a string:
-```
+
+```yaml
 jobs:
 - bundle exec rspec
 ```
@@ -57,7 +61,7 @@ In this way, the name of the build will be taken from command line.
 ## deploy_jobs
 Deploy Jobs that will be run when all other jobs have succeeded. Define them using a hash:
 
-```
+```yaml
 deploy_jobs:
 - script: |                             # (required) - command
     bundle update
@@ -71,7 +75,7 @@ deploy_jobs:
 
 You can also define deploy jobs with a string:
 
-```
+```yaml
 deploy_jobs:
 -  "bundle exec cap deploy"
 ```
