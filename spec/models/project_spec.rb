@@ -123,7 +123,7 @@ describe Project do
   end
 
   describe 'Project.parse' do
-    let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
+    let(:project_dump) { YAML.load File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
     let(:parsed_project) { Project.parse(project_dump) }
 
     before { parsed_project.build_default_job }
@@ -135,8 +135,7 @@ describe Project do
     it { parsed_project.gitlab_url.should eq("http://demo.gitlab.com/gitlab/api-gitlab-org") }
 
     it "parses plain hash" do
-      data = YAML.load(project_dump)
-      Project.parse(data).name.should eq("GitLab / api.gitlab.org")
+      Project.parse(project_dump).name.should eq("GitLab / api.gitlab.org")
     end
   end
 

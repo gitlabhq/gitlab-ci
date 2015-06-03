@@ -69,13 +69,7 @@ ls -la
       eos
     end
 
-    def parse(project_params)
-      project = if project_params.is_a?(String)
-                  YAML.load(project_params)
-                else
-                  project_params
-                end
-
+    def parse(project)
       params = {
         name:                    project.name_with_namespace,
         gitlab_id:               project.id,
