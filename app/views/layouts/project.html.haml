@@ -13,7 +13,7 @@
             Public
 
         .pull-right
-          = link_to 'View on GitLab', @project.gitlab_url, no_turbolink.merge( class: 'btn btn-small' )
+          = link_to 'View on GitLab', @project.gitlab_url, no_turbolink.merge( class: 'btn btn-sm' )
     %hr
     .container
       - if current_user && current_user.can_manage_project?(@project.gitlab_id)
