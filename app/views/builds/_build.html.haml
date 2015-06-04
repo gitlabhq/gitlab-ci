@@ -18,10 +18,9 @@
   %td
     = build.name
     - if build.tags.any?
-      .pull-right
-        - build.tag_list.each do |tag|
-          %span.label.label-primary
-            = tag
+      - build.tag_list.each do |tag|
+        %span.label.label-primary
+          = tag
 
 
   %td.duration
