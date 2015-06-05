@@ -6,6 +6,7 @@ v7.12.0
   - Increase default timeout for builds to 60 minutes
   - Using .gitlab-ci.yml file instead of jobs
   - Link to the runner from the build page for admin user
+  - Ability to set secret variables for runner
 
 v7.11.0
   - Deploy Jobs API calls

@@ -149,6 +149,10 @@ class Build < ActiveRecord::Base
     project.timeout
   end
 
+  def variables
+    project.variables
+  end
+
   def duration
     if started_at && finished_at
       finished_at - started_at

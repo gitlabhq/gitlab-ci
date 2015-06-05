@@ -50,6 +50,17 @@ describe API::API do
 
         response.status.should == 404
       end
+
+      it "returns variables" do
+        commit = FactoryGirl.create(:commit, project: project)
+        commit.create_builds
+        project.variables << Variable.new(key: "SECRET_KEY", value: "secret_value")
+
+        post api("/builds/register"), token: runner.token, info: {platform: :darwin}
+
+        response.status.should == 201
+        json_response["variables"].should == [{"key" => "SECRET_KEY", "value" => "secret_value"}]
+      end
     end
 
     describe "PUT /builds/:id" do
