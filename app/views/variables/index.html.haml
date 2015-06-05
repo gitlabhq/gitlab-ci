@@ -1,5 +1,10 @@
-%p.slead
-  Define additional environment variables which will be used by runner
+%h3 Secret Variables
+%p.light 
+  These variables will be set to environment by the runner and will be hidden in the build log.
+  %br
+  So you can use them for passwords, secret keys ot whatever you want.  
+
+%hr
 
 
 = nested_form_for @project, html: { class: 'form-horizontal' } do |f|
@@ -13,12 +18,12 @@
 
   = f.fields_for :variables do |variable_form|
     .form-group
-      = f.label :key, 'Key', class: 'control-label'
+      = variable_form.label :key, 'Key', class: 'control-label'
       .col-sm-10
         = variable_form.text_field :key, class: 'form-control', placeholder: "PROJECT_VARIABLE"
 
     .form-group
-      = f.label :commands, 'Value', class: 'control-label'
+      = variable_form.label :value, 'Value', class: 'control-label'
       .col-sm-10
         = variable_form.text_area :value, class: 'form-control', rows: 2, placeholder: ""
 
