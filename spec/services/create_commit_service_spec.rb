@@ -97,5 +97,26 @@ describe CreateCommitService do
         result.should be_persisted
       end
     end
+
+    it "skips build creation if there are already builds" do
+      commits = [{message: "message"}]
+      commit = service.execute(project,
+        ref: 'refs/heads/master',
+        before: '00000000',
+        after: '31das312',
+        commits: commits,
+        ci_yaml_file: gitlab_ci_yaml
+      )
+      commit.builds.count(:all).should == 2
+
+      commit = service.execute(project,
+        ref: 'refs/heads/master',
+        before: '00000000',
+        after: '31das312',
+        commits: commits,
+        ci_yaml_file: gitlab_ci_yaml
+      )
+      commit.builds.count(:all).should == 2
+    end
   end
 end
