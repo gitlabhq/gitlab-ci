@@ -2,8 +2,8 @@
 
 - unless @project.any_runners?
   .alert.alert-danger
-    There are no runners available.
-    = link_to "Add a runner", project_runners_path(@project)
+    Builds for this project wont be served unless you configure runners on
+    = link_to "Runners page", project_runners_path(@project)
 
 %ul.nav.nav-tabs.append-bottom-20
   %li{class: ref_tab_class}
