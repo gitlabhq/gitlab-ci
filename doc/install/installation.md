@@ -8,6 +8,8 @@ If this is unclear check the [GitLab Blog](http://blog.gitlab.org/) for installa
 
 ## GitLab CI 7.9 requires GitLab 7.9 or newer
 
+other [requirements](requirements.md)
+
 # Setup:
 
 ## 1. Packages / Dependencies
@@ -38,8 +40,8 @@ Install the required packages:
 Download Ruby and compile it:
 
     mkdir /tmp/ruby && cd /tmp/ruby
-    curl --progress http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2 | tar xj
-    cd ruby-2.0.0-p353
+    curl --progress http://cache.ruby-lang.org/pub/ruby/ruby-2.1.6.tar.bz2 | tar xj
+    cd ruby-2.1.6/
     ./configure --disable-install-rdoc
     make
     sudo make install
