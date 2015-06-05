@@ -18,7 +18,7 @@ if [ -f /.dockerinit ]; then
     cp config/database.yml.mysql config/database.yml
     sed -i 's/username:.*/username: root/g' config/database.yml
     sed -i 's/password:.*/password:/g' config/database.yml
-    sed -i 's/# socket:.*/host: postgres/g' config/database.yml
+    sed -i 's/# socket:.*/host: mysql/g' config/database.yml
 
     cp config/resque.yml.example config/resque.yml
     sed -i 's/localhost/redis/g' config/resque.yml
@@ -90,4 +90,3 @@ or
 ```
 export LANG=en_US.UTF-8
 ```
-
