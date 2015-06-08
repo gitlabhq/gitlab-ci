@@ -6,7 +6,7 @@ describe "Admin Runners" do
     login_as :user
   end
 
-  describe "GET /admin/runners" do
+  describe "Runners page" do
     before do
       runner = FactoryGirl.create(:runner)
       commit = FactoryGirl.create(:commit)
@@ -16,6 +16,7 @@ describe "Admin Runners" do
 
     it { page.has_text? "Manage Runners" }
     it { page.has_text? "To register a new runner" }
+    it { page.has_text? "Runners with last contact less than a minute ago: 1" }
 
     describe 'search' do
       before do
@@ -31,7 +32,7 @@ describe "Admin Runners" do
     end
   end
 
-  describe "GET /admin/runners/:id" do
+  describe "Runner show page" do
     let(:runner) { FactoryGirl.create :runner }
 
     before do
