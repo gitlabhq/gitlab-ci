@@ -46,19 +46,13 @@ module StubGitlabCalls
   end
 
   def stub_project_8
-    f = File.read(Rails.root.join('spec/support/gitlab_stubs/project_8.json'))
-
-    stub_request(:get, "#{gitlab_url}api/v3/projects/8.json?private_token=Wvjy2Krpb7y8xi93owUz").
-      with(:headers => {'Content-Type'=>'application/json'}).
-      to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
+    data = File.read(Rails.root.join('spec/support/gitlab_stubs/project_8.json'))
+    Network.any_instance.stub(:project).and_return(JSON.parse(data))
   end
 
   def stub_project_8_hooks
-    f = File.read(Rails.root.join('spec/support/gitlab_stubs/project_8_hooks.json'))
-
-    stub_request(:get, "#{gitlab_url}api/v3/projects/8/hooks.json?private_token=Wvjy2Krpb7y8xi93owUz").
-      with(:headers => {'Content-Type'=>'application/json'}).
-      to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
+    data = File.read(Rails.root.join('spec/support/gitlab_stubs/project_8_hooks.json'))
+    Network.any_instance.stub(:project_hooks).and_return(JSON.parse(data))
   end
 
   def stub_projects

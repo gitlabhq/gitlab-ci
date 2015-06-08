@@ -49,7 +49,7 @@ class Project < ActiveRecord::Base
   validates_presence_of :name, :timeout, :token, :default_ref,
     :path, :ssh_url_to_repo, :gitlab_id
 
-  validates_uniqueness_of :name
+  validates_uniqueness_of :gitlab_id
 
   validates :polling_interval,
     presence: true,
