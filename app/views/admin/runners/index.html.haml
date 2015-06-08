@@ -23,11 +23,17 @@
         %span.label.label-danger paused
         \- runner will not receive any new build
 
-.append-bottom-20
-  = form_tag admin_runners_path, class: 'form-inline', method: :get do
-    .form-group
-      = search_field_tag :search, params[:search], class: 'form-control', placeholder: 'Runner description or token'
-    = submit_tag 'Search', class: 'btn'
+.append-bottom-20.clearfix
+  .pull-left
+    = form_tag admin_runners_path, class: 'form-inline', method: :get do
+      .form-group
+        = search_field_tag :search, params[:search], class: 'form-control', placeholder: 'Runner description or token'
+      = submit_tag 'Search', class: 'btn'
+
+  .pull-right.light
+    Runners with last contact less than a minute ago: #{@active_runners_cnt}
+
+%br
 
 %table.table
   %thead

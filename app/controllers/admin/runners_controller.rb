@@ -5,6 +5,7 @@ class Admin::RunnersController < Admin::ApplicationController
     @runners = Runner.order('id DESC')
     @runners = @runners.search(params[:search]) if params[:search].present?
     @runners = @runners.page(params[:page]).per(30)
+    @active_runners_cnt = Runner.where("contacted_at > ?", 1.minutes.ago).count
   end
 
   def show
