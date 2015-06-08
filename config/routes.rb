@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     resources :runner_projects, only: [:create, :destroy]
 
     resources :events, only: [:index]
+    resources :variables, only: [:index]
   end
 
   resource :user_sessions do

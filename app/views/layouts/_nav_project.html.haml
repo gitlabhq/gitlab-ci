@@ -12,6 +12,10 @@
     = link_to project_runners_path(@project) do
       %i.icon-cog
       Runners
+  = nav_link path: 'variables#index' do
+    = link_to project_variables_path(@project) do
+      %i.icon-code
+      Variables
   = nav_link path: 'web_hooks#index' do
     = link_to project_web_hooks_path(@project) do
       %i.icon-link
