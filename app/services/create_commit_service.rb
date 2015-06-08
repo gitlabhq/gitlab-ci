@@ -54,7 +54,7 @@ class CreateCommitService
       commit = project.commits.create(data)
     end
 
-    commit.create_builds
+    commit.create_builds unless commit.builds.any?
 
     if commit.builds.empty?
       commit.create_deploy_builds
