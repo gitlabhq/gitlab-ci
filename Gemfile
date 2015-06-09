@@ -89,7 +89,7 @@ gem "paranoia", "~> 2.0"
 gem "colored"
 
 # for aws storage
-gem "fog", "~> 1.14"
+gem "fog", "~> 1.25.0"
 gem "unf"
 
 
