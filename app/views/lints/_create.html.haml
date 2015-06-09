@@ -1,0 +1,53 @@
+- if @status
+  %p
+    %b Status:
+    syntax is correct
+    %i.icon-ok.correct-syntax
+
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th Parameter
+        %th Value
+    %tbody
+      - @config_processor.builds.each do |build|
+        %tr
+          %td Job - #{build[:name]}
+          %td
+            %pre
+              = simple_format build[:commands]
+            
+            %b Tag list:
+            #{build[:tag_list]}
+            %br
+            %b Build for branches:
+            #{build[:branches] ? "true": "false"}
+            %br
+            %b Build for tags:
+            #{build[:tags] ? "true": "false"}
+
+      - @config_processor.deploy_builds.each do |build|
+        %tr
+          %td Deploy Job - #{build[:name]}
+          %td
+            %pre
+              = simple_format build[:commands]
+            
+            %b Tag list:
+            #{build[:tag_list]}
+            %br
+            %b Refs:
+            #{build[:refs]}
+
+      %tr
+        %td Skip Refs
+        %td= @config_processor.skip_refs
+
+-else
+  %p
+    %b Status:
+    syntax is incorrect
+    %i.icon-remove.incorrect-syntax
+  Error: #{@error}
+          
+    
