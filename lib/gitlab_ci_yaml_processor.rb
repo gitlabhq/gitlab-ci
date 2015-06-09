@@ -35,7 +35,7 @@ class GitlabCiYamlProcessor
 
   def create_commit_for_tag?(ref)
     normalized_jobs.any?{|job| job[:tags] == true} ||
-    normalized_deploy_jobs.any?{|job| job[:refs].empty? || refs_matches?(job[:refs], ref)}
+    normalized_deploy_jobs.any?{|job| job[:refs].blank? || refs_matches?(job[:refs].split(",").map(&:strip), ref)}
   end
 
   def deploy_builds_for_ref(ref)
