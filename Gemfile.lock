@@ -118,15 +118,15 @@ GEM
     fastercsv (1.5.5)
     ffaker (1.22.1)
     ffi (1.9.3)
-    fog (1.21.0)
+    fog (1.25.0)
       fog-brightbox
-      fog-core (~> 1.21, >= 1.21.1)
+      fog-core (>= 1.25.0)
       fog-json
       nokogiri (~> 1.5, >= 1.5.11)
     fog-brightbox (0.0.1)
       fog-core
       fog-json
-    fog-core (1.21.1)
+    fog-core (1.25.0)
       builder
       excon (~> 0.32)
       formatador (~> 0.2.0)
