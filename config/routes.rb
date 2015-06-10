@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   API::API.logger Rails.logger
   mount API::API => '/api'
 
+  resource :lint, only: [:show, :create]
+
   resource :help do
     get :oauth2
   end

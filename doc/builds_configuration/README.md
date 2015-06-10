@@ -58,7 +58,7 @@ jobs:
 ```
 In this way, the name of the build will be taken from command line.
 
-## deploy_jobs
+### deploy_jobs
 Deploy Jobs that will be run when all other jobs have succeeded. Define them using a hash:
 
 ```yaml
@@ -80,5 +80,9 @@ deploy_jobs:
 -  "bundle exec cap deploy"
 ```
 
-## before_script
+### before_script
 `before_script` is used to define the command that should be ran before all builds, including deploy builds. This can be an array or a multiline string.
+
+## Debugging of your builds with .gitlab-ci.yml
+
+Each instance of GitLab CI has an embeded debug tool Lint. You can find link to the Lint in the projects settings page or use short url `/lint`.

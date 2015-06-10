@@ -35,13 +35,13 @@ class GitlabCiYamlProcessor
 
   def create_commit_for_tag?(ref)
     normalized_jobs.any?{|job| job[:tags] == true} ||
-    normalized_deploy_jobs.any?{|job| job[:refs].empty? || refs_matches?(job[:refs], ref)}
+    normalized_deploy_jobs.any?{|job| job[:refs].blank? || refs_matches?(job[:refs].split(",").map(&:strip), ref)}
   end
 
   def deploy_builds_for_ref(ref)
     deploy_builds.select do |build_attrs|
       refs = build_attrs.delete(:refs)
-      refs.empty? || refs_matches?(refs, ref)
+      refs.blank? || refs_matches?(refs.split(",").map(&:strip), ref)
     end
   end
 
@@ -84,11 +84,11 @@ class GitlabCiYamlProcessor
   def normalized_deploy_jobs
     @deploy_jobs.map do |job|
       if job.is_a?(String)
-        { script: job, runner: "", refs: [], name: job[0..10].strip }
+        { script: job, runner: "", refs: "", name: job[0..10].strip }
       else
         {
           script: normalized_script(job[:script]),
-          refs: (job[:refs] || "").split(",").map(&:strip),
+          refs: job[:refs] || "",
           name: job[:name] || job[:script][0..10].strip,
           runner: job[:runner] || "",
         }
