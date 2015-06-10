@@ -3,7 +3,7 @@
 
 = form_tag '/lint', method: :post, remote: true do
   .control-group
-    = label_tag "Content of .gitlab-ci.yml", :content, class: 'control-label'
+    = label_tag :content, "Content of .gitlab-ci.yml", class: 'control-label'
     .controls
       = text_area_tag :content, nil, class: 'form-control span1', rows: 7, require: true
 
