@@ -1,87 +1,102 @@
 ## Configuraton of your builds with .gitlab-ci.yml
 
-From version 7.12, GitLab CI uses a .gitlab-ci.yml file for the configuration of your builds. It is place in the root of your repository and contains four main sections: skep_refs, before_script, jobs and deploy_jobs. Here is an example of how it looks:
+From version 7.12, GitLab CI uses a .gitlab-ci.yml file for the configuration of your builds. It is placed in the root of your repository and contains three type of objects: before_script, builds and deploy_builds. Here is an example of how it looks:
 
 ```yaml
-skip_refs: staging
-before_script: |
-  bundle install
-  bundle exec rake db:setup
-jobs:
-- script: "bundle exec rspec"
-  name: Rspec
-  runner: mysql,ruby
-- "bundle exec cucumber" # or even so
-deploy_jobs:
-- "bundle exec cap deploy"
+before_script: 
+  - gem install bundler
+  - bundle install 
+  - bundle exec rake db:create
+
+rspec: 
+  test: "rake spec"
+  tags: 
+    - ruby
+    - postgres
+  only: 
+    - branches
+
+staging: 
+  deploy: "cap deploy stating"
+  tags: 
+    - capistrano
+    - debian
+  except:
+    - stable
+    - /^deploy-.*$/
 
 ```
 
 Let's have a close look at each section.
 
-### skip_refs
-This parameter defines the ref or list of refs to skip. You can use glob pattern syntax as well. Example: "staging,feature-*"
-
-### jobs
-Here you can specify parameters of your builds. There are serveral ways you can configure it. Using hash:
+### builds
+Here you can specify parameters of your builds:
 
 ```yaml
-jobs:
-- script: "bundle exec rspec" # (required) - commands to run
-  name: Rspec                 # (optional) - name of build
-  runner: mysql,ruby          # (optional) - runner tags, only runners which have these tags will be used
-  branches: true              # (optional) - make builds for regular branches
-  tags: true                  # (optional) - make builds for tags
+rspec: 
+  test: "rake spec"  # (required) - shell command for runner
+  tags:              # (optional) - runner tags, only runners which have these tags will be used
+    - ruby
+    - postgres
+  only:              # (optional) - git refs (branches and tags)
+    - master
+
 ```
 
-`script` can also cantain several commands using YAML multiline string:
+`rspec` is a key of this object and it determines the name of your build
+
+`test` is a script which is used by runner. It will be also prepanded with `before_script`. This parameter can also cantain several commands using array:
 
 ```yaml
-- script: |
-    bundle updata
-    bundle exec rspec
-```
-
-you can also fill commands like an array:
-
-```yaml
-- script:
-  - bundle update
+test:
+  - uname -a
   - bundle exec rspec
 ```
+About `only` and `except` parameters you can read in the [refs settings explanation](#refs-settings-explanation)
 
-And there is one more way to specify build configuration, using a string:
-
-```yaml
-jobs:
-- bundle exec rspec
-```
-In this way, the name of the build will be taken from command line.
-
-### deploy_jobs
-Deploy Jobs that will be run when all other jobs have succeeded. Define them using a hash:
+### deploy_builds
+Deploy Builds that will be run when all other builds have succeeded. Define them using simple syntax:
 
 ```yaml
-deploy_jobs:
-- script: |                             # (required) - command
-    bundle update
-    bundle exec cap deploy
-  name: Deploy                          # (optional) - name
-  refs: deploy                          # (optional) - run only when the above git refs strings match the branch or tag that was pushed.
-  runner: ruby,deploy                   # (optional) - runner tags, only runners which have these tags will be used
+production: 
+  deploy: "cap deploy production" # (required) - shell command for runner
+  tags: 
+    - ruby
+    - postgres
+  only:
+    - master
 ```
-
-`script` can be a multiline script or array like for regular jobs.
-
-You can also define deploy jobs with a string:
-
-```yaml
-deploy_jobs:
--  "bundle exec cap deploy"
-```
+`production` - is a name of deploy build.
+`deploy` - is a script which will be prepended with `before_script`. Keep in mind that this parameter makes difference between deploy job and regular job. Last one requires `test` parameter instead of `deploy`.
+About `only` and `except` parameters you can read in the [refs settings explanation](#refs-settings-explanation)
 
 ### before_script
 `before_script` is used to define the command that should be ran before all builds, including deploy builds. This can be an array or a multiline string.
+
+### Refs settings explanation
+There are two parameters that help you to set up refs policy for your build or deploy build on CI.
+```
+only:
+  - master
+```
+`only` defines exact name of the branch or the tag which will be run. It also supports the regexp expressions:
+
+```
+only:
+  - /^issue-.*$/
+```
+You can also use an `except` parameter:
+```
+except:
+  - "deploy"
+```
+This parameter is used for excluding some refs. It is also supporting regexp expressions.
+
+There are also special keys like `branches` or `tags`. These parameters can be used for excluding all tags or branches.
+```
+except:
+  - branches
+```
 
 ## Debugging of your builds with .gitlab-ci.yml
 
