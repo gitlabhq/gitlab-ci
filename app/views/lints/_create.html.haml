@@ -15,33 +15,32 @@
           %td Job - #{build[:name]}
           %td
             %pre
-              = simple_format build[:commands]
+              = simple_format build[:script]
             
             %b Tag list:
-            #{build[:tag_list]}
+            = build[:tags]
             %br
-            %b Build for branches:
-            #{build[:branches] ? "true": "false"}
+            %b Refs only:
+            = build[:only] && build[:only].join(", ")
             %br
-            %b Build for tags:
-            #{build[:tags] ? "true": "false"}
+            %b Refs except:
+            = build[:except] && build[:except].join(", ")
 
       - @config_processor.deploy_builds.each do |build|
         %tr
           %td Deploy Job - #{build[:name]}
           %td
             %pre
-              = simple_format build[:commands]
+              = simple_format build[:script]
             
             %b Tag list:
-            #{build[:tag_list]}
+            = build[:tags]
             %br
-            %b Refs:
-            #{build[:refs]}
-
-      %tr
-        %td Skip Refs
-        %td= @config_processor.skip_refs
+            %b Refs only:
+            = build[:only] && build[:only].join(", ")
+            %br
+            %b Refs except:
+            = build[:except] && build[:except].join(", ")
 
 -else
   %p
