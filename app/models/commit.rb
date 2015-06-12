@@ -92,11 +92,15 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds
-    filter_param = tag? ? :tags : :branches
-    config_processor.builds.each do |build_attrs|
-      if build_attrs[filter_param]
-        builds.create!({ project: project }.merge(build_attrs.extract!(:name, :commands, :tag_list)))
-      end
+    return if push_data[:commits].last[:message] =~ /(\[ci skip\])/
+
+    config_processor.builds_for_ref(ref, tag).each do |build_attrs|
+      builds.create!({
+        project: project,
+        name: build_attrs[:name], 
+        commands: build_attrs[:script],
+        tag_list: build_attrs[:tags]
+      })
     end
   end
 
@@ -115,8 +119,16 @@ class Commit < ActiveRecord::Base
   end
 
   def create_deploy_builds
-    config_processor.deploy_builds_for_ref(ref).each do |build_attrs|
-      builds.create!({ project: project }.merge(build_attrs))
+    return if push_data[:commits].last[:message] =~ /(\[ci skip\])/
+    
+    config_processor.deploy_builds_for_ref(ref, tag).each do |build_attrs|
+      builds.create!({
+        project: project,
+        name: build_attrs[:name], 
+        commands: build_attrs[:script],
+        tag_list: build_attrs[:tags],
+        deploy: true
+      })
     end
   end
 

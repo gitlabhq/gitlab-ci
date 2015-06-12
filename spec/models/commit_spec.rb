@@ -138,7 +138,7 @@ describe Commit do
       commit.create_deploy_builds
       commit.builds.reload
 
-      commit.builds.size.should == 1
+      commit.builds.size.should == 2
     end
   end
 
