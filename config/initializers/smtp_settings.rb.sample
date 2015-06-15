@@ -3,6 +3,8 @@
 # 2. Edit settings inside this file
 # 3. Restart GitLab CI instance
 #
+# If you change this file in a Merge Request, please also create a Merge Request on https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests
+
 if Rails.env.production?
   ActionMailer::Base.delivery_method = :smtp
 
