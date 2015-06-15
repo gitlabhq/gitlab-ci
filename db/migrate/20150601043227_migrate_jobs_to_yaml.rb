@@ -25,8 +25,8 @@ class MigrateJobsToYaml < ActiveRecord::Migration
       # Create Jobs
       select_all(sql).each do |job|
         config[job["name"].to_s] = {
-          test: job["commands"] && job["commands"].split("\n").map(&:strip),
-          tags: job["tags"]
+          script: job["commands"] && job["commands"].split("\n").map(&:strip),
+          tags: job["tags"].split(",").map(&:strip)
         }
 
         except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
@@ -39,8 +39,9 @@ class MigrateJobsToYaml < ActiveRecord::Migration
       # Create Deploy Jobs
       select_all(sql.sub("parallel", 'deploy')).each do |job|
         config[job["name"].to_s] = {
-          deploy: job["commands"] && job["commands"].split("\n").map(&:strip),
-          tags: job["tags"]
+          script: job["commands"] && job["commands"].split("\n").map(&:strip),
+          type: "deploy",
+          tags: job["tags"].split(",").map(&:strip)
         }
 
         except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
