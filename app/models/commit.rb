@@ -92,12 +92,12 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds
-    return if push_data[:commits].last[:message] =~ /(\[ci skip\])/
+    return if skip_ci?
 
     config_processor.builds_for_ref(ref, tag).each do |build_attrs|
       builds.create!({
         project: project,
-        name: build_attrs[:name], 
+        name: build_attrs[:name],
         commands: build_attrs[:script],
         tag_list: build_attrs[:tags]
       })
@@ -119,12 +119,12 @@ class Commit < ActiveRecord::Base
   end
 
   def create_deploy_builds
-    return if push_data[:commits].last[:message] =~ /(\[ci skip\])/
-    
+    return if skip_ci?
+
     config_processor.deploy_builds_for_ref(ref, tag).each do |build_attrs|
       builds.create!({
         project: project,
-        name: build_attrs[:name], 
+        name: build_attrs[:name],
         commands: build_attrs[:script],
         tag_list: build_attrs[:tags],
         deploy: true
@@ -194,5 +194,15 @@ class Commit < ActiveRecord::Base
 
   def config_processor
     @config_processor ||= GitlabCiYamlProcessor.new(push_data[:ci_yaml_file])
+  end
+
+  def skip_ci?
+    commits = push_data[:commits]
+
+    if commits.present? && commits.last[:message] =~ /(\[ci skip\])/
+      true
+    else
+      false
+    end
   end
 end
