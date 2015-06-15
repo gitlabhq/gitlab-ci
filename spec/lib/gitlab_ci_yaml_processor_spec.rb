@@ -6,7 +6,7 @@ describe GitlabCiYamlProcessor do
     it "returns builds if no branch specified" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {test: "rspec"}
+        rspec: {script: "rspec"}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -24,7 +24,7 @@ describe GitlabCiYamlProcessor do
     it "does not return builds if only has another branch" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {test: "rspec", only: ["deploy"]}
+        rspec: {script: "rspec", only: ["deploy"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -35,7 +35,7 @@ describe GitlabCiYamlProcessor do
     it "does not return builds if only has regexp with another branch" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {test: "rspec", only: ["/^deploy$/"]}
+        rspec: {script: "rspec", only: ["/^deploy$/"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -46,7 +46,7 @@ describe GitlabCiYamlProcessor do
     it "returns builds if only has specified this branch" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {test: "rspec", only: ["master"]}
+        rspec: {script: "rspec", only: ["master"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -57,7 +57,7 @@ describe GitlabCiYamlProcessor do
     it "does not build tags" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {test: "rspec", exclude: ["tags"]}
+        rspec: {script: "rspec", exclude: ["tags"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -70,7 +70,7 @@ describe GitlabCiYamlProcessor do
     it "returns builds if no branch specified" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {deploy: "rspec"}
+        rspec: {script: "rspec", type: "deploy"}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -88,7 +88,7 @@ describe GitlabCiYamlProcessor do
     it "does not return builds if only has another branch" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {deploy: "rspec", only: ["deploy"]}
+        rspec: {script: "rspec", type: "deploy", only: ["deploy"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -99,7 +99,7 @@ describe GitlabCiYamlProcessor do
     it "does not return builds if only has regexp with another branch" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {deploy: "rspec", only: ["/^deploy$/"]}
+        rspec: {script: "rspec", type: "deploy", only: ["/^deploy$/"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -110,7 +110,7 @@ describe GitlabCiYamlProcessor do
     it "returns builds if only has specified this branch" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {deploy: "rspec", only: ["master"]}
+        rspec: {script: "rspec", type: "deploy", only: ["master"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)

@@ -9,7 +9,7 @@ before_script:
   - bundle exec rake db:create
 
 rspec: 
-  test: "rake spec"
+  script: "rake spec"
   tags: 
     - ruby
     - postgres
@@ -17,7 +17,8 @@ rspec:
     - branches
 
 staging: 
-  deploy: "cap deploy stating"
+  script: "cap deploy stating"
+  type: deploy
   tags: 
     - capistrano
     - debian
@@ -34,21 +35,21 @@ Here you can specify parameters of your builds:
 
 ```yaml
 rspec: 
-  test: "rake spec"  # (required) - shell command for runner
-  tags:              # (optional) - runner tags, only runners which have these tags will be used
+  script: "rake spec"  # (required) - shell command for runner
+  tags:                # (optional) - runner tags, only runners which have these tags will be used
     - ruby
     - postgres
-  only:              # (optional) - git refs (branches and tags)
+  only:                # (optional) - git refs (branches and tags)
     - master
 
 ```
 
 `rspec` is a key of this object and it determines the name of your build
 
-`test` is a script which is used by runner. It will be also prepanded with `before_script`. This parameter can also cantain several commands using array:
+`script` is a shell script which is used by runner. It will be also prepanded with `before_script`. This parameter can also cantain several commands using array:
 
 ```yaml
-test:
+script:
   - uname -a
   - bundle exec rspec
 ```
@@ -59,7 +60,8 @@ Deploy Builds that will be run when all other builds have succeeded. Define them
 
 ```yaml
 production: 
-  deploy: "cap deploy production" # (required) - shell command for runner
+  script: "cap deploy production" # (required) - shell command for runner
+  type: deploy
   tags: 
     - ruby
     - postgres
@@ -67,7 +69,8 @@ production:
     - master
 ```
 `production` - is a name of deploy build.
-`deploy` - is a script which will be prepended with `before_script`. Keep in mind that this parameter makes difference between deploy job and regular job. Last one requires `test` parameter instead of `deploy`.
+`script` - is a shell script which will be prepended with `before_script`.
+`type: deploy` is a parameter which indicates that it is a deploy job
 About `only` and `except` parameters you can read in the [refs settings explanation](#refs-settings-explanation)
 
 ### before_script
