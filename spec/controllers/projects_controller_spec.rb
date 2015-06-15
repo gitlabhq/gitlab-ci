@@ -12,7 +12,8 @@ describe ProjectsController do
         before: '2aa371379db71ac89ae20843fcff3b3477cf1a1d',
         after: '1c8a9df454ef68c22c2a33cca8232bb50849e5c5',
         token: @project.token,
-        ci_yaml_file: gitlab_ci_yaml
+        ci_yaml_file: gitlab_ci_yaml,
+        commits: [ { message: "Message" } ]
 
 
       expect(response).to be_success

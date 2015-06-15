@@ -21,7 +21,7 @@ sudo -u gitlab_ci -H bundle exec rake backup:create RAILS_ENV=production
 Example output:
 
 ```
-Dumping database ... 
+Dumping database ...
 Dumping PostgreSQL database gitlab_ci_development ... [DONE]
 done
 Creating backup archive: 1430930060_gitlab_ci_backup.tar.gz ... done
@@ -48,6 +48,7 @@ gitlab_ci['backup_upload_connection'] = {
   'aws_secret_access_key' => 'secret123'
 }
 gitlab_ci['backup_upload_remote_directory'] = 'my.s3.bucket'
+gitlab_ci['backup_multipart_chunk_size'] = 104857600
 ```
 
 For installations from source:
@@ -64,6 +65,7 @@ For installations from source:
         aws_secret_access_key: 'secret123'
       # The remote 'directory' to store your backups. For S3, this would be the bucket name.
       remote_directory: 'my.s3.bucket'
+      multipart_chunk_size: 104857600
 ```
 
 If you are uploading your backups to S3 you will probably want to create a new
@@ -157,8 +159,8 @@ timestamp of the backup you are restoring.
 
 ```shell
 # Stop processes that are connected to the database
-sudo gitlab-ctl stop unicorn
-sudo gitlab-ctl stop sidekiq
+sudo gitlab-ctl stop ci-unicorn
+sudo gitlab-ctl stop ci-sidekiq
 
 # This command will overwrite the contents of your GitLab CI database!
 sudo gitlab-ci-rake backup:restore BACKUP=1393513186
@@ -222,7 +224,7 @@ NOTE: This cron job does not [backup your omnibus-gitlab configuration](#backup-
 
 If you’ve been using GitLab CI since 7.11 or before using MySQL and the official installation guide, you will probably get the following error while making a backup: `Dumping MySQL database gitlab_ci_production ... mysqldump: Got error: 1044: Access denied for user 'gitlab_ci'@'localhost' to database 'gitlab_ci_production' when using LOCK TABLES` .This can be resolved by adding a LOCK TABLES permission to the gitlab_ci MySQL user. Add this permission with:
 ```
-$ mysql -u root -p 
+$ mysql -u root -p
 mysql> GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES ON `gitlab_ci_production`.* TO 'gitlab_ci'@'localhost';
 ```
 

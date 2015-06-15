@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CreateCommitService do
   let(:service) { CreateCommitService.new }
   let(:project) { FactoryGirl.create(:project) }
-
+  
   describe :execute do
     context 'valid params' do
       let(:commit) do 
@@ -11,8 +11,9 @@ describe CreateCommitService do
           ref: 'refs/heads/master',
           before: '00000000',
           after: '31das312',
-          ci_yaml_file: gitlab_ci_yaml
-        ) 
+          ci_yaml_file: gitlab_ci_yaml,
+          commits: [ { message: "Message" } ]
+        )
       end
 
       it { commit.should be_kind_of(Commit) }
@@ -24,15 +25,27 @@ describe CreateCommitService do
 
     context "deploy builds" do
       it "calls create_deploy_builds if there are no builds" do
-        config = YAML.dump({jobs: [], build_jobs: ["ls"]})
+        config = YAML.dump({production: {script: "ls", type: "deploy"}})
         Commit.any_instance.should_receive(:create_deploy_builds)
-        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312', ci_yaml_file: config)
+        service.execute(project,
+          ref: 'refs/heads/master',
+          before: '00000000',
+          after: '31das312',
+          ci_yaml_file: config,
+          commits: [ { message: "Message" } ]
+        )
       end
 
       it "does not call create_deploy_builds if there is build" do
-        config = YAML.dump({jobs: ["ls"], build_jobs: ["ls"]})
+        config = YAML.dump({rspec: {test: "ls"},production: {deploy: "ls"}})
         Commit.any_instance.should_not_receive(:create_deploy_builds)
-        service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312', ci_yaml_file: config)
+        service.execute(project,
+          ref: 'refs/heads/master',
+          before: '00000000',
+          after: '31das312',
+          ci_yaml_file: config,
+          commits: [ { message: "Message" } ]
+        )
       end
     end
 
@@ -42,7 +55,8 @@ describe CreateCommitService do
           ref: 'refs/tags/0_1',
           before: '00000000',
           after: '31das312',
-          ci_yaml_file: gitlab_ci_yaml
+          ci_yaml_file: gitlab_ci_yaml,
+          commits: [ { message: "Message" } ]
         )
         result.should be_persisted
       end
@@ -52,41 +66,43 @@ describe CreateCommitService do
           ref: 'refs/tags/0_1',
           before: '00000000',
           after: '31das312',
-          ci_yaml_file: YAML.dump({})
+          ci_yaml_file: YAML.dump({}),
+          commits: [ { message: "Message" } ]
         )
         result.should be_false
       end
 
       it "creates commit if there is no appropriate job but deploy job has right ref setting" do
-        config = YAML.dump({deploy_jobs: [{script: "ls", refs: "0_1"}]})
+        config = YAML.dump({deploy: {deploy: "ls", only: ["0_1"]}})
 
         result = service.execute(project,
           ref: 'refs/heads/0_1',
           before: '00000000',
           after: '31das312',
-          ci_yaml_file: config
+          ci_yaml_file: config,
+          commits: [ { message: "Message" } ]
         )
         result.should be_persisted
       end
     end
 
     describe :ci_skip? do
-      it "skips commit creation if there is [ci skip] tag in commit message" do
+      it "skips builds creation if there is [ci skip] tag in commit message" do
         commits = [{message: "some message[ci skip]"}]
-        result = service.execute(project,
+        commit = service.execute(project,
           ref: 'refs/tags/0_1',
           before: '00000000',
           after: '31das312',
           commits: commits,
           ci_yaml_file: gitlab_ci_yaml
         )
-        result.should be_false
+        commit.builds.any?.should be_false
       end
 
-      it "does not skips commit creation if there is no [ci skip] tag in commit message" do
+      it "does not skips builds creation if there is no [ci skip] tag in commit message" do
         commits = [{message: "some message"}]
 
-        result = service.execute(project,
+        commit = service.execute(project,
           ref: 'refs/tags/0_1',
           before: '00000000',
           after: '31das312',
@@ -94,7 +110,7 @@ describe CreateCommitService do
           ci_yaml_file: gitlab_ci_yaml
         )
         
-        result.should be_persisted
+        commit.builds.first.name.should == "staging"
       end
     end
 
