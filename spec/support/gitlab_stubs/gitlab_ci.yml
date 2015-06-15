@@ -4,7 +4,7 @@ before_script:
   - bundle exec rake db:create
 
 rspec: 
-  test: "rake spec"
+  script: "rake spec"
   tags: 
     - ruby
     - postgres
@@ -12,7 +12,7 @@ rspec:
     - branches
 
 spinach:
-  test: "rake spinach"
+  script: "rake spinach"
   tags: 
     - ruby
     - mysql
@@ -20,7 +20,8 @@ spinach:
     - tags
 
 staging: 
-  deploy: "cap deploy stating"
+  script: "cap deploy stating"
+  type: deploy
   tags: 
     - capistrano
     - debian
@@ -28,7 +29,8 @@ staging:
     - stable
 
 production:
-  deploy: 
+  type: deploy
+  script: 
     - cap deploy production
     - cap notify
   tags: 

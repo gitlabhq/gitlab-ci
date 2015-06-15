@@ -25,7 +25,7 @@ describe CreateCommitService do
 
     context "deploy builds" do
       it "calls create_deploy_builds if there are no builds" do
-        config = YAML.dump({production: {deploy: "ls"}})
+        config = YAML.dump({production: {script: "ls", type: "deploy"}})
         Commit.any_instance.should_receive(:create_deploy_builds)
         service.execute(project,
           ref: 'refs/heads/master',

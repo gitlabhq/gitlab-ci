@@ -7,9 +7,9 @@ class GitlabCiYamlProcessor
 
     @config.delete(:before_script)
     
-    @jobs = @config.select{|key, value| value[:test]}
+    @jobs = @config.select{|key, value| value[:type] != "deploy"}
 
-    @deploy_jobs = @config.select{|key, value| value[:deploy]}
+    @deploy_jobs = @config.select{|key, value| value[:type] == "deploy"}
   end
 
   def deploy_builds_for_ref(ref, tag = false)
@@ -27,7 +27,7 @@ class GitlabCiYamlProcessor
   def builds
     @jobs.map do |name, job|
       {
-        script: "#{@before_script.join("\n")}\n#{normilize_script(job[:test])}",
+        script: "#{@before_script.join("\n")}\n#{normilize_script(job[:script])}",
         tags: job[:tags] || [],
         name: name,
         only: job[:only],
@@ -39,7 +39,7 @@ class GitlabCiYamlProcessor
   def deploy_builds
     @deploy_jobs.map do |name, job|
       {
-        script: "#{@before_script.join("\n")}\n#{normilize_script(job[:deploy])}",
+        script: "#{@before_script.join("\n")}\n#{normilize_script(job[:script])}",
         tags: job[:tags] || [],
         name: name,
         only: job[:only],
