@@ -11,11 +11,10 @@ describe "Lint" do
     fill_in "content", with: content
     click_on "Validate"
     within "table" do
-      page.should have_content("Skip Refs")
-      page.should have_content("Job - Rspec")
-      page.should have_content("Job - Spinach")
-      page.should have_content("Deploy Job - cap deploy")
-      page.should have_content("Deploy Job - Deploy to staging")
+      page.should have_content("Job - rspec")
+      page.should have_content("Job - spinach")
+      page.should have_content("Deploy Job - staging")
+      page.should have_content("Deploy Job - production")
     end
   end
 

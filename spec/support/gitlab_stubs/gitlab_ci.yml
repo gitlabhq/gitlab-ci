@@ -1,24 +1,41 @@
-# Refs to skip
-skip_refs: “deploy-*”
-
-# Run before each script
 before_script: 
-  - ls
+  - gem install bundler
+  - bundle install 
+  - bundle exec rake db:create
 
-# Parallel jobs, each line is parallel build
-jobs: 
-  - script: "rake spec"
-    runner: "ruby,postgres"
-    name: "Rspec"
-  - script: "rake spinach"
-    runner: "ruby,mysql"
-    name: "Spinach"
-    tags: true
-    branches: true
+rspec: 
+  script: "rake spec"
+  tags: 
+    - ruby
+    - postgres
+  only:
+    - branches
 
-# Parallel deploy jobs
-deploy_jobs: 
-  - "cap deploy production"
-  - script: "cap deploy staging"
-    refs: staging
-    name: "Deploy to staging"
+spinach:
+  script: "rake spinach"
+  tags: 
+    - ruby
+    - mysql
+  except:
+    - tags
+
+staging: 
+  script: "cap deploy stating"
+  type: deploy
+  tags: 
+    - capistrano
+    - debian
+  except:
+    - stable
+
+production:
+  type: deploy
+  script: 
+    - cap deploy production
+    - cap notify
+  tags: 
+    - capistrano
+    - debian
+  only:
+    - master
+    - /^deploy-.*$/

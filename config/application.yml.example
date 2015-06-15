@@ -1,10 +1,13 @@
+# If you change this file in a Merge Request, please also create
+# a MR on https://gitlab.com/gitlab-org/omnibus-gitlab/merge_requests
+
 defaults: &defaults
   gitlab_server:
     url: 'https://gitlab.example.com/' # Replace with your gitlab server url
     app_id: ''
     app_secret: ''
 
-  ## Gitlab CI settings  
+  ## Gitlab CI settings
   gitlab_ci:
     ## Web server settings
     host: localhost
@@ -14,18 +17,18 @@ defaults: &defaults
     ## Email settings
     # Email address used in the "From" field in mails sent by GitLab-CI
     email_from: gitlab-ci@localhost
-  
+
     # Email address of your support contact (default: same as email_from)
     support_email: support@localhost
-  
-    # Default project notifications settings: 
+
+    # Default project notifications settings:
     #
     # Send emails only on broken builds (default: true)
     # all_broken_builds: true
-    # 
+    #
     # Add pusher to recipients list (default: false)
     # add_pusher: true
-    
+
   gravatar:
     enabled: true
     plain_url: "http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
@@ -55,7 +58,7 @@ development:
 test:
   <<: *defaults
   gitlab_server:
-    url: 'http://demo.gitlab.com/' 
+    url: 'http://demo.gitlab.com/'
     app_id: 'id'
     app_secret: 'secret'
   gitlab_ci:

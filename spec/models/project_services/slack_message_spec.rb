@@ -8,7 +8,7 @@ describe SlackMessage do
   context "One build" do
     let(:commit) do
       commit = FactoryGirl.create(:commit, project: project)
-      commit.push_data[:ci_yaml_file] = YAML.dump({jobs: ["ls"]})
+      commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { test: "ls" }})
       commit.save
       commit
     end

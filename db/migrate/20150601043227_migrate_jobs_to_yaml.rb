@@ -5,9 +5,9 @@
 class MigrateJobsToYaml < ActiveRecord::Migration
   def up
     select_all("SELECT * FROM projects").each do |project|
-      config = {jobs: [], deploy_jobs: []}
+      config = {}
 
-      concatenate_expression = if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL' 
+      concatenate_expression = if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
                                  "string_agg(tags.name, ',')"
                                else
                                  "GROUP_CONCAT(tags.name SEPARATOR ',')"
@@ -24,26 +24,32 @@ class MigrateJobsToYaml < ActiveRecord::Migration
 
       # Create Jobs
       select_all(sql).each do |job|
-        config[:jobs] << {
+        config[job["name"].to_s] = {
           script: job["commands"] && job["commands"].split("\n").map(&:strip),
-          name: job["name"],
-          branches: parse_boolean_value(job["build_branches"]),
-          tags: parse_boolean_value(job["build_tags"]),
-          runner: job["tags"]
+          tags: job["tags"] && job["tags"].split(",").map(&:strip)
         }
+
+        except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
+
+        if except
+          config[job["name"].to_s][:except] = except
+        end
       end
 
       # Create Deploy Jobs
       select_all(sql.sub("parallel", 'deploy')).each do |job|
-        config[:deploy_jobs] << {
+        config[job["name"].to_s] = {
           script: job["commands"] && job["commands"].split("\n").map(&:strip),
-          name: job["name"],
-          refs: job["refs"],
-          runner: job["tags"]
+          type: "deploy",
+          tags: job["tags"] && job["tags"].split(",").map(&:strip)
         }
-      end
 
-      config[:skip_refs] = project["skip_refs"]
+        except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
+
+        if except
+          config[job["name"].to_s][:except] = except
+        end
+      end
 
       yaml_config = YAML.dump(config.deep_stringify_keys)
 
@@ -61,5 +67,17 @@ class MigrateJobsToYaml < ActiveRecord::Migration
 
   def parse_boolean_value(value)
     [ true, 1, '1', 't', 'T', 'true', 'TRUE', 'on', 'ON' ].include?(value)
+  end
+
+  def build_except_param(branches, tags)
+    unless branches
+      return ["branches"]
+    end
+
+    unless tags
+      return ["tags"]
+    end
+
+    false
   end
 end
