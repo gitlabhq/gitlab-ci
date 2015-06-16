@@ -118,4 +118,12 @@ describe GitlabCiYamlProcessor do
       config_processor.deploy_builds_for_ref("master").size.should == 1
     end
   end
+
+  describe "Error handling" do
+    it "indicated that object is invalid" do
+      config_processor = GitlabCiYamlProcessor.new("invalid_yaml\n!ccdvlf%612334@@@@")
+
+      config_processor.valid?.should be_false
+    end
+  end
 end
