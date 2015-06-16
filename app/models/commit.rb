@@ -93,6 +93,7 @@ class Commit < ActiveRecord::Base
 
   def create_builds
     return if skip_ci?
+    return unless config_processor.valid?
 
     config_processor.builds_for_ref(ref, tag).each do |build_attrs|
       builds.create!({
@@ -120,6 +121,7 @@ class Commit < ActiveRecord::Base
 
   def create_deploy_builds
     return if skip_ci?
+    return unless config_processor.valid?
 
     config_processor.deploy_builds_for_ref(ref, tag).each do |build_attrs|
       builds.create!({
