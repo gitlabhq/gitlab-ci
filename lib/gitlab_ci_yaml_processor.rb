@@ -1,7 +1,10 @@
 class GitlabCiYamlProcessor
-  attr_reader :before_script, :skip_refs
+  attr_reader :before_script, :skip_refs, :errors
 
   def initialize(config)
+    @errors = ""
+    @valid = true
+
     @config = YAML.load(config).deep_symbolize_keys
     @before_script = @config[:before_script] || []
 
@@ -10,6 +13,14 @@ class GitlabCiYamlProcessor
     @jobs = @config.select{|key, value| value[:type] != "deploy"}
 
     @deploy_jobs = @config.select{|key, value| value[:type] == "deploy"}
+
+  rescue Exception => e
+    @errors = e.message
+    @valid = false
+  end
+
+  def valid?
+    @valid
   end
 
   def deploy_builds_for_ref(ref, tag = false)
