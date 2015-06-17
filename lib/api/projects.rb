@@ -81,13 +81,13 @@ module API
       # Example Request:
       #   POST /projects
       post do
-        required_attributes! [:name, :gitlab_id, :gitlab_url, :ssh_url_to_repo]
+        required_attributes! [:name, :gitlab_id, :ssh_url_to_repo]
 
         filtered_params = {
           name:            params[:name],
           gitlab_id:       params[:gitlab_id],
           # we accept gitlab_url for backward compatibility for a while (added to 7.11)
-          path:            params[:post] || params[:gitlab_url].sub(/.*\/(.*\/.*)$/, '\1'),
+          path:            params[:path] || params[:gitlab_url].sub(/.*\/(.*\/.*)$/, '\1'),
           default_ref:     params[:default_ref] || 'master',
           ssh_url_to_repo: params[:ssh_url_to_repo]
         }

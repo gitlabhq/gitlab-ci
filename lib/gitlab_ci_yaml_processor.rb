@@ -2,7 +2,7 @@ class GitlabCiYamlProcessor
   attr_reader :before_script, :skip_refs, :errors
 
   def initialize(config)
-    @valid = true
+    @errors = []
 
     @config = YAML.load(config).deep_symbolize_keys
     @before_script = @config[:before_script] || []
@@ -14,11 +14,12 @@ class GitlabCiYamlProcessor
     @deploy_jobs = @config.select{|key, value| value[:type] == "deploy"}
 
   rescue Exception => e
-    @valid = false
+    @errors << "Yaml file is invalid"
   end
 
   def valid?
-    @valid
+    validate!
+    !@errors.any?
   end
 
   def deploy_builds_for_ref(ref, tag = false)
@@ -93,5 +94,44 @@ class GitlabCiYamlProcessor
     else
       script
     end
+  end
+
+  def validate!
+    unless @config.is_a? Hash
+      @errors << "should be a hash"
+      return false
+    end
+
+    @jobs.each do |name, job|
+      if job[:tags] && !job[:tags].is_a?(Array)
+        @errors << "#{name} job: tags parameter should be an array"
+      end
+
+      if job[:only] && !job[:only].is_a?(Array)
+        @errors << "#{name} job: only parameter should be an array"
+      end
+
+      if job[:except] && !job[:except].is_a?(Array)
+        @errors << "#{name} job: except parameter should be an array"
+      end
+    end
+
+    @deploy_jobs.each do |name, job|
+      if job[:tags] && !job[:tags].is_a?(Array)
+        @errors << "#{name} deploy job: tags parameter should be an array"
+      end
+
+      if job[:only] && !job[:only].is_a?(Array)
+        @errors << "#{name} deploy job: only parameter should be an array"
+      end
+
+      if job[:except] && !job[:except].is_a?(Array)
+        @errors << "#{name} deploy job: except parameter should be an array"
+      end
+    end
+
+    true
+  rescue
+    @errors << "Undefined error"
   end
 end

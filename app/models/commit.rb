@@ -93,9 +93,19 @@ class Commit < ActiveRecord::Base
 
   def create_builds
     return if skip_ci?
-    return unless config_processor.valid?
 
-    config_processor.builds_for_ref(ref, tag).each do |build_attrs|
+    unless config_processor.valid?
+      save_yaml_error(config_processor.errors.join(",")) and return
+    end
+
+    begin
+      builds_for_ref = config_processor.builds_for_ref(ref, tag)
+    rescue Exception => e
+      logger.error e.message + "\n" + e.backtrace.join("\n")
+      save_yaml_error("Undefined yaml error") and return
+    end
+
+    builds_for_ref.each do |build_attrs|
       builds.create!({
         project: project,
         name: build_attrs[:name],
@@ -121,9 +131,19 @@ class Commit < ActiveRecord::Base
 
   def create_deploy_builds
     return if skip_ci?
-    return unless config_processor.valid?
 
-    config_processor.deploy_builds_for_ref(ref, tag).each do |build_attrs|
+    unless config_processor.valid?
+      save_yaml_error(config_processor.errors.join(",")) and return
+    end
+
+    begin
+      deploy_builds_for_ref = config_processor.deploy_builds_for_ref(ref, tag)
+    rescue Exception => e
+      logger.error e.message + "\n" + e.backtrace.join("\n")
+      save_yaml_error("Undefined yaml error") and return
+    end
+
+    deploy_builds_for_ref.each do |build_attrs|
       builds.create!({
         project: project,
         name: build_attrs[:name],
@@ -135,6 +155,10 @@ class Commit < ActiveRecord::Base
   end
 
   def status
+    if yaml_errors.present?
+      return 'failed'
+    end
+
     if success?
       'success'
     elsif pending?
@@ -200,11 +224,13 @@ class Commit < ActiveRecord::Base
 
   def skip_ci?
     commits = push_data[:commits]
+    commits.present? && commits.last[:message] =~ /(\[ci skip\])/
+  end
 
-    if commits.present? && commits.last[:message] =~ /(\[ci skip\])/
-      true
-    else
-      false
-    end
+  private
+
+  def save_yaml_error(error)
+    self.yaml_errors = error
+    save
   end
 end
