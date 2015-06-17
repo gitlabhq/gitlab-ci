@@ -11,6 +11,9 @@ v7.12.0
   - Admin area: show amount of runners with last contact less than a minute ago
   - Fix re-adding project with the same name but different gitlab_id
   - Implementation of Lint (.gitlab-ci.yml validation tool)
+  - Updated rails to 4.1.11
+  - API fix: project create call
+  - Link to web-editor with .gitlab-ci.yml
 
 v7.11.0
   - Deploy Jobs API calls

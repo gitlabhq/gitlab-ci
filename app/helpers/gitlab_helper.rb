@@ -21,4 +21,14 @@ module GitlabHelper
     gitlab_url << "/commit/#{sha}"
     link_to Commit.truncate_sha(sha), gitlab_url, no_turbolink
   end
+
+  def yaml_web_editor_link(project)
+    commits = project.commits
+
+    if commits.any? && commits.last.push_data[:ci_yaml_file]
+      "#{@project.gitlab_url}/edit/master/.gitlab-ci.yml"
+    else
+      "#{@project.gitlab_url}/new/master"
+    end
+  end
 end
