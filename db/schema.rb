@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20150616001155) do
     t.integer  "commit_id"
     t.float    "coverage"
     t.text     "commands"
+    t.integer  "job_id"
     t.string   "name"
     t.boolean  "deploy",      default: false
   end
