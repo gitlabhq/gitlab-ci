@@ -167,7 +167,7 @@ describe API::API do
       {
         name: "My project",
         gitlab_id: 1,
-        gitlab_url: "http://example.com/testing/testing",
+        path: "testing/testing",
         ssh_url_to_repo: "ssh://example.com/testing/testing.git"
       }
     }
