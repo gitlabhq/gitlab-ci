@@ -18,9 +18,8 @@ curl -L https://www.chef.io/chef/install.sh | bash
 chef-client -z -r 'recipe[cookbook-gitlab-test::ruby], recipe[cookbook-gitlab-test::mysql]'
 )
 
-### Register your runner instance with a GitLab CI Coordinator
-sudo /opt/gitlab-runner/bin/setup -C /home/gitlab-runner
 
-# Restart the gitlab-runner Upstart script
-sudo service gitlab-runner restart
+### Register your runner instance with a GitLab CI Coordinator
+gitlab-ci-multi-runner register
+
 ```
