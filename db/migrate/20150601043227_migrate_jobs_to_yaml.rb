@@ -22,6 +22,14 @@ class MigrateJobsToYaml < ActiveRecord::Migration
           AND job_type = 'parallel'
         GROUP BY j.id"
 
+      # skip_refs migrate
+      skip_refs = []
+
+      if project["skip_refs"].present?
+        skip_refs = project["skip_refs"].split(",").map(&:strip).select{|ref| ref =~  /^[\w-]*\Z/ }
+      end
+
+
       # Create Jobs
       select_all(sql).each do |job|
         config[job["name"].to_s] = {
@@ -30,8 +38,9 @@ class MigrateJobsToYaml < ActiveRecord::Migration
         }
 
         except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
+        except = except + skip_refs
 
-        if except
+        if except.any?
           config[job["name"].to_s][:except] = except
         end
       end
@@ -45,8 +54,9 @@ class MigrateJobsToYaml < ActiveRecord::Migration
         }
 
         except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
+        except = except + skip_refs
 
-        if except
+        if except.any?
           config[job["name"].to_s][:except] = except
         end
       end
@@ -78,6 +88,6 @@ class MigrateJobsToYaml < ActiveRecord::Migration
       return ["tags"]
     end
 
-    false
+    []
   end
 end
