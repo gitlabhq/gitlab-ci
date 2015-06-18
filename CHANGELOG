@@ -14,6 +14,7 @@ v7.12.0
   - Updated rails to 4.1.11
   - API fix: project create call
   - Link to web-editor with .gitlab-ci.yml
+  - Updated examples in the documentation
 
 v7.11.0
   - Deploy Jobs API calls
