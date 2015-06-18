@@ -104,3 +104,6 @@ except:
 ## Debugging of your builds with .gitlab-ci.yml
 
 Each instance of GitLab CI has an embeded debug tool Lint. You can find link to the Lint in the projects settings page or use short url `/lint`.
+
+## Skipping builds
+There is one more way to skip all builds, if your commit message contains tag [ci skip]. In this case commit will be created but builds will be skipped.
