@@ -53,11 +53,15 @@ class MigrateJobsToYaml < ActiveRecord::Migration
           tags: job["tags"] && job["tags"].split(",").map(&:strip)
         }
 
-        except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
-        except = except + skip_refs
+        if job["refs"].present?
+          config[job["name"].to_s][:only] = job["refs"].split(",").map(&:strip)
+        else
+          except = build_except_param(parse_boolean_value(job["build_branches"]), parse_boolean_value(job["build_tags"]))
+          except = except + skip_refs
 
-        if except.any?
-          config[job["name"].to_s][:except] = except
+          if except.any?
+            config[job["name"].to_s][:except] = except
+          end
         end
       end
 
