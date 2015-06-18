@@ -13,10 +13,22 @@ The runner runs the line below before it runs the commands in your build script:
 
 # Environmental variables
 
-The build command is run from [GitlabCi::Build#command](https://gitlab.com/gitlab-org/gitlab-ci-runner/blob/master/lib/build.rb#L96) and contains the following environmental variables:
+The runner sets the following environmental variables:
 
-    CI_SERVER, CI_SERVER_NAME, CI_SERVER_VERSION, CI_SERVER_REVISION
-    CI_BUILD_REF, CI_BUILD_BEFORE_SHA, CI_BUILD_REF_NAME (branch), CI_BUILD_ID
+```
+CI=true
+CI_SERVER=true
+CI_SERVER_NAME=GitLab CI
+GITLAB_CI=true
+CI_SERVER_VERSION
+CI_SERVER_REVISION
+CI_BUILD_REF
+CI_BUILD_BEFORE_SHA
+CI_BUILD_REF_NAME (branch)
+CI_BUILD_ID
+CI_BUILD_REPO
+CI_PROJECT_DIR
+```
 
 # Build script examples
 
