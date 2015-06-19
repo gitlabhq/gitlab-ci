@@ -121,17 +121,14 @@ describe GitlabCiYamlProcessor do
 
   describe "Error handling" do
     it "indicates that object is invalid" do
-      config_processor = GitlabCiYamlProcessor.new("invalid_yaml\n!ccdvlf%612334@@@@")
-
-      config_processor.valid?.should be_false
+      expect{GitlabCiYamlProcessor.new("invalid_yaml\n!ccdvlf%612334@@@@")}.to raise_error(GitlabCiYamlProcessor::ValidationError)
     end
 
     it "returns errors" do
       config = YAML.dump({rspec: {tags: "mysql"}})
-      config_processor = GitlabCiYamlProcessor.new(config)
-
-      config_processor.valid?.should be_false
-      config_processor.errors.should == ["rspec job: tags parameter should be an array"]
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: tags parameter should be an array")
     end
   end
 end

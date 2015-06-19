@@ -7,12 +7,12 @@ class LintsController < ApplicationController
   def create
     if params[:content].blank?
       @status = false
-      @error = "Please provide content of your file"
+      @error = "Please provide content of .gitlab-ci.yml"
     else
       @config_processor = GitlabCiYamlProcessor.new params[:content]
       @status = true
     end
-  rescue Psych::SyntaxError => e
+  rescue GitlabCiYamlProcessor::ValidationError => e
     @error = e.message
     @status = false
   rescue Exception => e

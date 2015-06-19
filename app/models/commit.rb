@@ -94,12 +94,10 @@ class Commit < ActiveRecord::Base
   def create_builds
     return if skip_ci?
 
-    unless config_processor.valid?
-      save_yaml_error(config_processor.errors.join(",")) and return
-    end
-
     begin
       builds_for_ref = config_processor.builds_for_ref(ref, tag)
+    rescue GitlabCiYamlProcessor::ValidationError => e
+      save_yaml_error(e.message) and return
     rescue Exception => e
       logger.error e.message + "\n" + e.backtrace.join("\n")
       save_yaml_error("Undefined yaml error") and return
@@ -132,12 +130,10 @@ class Commit < ActiveRecord::Base
   def create_deploy_builds
     return if skip_ci?
 
-    unless config_processor.valid?
-      save_yaml_error(config_processor.errors.join(",")) and return
-    end
-
     begin
       deploy_builds_for_ref = config_processor.deploy_builds_for_ref(ref, tag)
+    rescue GitlabCiYamlProcessor::ValidationError => e
+      save_yaml_error(e.message) and return
     rescue Exception => e
       logger.error e.message + "\n" + e.backtrace.join("\n")
       save_yaml_error("Undefined yaml error") and return
