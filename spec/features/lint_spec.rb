@@ -23,6 +23,6 @@ describe "Lint" do
     fill_in "content", with: ""
     click_on "Validate"
     page.should have_content("Status: syntax is incorrect")
-    page.should have_content("Error: Please provide content of your file")
+    page.should have_content("Error: Please provide content of .gitlab-ci.yml")
   end
 end

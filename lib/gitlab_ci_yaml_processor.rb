@@ -1,25 +1,20 @@
 class GitlabCiYamlProcessor
-  attr_reader :before_script, :skip_refs, :errors
+  class ValidationError < StandardError;end
+
+  attr_reader :before_script
 
   def initialize(config)
-    @errors = []
+    @config = YAML.load(config)
 
-    @config = YAML.load(config).deep_symbolize_keys
-    @before_script = @config[:before_script] || []
+    unless @config.is_a? Hash
+      raise ValidationError, "YAML should be a hash"
+    end
 
-    @config.delete(:before_script)
+    @config = @config.deep_symbolize_keys
 
-    @jobs = @config.select{|key, value| value[:type] != "deploy"}
+    initial_parsing
 
-    @deploy_jobs = @config.select{|key, value| value[:type] == "deploy"}
-
-  rescue Exception => e
-    @errors << "Yaml file is invalid"
-  end
-
-  def valid?
     validate!
-    !@errors.any?
   end
 
   def deploy_builds_for_ref(ref, tag = false)
@@ -28,10 +23,6 @@ class GitlabCiYamlProcessor
 
   def builds_for_ref(ref, tag = false)
     builds.select{|build| process?(build[:only], build[:except], ref, tag)}
-  end
-
-  def any_jobs?(ref, tag = false)
-    builds_for_ref(ref, tag).any? || deploy_builds_for_ref(ref, tag).any?
   end
 
   def builds
@@ -59,6 +50,13 @@ class GitlabCiYamlProcessor
   end
 
   private
+
+  def initial_parsing
+    @before_script = @config[:before_script] || []
+    @config.delete(:before_script)
+    @jobs = @config.select{|key, value| value[:type] != "deploy"}
+    @deploy_jobs = @config.select{|key, value| value[:type] == "deploy"}
+  end
 
   def process?(only_params, except_params, ref, tag)
     return true if only_params.nil? && except_params.nil?
@@ -97,41 +95,34 @@ class GitlabCiYamlProcessor
   end
 
   def validate!
-    unless @config.is_a? Hash
-      @errors << "should be a hash"
-      return false
-    end
-
     @jobs.each do |name, job|
       if job[:tags] && !job[:tags].is_a?(Array)
-        @errors << "#{name} job: tags parameter should be an array"
+        raise ValidationError, "#{name} job: tags parameter should be an array"
       end
 
       if job[:only] && !job[:only].is_a?(Array)
-        @errors << "#{name} job: only parameter should be an array"
+        raise ValidationError, "#{name} job: only parameter should be an array"
       end
 
       if job[:except] && !job[:except].is_a?(Array)
-        @errors << "#{name} job: except parameter should be an array"
+        raise ValidationError, "#{name} job: except parameter should be an array"
       end
     end
 
     @deploy_jobs.each do |name, job|
       if job[:tags] && !job[:tags].is_a?(Array)
-        @errors << "#{name} deploy job: tags parameter should be an array"
+        raise ValidationError, "#{name} deploy job: tags parameter should be an array"
       end
 
       if job[:only] && !job[:only].is_a?(Array)
-        @errors << "#{name} deploy job: only parameter should be an array"
+        raise ValidationError, "#{name} deploy job: only parameter should be an array"
       end
 
       if job[:except] && !job[:except].is_a?(Array)
-        @errors << "#{name} deploy job: except parameter should be an array"
+        raise ValidationError, "#{name} deploy job: except parameter should be an array"
       end
     end
 
     true
-  rescue
-    @errors << "Undefined error"
   end
 end

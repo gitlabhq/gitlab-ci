@@ -61,17 +61,6 @@ describe CreateCommitService do
         result.should be_persisted
       end
 
-      it "does not create commit if there is no appropriate job nor deploy job" do
-        result = service.execute(project,
-          ref: 'refs/tags/0_1',
-          before: '00000000',
-          after: '31das312',
-          ci_yaml_file: YAML.dump({}),
-          commits: [ { message: "Message" } ]
-        )
-        result.should be_false
-      end
-
       it "creates commit if there is no appropriate job but deploy job has right ref setting" do
         config = YAML.dump({deploy: {deploy: "ls", only: ["0_1"]}})
 
