@@ -4,8 +4,7 @@ class CreateCommitService
     sha = params[:checkout_sha] || params[:after]
     origin_ref = params[:ref]
     yaml_config = params[:ci_yaml_file] || project.generated_yaml_config
-    config_processor = build_config_processor(yaml_config)
-
+    
     unless origin_ref && sha.present?
       return false
     end
@@ -14,10 +13,6 @@ class CreateCommitService
 
     # Skip branch removal
     if sha == Git::BLANK_SHA
-      return false
-    end
-
-    unless config_processor.any_jobs?(ref, origin_ref.start_with?('refs/tags/'))
       return false
     end
 
@@ -53,11 +48,5 @@ class CreateCommitService
     end
 
     commit
-  end
-
-  private
-
-  def build_config_processor(config_data)
-    @builds_config ||= GitlabCiYamlProcessor.new(config_data)
   end
 end
