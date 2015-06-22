@@ -45,7 +45,9 @@ describe "Builds" do
     before do
       @project = FactoryGirl.create :public_project
       @commit = FactoryGirl.create :commit, project: @project
-      @build = FactoryGirl.create :build, commit: @commit
+      @runner = FactoryGirl.create :specific_runner
+      @build = FactoryGirl.create :build, commit: @commit, runner: @runner
+
       stub_gitlab_calls
       visit project_build_path(@project, @build)
     end
