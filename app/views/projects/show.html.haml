@@ -1,6 +1,6 @@
 = render 'shared/guide' unless @project.setup_finished?
 
-- unless @project.any_runners?
+- if current_user && current_user.can_manage_project?(@project.gitlab_id) && !@project.any_runners?
   .alert.alert-danger
     Builds for this project wont be served unless you configure runners on
     = link_to "Runners page", project_runners_path(@project)
