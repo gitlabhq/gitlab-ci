@@ -3,7 +3,8 @@ class CommitsController < ApplicationController
   before_filter :authenticate_public_page!, only: :show
   before_filter :project
   before_filter :commit
-  before_filter :authorize_access_project!, except: [:status, :show]
+  before_filter :authorize_access_project!, except: [:status, :show, :cancel]
+  before_filter :authorize_project_developer!, only: [:cancel]
 
   def show
     @builds = @commit.builds
@@ -11,6 +12,12 @@ class CommitsController < ApplicationController
 
   def status
     render json: @commit.to_json(only: [:id, :sha], methods: [:status, :coverage])
+  end
+
+  def cancel
+    commit.builds.running_or_pending.each(&:cancel)
+
+    redirect_to project_ref_commit_path(project, commit.ref, commit.sha)
   end
 
   private
