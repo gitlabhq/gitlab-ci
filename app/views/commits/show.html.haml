@@ -45,6 +45,10 @@
     %ul
       - @commit.yaml_errors.split(",").each do |error|
         %li= error
+
+- unless @commit.push_data[:ci_yaml_file]
+  .bs-callout.bs-callout-warning
+    \.gitlab-ci.yml not found in this commit
         
 %h3 Status
 

@@ -5,6 +5,7 @@ v7.13.0
   - Ability to cancel all builds in commit at once
   - Improved Lint stability
   - Add one more validation rule for .gitlab-ci.yml
+  - Add warning when .gitlab-ci.yml not found
 
 v7.12.1
   - Runner without tag should pick builds without tag only

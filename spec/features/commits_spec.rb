@@ -27,6 +27,25 @@ describe "Commits" do
         page.should have_content "canceled"
       end
     end
+
+    describe ".gitlab-ci.yml not found warning" do
+      it "does not show warning" do
+        visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
+        click_on "Cancel"
+
+        page.should_not have_content ".gitlab-ci.yml not found in this commit"
+      end
+
+      it "shows warning" do
+        @commit.push_data[:ci_yaml_file] = nil
+        @commit.save
+
+        visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
+        click_on "Cancel"
+
+        page.should have_content ".gitlab-ci.yml not found in this commit"
+      end
+    end
   end
 
   context "Public pages" do
