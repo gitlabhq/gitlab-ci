@@ -1,3 +1,7 @@
+v7.13.0
+  - Fix: No runner notification can see managers only
+  - Fix: lint with relative subpath
+
 v7.12.1
   - Runner without tag should pick builds without tag only
   
