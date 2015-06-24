@@ -32,6 +32,7 @@ class Build < ActiveRecord::Base
   scope :success, ->() { where(status: "success") }
   scope :failed, ->() { where(status: "failed")  }
   scope :unstarted, ->() { where(runner_id: nil) }
+  scope :running_or_pending, ->() { where(status:[:running, :pending]) }
 
   acts_as_taggable
 
