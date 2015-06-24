@@ -1,7 +1,7 @@
 %h2 Check your .gitlab-ci.yml
 %hr
 
-= form_tag '/lint', method: :post, remote: true do
+= form_tag lint_path, method: :post, remote: true do
   .control-group
     = label_tag :content, "Content of .gitlab-ci.yml", class: 'control-label'
     .controls
