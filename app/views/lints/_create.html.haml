@@ -10,7 +10,7 @@
         %th Parameter
         %th Value
     %tbody
-      - @config_processor.builds.each do |build|
+      - @builds.each do |build|
         %tr
           %td Job - #{build[:name]}
           %td
@@ -26,7 +26,7 @@
             %b Refs except:
             = build[:except] && build[:except].join(", ")
 
-      - @config_processor.deploy_builds.each do |build|
+      - @deploy_builds.each do |build|
         %tr
           %td Deploy Job - #{build[:name]}
           %td
