@@ -215,7 +215,7 @@ class Commit < ActiveRecord::Base
   end
 
   def config_processor
-    @config_processor ||= GitlabCiYamlProcessor.new(push_data[:ci_yaml_file])
+    @config_processor ||= GitlabCiYamlProcessor.new(push_data[:ci_yaml_file] || project.generated_yaml_config)
   end
 
   def skip_ci?

@@ -4,6 +4,7 @@ v7.13.0
   - Update web hook example
   - Improved Lint stability
   - Add one more validation rule for .gitlab-ci.yml
+  - Add warning when .gitlab-ci.yml not found
 
 v7.12.1
   - Runner without tag should pick builds without tag only
