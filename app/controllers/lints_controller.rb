@@ -10,6 +10,8 @@ class LintsController < ApplicationController
       @error = "Please provide content of .gitlab-ci.yml"
     else
       @config_processor = GitlabCiYamlProcessor.new params[:content]
+      @builds = @config_processor.builds
+      @deploy_builds = @config_processor.deploy_builds
       @status = true
     end
   rescue GitlabCiYamlProcessor::ValidationError => e
