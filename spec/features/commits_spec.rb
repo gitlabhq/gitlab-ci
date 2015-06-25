@@ -31,7 +31,6 @@ describe "Commits" do
     describe ".gitlab-ci.yml not found warning" do
       it "does not show warning" do
         visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
-        click_on "Cancel"
 
         page.should_not have_content ".gitlab-ci.yml not found in this commit"
       end
@@ -41,7 +40,6 @@ describe "Commits" do
         @commit.save
 
         visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
-        click_on "Cancel"
 
         page.should have_content ".gitlab-ci.yml not found in this commit"
       end
