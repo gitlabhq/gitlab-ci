@@ -95,6 +95,10 @@ class GitlabCiYamlProcessor
   end
 
   def validate!
+    unless @before_script.is_a?(Array)
+      raise ValidationError, "before_script should be an array"
+    end
+
     @jobs.each do |name, job|
       if job[:tags] && !job[:tags].is_a?(Array)
         raise ValidationError, "#{name} job: tags parameter should be an array"

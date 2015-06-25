@@ -124,11 +124,18 @@ describe GitlabCiYamlProcessor do
       expect{GitlabCiYamlProcessor.new("invalid_yaml\n!ccdvlf%612334@@@@")}.to raise_error(GitlabCiYamlProcessor::ValidationError)
     end
 
-    it "returns errors" do
+    it "returns errors if tags parameter is invalid" do
       config = YAML.dump({rspec: {tags: "mysql"}})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: tags parameter should be an array")
+    end
+
+    it "returns errors if before_script parameter is invalid" do
+      config = YAML.dump({before_script: "bundle update"})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "before_script should be an array")
     end
   end
 end
