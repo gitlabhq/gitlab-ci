@@ -6,6 +6,7 @@ v7.13.0
   - Improved Lint stability
   - Add one more validation rule for .gitlab-ci.yml
   - Add warning when .gitlab-ci.yml not found
+  - Disable colors in rake tasks automatically (if IO is not a TTY)
 
 v7.12.1
   - Runner without tag should pick builds without tag only
