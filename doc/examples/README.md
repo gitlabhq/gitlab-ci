@@ -35,6 +35,8 @@ CI_PROJECT_DIR
 + [Build script for Omniauth LDAP](build-script-for-omniauth-ldap.md)
 + [Build script GitLab CE](build_script_gitlab_ce.md)
 + [Build script for Sencha deploy PhoneGapBuild](build_script_sencha_deploy_phonegapbuild.md)
++ [Test and deploy Ruby Application to Heroku](test-and-deploy-ruby-application-to-heroku.md)
++ [Test and deploy Python Application to Heroku](test-and-deploy-python-application-to-heroku.md)
 
 # Configuring runner examples
 
