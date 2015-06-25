@@ -7,6 +7,7 @@ v7.13.0
   - Add one more validation rule for .gitlab-ci.yml
   - Add warning when .gitlab-ci.yml not found
   - Disable colors in rake tasks automatically (if IO is not a TTY)
+  - Build traces is stored in the file instead of database
 
 v7.12.1
   - Runner without tag should pick builds without tag only

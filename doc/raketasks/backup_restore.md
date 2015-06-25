@@ -2,7 +2,7 @@
 
 ## Create a backup of the GitLab CI
 
-A backup creates an archive file that contains the database.
+A backup creates an archive file that contains the database and builds files.
 This archive will be saved in backup_path (see `config/application.yml`).
 The filename will be `[TIMESTAMP]_gitlab_ci_backup.tar.gz`. This timestamp can be used to restore an specific backup.
 You can only restore a backup to exactly the same version of GitLab CI that you created it on, for example 7.10.1.
@@ -23,6 +23,8 @@ Example output:
 ```
 Dumping database ...
 Dumping PostgreSQL database gitlab_ci_development ... [DONE]
+done
+Dumping builds ...
 done
 Creating backup archive: 1430930060_gitlab_ci_backup.tar.gz ... done
 Uploading backup archive to remote storage  ... skipped

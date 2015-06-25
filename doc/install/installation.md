@@ -129,6 +129,9 @@ We recommend PostgreSQL but you can also use MySQL
     sudo -u gitlab_ci -H mkdir -p tmp/pids/
     sudo chmod -R u+rwX  tmp/pids/
 
+    # Make sure GitLab CI can write to the builds/ directory
+    sudo chmod -R u+rwX  builds
+
 ### Install gems
 
     # For MySQL (note, the option says "without ... postgres")
