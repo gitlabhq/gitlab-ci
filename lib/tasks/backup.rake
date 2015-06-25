@@ -41,3 +41,13 @@ namespace :backup do
   end
 end
 
+# Disable colors for CRON
+unless STDOUT.isatty
+  module Colored
+    extend self
+
+    def colorize(string, options={})
+      string
+    end
+  end
+end
