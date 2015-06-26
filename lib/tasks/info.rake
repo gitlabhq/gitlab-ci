@@ -42,7 +42,7 @@ def run_and_match(command, regexp)
   `#{command}`.try(:match, regexp)
 end
 
- # Check which OS is running
+  # Check which OS is running
   #
   # It will primarily use lsb_relase to determine the OS.
   # It has fallbacks to Debian, SuSE, OS X and systems running systemd.
