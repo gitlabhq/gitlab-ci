@@ -1,17 +1,18 @@
 v7.13.0
   - Fix: No runner notification can see managers only
-  - Fix: lint with relative subpath
-  - Update web hook example
   - Ability to cancel all builds in commit at once
   - Improved Lint stability
-  - Add one more validation rule for .gitlab-ci.yml
-  - Add warning when .gitlab-ci.yml not found
   - Disable colors in rake tasks automatically (if IO is not a TTY)
 
 v7.12.1
   - Runner without tag should pick builds without tag only
   - Explicit error in the GitLab when commit not found.
-  
+  - Fix: lint with relative subpath
+  - Update webhook example
+  - Improved Lint stability
+  - Add warning when .gitlab-ci.yml not found
+  - Add one more validation rule for .gitlab-ci.yml
+
 v7.12.0
   - Endless scroll on the dashboard
   - Add notification if there are no runners
