@@ -4,6 +4,7 @@ v7.13.0
   - Improved Lint stability
   - Disable colors in rake tasks automatically (if IO is not a TTY)
   - Implemented "rake env:info". Rake task to receive system information
+  - Fix coverage calculation on commit page
 
 v7.12.1
   - Runner without tag should pick builds without tag only
