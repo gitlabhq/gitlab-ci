@@ -34,7 +34,7 @@ You are not limited to having only database services. You can hand modify `confi
   services = ["mysql:latest", "postgres:latest"]
 ```
 
-For example for time of your build you need running `wordpress` instance. Let's use this image: [tutum/wordpress](https://registry.hub.docker.com/u/tutum/wordpress/). This is image that have fully preconfigured `wordpress` with bundled `MySQL` server:
+For example for time of your build you need `wordpress` instance. Let's use this image: [tutum/wordpress](https://registry.hub.docker.com/u/tutum/wordpress/). This is image that have fully preconfigured `wordpress` with bundled `MySQL` server:
 ```
 [runners.docker]
   image = "ruby:2.1"
