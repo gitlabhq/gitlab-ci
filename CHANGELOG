@@ -3,6 +3,7 @@ v7.13.0
   - Ability to cancel all builds in commit at once
   - Improved Lint stability
   - Disable colors in rake tasks automatically (if IO is not a TTY)
+  - Fix coverage calculation on commit page
 
 v7.12.1
   - Runner without tag should pick builds without tag only

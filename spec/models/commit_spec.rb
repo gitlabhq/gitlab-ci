@@ -159,4 +159,27 @@ describe Commit do
       commit.finished_at.should be_nil
     end
   end
+
+  describe "coverage" do
+    let(:project) { FactoryGirl.create :project, coverage_regex: "/.*/" }
+    let(:commit) { FactoryGirl.create :commit, project: project }
+
+    it "calculates average when there are two builds with coverage" do
+      FactoryGirl.create :build, coverage: 30, commit: commit
+      FactoryGirl.create :build, coverage: 40, commit: commit
+      commit.coverage.should == 35.0
+    end
+
+    it "calculates average when there are two builds with coverage and one with nil" do
+      FactoryGirl.create :build, coverage: 30, commit: commit
+      FactoryGirl.create :build, coverage: 40, commit: commit
+      FactoryGirl.create :build, commit: commit
+      commit.coverage.should == 35.0
+    end
+
+    it "calculates average when there is one build without coverage" do
+      FactoryGirl.create :build, commit: commit
+      commit.coverage.should be_nil
+    end
+  end
 end
