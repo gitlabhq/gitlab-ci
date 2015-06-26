@@ -15,40 +15,40 @@ gitlab-ci-multi-runner register \
   --docker-mysql latest
 ```
 
-The above example will create new runner that uses `docker` executor. To build projects it will use `ruby:2.1` image and will allow to access `postgres` and `mysql` databases for time of the build.
+The above example will create a new runner that uses `docker` executor. To build projects it will use `ruby:2.1` image and will allow to access `postgres` and `mysql` databases for time of the build.
 
 ### What is image?
-The image is the name of any repository that is added to local Docker Engine or any repository that can be found at [Docker Hub](https://registry.hub.docker.com/). If you still don't know what it is please read the [Docker Fundamentals](https://docs.docker.com/introduction/understanding-docker/).
+The image is the name of any repository that is present in local Docker Engine or any repository that can be found at [Docker Hub](https://registry.hub.docker.com/). If you still don't know what it is, please read the [Docker Fundamentals](https://docs.docker.com/introduction/understanding-docker/).
 
 ### What is service?
-Service is just another image, that is run for time of your build and is linked to your build. This allows you to access this service image during build time. The service image can run any application, but most common use case is to run some database container, ie.: `mysql`. It's easier and faster to use existing image, run it as additional container than installing `mysql` in your build container every time.
+Service is just another image that is run for time of your build and is linked to your build. This allows you to access the service image during build time. The service image can run any application, but most common use case is to run some database container, ie.: `mysql`. It's easier and faster to use existing image, run it as additional container than install `mysql` on your build container every time.
 
 #### How is service linked to the build?
-There's good document that describes how `docker` linking works: [Linking containers together](https://docs.docker.com/userguide/dockerlinks/). To summarize: if you add `mysql` as service to your application, his image will be used to create container that is linked to build image and is accessible under host `mysql`. So, **to access your database service you have to connect to host: `mysql` instead of socket or `localhost`**.
+There's good document that describes how `docker` linking works: [Linking containers together](https://docs.docker.com/userguide/dockerlinks/). To summarize: if you add `mysql` as service to your application, this image will be used to create container that is linked to build container. The service container for MySQL will be accessible under hostname `mysql`. So, **to access your database service you have to connect to host: `mysql` instead of socket or `localhost`**.
 
 ### How to use other images as services?
-You are not limited to having only database services. You can hand modify `config.toml` to add any image as service found on [Docker Hub](https://registry.hub.docker.com/). Look for `[runners.docker]` section:
+You are not limited to have only database services. You can hand modify `config.toml` to add any image as service found at [Docker Hub](https://registry.hub.docker.com/). Look for `[runners.docker]` section:
 ```
 [runners.docker]
   image = "ruby:2.1"
   services = ["mysql:latest", "postgres:latest"]
 ```
 
-For example for time of your build you need `wordpress` instance. Let's use this image: [tutum/wordpress](https://registry.hub.docker.com/u/tutum/wordpress/). This is image that have fully preconfigured `wordpress` with bundled `MySQL` server:
+For example you need `wordpress` instance to test some API integration with `Wordpress`. You can for example use this image: [tutum/wordpress](https://registry.hub.docker.com/u/tutum/wordpress/). This is image that have fully preconfigured `wordpress` and have `MySQL` server built-in:
 ```
 [runners.docker]
   image = "ruby:2.1"
   services = ["mysql:latest", "postgres:latest", "tutum/wordpress:latest"]
 ```
 
-Next time when you run your application `tutum/wordpress` will be started and you will have access to it from your build container under hostname: `tutum_wordpress`.
+Next time when you run your application the `tutum/wordpress` will be started and you will have access to it from your build container under hostname: `tutum_wordpress`.
 
 Alias hostname for the service is made from the image name:
 1. Everything after `:` is stripped,
 2. '/' is replaced to `_`.
 
 ### Overwrite image and services
-It's possible to overwrite `docker-image` and specified services from `.gitlab-ci.yml`. If you add at the top of your `.gitlab-ci.yml`:
+It's possible to overwrite `docker-image` and specify services from `.gitlab-ci.yml`. If you add at the top of your `.gitlab-ci.yml` `image` and `services` the `Docker` executor will use the values defined in YAML instead of the ones that were specified during runner's registration.
 ```
 image: ruby:2.2
 services:
@@ -60,7 +60,6 @@ test:
   script:
   - bundle exec rake spec
 ```
-The `Docker` executor will use the values defined in YAML instead of the ones that were specified during runner's registration.
 
 It's also possible to define image and service for specific job:
 ```
@@ -83,15 +82,16 @@ test:2.2:
 ```
 
 #### How to enable overwritting?
-To have that feature working you have to **enable it first** (it's disabled by default for security reasons), by hand modyfing runner configuration: `config.toml`. In section where is the `[runners.docker]` definition of your runner you have to specify what images are allowed to be picked from `.gitlab-ci.yml`:
+To have that feature working you have to **enable it first** (it's disabled by default for security reasons). You can do that by hand modyfing runner configuration: `config.toml`. Please go to section where is `[runners.docker]` definition for your runner. Add `allowed_images` and `allowed_services` to specify what images are allowed to be picked from `.gitlab-ci.yml`:
 ```
 [runners.docker]
   image = "ruby:2.1"
   allowed_images = ["ruby:*", "python:*"]
   allowed_services = ["mysql:*", "redis:*"]
 ```
+This enables you to use in your `.gitlab-ci.yml` any image that matches above wildcards. You will be able to pick any `ruby` and `python` version, but not any other image. The same apply for services. 
 
-This allows you to use in your `.gitlab-ci.yml` any image that matches above wildcards, so: any `ruby` and `python` version, but not any other image. The same apply for services. If you are courageous enough, because you run it for your personal or trusted projects, you can make it fully open and accept everything:
+If you are courageous enough, because you run it for your personal or trusted projects, you can make it fully open and accept everything:
 ```
 [runners.docker]
   image = "ruby:2.1"
@@ -99,7 +99,7 @@ This allows you to use in your `.gitlab-ci.yml` any image that matches above wil
   allowed_services = ["*"]
 ```
 
-**It the feature is not enabled, or image isn't allowed error message will be print build log.**
+**It the feature is not enabled, or image isn't allowed the error message will be put into the build log.**
 
 ### How it works?
 1. Create any service container: `mysql`, `postgresql`, `mongodb`, `redis`.
