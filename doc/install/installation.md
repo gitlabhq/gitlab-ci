@@ -6,7 +6,7 @@ this should be the highest numbered stable branch (example shown below).
 
 If this is unclear check the [GitLab Blog](http://blog.gitlab.org/) for installation guide links by version.
 
-## GitLab CI 7.9 requires GitLab 7.9 or newer
+## GitLab CI 7.12 requires GitLab 7.12 or newer
 
 other [requirements](requirements.md)
 
@@ -58,7 +58,7 @@ Install the Bundler Gem:
 
 ## 4. Prepare the database
 
-You can use either MySQL or PostgreSQL.
+We recommend PostgreSQL but you can also use MySQL
 
 ### MySQL
 
@@ -108,7 +108,7 @@ You can use either MySQL or PostgreSQL.
 
     cd gitlab-ci
 
-    sudo -u gitlab_ci -H git checkout 7-9-stable
+    sudo -u gitlab_ci -H git checkout 7-12-stable
 
 ## 6. Setup application
 
