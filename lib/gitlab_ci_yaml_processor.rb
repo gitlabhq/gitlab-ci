@@ -65,8 +65,8 @@ class GitlabCiYamlProcessor
       return true if tag && only_params.include?("tags")
       return true if !tag && only_params.include?("branches")
       
-      only_params.each do |pattern|
-        return match_ref?(pattern, ref)
+      only_params.find do |pattern|
+        match_ref?(pattern, ref)
       end
     else
       return false if tag && except_params.include?("tags")
