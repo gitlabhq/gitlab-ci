@@ -14,6 +14,7 @@ v7.12.1
   - Add warning when .gitlab-ci.yml not found
   - Improved validation for .gitlab-ci.yml
   - Fix list of branches in only section
+  - Fix "Status Badge" button
 
 v7.12.0
   - Endless scroll on the dashboard
