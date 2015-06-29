@@ -54,6 +54,11 @@ class GitlabCiYamlProcessor
   def initial_parsing
     @before_script = @config[:before_script] || []
     @config.delete(:before_script)
+
+    unless @config.is_a?(Hash) && !@config.values.any?{|job| !job.is_a?(Hash)}
+      raise ValidationError, "Please define at least one job"
+    end
+
     @jobs = @config.select{|key, value| value[:type] != "deploy"}
     @deploy_jobs = @config.select{|key, value| value[:type] == "deploy"}
   end
@@ -100,6 +105,12 @@ class GitlabCiYamlProcessor
     end
 
     @jobs.each do |name, job|
+      job.keys.each do |key|
+        unless [:tags, :script, :only, :except, :type].include? key
+          raise ValidationError, "#{name} job: unknow parameter #{key}"
+        end
+      end
+
       if job[:tags] && !job[:tags].is_a?(Array)
         raise ValidationError, "#{name} job: tags parameter should be an array"
       end
@@ -114,6 +125,12 @@ class GitlabCiYamlProcessor
     end
 
     @deploy_jobs.each do |name, job|
+      job.keys.each do |key|
+        unless [:tags, :script, :only, :except, :type].include? key
+          raise ValidationError, "#{name} job: unknow parameter #{key}"
+        end
+      end
+      
       if job[:tags] && !job[:tags].is_a?(Array)
         raise ValidationError, "#{name} deploy job: tags parameter should be an array"
       end
