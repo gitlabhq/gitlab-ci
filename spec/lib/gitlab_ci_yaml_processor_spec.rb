@@ -117,6 +117,17 @@ describe GitlabCiYamlProcessor do
 
       config_processor.deploy_builds_for_ref("master").size.should == 1
     end
+
+    it "returns builds if only has a list of branches including specified" do
+      config = YAML.dump({
+        before_script: ["pwd"],
+        rspec: {script: "rspec", type: "deploy", only: ["master", "deploy"]}
+      })
+
+      config_processor = GitlabCiYamlProcessor.new(config)
+
+      config_processor.deploy_builds_for_ref("deploy").size.should == 1
+    end
   end
 
   describe "Error handling" do
