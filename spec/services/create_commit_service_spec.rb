@@ -37,7 +37,7 @@ describe CreateCommitService do
       end
 
       it "does not call create_deploy_builds if there is build" do
-        config = YAML.dump({rspec: {test: "ls"},production: {deploy: "ls"}})
+        config = YAML.dump({rspec: {script: "ls"},production: { script: "ls", type: "deploy"}})
         Commit.any_instance.should_not_receive(:create_deploy_builds)
         service.execute(project,
           ref: 'refs/heads/master',

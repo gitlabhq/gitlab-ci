@@ -57,12 +57,12 @@ describe GitlabCiYamlProcessor do
     it "does not build tags" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {script: "rspec", exclude: ["tags"]}
+        rspec: {script: "rspec", except: ["tags"]}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_ref("0-1", true).size.should == 1
+      config_processor.builds_for_ref("0-1", true).size.should == 0
     end
   end
 
@@ -147,6 +147,13 @@ describe GitlabCiYamlProcessor do
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "before_script should be an array")
+    end
+
+    it "returns errors if there is no any jobs defined" do
+      config = YAML.dump({test: "bundle update"})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "Please define at least one job")
     end
   end
 end
