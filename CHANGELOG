@@ -6,6 +6,7 @@ v7.13.0
   - Fix coverage calculation on commit page
   - Enhance YAML validation
   - Redirect back after authorization
+  - Change favicon
 
 v7.12.1
   - Runner without tag should pick builds without tag only
