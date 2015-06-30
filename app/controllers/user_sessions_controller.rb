@@ -22,7 +22,7 @@ class UserSessionsController < ApplicationController
     user = @user_session.authenticate(access_token: token)
 
     if user && sign_in(user)
-      redirect_to (params[:state] || root_path)
+      redirect_to(params[:state] || root_path)
     else
       @error = 'Invalid credentials'
       render :new
