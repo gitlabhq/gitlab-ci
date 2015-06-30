@@ -143,14 +143,21 @@ describe GitlabCiYamlProcessor do
     end
 
     it "returns errors if before_script parameter is invalid" do
-      config = YAML.dump({before_script: "bundle update"})
+      config = YAML.dump({before_script: "bundle update", rspec: {script: "test"}})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "before_script should be an array")
     end
 
+    it "returns errors if there are unknown parameters" do
+      config = YAML.dump({extra: "bundle update"})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "Unknown parameter: extra")
+    end
+
     it "returns errors if there is no any jobs defined" do
-      config = YAML.dump({test: "bundle update"})
+      config = YAML.dump({before_script: ["bundle update"]})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "Please define at least one job")
