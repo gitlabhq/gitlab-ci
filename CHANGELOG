@@ -5,6 +5,7 @@ v7.13.0
   - Implemented "rake env:info". Rake task to receive system information
   - Fix coverage calculation on commit page
   - Enhance YAML validation
+  - Redirect back after authorization
 
 v7.12.1
   - Runner without tag should pick builds without tag only
