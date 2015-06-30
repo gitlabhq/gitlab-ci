@@ -167,6 +167,20 @@ describe Build do
     end
   end
 
+  describe :options do
+    let(:options) {
+      {
+        :image => "ruby:2.1",
+        :services => [
+          "postgres"
+        ]
+      }
+    }
+
+    subject { build.options }
+    it { should eq(options) }
+  end
+
   describe :ref do
     subject { build.ref }
 

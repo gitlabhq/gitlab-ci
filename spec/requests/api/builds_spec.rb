@@ -51,6 +51,16 @@ describe API::API do
         response.status.should == 404
       end
 
+      it "returns options" do
+        commit = FactoryGirl.create(:commit, project: project)
+        commit.create_builds
+
+        post api("/builds/register"), token: runner.token, info: {platform: :darwin}
+
+        response.status.should == 201
+        json_response["options"].should == {"image" => "ruby:2.1", "services" => ["postgres"]}
+      end
+
       it "returns variables" do
         commit = FactoryGirl.create(:commit, project: project)
         commit.create_builds

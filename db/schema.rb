@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20150706103229) do
     t.integer  "job_id"
     t.string   "name"
     t.boolean  "deploy",      default: false
+    t.text     "options"
   end
 
   add_index "builds", ["commit_id"], name: "index_builds_on_commit_id", using: :btree

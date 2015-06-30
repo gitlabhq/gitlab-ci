@@ -1,9 +1,13 @@
-before_script: 
+image: ruby:2.1
+services:
+  - postgres
+
+before_script:
   - gem install bundler
   - bundle install 
   - bundle exec rake db:create
 
-rspec: 
+rspec:
   script: "rake spec"
   tags: 
     - ruby
@@ -19,7 +23,7 @@ spinach:
   except:
     - tags
 
-staging: 
+staging:
   script: "cap deploy stating"
   type: deploy
   tags: 

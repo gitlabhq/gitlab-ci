@@ -108,7 +108,8 @@ class Commit < ActiveRecord::Base
         project: project,
         name: build_attrs[:name],
         commands: build_attrs[:script],
-        tag_list: build_attrs[:tags]
+        tag_list: build_attrs[:tags],
+        options: build_attrs[:options]
       })
     end
   end
@@ -145,6 +146,7 @@ class Commit < ActiveRecord::Base
         name: build_attrs[:name],
         commands: build_attrs[:script],
         tag_list: build_attrs[:tags],
+        options: build_attrs[:options],
         deploy: true
       })
     end

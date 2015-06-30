@@ -23,6 +23,8 @@ class Build < ActiveRecord::Base
   belongs_to :project
   belongs_to :runner
 
+  serialize :options
+
   validates :commit, presence: true
   validates :status, presence: true
   validates :coverage, numericality: true, allow_blank: true
@@ -63,6 +65,7 @@ class Build < ActiveRecord::Base
 
     def retry(build)
       new_build = Build.new(status: :pending)
+      new_build.options = build.options
       new_build.commands = build.commands
       new_build.tag_list = build.tag_list
       new_build.commit_id = build.commit_id
