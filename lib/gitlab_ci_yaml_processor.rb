@@ -28,7 +28,7 @@ class GitlabCiYamlProcessor
   def builds
     @jobs.map do |name, job|
       {
-        script: "#{@before_script.join("\n")}\n#{normilize_script(job[:script])}",
+        script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
         tags: job[:tags] || [],
         name: name,
         only: job[:only],
@@ -40,7 +40,7 @@ class GitlabCiYamlProcessor
   def deploy_builds
     @deploy_jobs.map do |name, job|
       {
-        script: "#{@before_script.join("\n")}\n#{normilize_script(job[:script])}",
+        script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
         tags: job[:tags] || [],
         name: name,
         only: job[:only],
@@ -55,7 +55,11 @@ class GitlabCiYamlProcessor
     @before_script = @config[:before_script] || []
     @config.delete(:before_script)
 
-    unless @config.is_a?(Hash) && !@config.values.any?{|job| !job.is_a?(Hash)}
+    @config.each do |name, param|
+      raise ValidationError, "Unknown parameter: #{name}" unless param.is_a?(Hash)
+    end
+
+    unless @config.values.any?{|job| job.is_a?(Hash)}
       raise ValidationError, "Please define at least one job"
     end
 
@@ -91,7 +95,7 @@ class GitlabCiYamlProcessor
     end
   end
 
-  def normilize_script(script)
+  def normalize_script(script)
     if script.is_a? Array
       script.join("\n")
     else
@@ -105,45 +109,33 @@ class GitlabCiYamlProcessor
     end
 
     @jobs.each do |name, job|
-      job.keys.each do |key|
-        unless [:tags, :script, :only, :except, :type].include? key
-          raise ValidationError, "#{name} job: unknow parameter #{key}"
-        end
-      end
-
-      if job[:tags] && !job[:tags].is_a?(Array)
-        raise ValidationError, "#{name} job: tags parameter should be an array"
-      end
-
-      if job[:only] && !job[:only].is_a?(Array)
-        raise ValidationError, "#{name} job: only parameter should be an array"
-      end
-
-      if job[:except] && !job[:except].is_a?(Array)
-        raise ValidationError, "#{name} job: except parameter should be an array"
-      end
+      validate_job!("#{name} job", job)
     end
 
     @deploy_jobs.each do |name, job|
-      job.keys.each do |key|
-        unless [:tags, :script, :only, :except, :type].include? key
-          raise ValidationError, "#{name} job: unknow parameter #{key}"
-        end
-      end
-      
-      if job[:tags] && !job[:tags].is_a?(Array)
-        raise ValidationError, "#{name} deploy job: tags parameter should be an array"
-      end
-
-      if job[:only] && !job[:only].is_a?(Array)
-        raise ValidationError, "#{name} deploy job: only parameter should be an array"
-      end
-
-      if job[:except] && !job[:except].is_a?(Array)
-        raise ValidationError, "#{name} deploy job: except parameter should be an array"
-      end
+      validate_job!("#{name} deploy job", job)
     end
 
     true
+  end
+
+  def validate_job!(name, job)
+    job.keys.each do |key|
+      unless [:tags, :script, :only, :except, :type].include? key
+        raise ValidationError, "#{name}: unknown parameter #{key}"
+      end
+    end
+
+    if job[:tags] && !job[:tags].is_a?(Array)
+      raise ValidationError, "#{name}: tags parameter should be an array"
+    end
+
+    if job[:only] && !job[:only].is_a?(Array)
+      raise ValidationError, "#{name}: only parameter should be an array"
+    end
+
+    if job[:except] && !job[:except].is_a?(Array)
+      raise ValidationError, "#{name}: except parameter should be an array"
+    end
   end
 end
