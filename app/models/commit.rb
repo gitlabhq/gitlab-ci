@@ -208,7 +208,7 @@ class Commit < ActiveRecord::Base
     if project.coverage_enabled? && builds.count(:all) > 0
       coverage_array = builds.map(&:coverage).compact
       if coverage_array.size >= 1
-        coverage_array.reduce(:+) / coverage_array.size
+        '%.2f' % (coverage_array.reduce(:+) / coverage_array.size)
       end
     end
   end
