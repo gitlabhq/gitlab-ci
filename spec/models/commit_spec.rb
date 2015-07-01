@@ -167,14 +167,14 @@ describe Commit do
     it "calculates average when there are two builds with coverage" do
       FactoryGirl.create :build, coverage: 30, commit: commit
       FactoryGirl.create :build, coverage: 40, commit: commit
-      commit.coverage.should == 35.0
+      commit.coverage.should == "35.00"
     end
 
     it "calculates average when there are two builds with coverage and one with nil" do
       FactoryGirl.create :build, coverage: 30, commit: commit
       FactoryGirl.create :build, coverage: 40, commit: commit
       FactoryGirl.create :build, commit: commit
-      commit.coverage.should == 35.0
+      commit.coverage.should == "35.00"
     end
 
     it "calculates average when there is one build without coverage" do
