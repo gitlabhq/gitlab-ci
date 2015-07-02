@@ -57,7 +57,7 @@ class User
 
   def can_manage_project?(project_gitlab_id)
     opts = {
-      private_token: self.private_token,
+      access_token: self.access_token,
     }
 
     Rails.cache.fetch(cache_key('manage', project_gitlab_id, sync_at)) do
@@ -78,7 +78,7 @@ class User
 
   def project_info(project_gitlab_id)
     opts = {
-      private_token: self.private_token,
+      access_token: self.access_token,
     }
 
     Rails.cache.fetch(cache_key("project_info", project_gitlab_id, sync_at)) do

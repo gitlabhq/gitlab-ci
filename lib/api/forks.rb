@@ -18,7 +18,7 @@ module API
         authenticate_project_token!(project)
 
         user_session = UserSession.new
-        user = user_session.authenticate_by_token(private_token: params[:private_token])
+        user = user_session.authenticate(private_token: params[:private_token])
 
         fork = CreateProjectService.new.execute(
           user,
