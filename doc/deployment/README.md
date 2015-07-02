@@ -20,9 +20,11 @@ apt-get update
 apt-get install ruby-dev
 ```
 
-The Dpl provides support for vast number of services, including: Heroku, Cloud Foundry, AWS/S3, and more. To use it simply define provider and any additional parameters required by the provider.
+The Dpl provides support for vast number of services, including: Heroku, Cloud Foundry, AWS/S3, and more.
+To use it simply define provider and any additional parameters required by the provider.
 
-For example if you want to use it to deploy your application to heroku, you need to specify `heroku` as provider, specify `api-key` and `app`. There's more and all possible parameters can be found here: https://github.com/travis-ci/dpl#heroku
+For example if you want to use it to deploy your application to heroku, you need to specify `heroku` as provider, specify `api-key` and `app`.
+There's more and all possible parameters can be found here: https://github.com/travis-ci/dpl#heroku
 
 ```
 staging:
@@ -36,7 +38,10 @@ In the above example we use Dpl to deploy `my-app-staging` to Heroku server with
 To use different provider take a look at long list of [Supported Providers](https://github.com/travis-ci/dpl#supported-providers).
 
 ### Using Dpl with Docker
-When you use GitLab Runner you most likely configured it to use your server's shell commands. This means that all commands are run in context of local user (ie. gitlab_runner or gitlab_ci_multi_runner). It also means that most probably in your Docker container you don't have the Ruby runtime installed. You will have to install it:
+When you use GitLab Runner you most likely configured it to use your server's shell commands.
+This means that all commands are run in context of local user (ie. gitlab_runner or gitlab_ci_multi_runner).
+It also means that most probably in your Docker container you don't have the Ruby runtime installed.
+You will have to install it:
 ```
 staging:
   type: deploy
@@ -48,10 +53,13 @@ staging:
   - master
 ```
 
-The first line `apt-get update -yq` updates the list of available packages, where second `apt-get install -y ruby-dev` install `Ruby` runtime on system. The above example is valid for all Debian-compatible systems.
+The first line `apt-get update -yq` updates the list of available packages, where second `apt-get install -y ruby-dev` install `Ruby` runtime on system.
+The above example is valid for all Debian-compatible systems.
 
 ### Usage in staging and production
-It's pretty common in developer workflow to have staging (development) and production environment. If we consider above example: we would like to deploy `master` branch to `staging` and `all tags` to `production` environment. The final `.gitlab-ci.yml` for that setup would look like this:
+It's pretty common in developer workflow to have staging (development) and production environment.
+If we consider above example: we would like to deploy `master` branch to `staging` and `all tags` to `production` environment.
+The final `.gitlab-ci.yml` for that setup would look like this:
 
 ```
 staging:

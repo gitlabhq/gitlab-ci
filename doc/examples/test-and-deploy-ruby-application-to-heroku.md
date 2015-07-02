@@ -1,5 +1,5 @@
-## Test and Deploy Python application to Heroku
-This example will guide you how to run tests in your Python application and deploy it automatiacally to staging and production Heroku application.
+## Test and Deploy Ruby application to Heroku
+This example will guide you how to run tests in your Ruby application and deploy it automatiacally to staging and production Heroku application.
 
 You can check the [source](https://gitlab.com/ayufan/ruby-getting-started) and [CI status](https://ci.gitlab.com/projects/4050).
 
@@ -44,10 +44,13 @@ You'll need to create two variables in `Project > Variables`:
 Find your Heroku API key in [Manage Account](https://dashboard.heroku.com/account).
 
 ### Create Heroku application
-For each of your environments, you'll need to create a new Heroku application. You can do this through the [Dashboard](https://dashboard.heroku.com/).
+For each of your environments, you'll need to create a new Heroku application.
+You can do this through the [Dashboard](https://dashboard.heroku.com/).
 
 ### Create runner
-First install [Docker Engine](https://docs.docker.com/installation/). To build this project you also need to have [GitLab Runner](https://about.gitlab.com/gitlab-ci/#gitlab-runner). You can use public runners available on `ci.gitlab.com`, but you can register your own:
+First install [Docker Engine](https://docs.docker.com/installation/).
+To build this project you also need to have [GitLab Runner](https://about.gitlab.com/gitlab-ci/#gitlab-runner).
+You can use public runners available on `ci.gitlab.com`, but you can register your own:
 ```
 gitlab-ci-multi-runner register \
   --non-interactive \

@@ -49,10 +49,13 @@ You'll need to create two variables in `Project > Variables`:
 Find your Heroku API key in [Manage Account](https://dashboard.heroku.com/account).
 
 ### Create Heroku application
-For each of your environments, you'll need to create a new Heroku application. You can do this through the [Dashboard](https://dashboard.heroku.com/).
+For each of your environments, you'll need to create a new Heroku application.
+You can do this through the [Dashboard](https://dashboard.heroku.com/).
 
 ### Create runner
-First install [Docker Engine](https://docs.docker.com/installation/). To build this project you also need to have [GitLab Runner](https://about.gitlab.com/gitlab-ci/#gitlab-runner). You can use public runners available on `ci.gitlab.com`, but you can register your own:
+First install [Docker Engine](https://docs.docker.com/installation/).
+To build this project you also need to have [GitLab Runner](https://about.gitlab.com/gitlab-ci/#gitlab-runner). 
+ou can use public runners available on `ci.gitlab.com`, but you can register your own:
 ```
 gitlab-ci-multi-runner register \
   --non-interactive \
