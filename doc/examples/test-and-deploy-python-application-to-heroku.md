@@ -1,6 +1,7 @@
-### Test and Deploy Python application to Heroku
-Example Python application with tests on PostgreSQL database, staging and production deployment to Heroku can be found here:
-[source](https://gitlab.com/ayufan/python-getting-started) and here: [ci](https://ci.gitlab.com/projects/4080)
+## Test and Deploy Python application to Heroku
+This example will guide you how to run tests in your Python application and deploy it automatiacally to staging and production Heroku application.
+
+You can check the [source](https://gitlab.com/ayufan/python-getting-started) and [CI status](https://ci.gitlab.com/projects/4080).
 
 ### Configure project
 This is how the configuration (the `.gitlab-ci.yml`) for that project looks like:
@@ -35,23 +36,23 @@ production:
   - tags
 ```
 
-This project have three jobs:
+This project has three jobs:
 1. `test` - used to test rails application,
 2. `staging` - used to automatically deploy staging environment every push to `master` branch
 3. `production` - used to automatically deploy production environmnet for every created tag
 
 ### Store API keys
-The project requires to create two secure variables in `Project > Variables`:
+You'll need to create two variables in `Project > Variables`:
 1. `HEROKU_STAGING_API_KEY` - Heroku API key used to deploy staging app,
 2. `HEROKU_PRODUCTION_API_KEY` - Heroku API key used to deploy production app.
 
-Heroku API key can be found in [Manage Account](https://dashboard.heroku.com/account).
+Find your Heroku API key in [Manage Account](https://dashboard.heroku.com/account).
 
 ### Create Heroku application
-You have to navigate to Heroku [Dashboard](https://dashboard.heroku.com/) and create new application to each of your environments.
+For each of your environments, you'll need to create a new Heroku application. You can do this through the [Dashboard](https://dashboard.heroku.com/).
 
 ### Create runner
-To build this project you also need to have `Runner`. You can use public runners available on `ci.gitlab.com`, but you can also provide your own:
+First install [Docker Engine](https://docs.docker.com/installation/). To build this project you also need to have [GitLab Runner](https://about.gitlab.com/gitlab-ci/#gitlab-runner). You can use public runners available on `ci.gitlab.com`, but you can register your own:
 ```
 gitlab-ci-multi-runner register \
   --non-interactive \
@@ -63,6 +64,6 @@ gitlab-ci-multi-runner register \
   --docker-postgres latest
 ```
 
-Above command creates runner that uses `docker` (you need to have Docker installed), uses [python:3.2](https://registry.hub.docker.com/u/library/python/) image and uses [postgres](https://registry.hub.docker.com/u/library/postgres/) database.
+Above command creates runner that uses [Docker](https://docker.com/), uses [python:3.2](https://registry.hub.docker.com/u/library/python/) image and uses [postgres](https://registry.hub.docker.com/u/library/postgres/) database.
 
-To access PostgreSQL database you need to connect to `host: postgres` instead of default: `localhost` as `postgres` user without password.
+To access PostgreSQL database you need to connect to `host: postgres` as user `postgres` without password.
