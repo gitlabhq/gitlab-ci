@@ -2,7 +2,6 @@ module StubGitlabCalls
   def stub_gitlab_calls
     stub_session
     stub_user
-    stub_oauth_user
     stub_project_8
     stub_project_8_hooks
     stub_projects
@@ -32,13 +31,9 @@ module StubGitlabCalls
   def stub_user
     f = File.read(Rails.root.join('spec/support/gitlab_stubs/user.json'))
 
-    stub_request(:get, "#{gitlab_url}api/v3/user.json?private_token=Wvjy2Krpb7y8xi93owUz").
+    stub_request(:get, "#{gitlab_url}api/v3/user?private_token=Wvjy2Krpb7y8xi93owUz").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})
-  end
-
-  def stub_oauth_user
-    f = File.read(Rails.root.join('spec/support/gitlab_stubs/user.json'))
 
     stub_request(:get, "#{gitlab_url}api/v3/user?access_token=some_token").
       with(:headers => {'Content-Type'=>'application/json'}).
@@ -57,6 +52,7 @@ module StubGitlabCalls
 
   def stub_projects
     f = File.read(Rails.root.join('spec/support/gitlab_stubs/projects.json'))
+   
     stub_request(:get, "#{gitlab_url}api/v3/projects.json?archived=false&private_token=Wvjy2Krpb7y8xi93owUz").
       with(:headers => {'Content-Type'=>'application/json'}).
       to_return(:status => 200, :body => f, :headers => {'Content-Type'=>'application/json'})

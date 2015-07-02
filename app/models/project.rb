@@ -84,7 +84,12 @@ ls -la
     end
 
     def from_gitlab(user, scope = :owned, options)
-      opts = { private_token: user.private_token }
+      opts = if user.access_token
+               { access_token: user.access_token }
+             else
+               { private_token: user.private_token }
+             end
+      
       opts.merge! options
 
       projects = Network.new.projects(opts.compact, scope)

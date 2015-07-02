@@ -7,6 +7,7 @@ v7.13.0
   - Enhance YAML validation
   - Redirect back after authorization
   - Change favicon
+  - Refactoring: Get rid of private_token usage in the frontend.
 
 v7.12.1
   - Runner without tag should pick builds without tag only

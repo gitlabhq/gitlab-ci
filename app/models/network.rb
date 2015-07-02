@@ -16,18 +16,6 @@ class Network
     build_response(response)
   end
 
-  def authenticate_by_token(api_opts)
-    opts = {
-      query: api_opts
-    }
-
-    endpoint = File.join(url, API_PREFIX, 'user.json')
-    response = self.class.get(endpoint, default_opts.merge(opts))
-
-    build_response(response)
-  end
-
-
   def projects(api_opts, scope = :owned)
     # Dont load archived projects
     api_opts.merge!(archived: false)
@@ -74,12 +62,13 @@ class Network
     build_response(response)
   end
 
-  def enable_ci(project_id, api_opts, token)
+  def enable_ci(project_id, data, api_opts)
     opts = {
-      body: api_opts.to_json
+      body: data.to_json,
+      query: api_opts
     }
 
-    query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
+    query = "projects/#{project_id}/services/gitlab-ci.json"
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.put(endpoint, default_opts.merge(opts))
 
@@ -93,8 +82,8 @@ class Network
     end
   end
 
-  def disable_ci(project_id, token)
-    query = "projects/#{project_id}/services/gitlab-ci.json?private_token=#{token}"
+  def disable_ci(project_id, access_token)
+    query = "projects/#{project_id}/services/gitlab-ci.json?access_token=#{access_token}"
 
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.delete(endpoint, default_opts)

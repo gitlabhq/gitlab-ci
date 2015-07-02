@@ -15,5 +15,6 @@
   "is_admin":false,
   "can_create_group":false,
   "can_create_project":false,
-  "private_token":"Wvjy2Krpb7y8xi93owUz"
+  "private_token":"Wvjy2Krpb7y8xi93owUz",
+  "access_token":"Wvjy2Krpb7y8xi93owUz"
 }
