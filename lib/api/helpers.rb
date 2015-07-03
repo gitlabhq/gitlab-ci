@@ -9,7 +9,7 @@ module API
         options = {
           private_token: (params[PRIVATE_TOKEN_PARAM] || env[PRIVATE_TOKEN_HEADER])
         }
-        UserSession.new.authenticate_by_token(options)
+        UserSession.new.authenticate(options)
       end
     end
 
