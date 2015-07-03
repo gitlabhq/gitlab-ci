@@ -177,9 +177,12 @@ ActiveRecord::Schema.define(version: 20150707134456) do
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "variables", force: true do |t|
-    t.integer "project_id", null: false
+    t.integer "project_id",           null: false
     t.string  "key"
     t.text    "value"
+    t.text    "encrypted_value"
+    t.string  "encrypted_value_salt"
+    t.string  "encrypted_value_iv"
   end
 
   add_index "variables", ["project_id"], name: "index_variables_on_project_id", using: :btree
