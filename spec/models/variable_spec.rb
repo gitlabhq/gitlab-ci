@@ -6,7 +6,7 @@
 #  project_id           :integer          not null
 #  key                  :string(255)
 #  value                :text
-#  encrypted_value      :string(255)
+#  encrypted_value      :text
 #  encrypted_value_salt :string(255)
 #  encrypted_value_iv   :string(255)
 #
