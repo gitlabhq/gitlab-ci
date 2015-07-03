@@ -14,6 +14,7 @@
 #  commit_id   :integer
 #  coverage    :float
 #  commands    :text
+#  options     :text
 #
 
 class Build < ActiveRecord::Base
