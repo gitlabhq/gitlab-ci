@@ -15,10 +15,14 @@ class RegisterBuildService
 
     builds = builds.order('created_at ASC')
 
-    build = builds.find do |build|
-      (build.tag_list - current_runner.tag_list).empty?
-    end
-      
+    build =
+      if current_runner.tag_list.present?
+        builds.find do |build|
+          (build.tag_list - current_runner.tag_list).empty?
+        end
+      else
+        builds.first
+      end
 
     if build
       # In case when 2 runners try to assign the same build, second runner will be declined

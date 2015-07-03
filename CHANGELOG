@@ -1,5 +1,4 @@
 v7.12.1
-  - Runner without tag should pick builds without tag only
   - Explicit error in the GitLab when commit not found.
   - Fix: lint with relative subpath
   - Update webhook example

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe API::API do
   include ApiHelpers
 
-  let(:runner) { FactoryGirl.create(:runner, tag_list: ["mysql", "ruby"]) }
+  let(:runner) { FactoryGirl.create(:runner) }
   let(:project) { FactoryGirl.create(:project) }
 
   describe "Builds API for runners" do
