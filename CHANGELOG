@@ -8,6 +8,9 @@ v7.13.0
   - Redirect back after authorization
   - Change favicon
 
+v7.12.2
+  - Revert: Runner without tag should pick builds without tag only
+
 v7.12.1
   - Runner without tag should pick builds without tag only
   - Explicit error in the GitLab when commit not found.
