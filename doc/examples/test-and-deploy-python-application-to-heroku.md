@@ -1,10 +1,10 @@
-## Test and Deploy Python application to Heroku
-This example will guide you how to run tests in your Python application and deploy it automatiacally to staging and production Heroku application.
+## Test and Deploy a python application
+This example will guide you how to run tests in your Python application and deploy it automatically as Heroku application.
 
-You can check the [source](https://gitlab.com/ayufan/python-getting-started) and [CI status](https://ci.gitlab.com/projects/4080).
+You can checkout the example [source](https://gitlab.com/ayufan/python-getting-started) and check [CI status](https://ci.gitlab.com/projects/4080).
 
 ### Configure project
-This is how the configuration (the `.gitlab-ci.yml`) for that project looks like:
+This is what the `.gitlab-ci.yml` file looks like for this project:
 ```yaml
 test:
   script:
@@ -55,7 +55,7 @@ You can do this through the [Dashboard](https://dashboard.heroku.com/).
 ### Create runner
 First install [Docker Engine](https://docs.docker.com/installation/).
 To build this project you also need to have [GitLab Runner](https://about.gitlab.com/gitlab-ci/#gitlab-runner). 
-ou can use public runners available on `ci.gitlab.com`, but you can register your own:
+You can use public runners available on `ci.gitlab.com`, but you can register your own:
 ```
 gitlab-ci-multi-runner register \
   --non-interactive \
@@ -67,6 +67,6 @@ gitlab-ci-multi-runner register \
   --docker-postgres latest
 ```
 
-Above command creates runner that uses [Docker](https://docker.com/), uses [python:3.2](https://registry.hub.docker.com/u/library/python/) image and uses [postgres](https://registry.hub.docker.com/u/library/postgres/) database.
+With the command above, you create a runner that uses [python:3.2](https://registry.hub.docker.com/u/library/python/) image and uses [postgres](https://registry.hub.docker.com/u/library/postgres/) database.
 
 To access PostgreSQL database you need to connect to `host: postgres` as user `postgres` without password.
