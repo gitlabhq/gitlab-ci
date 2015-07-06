@@ -4,12 +4,12 @@
 #
 #  id                       :integer          not null, primary key
 #  name                     :string(255)      not null
-#  timeout                  :integer          default(1800), not null
+#  timeout                  :integer          default(3600), not null
 #  created_at               :datetime
 #  updated_at               :datetime
 #  token                    :string(255)
 #  default_ref              :string(255)
-#  path               :string(255)
+#  path                     :string(255)
 #  always_build             :boolean          default(FALSE), not null
 #  polling_interval         :integer
 #  public                   :boolean          default(FALSE), not null
@@ -22,6 +22,7 @@
 #  skip_refs                :string(255)
 #  coverage_regex           :string(255)
 #  shared_runners_enabled   :boolean          default(FALSE)
+#  generated_yaml_config    :text
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
