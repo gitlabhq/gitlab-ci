@@ -4,7 +4,7 @@
 #
 #  id                       :integer          not null, primary key
 #  name                     :string(255)      not null
-#  timeout                  :integer          default(1800), not null
+#  timeout                  :integer          default(3600), not null
 #  created_at               :datetime
 #  updated_at               :datetime
 #  token                    :string(255)
@@ -22,6 +22,7 @@
 #  skip_refs                :string(255)
 #  coverage_regex           :string(255)
 #  shared_runners_enabled   :boolean          default(FALSE)
+#  generated_yaml_config    :text
 #
 
 class Project < ActiveRecord::Base

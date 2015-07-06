@@ -15,6 +15,9 @@
 #  coverage    :float
 #  commands    :text
 #  options     :text
+#  job_id      :integer
+#  name        :string(255)
+#  deploy      :boolean          default(FALSE)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

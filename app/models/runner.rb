@@ -10,6 +10,11 @@
 #  contacted_at :datetime
 #  active       :boolean          default(TRUE), not null
 #  is_shared    :boolean          default(FALSE)
+#  name         :string(255)
+#  version      :string(255)
+#  revision     :string(255)
+#  platform     :string(255)
+#  architecture :string(255)
 #
 
 class Runner < ActiveRecord::Base
