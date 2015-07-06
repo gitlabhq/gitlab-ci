@@ -23,7 +23,7 @@ gitlab-ci-multi-runner register \
   --docker-mysql latest
 ```
 
-The registered runner will use `ruby:2.1` image and will allow to access `postgres` and `mysql` databases for time of the build.
+**The registered runner will use `ruby:2.1` image and will run two services (`postgres:latest` and `mysql:latest`) that will be accessible for time of the build.**
 
 ### What is image?
 The image is the name of any repository that is present in local Docker Engine or any repository that can be found at [Docker Hub](https://registry.hub.docker.com/). 
