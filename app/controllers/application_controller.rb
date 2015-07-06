@@ -12,12 +12,6 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @current_user ||= session[:current_user]
-
-    # Backward compatibility. Until 7.13 user session doesn't contain access_token
-    # Users with old session should be logged out
-    return nil if @current_user && @current_user.access_token.nil?
-
-    @current_user
   end
 
   def sign_in(user)
