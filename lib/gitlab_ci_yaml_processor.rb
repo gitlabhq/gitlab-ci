@@ -1,7 +1,7 @@
 class GitlabCiYamlProcessor
   class ValidationError < StandardError;end
 
-  attr_reader :before_script
+  attr_reader :before_script, :image, :services
 
   def initialize(config)
     @config = YAML.load(config)
@@ -27,25 +27,13 @@ class GitlabCiYamlProcessor
 
   def builds
     @jobs.map do |name, job|
-      {
-        script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
-        tags: job[:tags] || [],
-        name: name,
-        only: job[:only],
-        except: job[:except]
-      }
+      build_job(name, job)
     end
   end
 
   def deploy_builds
     @deploy_jobs.map do |name, job|
-      {
-        script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
-        tags: job[:tags] || [],
-        name: name,
-        only: job[:only],
-        except: job[:except]
-      }
+      build_job(name, job)
     end
   end
 
@@ -53,7 +41,9 @@ class GitlabCiYamlProcessor
 
   def initial_parsing
     @before_script = @config[:before_script] || []
-    @config.delete(:before_script)
+    @image = @config[:image]
+    @services = @config[:services]
+    @config.except!(:before_script, :image, :services)
 
     @config.each do |name, param|
       raise ValidationError, "Unknown parameter: #{name}" unless param.is_a?(Hash)
@@ -87,6 +77,20 @@ class GitlabCiYamlProcessor
     end
   end
 
+  def build_job(name, job)
+    {
+      script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
+      tags: job[:tags] || [],
+      name: name,
+      only: job[:only],
+      except: job[:except],
+      options: {
+        image: job[:image] || @image,
+        services: job[:services] || @services
+      }.compact
+    }
+  end
+
   def match_ref?(pattern, ref)
     if pattern.first == "/" && pattern.last == "/"
       Regexp.new(pattern[1...-1]) =~ ref
@@ -108,6 +112,14 @@ class GitlabCiYamlProcessor
       raise ValidationError, "before_script should be an array"
     end
 
+    unless @image.nil? || @image.is_a?(String)
+      raise ValidationError, "image should be a string"
+    end
+
+    unless @services.nil? || @services.is_a?(Array) && @services.all? {|service| service.is_a?(String)}
+      raise ValidationError, "services should be an array of strings"
+    end
+
     @jobs.each do |name, job|
       validate_job!("#{name} job", job)
     end
@@ -121,8 +133,18 @@ class GitlabCiYamlProcessor
 
   def validate_job!(name, job)
     job.keys.each do |key|
-      unless [:tags, :script, :only, :except, :type].include? key
+      unless [:tags, :script, :only, :except, :type, :image, :services].include? key
         raise ValidationError, "#{name}: unknown parameter #{key}"
+      end
+    end
+
+    if job[:image] && !job[:image].is_a?(String)
+      raise ValidationError, "#{name}: image should be a string"
+    end
+
+    if job[:services]
+      unless job[:services].is_a?(Array) && job[:services].all? {|service| service.is_a?(String)}
+        raise ValidationError, "#{name}: services should be an array of strings"
       end
     end
 

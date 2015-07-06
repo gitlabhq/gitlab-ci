@@ -17,7 +17,8 @@ describe GitlabCiYamlProcessor do
         name: :rspec,
         only: nil,
         script: "pwd\nrspec",
-        tags: []
+        tags: [],
+        options: {}
       }
     end
 
@@ -81,7 +82,8 @@ describe GitlabCiYamlProcessor do
         name: :rspec,
         only: nil,
         script: "pwd\nrspec",
-        tags: []
+        tags: [],
+        options: {}
       }
     end
 
@@ -130,6 +132,56 @@ describe GitlabCiYamlProcessor do
     end
   end
 
+  describe "Image and service handling" do
+    it "returns image and service when defined" do
+      config = YAML.dump({
+                           image: "ruby:2.1",
+                           services: ["mysql"],
+                           before_script: ["pwd"],
+                           rspec: {script: "rspec"}
+                         })
+
+      config_processor = GitlabCiYamlProcessor.new(config)
+
+      config_processor.builds_for_ref("master").size.should == 1
+      config_processor.builds_for_ref("master").first.should == {
+        except: nil,
+        name: :rspec,
+        only: nil,
+        script: "pwd\nrspec",
+        tags: [],
+        options: {
+          image: "ruby:2.1",
+          services: ["mysql"]
+        }
+      }
+    end
+
+    it "returns image and service when overridden for job" do
+      config = YAML.dump({
+                           image: "ruby:2.1",
+                           services: ["mysql"],
+                           before_script: ["pwd"],
+                           rspec: {image: "ruby:2.5", services: ["postgresql"], script: "rspec"}
+                         })
+
+      config_processor = GitlabCiYamlProcessor.new(config)
+
+      config_processor.builds_for_ref("master").size.should == 1
+      config_processor.builds_for_ref("master").first.should == {
+        except: nil,
+        name: :rspec,
+        only: nil,
+        script: "pwd\nrspec",
+        tags: [],
+        options: {
+          image: "ruby:2.5",
+          services: ["postgresql"]
+        }
+      }
+    end
+  end
+
   describe "Error handling" do
     it "indicates that object is invalid" do
       expect{GitlabCiYamlProcessor.new("invalid_yaml\n!ccdvlf%612334@@@@")}.to raise_error(GitlabCiYamlProcessor::ValidationError)
@@ -147,6 +199,48 @@ describe GitlabCiYamlProcessor do
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "before_script should be an array")
+    end
+
+    it "returns errors if image parameter is invalid" do
+      config = YAML.dump({image: ["test"], rspec: {script: "test"}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "image should be a string")
+    end
+
+    it "returns errors if job image parameter is invalid" do
+      config = YAML.dump({rspec: {image: ["test"]}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: image should be a string")
+    end
+
+    it "returns errors if services parameter is not an array" do
+      config = YAML.dump({services: "test", rspec: {script: "test"}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "services should be an array of strings")
+    end
+
+    it "returns errors if services parameter is not an array of strings" do
+      config = YAML.dump({services: [10, "test"], rspec: {script: "test"}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "services should be an array of strings")
+    end
+
+    it "returns errors if job services parameter is not an array" do
+      config = YAML.dump({rspec: {services: "test"}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: services should be an array of strings")
+    end
+
+    it "returns errors if job services parameter is not an array of strings" do
+      config = YAML.dump({rspec: {services: [10, "test"]}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: services should be an array of strings")
     end
 
     it "returns errors if there are unknown parameters" do

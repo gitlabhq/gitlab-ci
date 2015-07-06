@@ -14,6 +14,7 @@
 #  commit_id   :integer
 #  coverage    :float
 #  commands    :text
+#  options     :text
 #
 
 require 'spec_helper'
@@ -165,6 +166,20 @@ describe Build do
       it { should be_a(Float) }
       it { should > 0.0 }
     end
+  end
+
+  describe :options do
+    let(:options) {
+      {
+        :image => "ruby:2.1",
+        :services => [
+          "postgres"
+        ]
+      }
+    }
+
+    subject { build.options }
+    it { should eq(options) }
   end
 
   describe :ref do

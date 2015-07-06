@@ -1,4 +1,5 @@
 v7.13.0
+  - Allow to specify image and services in yml that can be used with docker
   - Fix: No runner notification can see managers only
   - Ability to cancel all builds in commit at once
   - Disable colors in rake tasks automatically (if IO is not a TTY)

@@ -14,6 +14,7 @@
 #  commit_id   :integer
 #  coverage    :float
 #  commands    :text
+#  options     :text
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -23,6 +24,12 @@ FactoryGirl.define do
     started_at 'Di 29. Okt 09:51:28 CET 2013'
     finished_at 'Di 29. Okt 09:53:28 CET 2013'
     commands 'ls -a'
+    options do
+      {
+        image: "ruby:2.1",
+        services: ["postgres"]
+      }
+    end
 
     factory :not_started_build do
       started_at nil
