@@ -2,22 +2,23 @@
 #
 # Table name: builds
 #
-#  id          :integer          not null, primary key
-#  project_id  :integer
-#  status      :string(255)
-#  finished_at :datetime
-#  trace       :text
-#  created_at  :datetime
-#  updated_at  :datetime
-#  started_at  :datetime
-#  runner_id   :integer
-#  commit_id   :integer
-#  coverage    :float
-#  commands    :text
-#  options     :text
-#  job_id      :integer
-#  name        :string(255)
-#  deploy      :boolean          default(FALSE)
+#  id            :integer          not null, primary key
+#  project_id    :integer
+#  status        :string(255)
+#  finished_at   :datetime
+#  trace         :text
+#  created_at    :datetime
+#  updated_at    :datetime
+#  started_at    :datetime
+#  runner_id     :integer
+#  commit_id     :integer
+#  coverage      :float
+#  commands      :text
+#  job_id        :integer
+#  name          :string(255)
+#  deploy        :boolean          default(FALSE)
+#  options       :text
+#  allow_failure :boolean          default(FALSE), not null
 #
 
 class Build < ActiveRecord::Base
@@ -75,6 +76,7 @@ class Build < ActiveRecord::Base
       new_build.commit_id = build.commit_id
       new_build.project_id = build.project_id
       new_build.name = build.name
+      new_build.allow_failure = build.allow_failure
       new_build.save
       new_build
     end
@@ -151,6 +153,10 @@ class Build < ActiveRecord::Base
 
   def complete?
     canceled? || success? || failed?
+  end
+
+  def ignored?
+    failed? && allow_failure?
   end
 
   def timeout

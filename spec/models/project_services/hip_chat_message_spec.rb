@@ -6,12 +6,7 @@ describe HipChatMessage do
   let(:project) { FactoryGirl.create(:project) }
 
   context "One build" do
-    let(:commit) do
-      commit = FactoryGirl.create(:commit, project: project)
-      commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: 'pwd' }})
-      commit.save
-      commit
-    end
+    let(:commit) { FactoryGirl.create(:commit_with_one_job, project: project) }
 
     let(:build) do 
       commit.create_builds
@@ -42,7 +37,7 @@ describe HipChatMessage do
   end
 
   context "Several builds" do
-    let(:commit) {commit = FactoryGirl.create(:commit, project: project)}
+    let(:commit) { FactoryGirl.create(:commit_with_two_jobs, project: project) }
 
     let(:build) do 
       commit.builds.first
