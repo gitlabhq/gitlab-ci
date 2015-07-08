@@ -49,5 +49,17 @@ FactoryGirl.define do
         ci_yaml_file: File.read(Rails.root.join('spec/support/gitlab_stubs/gitlab_ci.yml'))
       }
     end
+
+    factory :commit_with_one_job do
+      after(:create) do |commit, evaluator|
+        commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: "ls" }})
+      end
+    end
+
+    factory :commit_with_two_jobs do
+      after(:create) do |commit, evaluator|
+        commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: "ls" }, spinach: { script: "ls" }})
+      end
+    end
   end
 end

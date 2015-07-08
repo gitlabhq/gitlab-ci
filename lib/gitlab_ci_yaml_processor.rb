@@ -84,6 +84,7 @@ class GitlabCiYamlProcessor
       name: name,
       only: job[:only],
       except: job[:except],
+      allow_failure: job[:allow_failure] || false,
       options: {
         image: job[:image] || @image,
         services: job[:services] || @services
@@ -133,7 +134,7 @@ class GitlabCiYamlProcessor
 
   def validate_job!(name, job)
     job.keys.each do |key|
-      unless [:tags, :script, :only, :except, :type, :image, :services].include? key
+      unless [:tags, :script, :only, :except, :type, :image, :services, :allow_failure].include? key
         raise ValidationError, "#{name}: unknown parameter #{key}"
       end
     end
@@ -158,6 +159,10 @@ class GitlabCiYamlProcessor
 
     if job[:except] && !job[:except].is_a?(Array)
       raise ValidationError, "#{name}: except parameter should be an array"
+    end
+
+    if job[:allow_failure] && !job[:allow_failure].in?([true, false])
+      raise ValidationError, "#{name}: allow_failure parameter should be an boolean"
     end
   end
 end

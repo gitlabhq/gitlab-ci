@@ -111,7 +111,8 @@ class Commit < ActiveRecord::Base
         name: build_attrs[:name],
         commands: build_attrs[:script],
         tag_list: build_attrs[:tags],
-        options: build_attrs[:options]
+        options: build_attrs[:options],
+        allow_failure: build_attrs[:allow_failure]
       })
     end
   end
@@ -149,6 +150,7 @@ class Commit < ActiveRecord::Base
         commands: build_attrs[:script],
         tag_list: build_attrs[:tags],
         options: build_attrs[:options],
+        allow_failure: build_attrs[:allow_failure],
         deploy: true
       })
     end
@@ -186,7 +188,7 @@ class Commit < ActiveRecord::Base
 
   def success?
     builds_without_retry.all? do |build|
-      build.success?
+      build.success? || build.ignored?
     end
   end
 

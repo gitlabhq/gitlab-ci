@@ -17,11 +17,13 @@
       #{build.short_sha}
   %td
     = build.name
-    - if build.tags.any?
-      - build.tag_list.each do |tag|
-        %span.label.label-primary
-          = tag
-
+    .pull-right
+      - if build.tags.any?
+        - build.tag_list.each do |tag|
+          %span.label.label-primary
+            = tag
+      - if build.allow_failure
+        %span.label.label-danger allowed to fail
 
   %td.duration
     - if build.duration
