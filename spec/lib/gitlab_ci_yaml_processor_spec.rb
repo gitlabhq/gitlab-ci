@@ -18,7 +18,8 @@ describe GitlabCiYamlProcessor do
         only: nil,
         script: "pwd\nrspec",
         tags: [],
-        options: {}
+        options: {},
+        allow_failure: false
       }
     end
 
@@ -71,7 +72,7 @@ describe GitlabCiYamlProcessor do
     it "returns builds if no branch specified" do
       config = YAML.dump({
         before_script: ["pwd"],
-        rspec: {script: "rspec", type: "deploy"}
+        rspec: {script: "rspec", type: "deploy", allow_failure: true}
       })
 
       config_processor = GitlabCiYamlProcessor.new(config)
@@ -83,7 +84,8 @@ describe GitlabCiYamlProcessor do
         only: nil,
         script: "pwd\nrspec",
         tags: [],
-        options: {}
+        options: {},
+        allow_failure: true
       }
     end
 
@@ -153,7 +155,8 @@ describe GitlabCiYamlProcessor do
         options: {
           image: "ruby:2.1",
           services: ["mysql"]
-        }
+        },
+        allow_failure: false
       }
     end
 
@@ -177,7 +180,8 @@ describe GitlabCiYamlProcessor do
         options: {
           image: "ruby:2.5",
           services: ["postgresql"]
-        }
+        },
+        allow_failure: false
       }
     end
   end
@@ -255,6 +259,13 @@ describe GitlabCiYamlProcessor do
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "Please define at least one job")
+    end
+
+    it "returns errors if job allow_failure parameter is not an boolean" do
+      config = YAML.dump({rspec: {script: "test", allow_failure: "string"}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: allow_failure parameter should be an boolean")
     end
   end
 end

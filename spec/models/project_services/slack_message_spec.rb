@@ -6,12 +6,7 @@ describe SlackMessage do
   let(:project) { FactoryGirl.create :project }
 
   context "One build" do
-    let(:commit) do
-      commit = FactoryGirl.create(:commit, project: project)
-      commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: "ls" }})
-      commit.save
-      commit
-    end
+    let(:commit) { FactoryGirl.create(:commit_with_one_job, project: project) }
 
     let(:build) do 
       commit.create_builds
@@ -48,11 +43,7 @@ describe SlackMessage do
   end
 
   context "Several builds" do
-    let(:commit) {commit = FactoryGirl.create(:commit, project: project)}
-
-    let(:build) do 
-      commit.builds.first
-    end
+    let(:commit) { FactoryGirl.create(:commit_with_two_jobs, project: project) }
 
     context 'when all matrix builds succeeded' do
       let(:color) { 'good' }

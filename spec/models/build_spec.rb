@@ -2,22 +2,23 @@
 #
 # Table name: builds
 #
-#  id          :integer          not null, primary key
-#  project_id  :integer
-#  status      :string(255)
-#  finished_at :datetime
-#  trace       :text
-#  created_at  :datetime
-#  updated_at  :datetime
-#  started_at  :datetime
-#  runner_id   :integer
-#  commit_id   :integer
-#  coverage    :float
-#  commands    :text
-#  options     :text
-#  job_id      :integer
-#  name        :string(255)
-#  deploy      :boolean          default(FALSE)
+#  id            :integer          not null, primary key
+#  project_id    :integer
+#  status        :string(255)
+#  finished_at   :datetime
+#  trace         :text
+#  created_at    :datetime
+#  updated_at    :datetime
+#  started_at    :datetime
+#  runner_id     :integer
+#  commit_id     :integer
+#  coverage      :float
+#  commands      :text
+#  job_id        :integer
+#  name          :string(255)
+#  deploy        :boolean          default(FALSE)
+#  options       :text
+#  allow_failure :boolean          default(FALSE), not null
 #
 
 require 'spec_helper'
@@ -122,6 +123,42 @@ describe Build do
         before { build.status = state }
 
         it { should be_false }
+      end
+    end
+  end
+
+  describe :ignored? do
+    subject { build.ignored? }
+
+    context 'if build is not allowed to fail' do
+      before { build.allow_failure = false }
+
+      context 'and build.status is success' do
+        before { build.status = 'success' }
+
+        it { should be_false }
+      end
+
+      context 'and build.status is failed' do
+        before { build.status = 'failed' }
+
+        it { should be_false }
+      end
+    end
+
+    context 'if build is allowed to fail' do
+      before { build.allow_failure = true }
+
+      context 'and build.status is success' do
+        before { build.status = 'success' }
+
+        it { should be_false }
+      end
+
+      context 'and build.status is failed' do
+        before { build.status = 'failed' }
+
+        it { should be_true }
       end
     end
   end

@@ -15,7 +15,7 @@ module Backup
           file << s.to_yaml.gsub(/^---\n/,'')
         end
 
-        FileUtils.chmod(0700, "db")
+        FileUtils.chmod(0700, ["db", "builds"])
 
         # create archive
         $progress.print "Creating backup archive: #{tar_file} ... "
@@ -146,7 +146,7 @@ module Backup
     private
 
     def backup_contents
-      ["db", "backup_information.yml"]
+      ["db", "builds", "backup_information.yml"]
     end
 
     def settings
