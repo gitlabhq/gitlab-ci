@@ -12,6 +12,7 @@ v7.13.0
 
 v7.12.2
   - Revert: Runner without tag should pick builds without tag only
+  - Build traces is stored in the file instead of database
 
 v7.12.1
   - Runner without tag should pick builds without tag only

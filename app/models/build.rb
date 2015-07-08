@@ -210,4 +210,37 @@ class Build < ActiveRecord::Base
       # so we just silentrly ignore error for now
     end
   end
+
+  def trace
+    if File.exist?(path_to_trace)
+      File.read(path_to_trace)
+    else
+      # backward compatibility
+      read_attribute :trace
+    end
+  end
+
+  def trace=(trace)
+    unless Dir.exists? dir_to_trace
+      FileUtils.mkdir_p dir_to_trace
+    end
+
+    File.write(path_to_trace, trace)
+  end
+
+  def dir_to_trace
+    Rails.root.join(
+      root_dir_to_trace,
+      created_at.utc.strftime("%Y_%m"),
+      project.id.to_s
+    )
+  end
+
+  def root_dir_to_trace
+    "builds"
+  end
+
+  def path_to_trace
+    "#{dir_to_trace}/#{id}.log"
+  end
 end

@@ -5,8 +5,11 @@ namespace :backup do
     configure_cron_mode
 
     $progress.puts "Dumping database ... ".blue
-
     Backup::Database.new.dump
+    $progress.puts "done".green
+
+    $progress.puts "Dumping builds ... ".blue
+    Backup::Builds.new.dump
     $progress.puts "done".green
 
     backup = Backup::Manager.new
@@ -24,6 +27,10 @@ namespace :backup do
 
     $progress.puts "Restoring database ... ".blue
     Backup::Database.new.restore
+    $progress.puts "done".green
+
+    $progress.puts "Restoring builds ... ".blue
+    Backup::Builds.new.restore
     $progress.puts "done".green
 
     backup.cleanup
