@@ -16,8 +16,8 @@ describe UserSessionsHelper do
 
     it 'should return different hmacs for different salts' do
       secret1 = generate_oauth_hmac(salt, return_to)
-      secret2 = generate_oauth_hmac(salt, return_to)
-      secret1.should eq(secret2)
+      secret2 = generate_oauth_hmac(salt2, return_to)
+      secret1.should_not eq(secret2)
     end
   end
 
