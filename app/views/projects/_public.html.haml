@@ -3,7 +3,7 @@
     Public projects
 
 .bs-callout
-  = link_to new_user_sessions_path(return_to: request.fullpath) do
+  = link_to new_user_sessions_path(state: generate_oauth_state(request.fullpath)) do
     %strong Login with GitLab
   to see your private projects
 

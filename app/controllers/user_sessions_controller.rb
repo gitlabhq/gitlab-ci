@@ -1,6 +1,4 @@
 class UserSessionsController < ApplicationController
-  include UserSessionsHelper
-
   before_filter :authenticate_user!, except: [:new, :callback, :auth]
 
   def show
@@ -11,9 +9,14 @@ class UserSessionsController < ApplicationController
   end
 
   def auth
+    unless is_oauth_state_valid?(params[:state])
+      redirect_to new_user_sessions_path
+      return
+    end
+
     redirect_to client.auth_code.authorize_url({
       redirect_uri: callback_user_sessions_url,
-      state: generate_oauth_state(params[:return_to])
+      state: params[:state]
     })
   end
 

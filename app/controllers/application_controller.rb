@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include UserSessionsHelper
+
   rescue_from Network::UnauthorizedError, with: :invalid_token
   before_filter :default_headers
   before_filter :check_config
@@ -39,7 +41,7 @@ class ApplicationController < ActionController::Base
   def authenticate_public_page!
     unless project.public
       unless current_user
-        redirect_to(new_user_sessions_path(return_to: request.fullpath)) and return
+        redirect_to(new_user_sessions_path(state: generate_oauth_state(request.fullpath))) and return
       end
 
       unless current_user.can_access_project?(project.gitlab_id)

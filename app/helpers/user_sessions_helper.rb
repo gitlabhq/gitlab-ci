@@ -3,17 +3,18 @@ module UserSessionsHelper
     SecureRandom.hex(16)
   end
 
-  def generate_oauth_secret(salt, return_to)
+  def generate_oauth_hmac(salt, return_to)
     return unless return_to
-    message = GitlabCi::Application.config.secret_key_base + salt + return_to
-    Digest::SHA256.hexdigest message
+    digest = OpenSSL::Digest.new('sha256')
+    key = GitlabCi::Application.config.secret_key_base + salt
+    OpenSSL::HMAC.hexdigest(digest, key, return_to)
   end
 
   def generate_oauth_state(return_to)
     return unless return_to
     salt = generate_oauth_salt
-    secret = generate_oauth_secret(salt, return_to)
-    "#{salt}:#{secret}:#{return_to}"
+    hmac = generate_oauth_hmac(salt, return_to)
+    "#{salt}:#{hmac}:#{return_to}"
   end
 
   def get_ouath_state_return_to(state)
@@ -22,8 +23,8 @@ module UserSessionsHelper
 
   def is_oauth_state_valid?(state)
     return true unless state
-    salt, secret, return_to = state.split(':', 3)
+    salt, hmac, return_to = state.split(':', 3)
     return false unless return_to
-    secret == generate_oauth_secret(salt, return_to)
+    hmac == generate_oauth_hmac(salt, return_to)
   end
 end
