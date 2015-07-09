@@ -235,15 +235,11 @@ class Build < ActiveRecord::Base
   end
 
   def dir_to_trace
-    Rails.root.join(
-      root_dir_to_trace,
+    File.join(
+      Settings.gitlab_ci.builds_path,
       created_at.utc.strftime("%Y_%m"),
       project.id.to_s
     )
-  end
-
-  def root_dir_to_trace
-    "builds"
   end
 
   def path_to_trace
