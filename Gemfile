@@ -125,7 +125,7 @@ group :development, :test do
   gem 'rb-inotify', require: linux_only('rb-inotify')
 
   gem "simplecov", require: false
-  gem 'coveralls', require: false
+  gem 'coveralls', '~> 0.8.2', require: false
   gem 'rubocop', '0.28.0', require: false
 end
 
