@@ -12,6 +12,7 @@ v7.13.0
   - Allow to specify allow_failure for job
   - Build traces is stored in the file instead of database
   - Make the builds path configurable
+  - Disable link to runner if it's not assigned to specific project
 
 v7.12.2
   - Revert: Runner without tag should pick builds without tag only
