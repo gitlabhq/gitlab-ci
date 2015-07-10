@@ -12,6 +12,7 @@ v7.13.0
   - Allow to specify allow_failure for job
   - Build traces is stored in the file instead of database
   - Make the builds path configurable
+  - Store all secrets in config/secrets.yml
 
 v7.12.2
   - Revert: Runner without tag should pick builds without tag only
