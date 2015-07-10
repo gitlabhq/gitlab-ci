@@ -4,6 +4,7 @@ before_script:
   - gem install bundler
   - cp config/database.yml.mysql config/database.yml
   - cp config/application.yml.example config/application.yml
+  - cp config/secrets.yml.example config/secrets.yml
   - 'sed "s/username\:.*$/username\: runner/" -i config/database.yml'
   - 'sed "s/password\:.*$/password\: ''password''/" -i config/database.yml'
   - bundle --without postgres

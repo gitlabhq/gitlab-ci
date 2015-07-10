@@ -123,11 +123,14 @@ with the name of your bucket:
 
 ## Storing configuration files
 
-Please be informed that a backup does not store your configuration files.
+Please be informed that a backup does not store your configuration and secret files.
 If you use an Omnibus package please see the [instructions in the readme to backup your configuration](https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#backup-and-restore-omnibus-gitlab-configuration).
 If you have a cookbook installation there should be a copy of your configuration in Chef.
-If you have an installation from source, please consider backing up your `application.yml` file, any SSL keys and certificates, and your [SSH host keys](https://superuser.com/questions/532040/copy-ssh-keys-from-one-server-to-another-server/532079#532079).
-
+If you have an installation from source:
+1. please backup `config/secrets.yml` file that contains key to encrypt variables in database,
+1. please consider backing up your `application.yml` file,
+1. any SSL keys and certificates, 
+1. and your [SSH host keys](https://superuser.com/questions/532040/copy-ssh-keys-from-one-server-to-another-server/532079#532079).
 
 ## Restore a previously created backup
 
