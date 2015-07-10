@@ -10,7 +10,7 @@
 #up-build-trace
 - if @commit.matrix?
   %ul.nav.nav-tabs.append-bottom-10
-    - @commit.builds_without_retry.each do |build|
+    - @commit.builds_without_retry_sorted.each do |build|
       %li{class: ('active' if build == @build) }
         = link_to build_url(build) do
           %i{class: build_icon_css_class(build)}

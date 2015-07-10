@@ -138,18 +138,22 @@ class Commit < ActiveRecord::Base
   end
 
   def builds_without_retry
-    return unless config_processor
     @builds_without_retry ||=
       begin
-        job_types = config_processor.types
         grouped_builds = builds.group_by(&:name)
-        grouped_builds = grouped_builds.map do |name, builds|
+        grouped_builds.map do |name, builds|
           builds.sort_by(&:id).last
         end
-        grouped_builds.sort_by do |build|
-          [job_types.index(build.job_type), build.name]
-        end
       end
+  end
+
+  def builds_without_retry_sorted
+    return builds_without_retry unless config_processor
+
+    job_types = config_processor.types
+    builds_without_retry.sort_by do |build|
+      [job_types.index(build.job_type) || -1, build.name || ""]
+    end
   end
 
   def retried_builds
