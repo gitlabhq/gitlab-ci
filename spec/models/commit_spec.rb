@@ -167,15 +167,22 @@ describe Commit do
     let(:commit) { FactoryGirl.create :commit, project: project }
 
     it "calculates average when there are two builds with coverage" do
-      FactoryGirl.create :build, coverage: 30, commit: commit
-      FactoryGirl.create :build, coverage: 40, commit: commit
+      FactoryGirl.create :build, name: "rspec", coverage: 30, commit: commit
+      FactoryGirl.create :build, name: "rubocop", coverage: 40, commit: commit
       commit.coverage.should == "35.00"
     end
 
     it "calculates average when there are two builds with coverage and one with nil" do
-      FactoryGirl.create :build, coverage: 30, commit: commit
-      FactoryGirl.create :build, coverage: 40, commit: commit
+      FactoryGirl.create :build, name: "rspec", coverage: 30, commit: commit
+      FactoryGirl.create :build, name: "rubocop", coverage: 40, commit: commit
       FactoryGirl.create :build, commit: commit
+      commit.coverage.should == "35.00"
+    end
+
+    it "calculates average when there are two builds with coverage and one is retried" do
+      FactoryGirl.create :build, name: "rspec", coverage: 30, commit: commit
+      FactoryGirl.create :build, name: "rubocop", coverage: 30, commit: commit
+      FactoryGirl.create :build, name: "rubocop", coverage: 40, commit: commit
       commit.coverage.should == "35.00"
     end
 
