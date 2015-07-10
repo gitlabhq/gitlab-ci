@@ -211,8 +211,8 @@ class Commit < ActiveRecord::Base
   end
 
   def coverage
-    if project.coverage_enabled? && builds.count(:all) > 0
-      coverage_array = builds.map(&:coverage).compact
+    if project.coverage_enabled?
+      coverage_array = builds_without_retry.map(&:coverage).compact
       if coverage_array.size >= 1
         '%.2f' % (coverage_array.reduce(:+) / coverage_array.size)
       end
