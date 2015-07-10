@@ -10,37 +10,23 @@
         %th Parameter
         %th Value
     %tbody
-      - @builds.each do |build|
-        %tr
-          %td Job - #{build[:name]}
-          %td
-            %pre
-              = simple_format build[:script]
-            
-            %b Tag list:
-            = build[:tags]
-            %br
-            %b Refs only:
-            = build[:only] && build[:only].join(", ")
-            %br
-            %b Refs except:
-            = build[:except] && build[:except].join(", ")
+      - @types.each do |type|
+        - @builds.select { |build| build[:type] == type }.each do |build|
+          %tr
+            %td #{type.capitalize} Job - #{build[:name]}
+            %td
+              %pre
+                = simple_format build[:script]
 
-      - @deploy_builds.each do |build|
-        %tr
-          %td Deploy Job - #{build[:name]}
-          %td
-            %pre
-              = simple_format build[:script]
-            
-            %b Tag list:
-            = build[:tags]
-            %br
-            %b Refs only:
-            = build[:only] && build[:only].join(", ")
-            %br
-            %b Refs except:
-            = build[:except] && build[:except].join(", ")
+              %br
+              %b Tag list:
+              = build[:tags]
+              %br
+              %b Refs only:
+              = build[:only] && build[:only].join(", ")
+              %br
+              %b Refs except:
+              = build[:except] && build[:except].join(", ")
 
 -else
   %p
@@ -49,5 +35,5 @@
     %i.icon-remove.incorrect-syntax
   %b Error:
   = @error
-          
+
     

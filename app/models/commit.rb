@@ -93,57 +93,18 @@ class Commit < ActiveRecord::Base
     recipients.uniq
   end
 
-  def create_builds
+  def job_type
+    return unless config_processor
+    job_types = builds_without_retry.select(&:active?).map(&:job_type)
+    config_processor.types.find { |job_type| job_types.include? job_type }
+  end
+
+  def create_builds_for_type(job_type)
     return if skip_ci?
+    return unless config_processor
 
-    begin
-      builds_for_ref = config_processor.builds_for_ref(ref, tag)
-    rescue GitlabCiYamlProcessor::ValidationError => e
-      save_yaml_error(e.message) and return
-    rescue Exception => e
-      logger.error e.message + "\n" + e.backtrace.join("\n")
-      save_yaml_error("Undefined yaml error") and return
-    end
-
-    builds_for_ref.each do |build_attrs|
-      builds.create!({
-        project: project,
-        name: build_attrs[:name],
-        commands: build_attrs[:script],
-        tag_list: build_attrs[:tags],
-        options: build_attrs[:options],
-        allow_failure: build_attrs[:allow_failure]
-      })
-    end
-  end
-
-  def builds_without_retry
-    @builds_without_retry ||=
-      begin
-        grouped_builds = builds.group_by(&:name)
-        grouped_builds.map do |name, builds|
-          builds.sort_by(&:id).last
-        end
-      end
-  end
-
-  def retried_builds
-    @retried_builds ||= (builds - builds_without_retry)
-  end
-
-  def create_deploy_builds
-    return if skip_ci?
-
-    begin
-      deploy_builds_for_ref = config_processor.deploy_builds_for_ref(ref, tag)
-    rescue GitlabCiYamlProcessor::ValidationError => e
-      save_yaml_error(e.message) and return
-    rescue Exception => e
-      logger.error e.message + "\n" + e.backtrace.join("\n")
-      save_yaml_error("Undefined yaml error") and return
-    end
-
-    deploy_builds_for_ref.each do |build_attrs|
+    builds_attrs = config_processor.builds_for_type_and_ref(job_type, ref, tag)
+    builds_attrs.map do |build_attrs|
       builds.create!({
         project: project,
         name: build_attrs[:name],
@@ -151,9 +112,48 @@ class Commit < ActiveRecord::Base
         tag_list: build_attrs[:tags],
         options: build_attrs[:options],
         allow_failure: build_attrs[:allow_failure],
-        deploy: true
+        job_type: build_attrs[:type]
       })
     end
+  end
+
+  def create_next_builds
+    return if skip_ci?
+    return unless config_processor
+
+    build_types = builds.group_by(&:job_type)
+
+    config_processor.types.any? do |job_type|
+      !build_types.include?(job_type) && create_builds_for_type(job_type).present?
+    end
+  end
+
+  def create_builds
+    return if skip_ci?
+    return unless config_processor
+
+    config_processor.types.any? do |job_type|
+      create_builds_for_type(job_type).present?
+    end
+  end
+
+  def builds_without_retry
+    return unless config_processor
+    @builds_without_retry ||=
+      begin
+        job_types = config_processor.types
+        grouped_builds = builds.group_by(&:name)
+        grouped_builds = grouped_builds.map do |name, builds|
+          builds.sort_by(&:id).last
+        end
+        grouped_builds.sort_by do |build|
+          [job_types.index(build.job_type), build.name]
+        end
+      end
+  end
+
+  def retried_builds
+    @retried_builds ||= (builds.order(id: :desc) - builds_without_retry)
   end
 
   def status
@@ -225,6 +225,13 @@ class Commit < ActiveRecord::Base
 
   def config_processor
     @config_processor ||= GitlabCiYamlProcessor.new(push_data[:ci_yaml_file] || project.generated_yaml_config)
+  rescue GitlabCiYamlProcessor::ValidationError => e
+    save_yaml_error(e.message)
+    nil
+  rescue Exception => e
+    logger.error e.message + "\n" + e.backtrace.join("\n")
+    save_yaml_error("Undefined yaml error")
+    nil
   end
 
   def skip_ci?
@@ -235,6 +242,7 @@ class Commit < ActiveRecord::Base
   private
 
   def save_yaml_error(error)
+    return unless self.yaml_errors?
     self.yaml_errors = error
     save
   end

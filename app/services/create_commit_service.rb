@@ -42,10 +42,6 @@ class CreateCommitService
 
     commit.create_builds unless commit.builds.any?
 
-    if commit.builds.empty?
-      commit.create_deploy_builds
-    end
-
     commit
   end
 end

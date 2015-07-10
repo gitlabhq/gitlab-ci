@@ -7,14 +7,8 @@
       %strong Build ##{build.id}
 
   %td
-    - if build.commit.tag?
-      Tag
-      &middot;
-      #{build.ref}
-    - else
-      Commit
-      &middot;
-      #{build.short_sha}
+    = build.job_type
+
   %td
     = build.name
     .pull-right
