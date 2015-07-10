@@ -8,10 +8,14 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rails', '4.1.11'
+gem 'rails', '4.1.12'
 gem 'activerecord-deprecated_finders'
 gem 'activerecord-session_store'
 gem "nested_form"
+
+# Specify a sprockets version due to security issue
+# See https://groups.google.com/forum/#!topic/rubyonrails-security/doAVp0YaTqY
+gem 'sprockets', '~> 2.12.3'
 
 # tag runners
 gem 'acts-as-taggable-on', '~> 3.4'
@@ -69,10 +73,10 @@ gem 'hipchat', '~> 1.5.0'
 # Other
 gem 'rake'
 gem 'foreman'
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 3.1.3'
 gem 'gitlab_ci_meta', '~> 4.0'
 
-gem 'sass-rails',   '~> 4.0.0'
+gem 'sass-rails',   '~> 4.0.5'
 gem 'coffee-rails', '~> 4.0.0'
 
 gem 'uglifier', '>= 1.0.3'
@@ -121,7 +125,7 @@ group :development, :test do
   gem 'rb-inotify', require: linux_only('rb-inotify')
 
   gem "simplecov", require: false
-  gem 'coveralls', require: false
+  gem 'coveralls', '~> 0.8.2', require: false
   gem 'rubocop', '0.28.0', require: false
 end
 
