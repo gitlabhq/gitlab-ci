@@ -54,7 +54,7 @@ class GitlabCiYamlProcessor
 
     @jobs = {}
     @config.each do |key, job|
-      @jobs[key] = {type: DEFAULT_TYPE}.merge(job)
+      @jobs[key] = { type: DEFAULT_TYPE }.merge(job)
     end
   end
 
