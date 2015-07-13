@@ -13,6 +13,7 @@ v7.13.0
   - Fix inline edit runner-description
   - Allow to specify image and services in yml that can be used with docker
   - Fix: No runner notification can see managers only
+  - Fix service testing for slack
   - Ability to cancel all builds in commit at once
   - Disable colors in rake tasks automatically (if IO is not a TTY)
   - Implemented "rake env:info". Rake task to receive system information

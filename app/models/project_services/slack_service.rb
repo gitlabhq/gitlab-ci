@@ -42,21 +42,7 @@ class SlackService < Service
     ]
   end
 
-  def can_test?
-    # slack notification is useful only for builds either successful or failed
-    project.commits.order(id: :desc).any? do |commit|
-      case commit.status.to_sym
-      when :failed
-        true
-      when :success
-        !notify_only_broken_builds?
-      else
-        false
-      end
-    end
-  end
-
-  def execute(build)
+  def can_execute?(build)
     return if build.allow_failure?
 
     commit = build.commit
@@ -64,14 +50,17 @@ class SlackService < Service
     return unless commit.builds_without_retry.include?(build)
 
     case commit.status.to_sym
-    when :failed
-    when :success
-      return if notify_only_broken_builds?
-    else
-      return
+      when :failed
+        true
+      when :success
+        true unless notify_only_broken_builds?
+      else
+        false
     end
+  end
 
-    message = SlackMessage.new(commit)
+  def execute(build)
+    message = SlackMessage.new(build.commit)
     options = default_options.merge(
       color: message.color,
       fallback: message.fallback,
