@@ -43,6 +43,8 @@ GEM
     ast (2.0.0)
     astrolabe (1.3.0)
       parser (>= 2.2.0.pre.3, < 3.0)
+    attr_encrypted (1.3.4)
+      encryptor (>= 1.3.0)
     axiom-types (0.0.5)
       descendants_tracker (~> 0.0.1)
       ice_nine (~> 0.9)
@@ -107,6 +109,7 @@ GEM
     email_spec (1.5.0)
       launchy (~> 2.1)
       mail (~> 2.2)
+    encryptor (1.3.0)
     equalizer (0.0.9)
     erubis (2.7.0)
     excon (0.45.3)
@@ -459,6 +462,7 @@ DEPENDENCIES
   activerecord-session_store
   acts-as-taggable-on (~> 3.4)
   annotate
+  attr_encrypted (= 1.3.4)
   bootstrap-sass (~> 3.0)
   brakeman
   byebug

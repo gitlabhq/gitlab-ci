@@ -70,6 +70,9 @@ gem "slack-notifier", "~> 1.0.0"
 # HipChat integration
 gem 'hipchat', '~> 1.5.0'
 
+# Encrypt variables
+gem 'attr_encrypted', '1.3.4'
+
 # Other
 gem 'rake'
 gem 'foreman'
