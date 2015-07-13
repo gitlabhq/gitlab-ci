@@ -6,7 +6,7 @@ module UserSessionsHelper
   def generate_oauth_hmac(salt, return_to)
     return unless return_to
     digest = OpenSSL::Digest.new('sha256')
-    key = GitlabCi::Application.config.secret_key_base + salt
+    key = GitlabCi::Application.secrets.secret_key_base + salt
     OpenSSL::HMAC.hexdigest(digest, key, return_to)
   end
 
