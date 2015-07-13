@@ -1,6 +1,10 @@
 %tr.build.alert{class: commit_status_alert_class(commit)}
   %td.status
     = commit.status
+    - if commit.running?
+      &middot;
+      = commit.job_type
+
 
   %td.build-link
     = link_to project_ref_commit_path(commit.project, commit.ref, commit.sha) do

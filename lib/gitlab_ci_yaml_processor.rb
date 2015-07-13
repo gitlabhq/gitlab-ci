@@ -1,6 +1,10 @@
 class GitlabCiYamlProcessor
   class ValidationError < StandardError;end
 
+  DEFAULT_TYPES = %w(build test deploy)
+  DEFAULT_TYPE = 'test'
+  ALLOWED_JOB_KEYS = [:tags, :script, :only, :except, :type, :image, :services, :allow_failure, :type]
+
   attr_reader :before_script, :image, :services
 
   def initialize(config)
@@ -17,12 +21,8 @@ class GitlabCiYamlProcessor
     validate!
   end
 
-  def deploy_builds_for_ref(ref, tag = false)
-    deploy_builds.select{|build| process?(build[:only], build[:except], ref, tag)}
-  end
-
-  def builds_for_ref(ref, tag = false)
-    builds.select{|build| process?(build[:only], build[:except], ref, tag)}
+  def builds_for_type_and_ref(type, ref, tag = false)
+    builds.select{|build| build[:type] == type && process?(build[:only], build[:except], ref, tag)}
   end
 
   def builds
@@ -31,10 +31,8 @@ class GitlabCiYamlProcessor
     end
   end
 
-  def deploy_builds
-    @deploy_jobs.map do |name, job|
-      build_job(name, job)
-    end
+  def types
+    @types || DEFAULT_TYPES
   end
 
   private
@@ -43,7 +41,8 @@ class GitlabCiYamlProcessor
     @before_script = @config[:before_script] || []
     @image = @config[:image]
     @services = @config[:services]
-    @config.except!(:before_script, :image, :services)
+    @types = @config[:types]
+    @config.except!(:before_script, :image, :services, :types)
 
     @config.each do |name, param|
       raise ValidationError, "Unknown parameter: #{name}" unless param.is_a?(Hash)
@@ -53,8 +52,10 @@ class GitlabCiYamlProcessor
       raise ValidationError, "Please define at least one job"
     end
 
-    @jobs = @config.select{|key, value| value[:type] != "deploy"}
-    @deploy_jobs = @config.select{|key, value| value[:type] == "deploy"}
+    @jobs = {}
+    @config.each do |key, job|
+      @jobs[key] = { type: DEFAULT_TYPE }.merge(job)
+    end
   end
 
   def process?(only_params, except_params, ref, tag)
@@ -79,6 +80,7 @@ class GitlabCiYamlProcessor
 
   def build_job(name, job)
     {
+      type: job[:type],
       script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
       tags: job[:tags] || [],
       name: name,
@@ -121,12 +123,12 @@ class GitlabCiYamlProcessor
       raise ValidationError, "services should be an array of strings"
     end
 
-    @jobs.each do |name, job|
-      validate_job!("#{name} job", job)
+    unless @types.nil? || @types.is_a?(Array) && @types.all? {|type| type.is_a?(String)}
+      raise ValidationError, "types should be an array of strings"
     end
 
-    @deploy_jobs.each do |name, job|
-      validate_job!("#{name} deploy job", job)
+    @jobs.each do |name, job|
+      validate_job!("#{name} job", job)
     end
 
     true
@@ -134,9 +136,17 @@ class GitlabCiYamlProcessor
 
   def validate_job!(name, job)
     job.keys.each do |key|
-      unless [:tags, :script, :only, :except, :type, :image, :services, :allow_failure].include? key
+      unless ALLOWED_JOB_KEYS.include? key
         raise ValidationError, "#{name}: unknown parameter #{key}"
       end
+    end
+
+    unless job[:type].is_a?(String)
+      raise ValidationError, "#{name}: type should be a string"
+    end
+
+    unless job[:type].in?(types)
+      raise ValidationError, "#{name}: type parameter should be #{types.join(", ")}"
     end
 
     if job[:image] && !job[:image].is_a?(String)

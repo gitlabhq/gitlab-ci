@@ -132,15 +132,24 @@ describe Commit do
     it { commit.sha.should start_with(subject) }
   end
 
-  describe "create_deploy_builds" do
-    it "creates deploy build" do
+  describe :create_next_builds do
+    it "creates builds for next type" do
       config_processor = GitlabCiYamlProcessor.new(gitlab_ci_yaml)
       commit.stub(:config_processor).and_return(config_processor)
 
-      commit.create_deploy_builds
+      commit.create_builds.should be_true
       commit.builds.reload
-
       commit.builds.size.should == 2
+
+      commit.create_next_builds.should be_true
+      commit.builds.reload
+      commit.builds.size.should == 4
+
+      commit.create_next_builds.should be_true
+      commit.builds.reload
+      commit.builds.size.should == 5
+
+      commit.create_next_builds.should be_false
     end
   end
 

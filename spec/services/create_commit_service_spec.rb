@@ -23,32 +23,6 @@ describe CreateCommitService do
       it { commit.builds.first.should be_kind_of(Build) }
     end
 
-    context "deploy builds" do
-      it "calls create_deploy_builds if there are no builds" do
-        config = YAML.dump({production: {script: "ls", type: "deploy"}})
-        Commit.any_instance.should_receive(:create_deploy_builds)
-        service.execute(project,
-          ref: 'refs/heads/master',
-          before: '00000000',
-          after: '31das312',
-          ci_yaml_file: config,
-          commits: [ { message: "Message" } ]
-        )
-      end
-
-      it "does not call create_deploy_builds if there is build" do
-        config = YAML.dump({rspec: {script: "ls"},production: { script: "ls", type: "deploy"}})
-        Commit.any_instance.should_not_receive(:create_deploy_builds)
-        service.execute(project,
-          ref: 'refs/heads/master',
-          before: '00000000',
-          after: '31das312',
-          ci_yaml_file: config,
-          commits: [ { message: "Message" } ]
-        )
-      end
-    end
-
     context "skip tag if there is no build for it" do
       it "creates commit if there is appropriate job" do
         result = service.execute(project,

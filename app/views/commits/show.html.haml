@@ -68,14 +68,14 @@
     %tr
       %th Status
       %th Build ID
-      %th Trigger
+      %th Type
       %th Name
       %th Duration
       %th Finished at
       - if @project.coverage_enabled?
         %th Coverage
       %th
-  = render @commit.builds_without_retry, controls: true
+  = render @commit.builds_without_retry_sorted, controls: true
 
 - if @commit.retried_builds.any?
   %h3
@@ -86,7 +86,7 @@
       %tr
         %th Status
         %th Build ID
-        %th Trigger
+        %th Type
         %th Name
         %th Duration
         %th Finished at

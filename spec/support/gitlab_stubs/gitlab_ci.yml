@@ -7,6 +7,11 @@ before_script:
   - bundle install 
   - bundle exec rake db:create
 
+types:
+  - test
+  - deploy
+  - notify
+
 rspec:
   script: "rake spec"
   tags: 
@@ -44,3 +49,12 @@ production:
   only:
     - master
     - /^deploy-.*$/
+
+dockerhub:
+  type: notify
+  script: "curl http://dockerhub/URL"
+  tags:
+    - ruby
+    - postgres
+  only:
+    - branches

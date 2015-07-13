@@ -15,6 +15,7 @@ v7.13.0
   - Disable link to runner if it's not assigned to specific project
   - Store all secrets in config/secrets.yml
   - Encrypt variables
+  - Allow to specify flexible list of types in yaml
 
 v7.12.2
   - Revert: Runner without tag should pick builds without tag only
