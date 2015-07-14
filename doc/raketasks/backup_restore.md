@@ -129,7 +129,7 @@ If you have a cookbook installation there should be a copy of your configuration
 If you have an installation from source:
 1. please backup `config/secrets.yml` file that contains key to encrypt variables in database,
 but don't store it in the same place as your database backups.
-Otherwise your users secrets are exposed in case one of your backups is compromised.
+Otherwise your secrets are exposed in case one of your backups is compromised.
 1. please consider backing up your `application.yml` file,
 1. any SSL keys and certificates, 
 1. and your [SSH host keys](https://superuser.com/questions/532040/copy-ssh-keys-from-one-server-to-another-server/532079#532079).
