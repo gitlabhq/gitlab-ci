@@ -118,10 +118,10 @@ We recommend PostgreSQL but you can also use MySQL
     sudo -u gitlab_ci -H editor config/application.yml
     # Development
     #sudo -u gitlab_ci -H cp config/application.yml.example.development config/application.yml
-    
-    # Copy reference secrets
+
+    # Copy the example secrets file
     sudo -u gitlab_ci -H cp config/secrets.yml.example config/secrets.yml
-    
+
     # Edit web server settings
     sudo -u gitlab_ci -H cp config/unicorn.rb.example config/unicorn.rb
     sudo -u gitlab_ci -H editor config/unicorn.rb
@@ -131,8 +131,8 @@ We recommend PostgreSQL but you can also use MySQL
     sudo chmod -R u+rwX  tmp/sockets/
     sudo -u gitlab_ci -H mkdir -p tmp/pids/
     sudo chmod -R u+rwX  tmp/pids/
-    
-    # Change permission of directory where build traces are stored
+
+    # Change the permissions of the directory where build traces are stored
     sudo chmod -R u+rwX builds/
 
     # Make sure GitLab CI can write to the builds/ directory
@@ -165,9 +165,9 @@ We recommend PostgreSQL but you can also use MySQL
 
 ### Secure secrets.yml
 
-Secrets file stores encryption keys for sessions and secure variables. 
-Backup `secrets.yml` someplace safe, but don't store them in the same place as your database backups.
-Otherwise your secrets are exposed in case one of your backups is compromised.
+The `secrets.yml` file stores encryption keys for sessions and secure variables.
+Backup `secrets.yml` someplace safe, but don't store it in the same place as your database backups.
+Otherwise your secrets are exposed if one of your backups is compromised.
 
 ## 8. Install Init Script
 
