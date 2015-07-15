@@ -121,6 +121,7 @@ We recommend PostgreSQL but you can also use MySQL
 
     # Copy the example secrets file
     sudo -u gitlab_ci -H cp config/secrets.yml.example config/secrets.yml
+    sudo -u gitlab_ci -H chmod 0600 config/secrets.yml
 
     # Edit web server settings
     sudo -u gitlab_ci -H cp config/unicorn.rb.example config/unicorn.rb
@@ -134,9 +135,6 @@ We recommend PostgreSQL but you can also use MySQL
 
     # Change the permissions of the directory where build traces are stored
     sudo chmod -R u+rwX builds/
-
-    # Make sure GitLab CI can write to the builds/ directory
-    sudo chmod -R u+rwX  builds
 
 ### Install gems
 
