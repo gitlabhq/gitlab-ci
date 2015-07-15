@@ -36,7 +36,7 @@ if GitlabCi::Application.secrets.secret_key_base.blank? || GitlabCi::Application
   all_secrets[Rails.env] = env_secrets
 
   # save secrets
-  File.open('config/secrets.yml', 'w') do |file|
+  File.open('config/secrets.yml', 'w', 0600) do |file|
     file.write(YAML.dump(all_secrets))
   end
 
