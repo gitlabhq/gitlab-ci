@@ -41,7 +41,10 @@ class Upgrader
   end
 
   def latest_version_raw
-    last_tag = git_tags.last.match(/v\d\.\d\.\d/).to_s
+    git_tags = fetch_git_tags
+    git_tags = git_tags.select { |version| version =~ /v\d+\.\d+\.\d+\Z/ }
+    git_versions = git_tags.map { |tag| VersionInfo.parse(tag.match(/v\d+\.\d+\.\d+/).to_s) }
+    "v#{git_versions.sort.last.to_s}"
   end
 
   def update_commands
@@ -90,8 +93,8 @@ class Upgrader
     answer
   end
 
-  def git_tags
+  def fetch_git_tags
     tags = `git ls-remote --tags origin | grep tags\/v#{current_version.major}`
-    tags.lines.to_a.select { |version| version =~ /v\d\.\d\.\d\Z/ }
+    tags.lines.to_a.select { |version| version =~ /v\d+\.\d+\.\d+\Z/ }
   end
 end
