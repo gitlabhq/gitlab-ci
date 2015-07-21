@@ -32,7 +32,7 @@ If you can, please submit a merge request with the fix or improvements including
 1. The MR description should give a motive for your change and the method you used to achieve it
 1. If the MR changes the UI it should include before and after screenshots
 1. Link relevant [issues](https://gitlab.com/gitlab-org/gitlab-ci/issues) and/or [feedback items](http://feedback.gitlab.com/) from the merge request description and leave a comment on them with a link back to the MR
-1. Be prepared to answer questions and incorporate feedback even if requests for this arrive weeks or months after your MR submittion
+1. Be prepared to answer questions and incorporate feedback even if requests for this arrive weeks or months after your MR submission
 
 Please keep the change in a single MR as small as possible. If you want to contribute a large feature think very hard what the minimum viable change is. Can you split functionality? Can you only submit the backend/API code? Can you start with a very simple UI? The smaller a MR is the more likely it is it will be merged, after that you can send more MR's to enhance it.
 
