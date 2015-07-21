@@ -1,5 +1,6 @@
 v7.13.1
   - Fix: user could steal specific runner
+  - Fix: don't send notifications for jobs with allow_failure set
 
 v7.13.0
   - Allow to specify image and services in yml that can be used with docker
