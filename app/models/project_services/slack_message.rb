@@ -22,6 +22,7 @@ class SlackMessage
 
     if commit.matrix?
       commit.builds_without_retry.each do |build|
+        next if build.allow_failure?
         next unless build.failed?
         fields << {
           title: build.name,

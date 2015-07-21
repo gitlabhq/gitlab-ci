@@ -57,6 +57,8 @@ class SlackService < Service
   end
 
   def execute(build)
+    return if build.allow_failure?
+
     commit = build.commit
     return unless commit
     return unless commit.builds_without_retry.include?(build)

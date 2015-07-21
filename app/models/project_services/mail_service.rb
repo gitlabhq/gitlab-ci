@@ -58,6 +58,8 @@ class MailService < Service
   end
 
   def execute(build)
+    return if build.allow_failure?
+
     # it doesn't make sense to send emails for retried builds
     commit = build.commit
     return unless commit
