@@ -1,3 +1,6 @@
+v7.13.1
+  - Fix: user could steal specific runner
+
 v7.13.0
   - Allow to specify image and services in yml that can be used with docker
   - Fix: No runner notification can see managers only
