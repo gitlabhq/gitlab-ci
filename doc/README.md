@@ -1,12 +1,25 @@
-## The GitLab Documentation covers the following subjects
+## GitLab CI Documentation
 
-+ [API](api/README.md)
-+ [Examples](examples/README.md)
-+ [Install](install/installation.md)
+### User documentation
+
++ [Quick Start](quick_start/README.md)
++ [Configuring project (.gitlab-ci.yml)](yaml/README.md)
++ [Configuring runner](runners/README.md)
++ [Configuring deployment](deployment/README.md)
++ [Using Docker Images](docker/using_docker_images.md)
++ [Using Docker Build](docker/using_docker_build.md)
++ [Using Variables](variables/README.md)
+
+### Examples
+
++ [Test and deploy Ruby applications to Heroku](examples/test-and-deploy-ruby-application-to-heroku.md)
++ [Test and deploy Python applications to Heroku](examples/test-and-deploy-python-application-to-heroku.md)
+
+### Administrator documentation
+
++ [Install](install/README.md)
 + [Update](update/README.md)
-+ [Runners](runners/README.md)
-+ [Configuration of your builds with .gitlab-ci.yml](builds_configuration/README.md)
-+ [Deployment](deployment/README.md)
-+ [Permissions](permissions/README.md) User permissions
-+ [Rake Tasks](raketasks/README.md) Backup and restore take tasks
++ [User permissions](permissions/README.md)
++ [Backup/Restore](raketasks/backup_restore.md)
 + [Migrating to packaged CI](migration_to_omnibus/README.md)
++ [API](api/README.md)
