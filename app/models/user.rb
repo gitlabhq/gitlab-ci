@@ -71,7 +71,10 @@ class User
   end
 
   def authorized_projects
-    @authorized_projects ||= Project.where(gitlab_id: gitlab_projects.map(&:id))
+    Project.where(gitlab_id: gitlab_projects.map(&:id)).select do |project|
+      # This is slow: it makes request to GitLab for each project to verify manage permission
+      can_manage_project?(project.gitlab_id)
+    end
   end
 
   private
