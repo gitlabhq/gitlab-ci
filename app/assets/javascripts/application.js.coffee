@@ -28,17 +28,17 @@ $(document).on 'click', '.edit-runner-link', (event) ->
   event.preventDefault()
 
   descr = $(this).closest('.runner-description').first()
-  descr.hide()
+  descr.addClass('hide')
   form = descr.next('.runner-description-form')
   descrInput = form.find('input.description')
   originalValue = descrInput.val()
-  form.show()
+  form.removeClass('hide')
   form.find('.cancel').on 'click', (event) ->
     event.preventDefault()
 
-    form.hide()
+    form.addClass('hide')
     descrInput.val(originalValue)
-    descr.show()
+    descr.removeClass('hide')
 
 $(document).on 'click', '.assign-all-runner', ->
   $(this).replaceWith('<i class="icon-refresh icon-spin"></i> Assign in progress..')
