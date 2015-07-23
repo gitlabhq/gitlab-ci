@@ -1,6 +1,6 @@
 # Runners
 
-In GitLab CI, Runners run your [jobs](jobs/README.md).
+In GitLab CI, Runners run your [yaml](../yaml/README.md).
 A runner is an isolated (virtual) machine that picks up builds
 through the coordinator API of GitLab CI.
 
@@ -40,10 +40,10 @@ A fork does copy the CI settings (jobs, allow shared, etc) of the cloned reposit
 There are several ways to create a runner. Only after creation, upon
 registration its status as Shared or Specific is determined.
 
-[See the documentation for](https://about.gitlab.com/gitlab-ci/#gitlab-runner)
-the different methods of creating a Runner instance.
+[See the documentation for](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/#installation)
+the different methods of installing a Runner instance.
 
-After creating the runner, you can either register it as `Shared` or as `Specific`.
+After installing the runner, you can either register it as `Shared` or as `Specific`.
 You can only register a Shared Runner if you have admin access to the GitLab instance.
 
 ## Registering a Shared Runner
@@ -59,12 +59,7 @@ instance.
 Now simply register the runner as any runner:
 
 ```
-sudo /opt/gitlab-runner/bin/setup -C /home/gitlab-runner
-```
-
-Then restart the Upstart script:
-```
-sudo service gitlab-runner restart
+sudo gitlab-runner register
 ```
 
 Note that you will have to enable `Allows shared runners` for each project
@@ -93,12 +88,7 @@ setup a specific runner for this project.
 To register the runner, run the command below and follow instructions:
 
 ```
-sudo /opt/gitlab-runner/bin/setup -C /home/gitlab-runner
-```
-
-Then restart the Upstart script:
-```
-sudo service gitlab-runner restart
+sudo gitlab-runner register
 ```
 
 ###  Making an existing Shared Runner Specific
@@ -152,9 +142,4 @@ project.
 # Attack vectors in runners
 
 Mentioned briefly earlier, but the following things of runners can be exploited.
-We're always looking for contributions that can mitigate these.
-
-- anyone that can run a job on a runner can access any code it runs
-- when setting `Allow running on shared runners` anyone that can run their
-code on a shared runner can access any code
--
+We're always looking for contributions that can mitigate these [Security Considerations](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/security/index.md).

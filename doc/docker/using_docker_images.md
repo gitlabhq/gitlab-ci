@@ -1,4 +1,4 @@
-# Docker integration
+# Using Docker Images
 GitLab CI can use [Docker Engine](https://www.docker.com/) to build projects. 
 
 Docker is an open-source project that allows to use predefined images to run applications 
@@ -127,7 +127,7 @@ If you are courageous enough, you can make it fully open and accept everything:
 
 **It the feature is not enabled, or image isn't allowed the error message will be put into the build log.**
 
-### How it works?
+### How Docker integration works
 1. Create any service container: `mysql`, `postgresql`, `mongodb`, `redis`.
 1. Create cache container to store all volumes as defined in `config.toml` and `Dockerfile` of build image (`ruby:2.1` as in above example).
 1. Create build container and link any service container to build container.
@@ -138,25 +138,33 @@ If you are courageous enough, you can make it fully open and accept everything:
 1. Check exit status of build script.
 1. Remove build container and all created service containers.
 
-### How to debug build locally?
-1. Create build environment locally first using following commands:
+### How to debug a build locally
+1. Create a file with build script:
+```bash
+$ cat <<EOF > build_script
+git clone https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git /builds/gitlab-org/gitlab-ci-multi-runner
+cd /builds/gitlab-org/gitlab-ci-multi-runner
+make <- or any other build step
+EOF
 ```
-$ docker run -d -n build-mysql mysql:latest
-$ docker run -d -n build-postgres postgres:latest
-$ docker run -n build -it -l mysql:build-mysql -l postgres:build-postgres ruby:2.1 /bin/bash
-```
-This will create two service containers (MySQL and PostgreSQL) that are linked to build container created as a last one.
 
-1. Then in context of docker container you can copy-paste your build script:
+1. Create service containers:
 ```
-$ git clone https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git /builds/gitlab-org/gitlab-ci-multi-runner
-$ cd /builds/gitlab-org/gitlab-ci-multi-runner
-$ make <- or any other build step
+$ docker run -d -n service-mysql mysql:latest
+$ docker run -d -n service-postgres postgres:latest
 ```
+This will create two service containers (MySQL and PostgreSQL).
+
+1. Create a build container and execute script in its context:
+```
+$ cat build_script | docker run -n build -i -l mysql:service-mysql -l postgres:service-postgres ruby:2.1 /bin/bash
+```
+This will create build container that has two service containers linked.
+The build_script is piped using STDIN to bash interpreter which executes the build script in container. 
 
 1. At the end remove all containers:
 ```
-docker rm -f -v build build-mysql build-postgres
+docker rm -f -v build service-mysql service-postgres
 ```
 This will forcefully (the `-f` switch) remove build container and service containers 
 and all volumes (the `-v` switch) that were created with the container creation.
