@@ -1,5 +1,6 @@
 v7.13.1
   - Fix: user could steal specific runner
+  - Fix: don't send notifications for jobs with allow_failure set
   - Fix invalid link to doc.gitlab.com
 
 v7.13.0
