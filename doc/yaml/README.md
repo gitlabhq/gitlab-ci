@@ -14,8 +14,8 @@ job2:
 ```
 
 The above example is the simplest possible CI configuration with two separate jobs,
-where each of the jobs executes a different commands.
-Of course a commands can execute code directly (`./configure;make;make install`) or run to a script (`test.sh`) in the respository.
+where each of the jobs executes a different command.
+Of course a command can execute code directly (`./configure;make;make install`) or run a script (`test.sh`) in the repository.
 
 Jobs are used to create builds, which are then picked up by [runners](../runners/README.md) and executed within the environment of the runner.
 What is important, is that each job is run independently from each other.
