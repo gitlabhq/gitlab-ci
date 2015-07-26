@@ -15,4 +15,8 @@ module CommitsHelper
   def commit_link(commit)
     link_to(commit.short_sha, project_ref_commit_path(commit.project, commit.ref, commit.sha))
   end
+
+  def truncate_first_line(message, length = 50)
+    truncate(message.lines.first.chomp, length: length)
+  end
 end

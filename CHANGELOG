@@ -1,4 +1,5 @@
 v7.14.0 (unreleased)
+  - Truncate commit messages after subject line in table
   - Adjust CI config to support Docker executors
   
 v7.13.1
