@@ -1,3 +1,6 @@
+v7.14.0 (unreleased)
+  - Adjust CI config to support Docker executors
+  
 v7.13.1
   - Fix: user could steal specific runner
   - Fix: don't send notifications for jobs with allow_failure set
