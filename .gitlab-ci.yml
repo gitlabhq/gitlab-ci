@@ -1,17 +1,23 @@
 before_script:
-  - export PATH=~/bin:/usr/local/bin:/usr/bin:/bin
+  - ./script/prepare_build.sh
   - ruby -v
   - gem install bundler
-  - cp config/database.yml.mysql config/database.yml
   - cp config/application.yml.example config/application.yml
   - cp config/secrets.yml.example config/secrets.yml
-  - 'sed "s/username\:.*$/username\: runner/" -i config/database.yml'
-  - 'sed "s/password\:.*$/password\: ''password''/" -i config/database.yml'
   - bundle --without postgres
   - RAILS_ENV=test bundle exec rake db:setup
 specs:
   script: SIMPLECOV=true RAILS_ENV=test bundle exec rake spec
+  tags:
+    - ruby
+    - mysql
 rubocop:
   script: bundle exec rubocop
+  tags:
+    - ruby
+    - mysql
 brakeman:
   script: bundle exec brakeman
+  tags:
+    - ruby
+    - mysql
