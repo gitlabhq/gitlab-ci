@@ -27,7 +27,6 @@
 
 class Project < ActiveRecord::Base
   include ProjectStatus
-  include CurrentSettings
 
   has_many :commits, dependent: :destroy
   has_many :builds, through: :commits, dependent: :destroy
@@ -62,6 +61,8 @@ class Project < ActiveRecord::Base
   before_validation :set_default_values
 
   class << self
+    include CurrentSettings
+
     def base_build_script
       <<-eos
 git submodule update --init
