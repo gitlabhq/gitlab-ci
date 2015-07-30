@@ -7,6 +7,7 @@ v7.13.1
   - Fix invalid link to doc.gitlab.com
 
 v7.13.0
+  - Fix inline edit runner-description
   - Allow to specify image and services in yml that can be used with docker
   - Fix: No runner notification can see managers only
   - Ability to cancel all builds in commit at once
@@ -48,7 +49,7 @@ v7.12.0
   - Using .gitlab-ci.yml file instead of jobs
   - Link to the runner from the build page for admin user
   - Ability to set secret variables for runner
-  - Dont retry build when push same commit in same ref twice 
+  - Dont retry build when push same commit in same ref twice
   - Admin area: show amount of runners with last contact less than a minute ago
   - Fix re-adding project with the same name but different gitlab_id
   - Implementation of Lint (.gitlab-ci.yml validation tool)
@@ -92,7 +93,7 @@ v7.10.0
   - Runners sorting in admin area (by id)
   - Remove protected_attributes gem
   - Skip commit creation if there is no appropriate job
-  
+
 v7.9.3
   - Contains no changes
   - Developers can cancel and retry jobs
