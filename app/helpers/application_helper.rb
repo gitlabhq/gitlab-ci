@@ -1,6 +1,6 @@
 module ApplicationHelper
   def loader_html
-    image_tag 'loader.gif'
+    image_tag 'loader.gif', alt: 'Loading'
   end
 
   def gravatar_icon(user_email = '', size = nil)
