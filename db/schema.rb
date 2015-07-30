@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721204649) do
+ActiveRecord::Schema.define(version: 20150729145246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "application_settings", force: true do |t|
+    t.boolean  "all_broken_builds"
+    t.boolean  "add_pusher"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "builds", force: true do |t|
     t.integer  "project_id"

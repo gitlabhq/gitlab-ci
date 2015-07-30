@@ -37,8 +37,8 @@ Settings.gitlab_ci['relative_url_root']   ||= ENV['RAILS_RELATIVE_URL_ROOT'] || 
 Settings.gitlab_ci['protocol']            ||= Settings.gitlab_ci.https ? "https" : "http"
 Settings.gitlab_ci['email_from']          ||= "gitlab-ci@#{Settings.gitlab_ci.host}"
 Settings.gitlab_ci['support_email']       ||= Settings.gitlab_ci.email_from
-Settings.gitlab_ci['all_broken_builds'] = true if Settings.gitlab_ci['all_broken_builds'].nil?
-Settings.gitlab_ci['add_pusher']     = false if Settings.gitlab_ci['add_pusher'].nil?
+Settings.gitlab_ci['all_broken_builds']   = true if Settings.gitlab_ci['all_broken_builds'].nil?
+Settings.gitlab_ci['add_pusher']          = false if Settings.gitlab_ci['add_pusher'].nil?
 Settings.gitlab_ci['url']                 ||= Settings.send(:build_gitlab_ci_url)
 Settings.gitlab_ci['builds_path']         = File.expand_path(Settings.gitlab_ci['builds_path'] || "builds/", Rails.root)
 

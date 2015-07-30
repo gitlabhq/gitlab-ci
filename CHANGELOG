@@ -1,7 +1,8 @@
 v7.14.0 (unreleased)
   - Truncate commit messages after subject line in table
   - Adjust CI config to support Docker executors
-  
+  - Added Application Settings
+
 v7.13.1
   - Fix: user could steal specific runner
   - Fix: don't send notifications for jobs with allow_failure set
