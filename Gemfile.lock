@@ -339,6 +339,7 @@ GEM
     redis (3.0.6)
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
+    request_store (1.2.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -505,6 +506,7 @@ DEPENDENCIES
   rake
   rb-fsevent
   rb-inotify
+  request_store
   rspec-rails
   rubocop (= 0.28.0)
   sass-rails (~> 4.0.5)
