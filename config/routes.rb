@@ -90,6 +90,8 @@ Rails.application.routes.draw do
     end
 
     resources :builds, only: :index
+
+    resource :application_settings, only: [:show, :update]
   end
 
   root to: 'projects#index'

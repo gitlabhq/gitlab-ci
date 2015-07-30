@@ -76,6 +76,7 @@ gem 'attr_encrypted', '1.3.4'
 # Other
 gem 'rake'
 gem 'foreman'
+gem 'request_store'
 gem 'jquery-rails', '~> 3.1.3'
 gem 'gitlab_ci_meta', '~> 4.0'
 

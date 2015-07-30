@@ -61,6 +61,8 @@ class Project < ActiveRecord::Base
   before_validation :set_default_values
 
   class << self
+    include CurrentSettings
+
     def base_build_script
       <<-eos
 git submodule update --init
@@ -70,13 +72,13 @@ ls -la
 
     def parse(project)
       params = {
-        name:                    project.name_with_namespace,
-        gitlab_id:               project.id,
-        path:                    project.path_with_namespace,
-        default_ref:             project.default_branch || 'master',
-        ssh_url_to_repo:         project.ssh_url_to_repo,
-        email_add_pusher:        GitlabCi.config.gitlab_ci.add_pusher,
-        email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
+        name:                     project.name_with_namespace,
+        gitlab_id:                project.id,
+        path:                     project.path_with_namespace,
+        default_ref:              project.default_branch || 'master',
+        ssh_url_to_repo:          project.ssh_url_to_repo,
+        email_add_pusher:         current_application_settings.add_pusher,
+        email_only_broken_builds: current_application_settings.all_broken_builds,
       }
 
       project = Project.new(params)
