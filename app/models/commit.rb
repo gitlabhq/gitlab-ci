@@ -161,7 +161,7 @@ class Commit < ActiveRecord::Base
   end
 
   def status
-    if skip_ci?
+    if skip_ci? || builds.none?
       return 'skipped'
     end
 
