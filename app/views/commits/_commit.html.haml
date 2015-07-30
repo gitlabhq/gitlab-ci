@@ -11,7 +11,7 @@
       %strong #{commit.short_sha}
 
   %td.build-message
-    %span= truncate(commit.git_commit_message, length: 50)
+    %span= truncate_first_line(commit.git_commit_message)
 
   %td.build-branch
     - unless @ref
@@ -30,4 +30,3 @@
     %td.coverage
       - if commit.coverage
         #{commit.coverage}%
-
