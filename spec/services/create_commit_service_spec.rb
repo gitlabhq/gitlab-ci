@@ -60,6 +60,7 @@ describe CreateCommitService do
           ci_yaml_file: gitlab_ci_yaml
         )
         commit.builds.any?.should be_false
+        commit.status.should_be "skipped"
       end
 
       it "does not skips builds creation if there is no [ci skip] tag in commit message" do
