@@ -162,14 +162,14 @@ describe GitlabCiYamlProcessor do
       config = YAML.dump({rspec: {tags: "mysql"}})
       expect do
         GitlabCiYamlProcessor.new(config)
-      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: tags parameter should be an array")
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: tags parameter should be an array of strings")
     end
 
     it "returns errors if before_script parameter is invalid" do
       config = YAML.dump({before_script: "bundle update", rspec: {script: "test"}})
       expect do
         GitlabCiYamlProcessor.new(config)
-      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "before_script should be an array")
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "before_script should be an array of strings")
     end
 
     it "returns errors if image parameter is invalid" do
