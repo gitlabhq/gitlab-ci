@@ -18,4 +18,5 @@ else
     cp config/database.yml.mysql config/database.yml
     sed -i "s/username\:.*$/username\: runner/" config/database.yml
     sed -i "s/password\:.*$/password\: 'password'/" config/database.yml
+    sed -i "s/gitlab_ci_test/gitlab_ci_test_$((RANDOM/5000))/" config/database.yml
 fi

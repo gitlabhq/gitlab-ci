@@ -2,6 +2,7 @@ v7.14.0 (unreleased)
   - Truncate commit messages after subject line in table
   - Adjust CI config to support Docker executors
   - Added Application Settings
+  - Randomize test database for CI tests
 
 v7.13.1
   - Fix: user could steal specific runner
