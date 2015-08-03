@@ -50,12 +50,12 @@ class MailService < Service
     return unless commit.builds_without_retry.include?(build)
 
     case build.status.to_sym
-      when :failed
-        true
-      when :success
-        true unless email_only_broken_builds
-      else
-        false
+    when :failed
+      true
+    when :success
+      true unless email_only_broken_builds
+    else
+      false
     end
   end
 

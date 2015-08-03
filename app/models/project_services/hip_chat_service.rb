@@ -51,12 +51,12 @@ class HipChatService < Service
     return unless commit.builds_without_retry.include? build
 
     case commit.status.to_sym
-      when :failed
-        true
-      when :success
-        true unless notify_only_broken_builds?
-      else
-        false
+    when :failed
+      true
+    when :success
+      true unless notify_only_broken_builds?
+    else
+      false
     end
   end
 
