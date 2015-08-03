@@ -1,8 +1,8 @@
 class GitlabCiYamlProcessor
   class ValidationError < StandardError;end
 
-  DEFAULT_TYPES = %w(build test deploy)
-  DEFAULT_TYPE = 'test'
+  DEFAULT_STAGES = %w(build test deploy)
+  DEFAULT_STAGE = 'test'
   ALLOWED_JOB_KEYS = [:tags, :script, :only, :except, :type, :image, :services, :allow_failure, :type, :stage]
 
   attr_reader :before_script, :image, :services
@@ -21,8 +21,8 @@ class GitlabCiYamlProcessor
     validate!
   end
 
-  def builds_for_type_and_ref(type, ref, tag = false)
-    builds.select{|build| build[:type] == type && process?(build[:only], build[:except], ref, tag)}
+  def builds_for_stage_and_ref(stage, ref, tag = false)
+    builds.select{|build| build[:stage] == stage && process?(build[:only], build[:except], ref, tag)}
   end
 
   def builds
@@ -31,8 +31,8 @@ class GitlabCiYamlProcessor
     end
   end
 
-  def types
-    @types || DEFAULT_TYPES
+  def stages
+    @stages || DEFAULT_STAGES
   end
 
   private
@@ -41,7 +41,7 @@ class GitlabCiYamlProcessor
     @before_script = @config[:before_script] || []
     @image = @config[:image]
     @services = @config[:services]
-    @types = @config[:stages] || @config[:types]
+    @stages = @config[:stages] || @config[:types]
     @config.except!(:before_script, :image, :services, :types, :stages)
 
     @config.each do |name, param|
@@ -52,7 +52,11 @@ class GitlabCiYamlProcessor
       raise ValidationError, "Please define at least one job"
     end
 
-    @jobs = @config
+    @jobs = {}
+    @config.each do |key, job|
+      stage = job[:stage] || job[:type] || DEFAULT_STAGE
+      @jobs[key] = { stage: stage }.merge(job)
+    end
   end
 
   def process?(only_params, except_params, ref, tag)
@@ -77,7 +81,7 @@ class GitlabCiYamlProcessor
 
   def build_job(name, job)
     {
-      type: job[:stage] || job[:type] || DEFAULT_TYPE,
+      stage: job[:stage],
       script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
       tags: job[:tags] || [],
       name: name,
@@ -120,8 +124,8 @@ class GitlabCiYamlProcessor
       raise ValidationError, "services should be an array of strings"
     end
 
-    unless @types.nil? || validate_array_of_strings(@types)
-      raise ValidationError, "types should be an array of strings"
+    unless @stages.nil? || validate_array_of_strings(@stages)
+      raise ValidationError, "stages should be an array of strings"
     end
 
     @jobs.each do |name, job|
@@ -139,14 +143,8 @@ class GitlabCiYamlProcessor
     end
 
     if job[:stage]
-      unless job[:stage].is_a?(String) && job[:stage].in?(types)
-        raise ValidationError, "#{name}: stage parameter should be #{types.join(", ")}"
-      end
-    end
-
-    if job[:type]
-      unless job[:type].is_a?(String) && job[:type].in?(types)
-        raise ValidationError, "#{name}: type parameter should be #{types.join(", ")}"
+      unless job[:stage].is_a?(String) && job[:stage].in?(stages)
+        raise ValidationError, "#{name}: stage parameter should be #{stages.join(", ")}"
       end
     end
 

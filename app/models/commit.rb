@@ -93,17 +93,17 @@ class Commit < ActiveRecord::Base
     recipients.uniq
   end
 
-  def job_type
+  def stage
     return unless config_processor
-    job_types = builds_without_retry.select(&:active?).map(&:job_type)
-    config_processor.types.find { |job_type| job_types.include? job_type }
+    stages = builds_without_retry.select(&:active?).map(&:stage)
+    config_processor.stages.find { |stage| stages.include? stage }
   end
 
-  def create_builds_for_type(job_type)
+  def create_builds_for_type(stage)
     return if skip_ci?
     return unless config_processor
 
-    builds_attrs = config_processor.builds_for_type_and_ref(job_type, ref, tag)
+    builds_attrs = config_processor.builds_for_stage_and_ref(stage, ref, tag)
     builds_attrs.map do |build_attrs|
       builds.create!({
         project: project,
@@ -112,7 +112,7 @@ class Commit < ActiveRecord::Base
         tag_list: build_attrs[:tags],
         options: build_attrs[:options],
         allow_failure: build_attrs[:allow_failure],
-        job_type: build_attrs[:type]
+        stage: build_attrs[:stage]
       })
     end
   end
@@ -121,10 +121,10 @@ class Commit < ActiveRecord::Base
     return if skip_ci?
     return unless config_processor
 
-    build_types = builds.group_by(&:job_type)
+    stages = builds.group_by(&:stage)
 
-    config_processor.types.any? do |job_type|
-      !build_types.include?(job_type) && create_builds_for_type(job_type).present?
+    config_processor.stages.any? do |stage|
+      !stages.include?(stage) && create_builds_for_type(stage).present?
     end
   end
 
@@ -132,8 +132,8 @@ class Commit < ActiveRecord::Base
     return if skip_ci?
     return unless config_processor
 
-    config_processor.types.any? do |job_type|
-      create_builds_for_type(job_type).present?
+    config_processor.stages.any? do |stage|
+      create_builds_for_type(stage).present?
     end
   end
 
@@ -150,9 +150,9 @@ class Commit < ActiveRecord::Base
   def builds_without_retry_sorted
     return builds_without_retry unless config_processor
 
-    job_types = config_processor.types
+    stages = config_processor.stages
     builds_without_retry.sort_by do |build|
-      [job_types.index(build.job_type) || -1, build.name || ""]
+      [stages.index(build.stage) || -1, build.name || ""]
     end
   end
 
