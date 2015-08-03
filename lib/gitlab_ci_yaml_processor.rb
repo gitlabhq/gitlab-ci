@@ -3,7 +3,7 @@ class GitlabCiYamlProcessor
 
   DEFAULT_TYPES = %w(build test deploy)
   DEFAULT_TYPE = 'test'
-  ALLOWED_JOB_KEYS = [:tags, :script, :only, :except, :type, :image, :services, :allow_failure, :type]
+  ALLOWED_JOB_KEYS = [:tags, :script, :only, :except, :type, :image, :services, :allow_failure, :type, :stage]
 
   attr_reader :before_script, :image, :services
 
@@ -41,8 +41,8 @@ class GitlabCiYamlProcessor
     @before_script = @config[:before_script] || []
     @image = @config[:image]
     @services = @config[:services]
-    @types = @config[:types]
-    @config.except!(:before_script, :image, :services, :types)
+    @types = @config[:stages] || @config[:types]
+    @config.except!(:before_script, :image, :services, :types, :stages)
 
     @config.each do |name, param|
       raise ValidationError, "Unknown parameter: #{name}" unless param.is_a?(Hash)
@@ -52,10 +52,7 @@ class GitlabCiYamlProcessor
       raise ValidationError, "Please define at least one job"
     end
 
-    @jobs = {}
-    @config.each do |key, job|
-      @jobs[key] = { type: DEFAULT_TYPE }.merge(job)
-    end
+    @jobs = @config
   end
 
   def process?(only_params, except_params, ref, tag)
@@ -80,7 +77,7 @@ class GitlabCiYamlProcessor
 
   def build_job(name, job)
     {
-      type: job[:type],
+      type: job[:stage] || job[:type] || DEFAULT_TYPE,
       script: "#{@before_script.join("\n")}\n#{normalize_script(job[:script])}",
       tags: job[:tags] || [],
       name: name,
@@ -141,12 +138,16 @@ class GitlabCiYamlProcessor
       end
     end
 
-    unless job[:type].is_a?(String)
-      raise ValidationError, "#{name}: type should be a string"
+    if job[:stage]
+      unless job[:stage].is_a?(String) && job[:stage].in?(types)
+        raise ValidationError, "#{name}: stage parameter should be #{types.join(", ")}"
+      end
     end
 
-    unless job[:type].in?(types)
-      raise ValidationError, "#{name}: type parameter should be #{types.join(", ")}"
+    if job[:type]
+      unless job[:type].is_a?(String) && job[:type].in?(types)
+        raise ValidationError, "#{name}: type parameter should be #{types.join(", ")}"
+      end
     end
 
     if job[:image] && !job[:image].is_a?(String)
