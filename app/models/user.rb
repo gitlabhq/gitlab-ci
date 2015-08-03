@@ -22,6 +22,10 @@ class User
     end
   end
 
+  def avatar_url
+    attributes['avatar_url']
+  end
+
   def cache_key(*args)
     "#{self.id}:#{args.join(":")}:#{sync_at.to_s}"
   end

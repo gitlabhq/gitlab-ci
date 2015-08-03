@@ -1,4 +1,4 @@
-= image_tag gravatar_icon(current_user.email, 120), class: 'img-polaroid', alt: ''
+= image_tag user_avatar_url(current_user, 90), class: 'avatar avatar-inline avatar-tile s90', alt: ''
 %h3
   Hi, #{@user.name}
 

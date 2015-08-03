@@ -46,14 +46,6 @@ Settings.gitlab_ci['builds_path']         = File.expand_path(Settings.gitlab_ci[
 Settings['gitlab_server_urls'] ||= Settings['allowed_gitlab_urls']
 
 #
-# Gravatar
-#
-Settings['gravatar'] ||= Settingslogic.new({})
-Settings.gravatar['enabled']     = true if Settings.gravatar['enabled'].nil?
-Settings.gravatar['plain_url'] ||= 'http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm'
-Settings.gravatar['ssl_url']   ||= 'https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=mm'
-
-#
 # Backup
 #
 Settings['backup'] ||= Settingslogic.new({})
