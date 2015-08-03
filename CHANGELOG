@@ -4,6 +4,7 @@ v7.14.0 (unreleased)
   - Added Application Settings
   - Randomize test database for CI tests
   - Make YAML validation stricter
+  - Use avatars received from GitLab
 
 v7.13.1
   - Fix: user could steal specific runner
