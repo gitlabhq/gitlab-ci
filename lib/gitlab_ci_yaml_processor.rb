@@ -111,19 +111,19 @@ class GitlabCiYamlProcessor
   end
 
   def validate!
-    unless @before_script.is_a?(Array)
-      raise ValidationError, "before_script should be an array"
+    unless validate_array_of_strings(@before_script)
+      raise ValidationError, "before_script should be an array of strings"
     end
 
     unless @image.nil? || @image.is_a?(String)
       raise ValidationError, "image should be a string"
     end
 
-    unless @services.nil? || @services.is_a?(Array) && @services.all? {|service| service.is_a?(String)}
+    unless @services.nil? || validate_array_of_strings(@services)
       raise ValidationError, "services should be an array of strings"
     end
 
-    unless @types.nil? || @types.is_a?(Array) && @types.all? {|type| type.is_a?(String)}
+    unless @types.nil? || validate_array_of_strings(@types)
       raise ValidationError, "types should be an array of strings"
     end
 
@@ -153,26 +153,30 @@ class GitlabCiYamlProcessor
       raise ValidationError, "#{name}: image should be a string"
     end
 
-    if job[:services]
-      unless job[:services].is_a?(Array) && job[:services].all? {|service| service.is_a?(String)}
-        raise ValidationError, "#{name}: services should be an array of strings"
-      end
+    if job[:services] && !validate_array_of_strings(job[:services])
+      raise ValidationError, "#{name}: services should be an array of strings"
     end
 
-    if job[:tags] && !job[:tags].is_a?(Array)
-      raise ValidationError, "#{name}: tags parameter should be an array"
+    if job[:tags] && !validate_array_of_strings(job[:tags])
+      raise ValidationError, "#{name}: tags parameter should be an array of strings"
     end
 
-    if job[:only] && !job[:only].is_a?(Array)
-      raise ValidationError, "#{name}: only parameter should be an array"
+    if job[:only] && !validate_array_of_strings(job[:only])
+      raise ValidationError, "#{name}: only parameter should be an array of strings"
     end
 
-    if job[:except] && !job[:except].is_a?(Array)
-      raise ValidationError, "#{name}: except parameter should be an array"
+    if job[:except] && !validate_array_of_strings(job[:except])
+      raise ValidationError, "#{name}: except parameter should be an array of strings"
     end
 
     if job[:allow_failure] && !job[:allow_failure].in?([true, false])
       raise ValidationError, "#{name}: allow_failure parameter should be an boolean"
     end
+  end
+
+  private
+
+  def validate_array_of_strings(values)
+    values.is_a?(Array) && values.all? {|tag| tag.is_a?(String)}
   end
 end
