@@ -32,11 +32,6 @@ defaults: &defaults
     # The location where build traces are stored (default: builds/). Relative paths are relative to Rails.root
     # builds_path: builds/
 
-  gravatar:
-    enabled: true
-    plain_url: "http://www.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
-    ssl_url:   "https://secure.gravatar.com/avatar/%{hash}?s=%{size}&d=mm"
-
   ## Backup settings
   backup:
     path: "tmp/backups"   # Relative paths are relative to Rails.root (default: tmp/backups/)
