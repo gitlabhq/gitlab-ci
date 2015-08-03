@@ -10,7 +10,7 @@ class LintsController < ApplicationController
       @error = "Please provide content of .gitlab-ci.yml"
     else
       @config_processor = GitlabCiYamlProcessor.new params[:content]
-      @types = @config_processor.types
+      @stages = @config_processor.stages
       @builds = @config_processor.builds
       @status = true
     end
