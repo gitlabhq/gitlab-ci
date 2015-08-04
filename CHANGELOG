@@ -5,6 +5,8 @@ v7.14.0 (unreleased)
   - Randomize test database for CI tests
   - Make YAML validation stricter
   - Use avatars received from GitLab
+  - Refactor GitLab API usage to use either access_token or private_token depending on what was specified during login
+  - Allow to use access_token for API requests
 
 v7.13.1
   - Fix: user could steal specific runner
