@@ -79,7 +79,7 @@ class ProjectsController < ApplicationController
 
   def destroy
     project.destroy
-    Network.new.disable_ci(project.gitlab_id, current_user.access_token)
+    Network.new.disable_ci(project.gitlab_id, current_user.authenticate_options)
 
     EventService.new.remove_project(current_user, project)
 

@@ -12,13 +12,7 @@ class CreateProjectService
         project_url: project_route.gsub(":project_id", @project.id.to_s),
       }
 
-      auth_opts = if current_user.access_token
-                    { access_token: current_user.access_token }
-                  else
-                    { private_token: current_user.private_token }
-                  end
-
-      unless Network.new.enable_ci(@project.gitlab_id, data, auth_opts)
+      unless Network.new.enable_ci(@project.gitlab_id, data, current_user.authenticate_options)
         raise ActiveRecord::Rollback
       end
     end
