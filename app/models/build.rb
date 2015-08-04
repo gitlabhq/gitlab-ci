@@ -164,7 +164,7 @@ class Build < ActiveRecord::Base
   end
 
   def variables
-    project.variables
+    yaml_variables + project_variables
   end
 
   def duration
@@ -244,5 +244,23 @@ class Build < ActiveRecord::Base
 
   def path_to_trace
     "#{dir_to_trace}/#{id}.log"
+  end
+
+  private
+
+  def yaml_variables
+    if commit.config_processor
+      commit.config_processor.variables.map do |key, value|
+        {key: key, value: value, public: true}
+      end
+    else
+      []
+    end
+  end
+
+  def project_variables
+    project.variables.map do |variable|
+      {key: variable.key, value: variable.value, public: false}
+    end
   end
 end

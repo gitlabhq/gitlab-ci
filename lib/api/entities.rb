@@ -7,15 +7,11 @@ module API
       expose :builds
     end
 
-    class Variable < Grape::Entity
-      expose :key, :value
-    end
-
     class Build < Grape::Entity
       expose :id, :commands, :path, :ref, :sha, :project_id, :repo_url,
         :before_sha, :timeout, :allow_git_fetch, :project_name, :options
 
-      expose :variables, using: Variable
+      expose :variables
     end
 
     class Runner < Grape::Entity

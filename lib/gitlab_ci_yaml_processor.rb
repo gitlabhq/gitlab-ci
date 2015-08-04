@@ -3,9 +3,10 @@ class GitlabCiYamlProcessor
 
   DEFAULT_STAGES = %w(build test deploy)
   DEFAULT_STAGE = 'test'
+  ALLOWED_YAML_KEYS = [:before_script, :image, :services, :types, :stages, :variables]
   ALLOWED_JOB_KEYS = [:tags, :script, :only, :except, :type, :image, :services, :allow_failure, :type, :stage]
 
-  attr_reader :before_script, :image, :services
+  attr_reader :before_script, :image, :services, :variables
 
   def initialize(config)
     @config = YAML.load(config)
@@ -42,7 +43,8 @@ class GitlabCiYamlProcessor
     @image = @config[:image]
     @services = @config[:services]
     @stages = @config[:stages] || @config[:types]
-    @config.except!(:before_script, :image, :services, :types, :stages)
+    @variables = @config[:variables] || {}
+    @config.except!(*ALLOWED_YAML_KEYS)
 
     @config.each do |name, param|
       raise ValidationError, "Unknown parameter: #{name}" unless param.is_a?(Hash)
@@ -128,6 +130,10 @@ class GitlabCiYamlProcessor
       raise ValidationError, "stages should be an array of strings"
     end
 
+    unless @variables.nil? || validate_variables(@variables)
+      raise ValidationError, "variables should be a map of key-valued strings"
+    end
+
     @jobs.each do |name, job|
       validate_job!("#{name} job", job)
     end
@@ -177,5 +183,9 @@ class GitlabCiYamlProcessor
 
   def validate_array_of_strings(values)
     values.is_a?(Array) && values.all? {|tag| tag.is_a?(String)}
+  end
+
+  def validate_variables(variables)
+    variables.is_a?(Hash) && variables.all? {|key, value| key.is_a?(Symbol) && value.is_a?(String)}
   end
 end

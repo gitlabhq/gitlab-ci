@@ -7,6 +7,9 @@ before_script:
   - bundle install 
   - bundle exec rake db:create
 
+variables:
+  DB_NAME: postgres
+
 types:
   - test
   - deploy

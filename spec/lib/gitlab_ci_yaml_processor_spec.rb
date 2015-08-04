@@ -153,6 +153,23 @@ describe GitlabCiYamlProcessor do
     end
   end
 
+  describe "Variables" do
+    it "returns variables when defined" do
+      variables = {
+        var1: "value1",
+        var2: "value2",
+      }
+      config = YAML.dump({
+                           variables: variables,
+                           before_script: ["pwd"],
+                           rspec: {script: "rspec"}
+                         })
+
+      config_processor = GitlabCiYamlProcessor.new(config)
+      config_processor.variables.should == variables
+    end
+  end
+
   describe "Error handling" do
     it "indicates that object is invalid" do
       expect{GitlabCiYamlProcessor.new("invalid_yaml\n!ccdvlf%612334@@@@")}.to raise_error(GitlabCiYamlProcessor::ValidationError)
@@ -268,6 +285,20 @@ describe GitlabCiYamlProcessor do
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "stages should be an array of strings")
+    end
+
+    it "returns errors if variables is not a map" do
+      config = YAML.dump({variables: "test", rspec: {script: "test"}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "variables should be a map of key-valued strings")
+    end
+
+    it "returns errors if variables is not a map of key-valued strings" do
+      config = YAML.dump({variables: {test: false}, rspec: {script: "test"}})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "variables should be a map of key-valued strings")
     end
   end
 end
