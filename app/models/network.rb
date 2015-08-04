@@ -87,7 +87,7 @@ class Network
       query: api_opts
     }
 
-    query = "projects/#{project_id}/services/gitlab-ci.json?#{options.to_query}"
+    query = "projects/#{project_id}/services/gitlab-ci.json"
 
     endpoint = File.join(url, API_PREFIX, query)
     response = self.class.delete(endpoint, default_opts.merge(opts))
