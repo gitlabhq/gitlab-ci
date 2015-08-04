@@ -251,7 +251,7 @@ class Build < ActiveRecord::Base
   def yaml_variables
     if commit.config_processor
       commit.config_processor.variables.map do |key, value|
-        {key: key, value: value, public: true}
+        { key: key, value: value, public: true }
       end
     else
       []
@@ -260,7 +260,7 @@ class Build < ActiveRecord::Base
 
   def project_variables
     project.variables.map do |variable|
-      {key: variable.key, value: variable.value, public: false}
+      { key: variable.key, value: variable.value, public: false }
     end
   end
 end
