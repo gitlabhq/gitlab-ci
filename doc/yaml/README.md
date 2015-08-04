@@ -52,8 +52,8 @@ There are a few `keywords` that can't be used as job names:
 |---------------|----------|-------------|
 | image         | optional | Use docker image, covered in [Use Docker](../docker/README.md) |
 | services      | optional | Use docker services, covered in [Use Docker](../docker/README.md) |
-| stage         | optional | Define build stages |
-| types         | optional | Alias for `types` |
+| stages        | optional | Define build stages |
+| types         | optional | Alias for `stages` |
 | before_script | optional | Define commands prepended for each job's script |
 
 ### image and services
@@ -72,7 +72,7 @@ The ordering of elements in `stages` defines the ordering of builds' execution:
 1. Builds of the same stage are run in parallel.
 1. Builds of next stage are run after success.
 
-Let's consider the following example, which defines 3 types:
+Let's consider the following example, which defines 3 stages:
 ```
 stages:
   - build
@@ -84,11 +84,11 @@ stages:
 1. If all jobs of `build` succeeds, the `test` jobs are executed in parallel.
 1. If all jobs of `test` succeeds, the `deploy` jobs are executed in parallel.
 1. If all jobs of `deploy` succeeds, the commit is marked as `success`.
-1. If any of the previous jobs fails, the commit is marked as `failed` and no jobs of further type are executed.
+1. If any of the previous jobs fails, the commit is marked as `failed` and no jobs of further stage are executed.
 
 There are also two edge cases worth mentioning:
 
-1. If no `stages` is defined in `.gitlab-ci.yml`, then the types `build`, `test` and `deploy` are allowed to be used as job's stage by default.
+1. If no `stages` is defined in `.gitlab-ci.yml`, then by default the `build`, `test` and `deploy` are allowed to be used as job's stage by default.
 2. If a job doesn't specify `stage`, the job is assigned the `test` stage.
 
 ### types
