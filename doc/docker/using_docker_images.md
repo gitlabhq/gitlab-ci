@@ -66,6 +66,39 @@ Alias hostname for the service is made from the image name:
 1. Everything after `:` is stripped,
 2. '/' is replaced to `_`.
 
+### Configuring services
+Many services accept environment variables, which allow you to easily change database names or set account names depending on the environment.
+
+GitLab Runner 0.5.0 and up passes all YAML-defined variables to created service containers.
+
+1. To configure database name for [postgres](https://registry.hub.docker.com/u/library/postgres/) service,
+you need to set POSTGRES_DB.
+
+    ```yaml
+    services:
+    - postgres
+    
+    variables:
+      POSTGRES_DB: gitlab
+    ```
+
+1. To use [mysql](https://registry.hub.docker.com/u/library/mysql/) service with empty password for time of build, 
+you need to set MYSQL_ALLOW_EMPTY_PASSWORD.
+
+    ```yaml
+    services:
+    - mysql
+    
+    variables:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ```
+
+For other possible configuration variables check the 
+https://registry.hub.docker.com/u/library/mysql/ or https://registry.hub.docker.com/u/library/postgres/
+or README page for any other Docker image.
+
+**Note: All variables will passed to all service containers. It's not designed to distinguish which variable should go where.**
+
 ### Overwrite image and services
 It's possible to overwrite `docker-image` and specify services from `.gitlab-ci.yml`.
 If you add to your YAML the `image` and the `services` these parameters

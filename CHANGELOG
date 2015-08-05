@@ -8,6 +8,7 @@ v7.14.0 (unreleased)
   - Refactor GitLab API usage to use either access_token or private_token depending on what was specified during login
   - Allow to use access_token for API requests
   - Fix project API listing returning empty list when first projects are not added to CI
+  - Allow to define variables from YAML
 
   - Added support for CI skipped status
   

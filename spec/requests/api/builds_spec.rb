@@ -69,7 +69,10 @@ describe API::API do
         post api("/builds/register"), token: runner.token, info: {platform: :darwin}
 
         response.status.should == 201
-        json_response["variables"].should == [{"key" => "SECRET_KEY", "value" => "secret_value"}]
+        json_response["variables"].should == [
+          {"key" => "DB_NAME", "value" => "postgres", "public" => true},
+          {"key" => "SECRET_KEY", "value" => "secret_value", "public" => false},
+        ]
       end
     end
 

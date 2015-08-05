@@ -55,6 +55,7 @@ There are a few `keywords` that can't be used as job names:
 | stages        | optional | Define build stages |
 | types         | optional | Alias for `stages` |
 | before_script | optional | Define commands prepended for each job's script |
+| variables     | optional | Define build variables |
 
 ### image and services
 This allows to specify a custom Docker image and a list of services that can be used for time of the build.
@@ -93,6 +94,21 @@ There are also two edge cases worth mentioning:
 
 ### types
 Alias for [stages](#stages).
+
+### variables
+**This feature requires `gitlab-runner` with version equal or greater than 0.5.0.**
+
+GitLab CI allows you to add to `.gitlab-ci.yml` variables that are set in build environment.
+The variables are stored in repository and are meant to store non-sensitive project configuration, ie. RAILS_ENV or DATABASE_URL.
+
+```yaml
+variables:
+  DATABASE_URL: "postgres://postgres@postgres/my_database"
+```
+
+These variables can be later used in all executed commands and scripts.
+
+The YAML-defined variables are also set to all created service containers, thus allowing to fine tune them.
 
 ## Jobs
 `.gitlab-ci.yml` allows you to specify an unlimited number of jobs.
