@@ -41,23 +41,7 @@ class MailService < Service
     ]
   end
 
-  def can_test?
-    # e-mail notification is useful only for builds either successful or failed
-    project.builds.order(id: :desc).any? do |build|
-      return false unless build.commit.project_recipients.any?
-
-      case build.status.to_sym
-      when :failed
-        true
-      when :success
-        !email_only_broken_builds
-      else
-        false
-      end
-    end
-  end
-
-  def execute(build)
+  def can_execute?(build)
     return if build.allow_failure?
 
     # it doesn't make sense to send emails for retried builds
@@ -65,10 +49,20 @@ class MailService < Service
     return unless commit
     return unless commit.builds_without_retry.include?(build)
 
-    commit.project_recipients.each do |recipient|
+    case build.status.to_sym
+    when :failed
+      true
+    when :success
+      true unless email_only_broken_builds
+    else
+      false
+    end
+  end
+
+  def execute(build)
+    build.commit.project_recipients.each do |recipient|
       case build.status.to_sym
       when :success
-        return if email_only_broken_builds
         mailer.build_success_email(build.id, recipient)
       when :failed
         mailer.build_fail_email(build.id, recipient)

@@ -199,7 +199,7 @@ ls -la
 
       # Call service hook only if it is active
       begin
-        service.execute(data) if service.active
+        service.execute(data) if service.active && service.can_execute?(data)
       rescue => e
         logger.error(e)
       end

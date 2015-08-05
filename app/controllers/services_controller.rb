@@ -31,7 +31,7 @@ class ServicesController < ApplicationController
     if @service.execute(last_build)
       message = { notice: 'We successfully tested the service' }
     else
-      message = { alert: 'We tried to test the service but error occured' }
+      message = { alert: 'We tried to test the service but error occurred' }
     end
 
     redirect_to :back, message

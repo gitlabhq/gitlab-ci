@@ -43,15 +43,24 @@ class HipChatService < Service
     ]
   end
 
-  def execute build
+  def can_execute?(build)
     return if build.allow_failure?
 
     commit = build.commit
     return unless commit
     return unless commit.builds_without_retry.include? build
-    return if commit.success? and notify_only_broken_builds?
-    return if commit.running?
 
+    case commit.status.to_sym
+    when :failed
+      true
+    when :success
+      true unless notify_only_broken_builds?
+    else
+      false
+    end
+  end
+
+  def execute(build)
     msg = HipChatMessage.new(build)
     opts = default_options.merge(
       token: hipchat_token,

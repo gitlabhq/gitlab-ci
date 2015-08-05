@@ -58,12 +58,16 @@ class Service < ActiveRecord::Base
     []
   end
 
-  def execute
-    # implement inside child
-  end
-
   def can_test?
     project.builds.any?
+  end
+
+  def can_execute?(build)
+    true
+  end
+
+  def execute(build)
+    # implement inside child
   end
 
   # Provide convenient accessor methods

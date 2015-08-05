@@ -121,7 +121,7 @@ describe MailService do
       it do
         should_email(commit.git_author_email)
         should_email("jeroen@example.com")
-        mail.execute(build)
+        mail.execute(build) if mail.can_execute?(build)
       end
 
       def should_email(email)
@@ -152,28 +152,6 @@ describe MailService do
       end
     end
 
-    describe 'successful build and cannot test service' do
-      let(:project) {
-        FactoryGirl.create(:project,
-                           email_add_pusher: true,
-                           email_only_broken_builds: true,
-                           email_recipients: "jeroen@example.com")
-      }
-      let(:commit) { FactoryGirl.create(:commit, project: project) }
-      let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
-
-      before do
-        mail.stub(
-          project: project
-        )
-        build
-      end
-
-      it do
-        mail.can_test?.should == false
-      end
-    end
-
     describe 'retried build should not receive email' do
       let(:project) {
         FactoryGirl.create(:project,
@@ -194,7 +172,7 @@ describe MailService do
         Build.retry(build)
         should_email(commit.git_author_email)
         should_email("jeroen@example.com")
-        mail.execute(build)
+        mail.execute(build) if mail.can_execute?(build)
       end
 
       def should_email(email)
