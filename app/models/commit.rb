@@ -99,7 +99,7 @@ class Commit < ActiveRecord::Base
     config_processor.stages.find { |stage| stages.include? stage }
   end
 
-  def create_builds_for_type(stage)
+  def create_builds_for_stage(stage)
     return if skip_ci?
     return unless config_processor
 
@@ -124,7 +124,7 @@ class Commit < ActiveRecord::Base
     stages = builds.group_by(&:stage)
 
     config_processor.stages.any? do |stage|
-      !stages.include?(stage) && create_builds_for_type(stage).present?
+      !stages.include?(stage) && create_builds_for_stage(stage).present?
     end
   end
 
@@ -133,7 +133,7 @@ class Commit < ActiveRecord::Base
     return unless config_processor
 
     config_processor.stages.any? do |stage|
-      create_builds_for_type(stage).present?
+      create_builds_for_stage(stage).present?
     end
   end
 
