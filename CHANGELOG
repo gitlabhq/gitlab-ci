@@ -1,3 +1,18 @@
+v7.14.0 (unreleased)
+  - Truncate commit messages after subject line in table
+  - Adjust CI config to support Docker executors
+  - Added Application Settings
+  - Randomize test database for CI tests
+  - Make YAML validation stricter
+  - Use avatars received from GitLab
+  - Refactor GitLab API usage to use either access_token or private_token depending on what was specified during login
+  - Allow to use access_token for API requests
+  - Fix project API listing returning empty list when first projects are not added to CI
+  - Allow to define variables from YAML
+  - Added support for CI skipped status
+  - Fix broken yaml error saving
+  - Rename type(s) to stage(s)
+  
 v7.13.1
   - Fix: user could steal specific runner
   - Fix: don't send notifications for jobs with allow_failure set
