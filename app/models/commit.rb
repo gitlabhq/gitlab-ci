@@ -250,7 +250,7 @@ class Commit < ActiveRecord::Base
   private
 
   def save_yaml_error(error)
-    return unless self.yaml_errors?
+    return if self.yaml_errors?
     self.yaml_errors = error
     save
   end
