@@ -161,6 +161,10 @@ class Commit < ActiveRecord::Base
   end
 
   def status
+    if skip_ci? || builds.none?
+      return 'skipped'
+    end
+
     if yaml_errors.present?
       return 'failed'
     end

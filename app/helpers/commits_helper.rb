@@ -7,6 +7,8 @@ module CommitsHelper
       'alert-success'
     when 'failed', 'canceled'
       'alert-danger'
+    when 'skipped'
+      'alert-disabled'
     else
       'alert-warning'
     end
