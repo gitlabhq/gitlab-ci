@@ -82,11 +82,15 @@ class Network
     end
   end
 
-  def disable_ci(project_id, access_token)
-    query = "projects/#{project_id}/services/gitlab-ci.json?access_token=#{access_token}"
+  def disable_ci(project_id, api_opts)
+    opts = {
+      query: api_opts
+    }
+
+    query = "projects/#{project_id}/services/gitlab-ci.json"
 
     endpoint = File.join(url, API_PREFIX, query)
-    response = self.class.delete(endpoint, default_opts)
+    response = self.class.delete(endpoint, default_opts.merge(opts))
 
     build_response(response)
   end
