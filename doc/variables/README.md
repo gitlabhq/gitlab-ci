@@ -1,6 +1,17 @@
 ## Variables
 When receiving a build from GitLab CI, the runner prepares the build environment.
-It starts by setting a list of **predefined variables** (Environment Variables) and a list of **user-defined variables** (Secure Variables)
+It starts by setting a list of **predefined variables** (Environment Variables) and a list of **user-defined variables**
+
+The variables can be overwritten. They take precedence over each other in this order:
+1. Secure variables
+1. YAML-defined variables
+1. Predefined variables
+
+For example, if you define:
+1. API_TOKEN=SECURE as Secure Variable
+1. API_TOKEN=YAML as YAML-defined variable
+
+The API_TOKEN will take the Secure Variable value: `SECURE`.
 
 ### Predefined variables (Environment Variables)
 
@@ -36,8 +47,25 @@ export CI_SERVER_REVISION=""
 export CI_SERVER_VERSION=""
 ```
 
+### YAML-defined variables
+**This feature requires GitLab Runner 0.5.0 or higher**
+
+GitLab CI allows you to add to `.gitlab-ci.yml` variables that are set in build environment.
+The variables are stored in repository and are meant to store non-sensitive project configuration, ie. RAILS_ENV or DATABASE_URL.
+
+```yaml
+variables:
+  DATABASE_URL: "postgres://postgres@postgres/my_database"
+```
+
+These variables can be later used in all executed commands and scripts.
+
+The YAML-defined variables are also set to all created service containers, thus allowing to fine tune them.
+
+More information about Docker integration can be found in [Using Docker Images](../docker/using_docker_images.md).
+
 ### User-defined variables (Secure Variables)
-**This feature requires `gitlab-runner` with version equal or greater than 0.4.0.**
+**This feature requires GitLab Runner 0.4.0 or higher**
 
 GitLab CI allows you to define per-project **Secure Variables** that are set in build environment. 
 The secure variables are stored out of the repository (the `.gitlab-ci.yml`).
