@@ -9,8 +9,8 @@ v7.14.0 (unreleased)
   - Allow to use access_token for API requests
   - Fix project API listing returning empty list when first projects are not added to CI
   - Allow to define variables from YAML
-
   - Added support for CI skipped status
+  - Rename type(s) to stage(s)
   
 v7.13.1
   - Fix: user could steal specific runner
