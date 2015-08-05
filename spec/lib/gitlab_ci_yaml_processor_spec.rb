@@ -13,9 +13,9 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref(type, "master").size.should == 1
-      config_processor.builds_for_type_and_ref(type, "master").first.should == {
-        type: "test",
+      config_processor.builds_for_stage_and_ref(type, "master").size.should == 1
+      config_processor.builds_for_stage_and_ref(type, "master").first.should == {
+        stage: "test",
         except: nil,
         name: :rspec,
         only: nil,
@@ -34,7 +34,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref(type, "master").size.should == 0
+      config_processor.builds_for_stage_and_ref(type, "master").size.should == 0
     end
 
     it "does not return builds if only has regexp with another branch" do
@@ -45,7 +45,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref(type, "master").size.should == 0
+      config_processor.builds_for_stage_and_ref(type, "master").size.should == 0
     end
 
     it "returns builds if only has specified this branch" do
@@ -56,7 +56,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref(type, "master").size.should == 1
+      config_processor.builds_for_stage_and_ref(type, "master").size.should == 1
     end
 
     it "does not build tags" do
@@ -67,7 +67,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref(type, "0-1", true).size.should == 0
+      config_processor.builds_for_stage_and_ref(type, "0-1", true).size.should == 0
     end
 
     it "returns builds if only has a list of branches including specified" do
@@ -78,7 +78,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref(type, "deploy").size.should == 1
+      config_processor.builds_for_stage_and_ref(type, "deploy").size.should == 1
     end
 
     it "returns build only for specified type" do
@@ -93,9 +93,9 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref("production", "deploy").size.should == 0
-      config_processor.builds_for_type_and_ref(type, "deploy").size.should == 1
-      config_processor.builds_for_type_and_ref("deploy", "deploy").size.should == 2
+      config_processor.builds_for_stage_and_ref("production", "deploy").size.should == 0
+      config_processor.builds_for_stage_and_ref(type, "deploy").size.should == 1
+      config_processor.builds_for_stage_and_ref("deploy", "deploy").size.should == 2
     end
   end
 
@@ -110,10 +110,10 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref("test", "master").size.should == 1
-      config_processor.builds_for_type_and_ref("test", "master").first.should == {
+      config_processor.builds_for_stage_and_ref("test", "master").size.should == 1
+      config_processor.builds_for_stage_and_ref("test", "master").first.should == {
         except: nil,
-        type: "test",
+        stage: "test",
         name: :rspec,
         only: nil,
         script: "pwd\nrspec",
@@ -136,10 +136,10 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_type_and_ref("test", "master").size.should == 1
-      config_processor.builds_for_type_and_ref("test", "master").first.should == {
+      config_processor.builds_for_stage_and_ref("test", "master").size.should == 1
+      config_processor.builds_for_stage_and_ref("test", "master").first.should == {
         except: nil,
-        type: "test",
+        stage: "test",
         name: :rspec,
         only: nil,
         script: "pwd\nrspec",
@@ -235,39 +235,39 @@ describe GitlabCiYamlProcessor do
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: allow_failure parameter should be an boolean")
     end
 
-    it "returns errors if job type is not a string" do
-      config = YAML.dump({rspec: {script: "test", type: false, allow_failure: "string"}})
+    it "returns errors if job stage is not a string" do
+      config = YAML.dump({rspec: {script: "test", type: 1, allow_failure: "string"}})
       expect do
         GitlabCiYamlProcessor.new(config)
-      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: type should be a string")
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: stage parameter should be build, test, deploy")
     end
 
-    it "returns errors if job type is not a pre-defined type" do
+    it "returns errors if job stage is not a pre-defined stage" do
       config = YAML.dump({rspec: {script: "test", type: "acceptance", allow_failure: "string"}})
       expect do
         GitlabCiYamlProcessor.new(config)
-      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: type parameter should be build, test, deploy")
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: stage parameter should be build, test, deploy")
     end
 
-    it "returns errors if job type is not a defined type" do
+    it "returns errors if job stage is not a defined stage" do
       config = YAML.dump({types: ["build", "test"], rspec: {script: "test", type: "acceptance", allow_failure: "string"}})
       expect do
         GitlabCiYamlProcessor.new(config)
-      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: type parameter should be build, test")
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: stage parameter should be build, test")
     end
 
-    it "returns errors if types is not an array" do
+    it "returns errors if stages is not an array" do
       config = YAML.dump({types: "test", rspec: {script: "test"}})
       expect do
         GitlabCiYamlProcessor.new(config)
-      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "types should be an array of strings")
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "stages should be an array of strings")
     end
 
-    it "returns errors if types is not an array of strings" do
+    it "returns errors if stages is not an array of strings" do
       config = YAML.dump({types: [true, "test"], rspec: {script: "test"}})
       expect do
         GitlabCiYamlProcessor.new(config)
-      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "types should be an array of strings")
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "stages should be an array of strings")
     end
   end
 end

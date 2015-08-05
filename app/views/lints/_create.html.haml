@@ -10,10 +10,10 @@
         %th Parameter
         %th Value
     %tbody
-      - @types.each do |type|
-        - @builds.select { |build| build[:type] == type }.each do |build|
+      - @stages.each do |stage|
+        - @builds.select { |build| build[:stage] == stage }.each do |build|
           %tr
-            %td #{type.capitalize} Job - #{build[:name]}
+            %td #{stage.capitalize} Job - #{build[:name]}
             %td
               %pre
                 = simple_format build[:script]

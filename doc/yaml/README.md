@@ -31,13 +31,13 @@ services:
 before_script:
   - bundle_install
 
-types:
+stages:
   - build
   - test
   - deploy
 
 job1:
-  type: build
+  stage: build
   script:
     - execute-script-for-job1
   only:
@@ -52,7 +52,8 @@ There are a few `keywords` that can't be used as job names:
 |---------------|----------|-------------|
 | image         | optional | Use docker image, covered in [Use Docker](../docker/README.md) |
 | services      | optional | Use docker services, covered in [Use Docker](../docker/README.md) |
-| types         | optional | Define build types |
+| stages        | optional | Define build stages |
+| types         | optional | Alias for `stages` |
 | before_script | optional | Define commands prepended for each job's script |
 
 ### image and services
@@ -62,18 +63,18 @@ The configuration of this feature is covered in separate document: [Use Docker](
 ### before_script
 `before_script` is used to define the command that should be run before all builds, including deploy builds. This can be an array or a multiline string.
 
-### types
-`types` is used to define build types that can be used by jobs.
-The specification of `types` allows for having flexible multi stage pipelines.
+### stages
+`stages` is used to define build stages that can be used by jobs.
+The specification of `stages` allows for having flexible multi stage pipelines.
 
-The ordering of elements in `types` defines the ordering of builds' execution:
+The ordering of elements in `stages` defines the ordering of builds' execution:
 
-1. Builds of the same type are run in parallel.
-1. Builds of next type are run after success.
+1. Builds of the same stage are run in parallel.
+1. Builds of next stage are run after success.
 
-Let's consider the following example, which defines 3 types:
+Let's consider the following example, which defines 3 stages:
 ```
-types:
+stages:
   - build
   - test
   - deploy
@@ -83,12 +84,15 @@ types:
 1. If all jobs of `build` succeeds, the `test` jobs are executed in parallel.
 1. If all jobs of `test` succeeds, the `deploy` jobs are executed in parallel.
 1. If all jobs of `deploy` succeeds, the commit is marked as `success`.
-1. If any of the previous jobs fails, the commit is marked as `failed` and no jobs of further type are executed.
+1. If any of the previous jobs fails, the commit is marked as `failed` and no jobs of further stage are executed.
 
 There are also two edge cases worth mentioning:
 
-1. If no `types` is defined in `.gitlab-ci.yml`, then the types `build`, `test` and `deploy` are allowed to be used as job's type by default.
-2. If a job doesn't specify `type`, the job is assigned the `test` type.
+1. If no `stages` is defined in `.gitlab-ci.yml`, then by default the `build`, `test` and `deploy` are allowed to be used as job's stage by default.
+2. If a job doesn't specify `stage`, the job is assigned the `test` stage.
+
+### types
+Alias for [stages](#stages).
 
 ## Jobs
 `.gitlab-ci.yml` allows you to specify an unlimited number of jobs.
@@ -100,7 +104,7 @@ job_name:
   script:
     - rake spec
     - coverage
-  type: test
+  stage: test
   only:
     - master
   except:
@@ -114,7 +118,8 @@ job_name:
 | keyword       | required | description |
 |---------------|----------|-------------|
 | script        | required | Defines a shell script which is executed by runner |
-| type          | optional (default: test) | Defines a build type |
+| stage         | optional (default: test) | Defines a build stage |
+| type          | optional | Alias for `stage` |
 | only          | optional | Defines a list of git refs for which build is created |
 | except        | optional | Defines a list of git refs for which build is not created |
 | tags          | optional | Defines a list of tags which are used to select runner |
@@ -136,9 +141,9 @@ job:
     - bundle exec rspec
 ```
 
-### type
-`type` allows to group build into different stages. Builds of the same `type` are executed in `parallel`.
-For more info about the use of `type` please check the [types](#types).
+### stage
+`stage` allows to group build into different stages. Builds of the same `stage` are executed in `parallel`.
+For more info about the use of `stage` please check the [stages](#stages).
 
 ### only and except
 This are two parameters that allow for setting a refs policy to limit when jobs are built:
