@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150806091655) do
+ActiveRecord::Schema.define(version: 20150819162227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,10 +37,11 @@ ActiveRecord::Schema.define(version: 20150806091655) do
     t.text     "commands"
     t.integer  "job_id"
     t.string   "name"
-    t.boolean  "deploy",        default: false
+    t.boolean  "deploy",             default: false
     t.text     "options"
-    t.boolean  "allow_failure", default: false, null: false
+    t.boolean  "allow_failure",      default: false, null: false
     t.string   "stage"
+    t.integer  "trigger_request_id"
   end
 
   add_index "builds", ["commit_id"], name: "index_builds_on_commit_id", using: :btree
@@ -56,7 +57,7 @@ ActiveRecord::Schema.define(version: 20150806091655) do
     t.text     "push_data"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "tag",         default: false
+    t.boolean  "tag",          default: false
     t.text     "yaml_errors"
     t.datetime "committed_at"
   end
@@ -185,6 +186,24 @@ ActiveRecord::Schema.define(version: 20150806091655) do
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
+
+  create_table "trigger_requests", force: true do |t|
+    t.integer  "trigger_id", null: false
+    t.text     "variables"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "commit_id"
+  end
+
+  create_table "triggers", force: true do |t|
+    t.string   "token"
+    t.integer  "project_id", null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "triggers", ["deleted_at"], name: "index_triggers_on_deleted_at", using: :btree
 
   create_table "variables", force: true do |t|
     t.integer "project_id",           null: false

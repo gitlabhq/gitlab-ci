@@ -2,23 +2,25 @@
 #
 # Table name: builds
 #
-#  id            :integer          not null, primary key
-#  project_id    :integer
-#  status        :string(255)
-#  finished_at   :datetime
-#  trace         :text
-#  created_at    :datetime
-#  updated_at    :datetime
-#  started_at    :datetime
-#  runner_id     :integer
-#  commit_id     :integer
-#  coverage      :float
-#  commands      :text
-#  job_id        :integer
-#  name          :string(255)
-#  deploy        :boolean          default(FALSE)
-#  options       :text
-#  allow_failure :boolean          default(FALSE), not null
+#  id                 :integer          not null, primary key
+#  project_id         :integer
+#  status             :string(255)
+#  finished_at        :datetime
+#  trace              :text
+#  created_at         :datetime
+#  updated_at         :datetime
+#  started_at         :datetime
+#  runner_id          :integer
+#  commit_id          :integer
+#  coverage           :float
+#  commands           :text
+#  job_id             :integer
+#  name               :string(255)
+#  deploy             :boolean          default(FALSE)
+#  options            :text
+#  allow_failure      :boolean          default(FALSE), not null
+#  stage              :string(255)
+#  trigger_request_id :integer
 #
 
 require 'spec_helper'

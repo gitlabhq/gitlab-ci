@@ -2,23 +2,25 @@
 #
 # Table name: builds
 #
-#  id            :integer          not null, primary key
-#  project_id    :integer
-#  status        :string(255)
-#  finished_at   :datetime
-#  trace         :text
-#  created_at    :datetime
-#  updated_at    :datetime
-#  started_at    :datetime
-#  runner_id     :integer
-#  commit_id     :integer
-#  coverage      :float
-#  commands      :text
-#  job_id        :integer
-#  name          :string(255)
-#  deploy        :boolean          default(FALSE)
-#  options       :text
-#  allow_failure :boolean          default(FALSE), not null
+#  id                 :integer          not null, primary key
+#  project_id         :integer
+#  status             :string(255)
+#  finished_at        :datetime
+#  trace              :text
+#  created_at         :datetime
+#  updated_at         :datetime
+#  started_at         :datetime
+#  runner_id          :integer
+#  commit_id          :integer
+#  coverage           :float
+#  commands           :text
+#  job_id             :integer
+#  name               :string(255)
+#  options            :text
+#  allow_failure      :boolean          default(FALSE), not null
+#  stage              :string(255)
+#  deploy             :boolean          default(FALSE)
+#  trigger_request_id :integer
 #
 
 class Build < ActiveRecord::Base
@@ -27,6 +29,7 @@ class Build < ActiveRecord::Base
   belongs_to :commit
   belongs_to :project
   belongs_to :runner
+  belongs_to :trigger_request
 
   serialize :options
 
@@ -78,6 +81,7 @@ class Build < ActiveRecord::Base
       new_build.name = build.name
       new_build.allow_failure = build.allow_failure
       new_build.stage = build.stage
+      new_build.trigger_request = build.trigger_request
       new_build.save
       new_build
     end
@@ -113,7 +117,7 @@ class Build < ActiveRecord::Base
       end
 
       if build.commit.success?
-        build.commit.create_next_builds
+        build.commit.create_next_builds(build.trigger_request)
       end
 
       project.execute_services(build)
@@ -165,7 +169,7 @@ class Build < ActiveRecord::Base
   end
 
   def variables
-    yaml_variables + project_variables
+    yaml_variables + project_variables + trigger_variables
   end
 
   def duration
@@ -262,6 +266,16 @@ class Build < ActiveRecord::Base
   def project_variables
     project.variables.map do |variable|
       { key: variable.key, value: variable.value, public: false }
+    end
+  end
+
+  def trigger_variables
+    if trigger_request && trigger_request.variables
+      trigger_request.variables.map do |key, value|
+        { key: key, value: value, public: false }
+      end
+    else
+      []
     end
   end
 end

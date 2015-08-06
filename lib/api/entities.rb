@@ -30,5 +30,10 @@ module API
     class WebHook < Grape::Entity
       expose :id, :project_id, :url
     end
+
+    class TriggerRequest < Grape::Entity
+      expose :id, :variables
+      expose :commit, using: Commit
+    end
   end
 end

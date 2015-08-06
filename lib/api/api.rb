@@ -30,5 +30,6 @@ module API
     mount Runners
     mount Projects
     mount Forks
+    mount Triggers
   end
 end
