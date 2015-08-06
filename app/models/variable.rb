@@ -14,5 +14,8 @@
 class Variable < ActiveRecord::Base
   belongs_to :project
 
+  validates_presence_of :key
+  validates_uniqueness_of :key
+
   attr_encrypted :value, mode: :per_attribute_iv_and_salt, key: GitlabCi::Application.secrets.db_key_base
 end
