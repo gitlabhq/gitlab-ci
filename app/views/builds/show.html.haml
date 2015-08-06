@@ -109,6 +109,23 @@
         - elsif @build.runner
           \##{@build.runner.id}
 
+    - if @build.trigger_request
+      .build-widget
+        %h4.title
+          Trigger
+
+        %p
+          %span.attr-name Token:
+          #{@build.trigger_request.trigger.short_token}
+
+        - if @build.trigger_request.variables
+          %p
+            %span.attr-name Variables:
+
+          %code
+            - @build.trigger_request.variables.each do |key, value|
+              #{key}=#{value}
+
     .build-widget
       %h4.title
         Commit

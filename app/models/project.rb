@@ -35,6 +35,7 @@ class Project < ActiveRecord::Base
   has_many :web_hooks, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :variables, dependent: :destroy
+  has_many :triggers, dependent: :destroy
 
   # Project services
   has_many :services, dependent: :destroy
