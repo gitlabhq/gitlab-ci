@@ -54,8 +54,8 @@ describe Project do
       oldest_project = FactoryGirl.create :project
       project_without_commits = FactoryGirl.create :project
 
-      FactoryGirl.create :commit, created_at: 1.hour.ago, project: newest_project
-      FactoryGirl.create :commit, created_at: 2.hour.ago, project: oldest_project
+      FactoryGirl.create :commit, committed_at: 1.hour.ago, project: newest_project
+      FactoryGirl.create :commit, committed_at: 2.hour.ago, project: oldest_project
 
       Project.ordered_by_last_commit_date.should == [newest_project, oldest_project, project_without_commits]
     end
