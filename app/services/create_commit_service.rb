@@ -40,6 +40,7 @@ class CreateCommitService
       commit = project.commits.create(data)
     end
 
+    commit.update_committed!
     commit.create_builds unless commit.builds.any?
 
     commit

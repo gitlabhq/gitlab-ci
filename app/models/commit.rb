@@ -245,6 +245,10 @@ class Commit < ActiveRecord::Base
     commits.present? && commits.last[:message] =~ /(\[ci skip\])/
   end
 
+  def update_committed!
+    update!(committed_at: DateTime.now)
+  end
+
   private
 
   def save_yaml_error(error)
