@@ -161,15 +161,13 @@ class Commit < ActiveRecord::Base
   end
 
   def status
-    if skip_ci? || builds.none?
+    if skip_ci?
       return 'skipped'
-    end
-
-    if yaml_errors.present?
+    elsif yaml_errors.present?
       return 'failed'
-    end
-
-    if success?
+    elsif builds.none?
+      return 'skipped'
+    elsif success?
       'success'
     elsif pending?
       'pending'
@@ -250,7 +248,7 @@ class Commit < ActiveRecord::Base
   private
 
   def save_yaml_error(error)
-    return unless self.yaml_errors?
+    return if self.yaml_errors?
     self.yaml_errors = error
     save
   end

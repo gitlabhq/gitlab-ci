@@ -10,6 +10,7 @@ v7.14.0 (unreleased)
   - Fix project API listing returning empty list when first projects are not added to CI
   - Allow to define variables from YAML
   - Added support for CI skipped status
+  - Fix broken yaml error saving
   - Rename type(s) to stage(s)
   
 v7.13.1
