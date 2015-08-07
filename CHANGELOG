@@ -1,3 +1,6 @@
+v7.13.4
+  - Fix broken yaml error saving
+
 v7.13.1
   - Fix: user could steal specific runner
   - Fix: don't send notifications for jobs with allow_failure set
@@ -74,10 +77,8 @@ v7.11.0
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
-
-sidekiq_wirker_fix
-	- added sidekiq.yml
-	- integrated in script/background_jobs
+  - added sidekiq.yml
+  - integrated in script/background_jobs
 v7.10.0
   - Projects sorting by last commit date
   - Add project search at runner page

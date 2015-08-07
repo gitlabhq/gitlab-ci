@@ -97,5 +97,20 @@ describe CreateCommitService do
       )
       commit.builds.count(:all).should == 2
     end
+
+    it "creates commit with failed status if yaml is invalid" do
+      commits = [{message: "some message"}]
+
+      commit = service.execute(project,
+                               ref: 'refs/tags/0_1',
+                               before: '00000000',
+                               after: '31das312',
+                               commits: commits,
+                               ci_yaml_file: "invalid: file"
+      )
+
+      commit.status.should == "failed"
+      commit.builds.any?.should be_false
+    end
   end
 end
