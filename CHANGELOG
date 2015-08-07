@@ -1,18 +1,6 @@
-v7.14.0 (unreleased)
-  - Truncate commit messages after subject line in table
-  - Adjust CI config to support Docker executors
-  - Added Application Settings
-  - Randomize test database for CI tests
-  - Make YAML validation stricter
-  - Use avatars received from GitLab
-  - Refactor GitLab API usage to use either access_token or private_token depending on what was specified during login
-  - Allow to use access_token for API requests
-  - Fix project API listing returning empty list when first projects are not added to CI
-  - Allow to define variables from YAML
-  - Added support for CI skipped status
+v7.13.4
   - Fix broken yaml error saving
-  - Rename type(s) to stage(s)
-  
+
 v7.13.1
   - Fix: user could steal specific runner
   - Fix: don't send notifications for jobs with allow_failure set
@@ -89,10 +77,8 @@ v7.11.0
 
 v7.10.1
   - Fix failing migration when update to 7.10 from 7.8 and older versions
-
-sidekiq_wirker_fix
-	- added sidekiq.yml
-	- integrated in script/background_jobs
+  - added sidekiq.yml
+  - integrated in script/background_jobs
 v7.10.0
   - Projects sorting by last commit date
   - Add project search at runner page
