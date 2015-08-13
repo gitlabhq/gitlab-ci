@@ -58,7 +58,7 @@ gitlab-ci-multi-runner register \
   --registration-token "PROJECT_REGISTRATION_TOKEN" \
   --description "ruby-2.1" \
   --executor "docker" \
-  --docker-image python:2.1 \
+  --docker-image ruby:2.1 \
   --docker-postgres latest
 ```
 
