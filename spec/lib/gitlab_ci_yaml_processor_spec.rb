@@ -176,7 +176,7 @@ describe GitlabCiYamlProcessor do
     end
 
     it "returns errors if tags parameter is invalid" do
-      config = YAML.dump({rspec: {tags: "mysql"}})
+      config = YAML.dump({rspec: {script: "test", tags: "mysql"}})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: tags parameter should be an array of strings")
@@ -197,7 +197,7 @@ describe GitlabCiYamlProcessor do
     end
 
     it "returns errors if job image parameter is invalid" do
-      config = YAML.dump({rspec: {image: ["test"]}})
+      config = YAML.dump({rspec: {script: "test", image: ["test"]}})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: image should be a string")
@@ -218,14 +218,14 @@ describe GitlabCiYamlProcessor do
     end
 
     it "returns errors if job services parameter is not an array" do
-      config = YAML.dump({rspec: {services: "test"}})
+      config = YAML.dump({rspec: {script: "test", services: "test"}})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: services should be an array of strings")
     end
 
     it "returns errors if job services parameter is not an array of strings" do
-      config = YAML.dump({rspec: {services: [10, "test"]}})
+      config = YAML.dump({rspec: {script: "test", services: [10, "test"]}})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "rspec job: services should be an array of strings")
@@ -233,6 +233,13 @@ describe GitlabCiYamlProcessor do
 
     it "returns errors if there are unknown parameters" do
       config = YAML.dump({extra: "bundle update"})
+      expect do
+        GitlabCiYamlProcessor.new(config)
+      end.to raise_error(GitlabCiYamlProcessor::ValidationError, "Unknown parameter: extra")
+    end
+
+    it "returns errors if there are unknown parameters that are hashes, but doesn't have a script" do
+      config = YAML.dump({extra: {services: "test"}})
       expect do
         GitlabCiYamlProcessor.new(config)
       end.to raise_error(GitlabCiYamlProcessor::ValidationError, "Unknown parameter: extra")
