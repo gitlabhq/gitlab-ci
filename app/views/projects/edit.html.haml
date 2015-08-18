@@ -14,7 +14,7 @@
       .modal-content
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-          %h4.modal-title Content of.gitlab-ci.yml
+          %h4.modal-title Content of .gitlab-ci.yml
         .modal-body
           = text_area_tag :yaml, @project.generated_yaml_config, size: "70x25", class: "form-control"
         .modal-footer
