@@ -46,8 +46,9 @@ class GitlabCiYamlProcessor
     @variables = @config[:variables] || {}
     @config.except!(*ALLOWED_YAML_KEYS)
 
+    # anything that doesn't have script is considered as unknown
     @config.each do |name, param|
-      raise ValidationError, "Unknown parameter: #{name}" unless param.is_a?(Hash)
+      raise ValidationError, "Unknown parameter: #{name}" unless param.is_a?(Hash) && param.has_key?(:script)
     end
 
     unless @config.values.any?{|job| job.is_a?(Hash)}
@@ -146,6 +147,10 @@ class GitlabCiYamlProcessor
       unless ALLOWED_JOB_KEYS.include? key
         raise ValidationError, "#{name}: unknown parameter #{key}"
       end
+    end
+
+    if !job[:script].is_a?(String) && !validate_array_of_strings(job[:script])
+      raise ValidationError, "#{name}: script should be a string or an array of a strings"
     end
 
     if job[:stage]
