@@ -13,6 +13,7 @@ v7.14.0 (unreleased)
   - Fix broken yaml error saving
   - Rename type(s) to stage(s)
   - Add missing stage when doing retry
+  - Require variable keys to be not-empty and unique
   
 v7.13.1
   - Fix: user could steal specific runner
