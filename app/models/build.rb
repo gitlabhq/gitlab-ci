@@ -77,6 +77,7 @@ class Build < ActiveRecord::Base
       new_build.project_id = build.project_id
       new_build.name = build.name
       new_build.allow_failure = build.allow_failure
+      new_build.stage = build.stage
       new_build.save
       new_build
     end
