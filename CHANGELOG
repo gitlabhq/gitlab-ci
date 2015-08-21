@@ -15,6 +15,7 @@ v7.14.0 (unreleased)
   - Add missing stage when doing retry
   - Require variable keys to be not-empty and unique
   - Fix variable saving issue
+  - Display variable saving errors in variables page not the project's
   
 v7.13.1
   - Fix: user could steal specific runner
