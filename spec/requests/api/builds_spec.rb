@@ -77,8 +77,9 @@ describe API::API do
 
       it "returns variables for triggers" do
         trigger = FactoryGirl.create(:trigger, project: project)
-        trigger_request = FactoryGirl.create(:trigger_request_with_variables, commit: commit, trigger: trigger)
         commit = FactoryGirl.create(:commit, project: project)
+
+        trigger_request = FactoryGirl.create(:trigger_request_with_variables, commit: commit, trigger: trigger)
         commit.create_builds(trigger_request)
         project.variables << Variable.new(key: "SECRET_KEY", value: "secret_value")
 
