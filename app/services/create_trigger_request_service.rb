@@ -1,6 +1,6 @@
 class CreateTriggerRequestService
-  def execute(project, trigger, ref, variables)
-    commit = project.commits.find_by_ref(ref)
+  def execute(project, trigger, ref, variables = nil)
+    commit = project.commits.where(ref: ref).last
     return unless commit
 
     trigger_request = trigger.trigger_requests.create!(

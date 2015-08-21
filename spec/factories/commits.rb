@@ -51,15 +51,24 @@ FactoryGirl.define do
       }
     end
 
+    factory :commit_without_jobs do
+      after(:create) do |commit, evaluator|
+        commit.push_data[:ci_yaml_file] = YAML.dump({})
+        commit.save
+      end
+    end
+
     factory :commit_with_one_job do
       after(:create) do |commit, evaluator|
         commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: "ls" }})
+        commit.save
       end
     end
 
     factory :commit_with_two_jobs do
       after(:create) do |commit, evaluator|
         commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: "ls" }, spinach: { script: "ls" }})
+        commit.save
       end
     end
   end
