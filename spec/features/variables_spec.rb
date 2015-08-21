@@ -18,7 +18,7 @@ describe "Variables" do
       fill_in "Value", with: "SECRET_VALUE"
       click_on "Save changes"
       
-      page.should have_content("Project was successfully updated.")
+      page.should have_content("Variables were successfully updated.")
       @project.variables.count.should == 1
     end
 
