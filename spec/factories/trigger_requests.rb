@@ -5,7 +5,7 @@ FactoryGirl.define do
     factory :trigger_request_with_variables do
       variables do
         {
-          KEY: 'VALUE'
+          TRIGGER_KEY: 'TRIGGER_VALUE'
         }
       end
     end
