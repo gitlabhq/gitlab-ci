@@ -244,7 +244,7 @@ class Commit < ActiveRecord::Base
   end
 
   def skip_ci?
-    return if builds.any?
+    return false if builds.any?
     commits = push_data[:commits]
     commits.present? && commits.last[:message] =~ /(\[ci skip\])/
   end
