@@ -12,6 +12,7 @@ v7.14.0 (unreleased)
   - Added support for CI skipped status
   - Fix broken yaml error saving
   - Rename type(s) to stage(s)
+  - Fix navigation icons
   - Add missing stage when doing retry
   - Require variable keys to be not-empty and unique
   
