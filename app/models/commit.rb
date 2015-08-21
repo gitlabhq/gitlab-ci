@@ -2,21 +2,23 @@
 #
 # Table name: commits
 #
-#  id          :integer          not null, primary key
-#  project_id  :integer
-#  ref         :string(255)
-#  sha         :string(255)
-#  before_sha  :string(255)
-#  push_data   :text
-#  created_at  :datetime
-#  updated_at  :datetime
-#  tag         :boolean          default(FALSE)
-#  yaml_errors :text
+#  id           :integer          not null, primary key
+#  project_id   :integer
+#  ref          :string(255)
+#  sha          :string(255)
+#  before_sha   :string(255)
+#  push_data    :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#  tag          :boolean          default(FALSE)
+#  yaml_errors  :text
+#  committed_at :datetime
 #
 
 class Commit < ActiveRecord::Base
   belongs_to :project
   has_many :builds, dependent: :destroy
+  has_many :trigger_requests, dependent: :destroy
 
   serialize :push_data
 
@@ -99,8 +101,8 @@ class Commit < ActiveRecord::Base
     config_processor.stages.find { |stage| stages.include? stage }
   end
 
-  def create_builds_for_stage(stage)
-    return if skip_ci?
+  def create_builds_for_stage(stage, trigger_request)
+    return if skip_ci? && trigger_request.blank?
     return unless config_processor
 
     builds_attrs = config_processor.builds_for_stage_and_ref(stage, ref, tag)
@@ -112,28 +114,29 @@ class Commit < ActiveRecord::Base
         tag_list: build_attrs[:tags],
         options: build_attrs[:options],
         allow_failure: build_attrs[:allow_failure],
-        stage: build_attrs[:stage]
+        stage: build_attrs[:stage],
+        trigger_request: trigger_request,
       })
     end
   end
 
-  def create_next_builds
-    return if skip_ci?
+  def create_next_builds(trigger_request)
+    return if skip_ci? && trigger_request.blank?
     return unless config_processor
 
-    stages = builds.group_by(&:stage)
+    stages = builds.where(trigger_request: trigger_request).group_by(&:stage)
 
     config_processor.stages.any? do |stage|
-      !stages.include?(stage) && create_builds_for_stage(stage).present?
+      !stages.include?(stage) && create_builds_for_stage(stage, trigger_request).present?
     end
   end
 
-  def create_builds
-    return if skip_ci?
+  def create_builds(trigger_request = nil)
+    return if skip_ci? && trigger_request.blank?
     return unless config_processor
 
     config_processor.stages.any? do |stage|
-      create_builds_for_stage(stage).present?
+      create_builds_for_stage(stage, trigger_request).present?
     end
   end
 
@@ -241,8 +244,13 @@ class Commit < ActiveRecord::Base
   end
 
   def skip_ci?
+    return false if builds.any?
     commits = push_data[:commits]
     commits.present? && commits.last[:message] =~ /(\[ci skip\])/
+  end
+
+  def update_committed!
+    update!(committed_at: DateTime.now)
   end
 
   private

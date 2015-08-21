@@ -28,13 +28,14 @@
 class Project < ActiveRecord::Base
   include ProjectStatus
 
-  has_many :commits, dependent: :destroy
+  has_many :commits, ->() { order(:committed_at) }, dependent: :destroy
   has_many :builds, through: :commits, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
   has_many :web_hooks, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :variables, dependent: :destroy
+  has_many :triggers, dependent: :destroy
 
   # Project services
   has_many :services, dependent: :destroy
@@ -110,9 +111,9 @@ ls -la
     end
 
     def ordered_by_last_commit_date
-      last_commit_subquery = "(SELECT project_id, MAX(created_at) created_at FROM commits GROUP BY project_id)"
+      last_commit_subquery = "(SELECT project_id, MAX(committed_at) committed_at FROM commits GROUP BY project_id)"
       joins("LEFT JOIN #{last_commit_subquery} AS last_commit ON projects.id = last_commit.project_id").
-        order("CASE WHEN last_commit.created_at IS NULL THEN 1 ELSE 0 END, last_commit.created_at DESC")
+        order("CASE WHEN last_commit.committed_at IS NULL THEN 1 ELSE 0 END, last_commit.committed_at DESC")
     end
 
     def search(query)

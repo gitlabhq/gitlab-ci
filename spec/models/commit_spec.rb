@@ -2,16 +2,17 @@
 #
 # Table name: commits
 #
-#  id          :integer          not null, primary key
-#  project_id  :integer
-#  ref         :string(255)
-#  sha         :string(255)
-#  before_sha  :string(255)
-#  push_data   :text
-#  created_at  :datetime
-#  updated_at  :datetime
-#  tag         :boolean          default(FALSE)
-#  yaml_errors :text
+#  id           :integer          not null, primary key
+#  project_id   :integer
+#  ref          :string(255)
+#  sha          :string(255)
+#  before_sha   :string(255)
+#  push_data    :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#  tag          :boolean          default(FALSE)
+#  yaml_errors  :text
+#  committed_at :datetime
 #
 
 require 'spec_helper'
@@ -20,6 +21,7 @@ describe Commit do
   let(:project) { FactoryGirl.create :project }
   let(:commit) { FactoryGirl.create :commit, project: project }
   let(:commit_with_project) { FactoryGirl.create :commit, project: project }
+  let(:config_processor) { GitlabCiYamlProcessor.new(gitlab_ci_yaml) }
 
   it { should belong_to(:project) }
   it { should have_many(:builds) }
@@ -133,23 +135,82 @@ describe Commit do
   end
 
   describe :create_next_builds do
-    it "creates builds for next type" do
-      config_processor = GitlabCiYamlProcessor.new(gitlab_ci_yaml)
+    before do
       commit.stub(:config_processor).and_return(config_processor)
+    end
 
+    it "creates builds for next type" do
       commit.create_builds.should be_true
       commit.builds.reload
       commit.builds.size.should == 2
 
-      commit.create_next_builds.should be_true
+      commit.create_next_builds(nil).should be_true
       commit.builds.reload
       commit.builds.size.should == 4
 
-      commit.create_next_builds.should be_true
+      commit.create_next_builds(nil).should be_true
       commit.builds.reload
       commit.builds.size.should == 5
 
-      commit.create_next_builds.should be_false
+      commit.create_next_builds(nil).should be_false
+    end
+  end
+
+  describe :create_builds do
+    before do
+      commit.stub(:config_processor).and_return(config_processor)
+    end
+
+    it 'creates builds' do
+      commit.create_builds.should be_true
+      commit.builds.reload
+      commit.builds.size.should == 2
+    end
+
+    context 'for build triggers' do
+      let(:trigger) { FactoryGirl.create :trigger, project: project }
+      let(:trigger_request) { FactoryGirl.create :trigger_request, commit: commit, trigger: trigger }
+
+      it 'creates builds' do
+        commit.create_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 2
+      end
+
+      it 'rebuilds commit' do
+        commit.create_builds.should be_true
+        commit.builds.reload
+        commit.builds.size.should == 2
+
+        commit.create_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 4
+      end
+
+      it 'creates next builds' do
+        commit.create_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 2
+
+        commit.create_next_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 4
+      end
+
+      context 'for [ci skip]' do
+        before do
+          commit.push_data[:commits][0][:message] = 'skip this commit [ci skip]'
+          commit.save
+        end
+
+        it 'rebuilds commit' do
+          commit.status.should == 'skipped'
+          commit.create_builds(trigger_request).should be_true
+          commit.builds.reload
+          commit.builds.size.should == 2
+          commit.status.should == 'pending'
+        end
+      end
     end
   end
 

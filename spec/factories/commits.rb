@@ -2,16 +2,17 @@
 #
 # Table name: commits
 #
-#  id          :integer          not null, primary key
-#  project_id  :integer
-#  ref         :string(255)
-#  sha         :string(255)
-#  before_sha  :string(255)
-#  push_data   :text
-#  created_at  :datetime
-#  updated_at  :datetime
-#  tag         :boolean          default(FALSE)
-#  yaml_errors :text
+#  id           :integer          not null, primary key
+#  project_id   :integer
+#  ref          :string(255)
+#  sha          :string(255)
+#  before_sha   :string(255)
+#  push_data    :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#  tag          :boolean          default(FALSE)
+#  yaml_errors  :text
+#  committed_at :datetime
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -50,15 +51,24 @@ FactoryGirl.define do
       }
     end
 
+    factory :commit_without_jobs do
+      after(:create) do |commit, evaluator|
+        commit.push_data[:ci_yaml_file] = YAML.dump({})
+        commit.save
+      end
+    end
+
     factory :commit_with_one_job do
       after(:create) do |commit, evaluator|
         commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: "ls" }})
+        commit.save
       end
     end
 
     factory :commit_with_two_jobs do
       after(:create) do |commit, evaluator|
         commit.push_data[:ci_yaml_file] = YAML.dump({rspec: { script: "ls" }, spinach: { script: "ls" }})
+        commit.save
       end
     end
   end

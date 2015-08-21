@@ -11,12 +11,14 @@ v7.14.0 (unreleased)
   - Allow to define variables from YAML
   - Added support for CI skipped status
   - Fix broken yaml error saving
+  - Add committed_at to commits to properly order last commit (the force push issue)
   - Rename type(s) to stage(s)
   - Fix navigation icons
   - Add missing stage when doing retry
   - Require variable keys to be not-empty and unique
   - Fix variable saving issue
   - Display variable saving errors in variables page not the project's
+  - Added Build Triggers API
   
 v7.13.1
   - Fix: user could steal specific runner
