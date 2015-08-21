@@ -4,6 +4,9 @@ module API
       expose :id, :ref, :sha, :project_id, :before_sha, :created_at
       expose :status, :finished_at, :duration
       expose :git_commit_message, :git_author_name, :git_author_email
+    end
+
+    class CommitWithBuilds < Commit
       expose :builds
     end
 
