@@ -15,7 +15,7 @@ module API
         authenticate_project_token!(project)
 
         commits = project.commits.page(params[:page]).per(params[:per_page] || 20)
-        present commits, with: Entities::Commit
+        present commits, with: Entities::CommitWithBuilds
       end
 
       # Create a commit
@@ -53,7 +53,7 @@ module API
         commit = CreateCommitService.new.execute(project, params[:data])
 
         if commit.persisted?
-          present commit, with: Entities::Commit
+          present commit, with: Entities::CommitWithBuilds
         else
           errors = commit.errors.full_messages.join(", ")
           render_api_error!(errors, 400)
