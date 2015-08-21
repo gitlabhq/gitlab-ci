@@ -196,6 +196,21 @@ describe Commit do
         commit.builds.reload
         commit.builds.size.should == 4
       end
+
+      context 'for [ci skip]' do
+        before do
+          commit.push_data[:commits][0][:message] = 'skip this commit [ci skip]'
+          commit.save
+        end
+
+        it 'rebuilds commit' do
+          commit.status.should == 'skipped'
+          commit.create_builds(trigger_request).should be_true
+          commit.builds.reload
+          commit.builds.size.should == 2
+          commit.status.should == 'pending'
+        end
+      end
     end
   end
 

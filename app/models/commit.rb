@@ -102,7 +102,7 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds_for_stage(stage, trigger_request)
-    return if skip_ci?
+    return if skip_ci? && trigger_request.blank?
     return unless config_processor
 
     builds_attrs = config_processor.builds_for_stage_and_ref(stage, ref, tag)
@@ -121,7 +121,7 @@ class Commit < ActiveRecord::Base
   end
 
   def create_next_builds(trigger_request)
-    return if skip_ci?
+    return if skip_ci? && trigger_request.blank?
     return unless config_processor
 
     stages = builds.where(trigger_request: trigger_request).group_by(&:stage)
@@ -132,7 +132,7 @@ class Commit < ActiveRecord::Base
   end
 
   def create_builds(trigger_request = nil)
-    return if skip_ci?
+    return if skip_ci? && trigger_request.blank?
     return unless config_processor
 
     config_processor.stages.any? do |stage|
@@ -244,6 +244,7 @@ class Commit < ActiveRecord::Base
   end
 
   def skip_ci?
+    return if builds.any?
     commits = push_data[:commits]
     commits.present? && commits.last[:message] =~ /(\[ci skip\])/
   end
