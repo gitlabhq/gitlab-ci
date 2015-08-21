@@ -13,7 +13,7 @@ class VariablesController < ApplicationController
     if project.update_attributes(project_params)
       EventService.new.change_project_settings(current_user, project)
 
-      redirect_to :back, notice: 'Variables were successfully updated.'
+      redirect_to project_variables_path(project), notice: 'Variables were successfully updated.'
     else
       render action: 'show'
     end
