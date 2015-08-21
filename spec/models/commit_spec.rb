@@ -21,6 +21,7 @@ describe Commit do
   let(:project) { FactoryGirl.create :project }
   let(:commit) { FactoryGirl.create :commit, project: project }
   let(:commit_with_project) { FactoryGirl.create :commit, project: project }
+  let(:config_processor) { GitlabCiYamlProcessor.new(gitlab_ci_yaml) }
 
   it { should belong_to(:project) }
   it { should have_many(:builds) }
@@ -134,10 +135,11 @@ describe Commit do
   end
 
   describe :create_next_builds do
-    it "creates builds for next type" do
-      config_processor = GitlabCiYamlProcessor.new(gitlab_ci_yaml)
+    before do
       commit.stub(:config_processor).and_return(config_processor)
+    end
 
+    it "creates builds for next type" do
       commit.create_builds.should be_true
       commit.builds.reload
       commit.builds.size.should == 2
@@ -151,6 +153,49 @@ describe Commit do
       commit.builds.size.should == 5
 
       commit.create_next_builds(nil).should be_false
+    end
+  end
+
+  describe :create_builds do
+    before do
+      commit.stub(:config_processor).and_return(config_processor)
+    end
+
+    it 'creates builds' do
+      commit.create_builds.should be_true
+      commit.builds.reload
+      commit.builds.size.should == 2
+    end
+
+    context 'for build triggers' do
+      let(:trigger) { FactoryGirl.create :trigger, project: project }
+      let(:trigger_request) { FactoryGirl.create :trigger_request, commit: commit, trigger: trigger }
+
+      it 'creates builds' do
+        commit.create_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 2
+      end
+
+      it 'rebuilds commit' do
+        commit.create_builds.should be_true
+        commit.builds.reload
+        commit.builds.size.should == 2
+
+        commit.create_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 4
+      end
+
+      it 'creates next builds' do
+        commit.create_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 2
+
+        commit.create_next_builds(trigger_request).should be_true
+        commit.builds.reload
+        commit.builds.size.should == 4
+      end
     end
   end
 

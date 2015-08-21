@@ -303,4 +303,48 @@ describe Build do
       it { should eq(98.29) }
     end
   end
+
+  describe :variables do
+    context 'returns variables' do
+      subject { build.variables }
+
+      let(:variables) {
+        [
+          {key: :DB_NAME, value: 'postgres', public: true}
+        ]
+      }
+
+      it { should eq(variables) }
+
+      context 'and secure variables' do
+        let(:secure_variables) {
+          [
+            {key: 'SECRET_KEY', value: 'secret_value', public: false}
+          ]
+        }
+
+        before do
+          build.project.variables << Variable.new(key: 'SECRET_KEY', value: 'secret_value')
+        end
+
+        it { should eq(variables + secure_variables) }
+
+        context 'and trigger variables' do
+          let(:trigger) { FactoryGirl.create :trigger, project: project }
+          let(:trigger_request) { FactoryGirl.create :trigger_request_with_variables, commit: commit, trigger: trigger }
+          let(:trigger_variables) {
+            [
+              {key: :TRIGGER_KEY, value: 'TRIGGER_VALUE', public: false}
+            ]
+          }
+
+          before do
+            build.trigger_request = trigger_request
+          end
+
+          it { should eq(variables + secure_variables + trigger_variables) }
+        end
+      end
+    end
+  end
 end
