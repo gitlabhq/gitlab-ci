@@ -28,7 +28,7 @@
 class Project < ActiveRecord::Base
   include ProjectStatus
 
-  has_many :commits, ->() { order(:committed_at) }, dependent: :destroy
+  has_many :commits, ->() { order(:committed_at, :id) }, dependent: :destroy
   has_many :builds, through: :commits, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
