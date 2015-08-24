@@ -1,4 +1,7 @@
-v7.14.0 (unreleased)
+v7.14.1
+  - Fix skipped svg
+
+v7.14.0
   - Truncate commit messages after subject line in table
   - Adjust CI config to support Docker executors
   - Added Application Settings
