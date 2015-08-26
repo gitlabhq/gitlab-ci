@@ -1,4 +1,5 @@
 v7.14.2
+  - Fix commits ordering when using PostgreSQL
 
 v7.14.1
   - Fix "skipped" svg
