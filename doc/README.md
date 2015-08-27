@@ -27,4 +27,4 @@
 + [API](api/README.md)
 
 ### Note
-It’s possible to use GitLab CI without GitLab. You will need to mirror your repository to GitLab.com or move it there.
+To use GitLab CI without GitLab, you will need to mirror your repository to GitLab.com or move it there.
