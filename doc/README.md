@@ -25,3 +25,6 @@
 + [Backup/Restore](raketasks/backup_restore.md)
 + [Migrating to packaged CI](migration_to_omnibus/README.md)
 + [API](api/README.md)
+
+### Note
+It’s possible to use GitLab CI without GitLab. You will need to mirror your repository to GitLab.com or move it there.
