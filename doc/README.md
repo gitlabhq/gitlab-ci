@@ -27,4 +27,4 @@
 + [API](api/README.md)
 
 ### Note
-To use GitLab CI with GitHub or others, you should mirror your repository to GitLab.com or move it there.
+To use GitLab CI with GitHub or others, you should mirror your repository to GitLab or move it there.
