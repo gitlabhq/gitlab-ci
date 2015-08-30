@@ -8,7 +8,7 @@ describe UserHelper do
       let (:avatar_url) { nil }
 
       it 'should return a generic avatar' do
-        user_avatar_url(user).should == 'no_avatar.png'
+        user_avatar_url(user).should eq 'no_avatar.png'
       end
     end
 
@@ -17,11 +17,11 @@ describe UserHelper do
       let (:avatar_url) { "#{base_url}?s=40&d=mm" }
 
       it 'should return gravatar with default size' do
-        user_avatar_url(user).should == "#{base_url}?s=40&d=identicon"
+        user_avatar_url(user).should eq "#{base_url}?s=40&d=identicon"
       end
 
       it 'should return gravatar with custom size' do
-        user_avatar_url(user, 120).should == "#{base_url}?s=120&d=identicon"
+        user_avatar_url(user, 120).should eq "#{base_url}?s=120&d=identicon"
       end
     end
 
@@ -30,11 +30,11 @@ describe UserHelper do
       let (:avatar_url) { "#{base_url}?s=40&d=mm" }
 
       it 'should return gravatar with default size' do
-        user_avatar_url(user).should == "#{base_url}?s=40&d=identicon"
+        user_avatar_url(user).should eq "#{base_url}?s=40&d=identicon"
       end
 
       it 'should return gravatar with custom size' do
-        user_avatar_url(user, 120).should == "#{base_url}?s=120&d=identicon"
+        user_avatar_url(user, 120).should eq "#{base_url}?s=120&d=identicon"
       end
     end
 
@@ -42,7 +42,7 @@ describe UserHelper do
       let (:avatar_url) { 'http://example.local/avatar.png' }
 
       it 'should return custom avatar' do
-        user_avatar_url(user).should == avatar_url
+        user_avatar_url(user).should eq avatar_url
       end
     end
   end

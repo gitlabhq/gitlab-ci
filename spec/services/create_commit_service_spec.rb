@@ -19,7 +19,7 @@ describe CreateCommitService do
       it { commit.should be_kind_of(Commit) }
       it { commit.should be_valid }
       it { commit.should be_persisted }
-      it { commit.should == project.commits.last }
+      it { commit.should eq project.commits.last }
       it { commit.builds.first.should be_kind_of(Build) }
     end
 
@@ -60,7 +60,7 @@ describe CreateCommitService do
           ci_yaml_file: gitlab_ci_yaml
         )
         commit.builds.any?.should be_falsey
-        commit.status.should == "skipped"
+        commit.status.should eq "skipped"
       end
 
       it "does not skips builds creation if there is no [ci skip] tag in commit message" do
@@ -74,7 +74,7 @@ describe CreateCommitService do
           ci_yaml_file: gitlab_ci_yaml
         )
         
-        commit.builds.first.name.should == "staging"
+        commit.builds.first.name.should eq "staging"
       end
 
       it "skips builds creation if there is [ci skip] tag in commit message and yaml is invalid" do
@@ -87,7 +87,7 @@ describe CreateCommitService do
                                  ci_yaml_file: "invalid: file"
         )
         commit.builds.any?.should be_falsey
-        commit.status.should == "skipped"
+        commit.status.should eq "skipped"
       end
     end
 
@@ -100,7 +100,7 @@ describe CreateCommitService do
         commits: commits,
         ci_yaml_file: gitlab_ci_yaml
       )
-      commit.builds.count(:all).should == 2
+      commit.builds.count(:all).should eq 2
 
       commit = service.execute(project,
         ref: 'refs/heads/master',
@@ -109,7 +109,7 @@ describe CreateCommitService do
         commits: commits,
         ci_yaml_file: gitlab_ci_yaml
       )
-      commit.builds.count(:all).should == 2
+      commit.builds.count(:all).should eq 2
     end
 
     it "creates commit with failed status if yaml is invalid" do
@@ -123,7 +123,7 @@ describe CreateCommitService do
                                ci_yaml_file: "invalid: file"
       )
 
-      commit.status.should == "failed"
+      commit.status.should eq "failed"
       commit.builds.any?.should be_falsey
     end
   end

@@ -39,12 +39,12 @@ describe Project do
   describe 'before_validation' do
     it 'should set an random token if none provided' do
       project = FactoryGirl.create :project_without_token
-      project.token.should_not == ""
+      project.token.should_not eq ""
     end
 
     it 'should not set an random toke if one provided' do
       project = FactoryGirl.create :project
-      project.token.should == "iPWx6WM4lhHNedGfBpPJNP"
+      project.token.should eq "iPWx6WM4lhHNedGfBpPJNP"
     end
   end
 
@@ -57,7 +57,7 @@ describe Project do
       FactoryGirl.create :commit, committed_at: 1.hour.ago, project: newest_project
       FactoryGirl.create :commit, committed_at: 2.hour.ago, project: oldest_project
 
-      Project.ordered_by_last_commit_date.should == [newest_project, oldest_project, project_without_commits]
+      Project.ordered_by_last_commit_date.should eq [newest_project, oldest_project, project_without_commits]
     end
   end
 
@@ -70,26 +70,26 @@ describe Project do
         FactoryGirl.create(:build, commit: commit)
       end
 
-      it { project.status.should == 'pending' }
+      it { project.status.should eq 'pending' }
       it { project.last_commit.should be_kind_of(Commit)  }
-      it { project.human_status.should == 'pending' }
+      it { project.human_status.should eq 'pending' }
     end
   end
 
   describe '#email_notification?' do
     it do
       project = FactoryGirl.create :project, email_add_pusher: true
-      project.email_notification?.should == true
+      project.email_notification?.should eq true
     end
 
     it do
       project = FactoryGirl.create :project, email_add_pusher: false, email_recipients: 'test tesft'
-      project.email_notification?.should == true
+      project.email_notification?.should eq true
     end
 
     it do
       project = FactoryGirl.create :project, email_add_pusher: false, email_recipients: ''
-      project.email_notification?.should == false
+      project.email_notification?.should eq false
     end
   end
 
@@ -98,28 +98,28 @@ describe Project do
       project = FactoryGirl.create :project, email_add_pusher: true
       project.stub(:broken?).and_return(true)
       project.stub(:success?).and_return(true)
-      project.broken_or_success?.should == true
+      project.broken_or_success?.should eq true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_pusher: true
       project.stub(:broken?).and_return(true)
       project.stub(:success?).and_return(false)
-      project.broken_or_success?.should == true
+      project.broken_or_success?.should eq true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_pusher: true
       project.stub(:broken?).and_return(false)
       project.stub(:success?).and_return(true)
-      project.broken_or_success?.should == true
+      project.broken_or_success?.should eq true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_pusher: true
       project.stub(:broken?).and_return(false)
       project.stub(:success?).and_return(false)
-      project.broken_or_success?.should == false
+      project.broken_or_success?.should eq false
     }
   end
 

@@ -15,7 +15,7 @@ describe ImageForBuildService do
 
       it { image.should be_kind_of(OpenStruct) }
       it { image.path.to_s.should include('public/build-running.svg') }
-      it { image.name.should == 'build-running.svg' }
+      it { image.name.should eq 'build-running.svg' }
     end
 
     context 'unknown branch name' do
@@ -23,7 +23,7 @@ describe ImageForBuildService do
 
       it { image.should be_kind_of(OpenStruct) }
       it { image.path.to_s.should include('public/build-unknown.svg') }
-      it { image.name.should == 'build-unknown.svg' }
+      it { image.name.should eq 'build-unknown.svg' }
     end
 
     context 'commit sha' do
@@ -32,7 +32,7 @@ describe ImageForBuildService do
 
       it { image.should be_kind_of(OpenStruct) }
       it { image.path.to_s.should include('public/build-running.svg') }
-      it { image.name.should == 'build-running.svg' }
+      it { image.name.should eq 'build-running.svg' }
     end
 
     context 'unknown commit sha' do
@@ -40,7 +40,7 @@ describe ImageForBuildService do
 
       it { image.should be_kind_of(OpenStruct) }
       it { image.path.to_s.should include('public/build-unknown.svg') }
-      it { image.name.should == 'build-unknown.svg' }
+      it { image.name.should eq 'build-unknown.svg' }
     end
   end
 end

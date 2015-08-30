@@ -148,7 +148,7 @@ describe MailService do
       end
 
       it do
-        mail.can_test?.should == true
+        mail.can_test?.should eq true
       end
     end
 

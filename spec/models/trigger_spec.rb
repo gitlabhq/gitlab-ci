@@ -11,7 +11,7 @@ describe Trigger do
 
     it 'should not set an random token if one provided' do
       trigger = FactoryGirl.create :trigger, project: project
-      trigger.token.should == 'token'
+      trigger.token.should eq 'token'
     end
   end
 end

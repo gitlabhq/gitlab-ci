@@ -18,7 +18,7 @@ describe RegisterBuildService do
         pending_build.tag_list = ["linux"]
         pending_build.save
         specific_runner.tag_list = ["linux"]
-        service.execute(specific_runner).should == pending_build
+        service.execute(specific_runner).should eq pending_build
       end
 
       it "does not pick build with different tag" do
@@ -29,7 +29,7 @@ describe RegisterBuildService do
       end
 
       it "picks build without tag" do
-        service.execute(specific_runner).should == pending_build
+        service.execute(specific_runner).should eq pending_build
       end
 
       it "does not pick build with tag" do
@@ -40,7 +40,7 @@ describe RegisterBuildService do
 
       it "pick build without tag" do
         specific_runner.tag_list = ["win32"]
-        service.execute(specific_runner).should == pending_build
+        service.execute(specific_runner).should eq pending_build
       end
     end
 
@@ -56,7 +56,7 @@ describe RegisterBuildService do
         it { build.should be_kind_of(Build) }
         it { build.should be_valid }
         it { build.should be_running }
-        it { build.runner.should == shared_runner }
+        it { build.runner.should eq shared_runner }
       end
 
       context 'specific runner' do
@@ -65,7 +65,7 @@ describe RegisterBuildService do
         it { build.should be_kind_of(Build) }
         it { build.should be_valid }
         it { build.should be_running }
-        it { build.runner.should == specific_runner }
+        it { build.runner.should eq specific_runner }
       end
     end
 
@@ -82,7 +82,7 @@ describe RegisterBuildService do
         it { build.should be_kind_of(Build) }
         it { build.should be_valid }
         it { build.should be_running }
-        it { build.runner.should == specific_runner }
+        it { build.runner.should eq specific_runner }
       end
     end
   end

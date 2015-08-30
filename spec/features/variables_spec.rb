@@ -19,7 +19,7 @@ describe "Variables", feature: true do
       click_on "Save changes"
       
       expect(page).to have_content("Variables were successfully updated.")
-      @project.variables.count.should == 1
+      @project.variables.count.should eq 1
     end
 
   end

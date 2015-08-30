@@ -66,13 +66,13 @@ describe User do
     it "returns projects" do
       allow_any_instance_of(User).to receive(:can_manage_project?).and_return(true)
 
-      user.authorized_projects.count.should == 2
+      user.authorized_projects.count.should eq 2
     end
 
     it "empty list if user miss manage permission" do
       allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
 
-      user.authorized_projects.count.should == 0
+      user.authorized_projects.count.should eq 0
     end
   end
 

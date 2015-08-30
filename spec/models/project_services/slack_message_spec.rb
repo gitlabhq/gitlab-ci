@@ -19,7 +19,7 @@ describe SlackMessage do
       it 'returns a message with succeeded build' do
         build.update(status: "success")
 
-        subject.color.should == color
+        subject.color.should eq color
         subject.fallback.should include('Build')
         subject.fallback.should include("\##{build.id}")
         subject.fallback.should include('succeeded')
@@ -33,7 +33,7 @@ describe SlackMessage do
       it 'returns a message with failed build' do
         build.update(status: "failed")
 
-        subject.color.should == color
+        subject.color.should eq color
         subject.fallback.should include('Build')
         subject.fallback.should include("\##{build.id}")
         subject.fallback.should include('failed')
@@ -53,7 +53,7 @@ describe SlackMessage do
         commit.builds.update_all(status: "success")
         commit.reload
 
-        subject.color.should == color
+        subject.color.should eq color
         subject.fallback.should include('Commit')
         subject.fallback.should include("\##{commit.id}")
         subject.fallback.should include('succeeded')
@@ -71,12 +71,12 @@ describe SlackMessage do
         first_build.update(status: "success")
         second_build.update(status: "failed")
         
-        subject.color.should == color
+        subject.color.should eq color
         subject.fallback.should include('Commit')
         subject.fallback.should include("\##{commit.id}")
         subject.fallback.should include('failed')
-        subject.attachments.first[:fields].size.should == 1
-        subject.attachments.first[:fields].first[:title].should == second_build.name
+        subject.attachments.first[:fields].size.should eq 1
+        subject.attachments.first[:fields].first[:title].should eq second_build.name
         subject.attachments.first[:fields].first[:value].should include("\##{second_build.id}")
       end
     end

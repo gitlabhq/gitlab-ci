@@ -11,7 +11,7 @@ describe "Charts" do
 
     it 'should return build times in minutes' do
       chart = Charts::BuildTime.new(@project)
-      chart.build_times.should == [2]
+      chart.build_times.should eq [2]
     end
   end
 end

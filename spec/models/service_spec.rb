@@ -42,7 +42,7 @@ describe Service do
       end
 
       describe '#can_test' do
-        it { @testable.should == true }
+        it { @testable.should eq true }
       end
     end
   end

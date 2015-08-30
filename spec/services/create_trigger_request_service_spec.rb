@@ -14,7 +14,7 @@ describe CreateTriggerRequestService do
       end
 
       it { subject.should be_kind_of(TriggerRequest) }
-      it { subject.commit.should == @commit }
+      it { subject.commit.should eq @commit }
     end
 
     context 'no commit for ref' do
@@ -45,7 +45,7 @@ describe CreateTriggerRequestService do
       context 'retries latest one' do
         it { subject.should be_kind_of(TriggerRequest) }
         it { subject.should be_persisted }
-        it { subject.commit.should == @commit2 }
+        it { subject.commit.should eq @commit2 }
       end
     end
   end

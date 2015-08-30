@@ -68,7 +68,7 @@ describe Commit do
         commit =  FactoryGirl.create :commit, project: project
         expected = 'commit_pusher_email'
         commit.stub(:push_data) { { user_email: expected } }
-        commit.project_recipients.should == [expected]
+        commit.project_recipients.should eq [expected]
       end
 
       it 'should return commit_pusher_email and additional recipients' do
@@ -78,7 +78,7 @@ describe Commit do
         commit = FactoryGirl.create :commit, project: project
         expected = 'commit_pusher_email'
         commit.stub(:push_data) { { user_email: expected } }
-        commit.project_recipients.should == ['rec1', 'rec2', expected]
+        commit.project_recipients.should eq ['rec1', 'rec2', expected]
       end
 
       it 'should return recipients' do
@@ -86,7 +86,7 @@ describe Commit do
           email_add_pusher: false,
           email_recipients: 'rec1 rec2'
         commit = FactoryGirl.create :commit, project: project
-        commit.project_recipients.should == ['rec1', 'rec2']
+        commit.project_recipients.should eq ['rec1', 'rec2']
       end
 
       it 'should return unique recipients only' do
@@ -96,7 +96,7 @@ describe Commit do
         commit = FactoryGirl.create :commit, project: project
         expected = 'rec2'
         commit.stub(:push_data) { { user_email: expected } }
-        commit.project_recipients.should == ['rec1', 'rec2']
+        commit.project_recipients.should eq ['rec1', 'rec2']
       end
     end
   end
@@ -142,15 +142,15 @@ describe Commit do
     it "creates builds for next type" do
       commit.create_builds.should be_truthy
       commit.builds.reload
-      commit.builds.size.should == 2
+      commit.builds.size.should eq 2
 
       commit.create_next_builds(nil).should be_truthy
       commit.builds.reload
-      commit.builds.size.should == 4
+      commit.builds.size.should eq 4
 
       commit.create_next_builds(nil).should be_truthy
       commit.builds.reload
-      commit.builds.size.should == 5
+      commit.builds.size.should eq 5
 
       commit.create_next_builds(nil).should be_falsey
     end
@@ -164,7 +164,7 @@ describe Commit do
     it 'creates builds' do
       commit.create_builds.should be_truthy
       commit.builds.reload
-      commit.builds.size.should == 2
+      commit.builds.size.should eq 2
     end
 
     context 'for build triggers' do
@@ -174,27 +174,27 @@ describe Commit do
       it 'creates builds' do
         commit.create_builds(trigger_request).should be_truthy
         commit.builds.reload
-        commit.builds.size.should == 2
+        commit.builds.size.should eq 2
       end
 
       it 'rebuilds commit' do
         commit.create_builds.should be_truthy
         commit.builds.reload
-        commit.builds.size.should == 2
+        commit.builds.size.should eq 2
 
         commit.create_builds(trigger_request).should be_truthy
         commit.builds.reload
-        commit.builds.size.should == 4
+        commit.builds.size.should eq 4
       end
 
       it 'creates next builds' do
         commit.create_builds(trigger_request).should be_truthy
         commit.builds.reload
-        commit.builds.size.should == 2
+        commit.builds.size.should eq 2
 
         commit.create_next_builds(trigger_request).should be_truthy
         commit.builds.reload
-        commit.builds.size.should == 4
+        commit.builds.size.should eq 4
       end
 
       context 'for [ci skip]' do
@@ -204,11 +204,11 @@ describe Commit do
         end
 
         it 'rebuilds commit' do
-          commit.status.should == 'skipped'
+          commit.status.should eq 'skipped'
           commit.create_builds(trigger_request).should be_truthy
           commit.builds.reload
-          commit.builds.size.should == 2
-          commit.status.should == 'pending'
+          commit.builds.size.should eq 2
+          commit.status.should eq 'pending'
         end
       end
     end
@@ -222,7 +222,7 @@ describe Commit do
       build = FactoryGirl.create :build, commit: commit, finished_at: Time.now - 60
       build1 = FactoryGirl.create :build, commit: commit, finished_at: Time.now - 120
 
-      commit.finished_at.to_i.should == build.finished_at.to_i
+      commit.finished_at.to_i.should eq build.finished_at.to_i
     end
 
     it "returns nil if there is no finished build" do
@@ -239,21 +239,21 @@ describe Commit do
     it "calculates average when there are two builds with coverage" do
       FactoryGirl.create :build, name: "rspec", coverage: 30, commit: commit
       FactoryGirl.create :build, name: "rubocop", coverage: 40, commit: commit
-      commit.coverage.should == "35.00"
+      commit.coverage.should eq "35.00"
     end
 
     it "calculates average when there are two builds with coverage and one with nil" do
       FactoryGirl.create :build, name: "rspec", coverage: 30, commit: commit
       FactoryGirl.create :build, name: "rubocop", coverage: 40, commit: commit
       FactoryGirl.create :build, commit: commit
-      commit.coverage.should == "35.00"
+      commit.coverage.should eq "35.00"
     end
 
     it "calculates average when there are two builds with coverage and one is retried" do
       FactoryGirl.create :build, name: "rspec", coverage: 30, commit: commit
       FactoryGirl.create :build, name: "rubocop", coverage: 30, commit: commit
       FactoryGirl.create :build, name: "rubocop", coverage: 40, commit: commit
-      commit.coverage.should == "35.00"
+      commit.coverage.should eq "35.00"
     end
 
     it "calculates average when there is one build without coverage" do

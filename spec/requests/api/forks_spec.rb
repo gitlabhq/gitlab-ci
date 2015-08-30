@@ -41,8 +41,8 @@ describe API::API do
 
       it "should create a project with valid data" do
         post api("/forks"), options
-        response.status.should == 201
-        json_response['name'].should == "Gitlab.org / Underscore"
+        response.status.should eq 201
+        json_response['name'].should eq "Gitlab.org / Underscore"
       end
     end
 
@@ -53,7 +53,7 @@ describe API::API do
 
       it "should error with invalid data" do
         post api("/forks"), options
-        response.status.should == 400
+        response.status.should eq 400
       end
     end
   end

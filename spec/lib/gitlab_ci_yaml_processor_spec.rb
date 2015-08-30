@@ -13,8 +13,8 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should == 1
-      config_processor.builds_for_stage_and_ref(type, "master").first.should == {
+      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 1
+      config_processor.builds_for_stage_and_ref(type, "master").first.should eq({
         stage: "test",
         except: nil,
         name: :rspec,
@@ -23,7 +23,7 @@ describe GitlabCiYamlProcessor do
         tags: [],
         options: {},
         allow_failure: false
-      }
+      })
     end
 
     it "does not return builds if only has another branch" do
@@ -34,7 +34,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should == 0
+      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 0
     end
 
     it "does not return builds if only has regexp with another branch" do
@@ -45,7 +45,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should == 0
+      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 0
     end
 
     it "returns builds if only has specified this branch" do
@@ -56,7 +56,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should == 1
+      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 1
     end
 
     it "does not build tags" do
@@ -67,7 +67,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "0-1", true).size.should == 0
+      config_processor.builds_for_stage_and_ref(type, "0-1", true).size.should eq 0
     end
 
     it "returns builds if only has a list of branches including specified" do
@@ -78,7 +78,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "deploy").size.should == 1
+      config_processor.builds_for_stage_and_ref(type, "deploy").size.should eq 1
     end
 
     it "returns build only for specified type" do
@@ -93,9 +93,9 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref("production", "deploy").size.should == 0
-      config_processor.builds_for_stage_and_ref(type, "deploy").size.should == 1
-      config_processor.builds_for_stage_and_ref("deploy", "deploy").size.should == 2
+      config_processor.builds_for_stage_and_ref("production", "deploy").size.should eq 0
+      config_processor.builds_for_stage_and_ref(type, "deploy").size.should eq 1
+      config_processor.builds_for_stage_and_ref("deploy", "deploy").size.should eq 2
     end
   end
 
@@ -110,8 +110,8 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref("test", "master").size.should == 1
-      config_processor.builds_for_stage_and_ref("test", "master").first.should == {
+      config_processor.builds_for_stage_and_ref("test", "master").size.should eq 1
+      config_processor.builds_for_stage_and_ref("test", "master").first.should eq({
         except: nil,
         stage: "test",
         name: :rspec,
@@ -123,7 +123,7 @@ describe GitlabCiYamlProcessor do
           services: ["mysql"]
         },
         allow_failure: false
-      }
+      })
     end
 
     it "returns image and service when overridden for job" do
@@ -136,8 +136,8 @@ describe GitlabCiYamlProcessor do
 
       config_processor = GitlabCiYamlProcessor.new(config)
 
-      config_processor.builds_for_stage_and_ref("test", "master").size.should == 1
-      config_processor.builds_for_stage_and_ref("test", "master").first.should == {
+      config_processor.builds_for_stage_and_ref("test", "master").size.should eq 1
+      config_processor.builds_for_stage_and_ref("test", "master").first.should eq({
         except: nil,
         stage: "test",
         name: :rspec,
@@ -149,7 +149,7 @@ describe GitlabCiYamlProcessor do
           services: ["postgresql"]
         },
         allow_failure: false
-      }
+      })
     end
   end
 
@@ -166,7 +166,7 @@ describe GitlabCiYamlProcessor do
                          })
 
       config_processor = GitlabCiYamlProcessor.new(config)
-      config_processor.variables.should == variables
+      config_processor.variables.should eq variables
     end
   end
 

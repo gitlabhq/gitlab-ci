@@ -5,7 +5,7 @@ describe Upgrader do
   let(:current_version) { GitlabCi::VERSION }
 
   describe 'current_version_raw' do
-    it { upgrader.current_version_raw.should == current_version }
+    it { upgrader.current_version_raw.should eq current_version }
   end
 
   describe 'latest_version?' do
