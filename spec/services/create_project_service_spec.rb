@@ -31,9 +31,9 @@ describe CreateProjectService do
 
         project = service.execute(current_user, project_dump, 'http://localhost/projects/:project_id', origin_project)
 
-        project.shared_runners_enabled.should be_true
-        project.public.should be_true
-        project.allow_git_fetch.should be_true
+        project.shared_runners_enabled.should be_truthy
+        project.public.should be_truthy
+        project.allow_git_fetch.should be_truthy
       end
     end
   end

@@ -53,17 +53,17 @@ describe UserSessionsHelper do
     let (:invalid3) { 'aa:bb:' }
 
     it 'should validate oauth state' do
-      is_oauth_state_valid?(state).should be_true
+      is_oauth_state_valid?(state).should be_truthy
     end
 
     it 'should not validate forged state' do
-      is_oauth_state_valid?(forged).should be_false
+      is_oauth_state_valid?(forged).should be_falsey
     end
 
     it 'should not validate invalid state' do
-      is_oauth_state_valid?(invalid).should be_false
-      is_oauth_state_valid?(invalid2).should be_false
-      is_oauth_state_valid?(invalid3).should be_false
+      is_oauth_state_valid?(invalid).should be_falsey
+      is_oauth_state_valid?(invalid2).should be_falsey
+      is_oauth_state_valid?(invalid3).should be_falsey
     end
   end
 end

@@ -116,7 +116,7 @@ describe Commit do
     subject { commit_with_project.compare? }
 
     context 'if commit.before_sha are not nil' do
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
@@ -140,19 +140,19 @@ describe Commit do
     end
 
     it "creates builds for next type" do
-      commit.create_builds.should be_true
+      commit.create_builds.should be_truthy
       commit.builds.reload
       commit.builds.size.should == 2
 
-      commit.create_next_builds(nil).should be_true
+      commit.create_next_builds(nil).should be_truthy
       commit.builds.reload
       commit.builds.size.should == 4
 
-      commit.create_next_builds(nil).should be_true
+      commit.create_next_builds(nil).should be_truthy
       commit.builds.reload
       commit.builds.size.should == 5
 
-      commit.create_next_builds(nil).should be_false
+      commit.create_next_builds(nil).should be_falsey
     end
   end
 
@@ -162,7 +162,7 @@ describe Commit do
     end
 
     it 'creates builds' do
-      commit.create_builds.should be_true
+      commit.create_builds.should be_truthy
       commit.builds.reload
       commit.builds.size.should == 2
     end
@@ -172,27 +172,27 @@ describe Commit do
       let(:trigger_request) { FactoryGirl.create :trigger_request, commit: commit, trigger: trigger }
 
       it 'creates builds' do
-        commit.create_builds(trigger_request).should be_true
+        commit.create_builds(trigger_request).should be_truthy
         commit.builds.reload
         commit.builds.size.should == 2
       end
 
       it 'rebuilds commit' do
-        commit.create_builds.should be_true
+        commit.create_builds.should be_truthy
         commit.builds.reload
         commit.builds.size.should == 2
 
-        commit.create_builds(trigger_request).should be_true
+        commit.create_builds(trigger_request).should be_truthy
         commit.builds.reload
         commit.builds.size.should == 4
       end
 
       it 'creates next builds' do
-        commit.create_builds(trigger_request).should be_true
+        commit.create_builds(trigger_request).should be_truthy
         commit.builds.reload
         commit.builds.size.should == 2
 
-        commit.create_next_builds(trigger_request).should be_true
+        commit.create_next_builds(trigger_request).should be_truthy
         commit.builds.reload
         commit.builds.size.should == 4
       end
@@ -205,7 +205,7 @@ describe Commit do
 
         it 'rebuilds commit' do
           commit.status.should == 'skipped'
-          commit.create_builds(trigger_request).should be_true
+          commit.create_builds(trigger_request).should be_truthy
           commit.builds.reload
           commit.builds.size.should == 2
           commit.status.should == 'pending'

@@ -161,25 +161,25 @@ describe Project do
   describe :any_runners do
     it "there are no runners available" do
       project = FactoryGirl.create(:project)
-      project.any_runners?.should be_false
+      project.any_runners?.should be_falsey
     end
 
     it "there is a specific runner" do
       project = FactoryGirl.create(:project)
       project.runners << FactoryGirl.create(:specific_runner)
-      project.any_runners?.should be_true
+      project.any_runners?.should be_truthy
     end
 
     it "there is a shared runner" do
       project = FactoryGirl.create(:project, shared_runners_enabled: true)
       FactoryGirl.create(:shared_runner)
-      project.any_runners?.should be_true
+      project.any_runners?.should be_truthy
     end
 
     it "there is a shared runner, but they are prohibited to use" do
       project = FactoryGirl.create(:project)
       FactoryGirl.create(:shared_runner)
-      project.any_runners?.should be_false
+      project.any_runners?.should be_falsey
     end
   end
 end

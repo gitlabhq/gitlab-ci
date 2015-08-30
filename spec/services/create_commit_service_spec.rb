@@ -59,7 +59,7 @@ describe CreateCommitService do
           commits: commits,
           ci_yaml_file: gitlab_ci_yaml
         )
-        commit.builds.any?.should be_false
+        commit.builds.any?.should be_falsey
         commit.status.should == "skipped"
       end
 
@@ -86,7 +86,7 @@ describe CreateCommitService do
                                  commits: commits,
                                  ci_yaml_file: "invalid: file"
         )
-        commit.builds.any?.should be_false
+        commit.builds.any?.should be_falsey
         commit.status.should == "skipped"
       end
     end
@@ -124,7 +124,7 @@ describe CreateCommitService do
       )
 
       commit.status.should == "failed"
-      commit.builds.any?.should be_false
+      commit.builds.any?.should be_falsey
     end
   end
 end

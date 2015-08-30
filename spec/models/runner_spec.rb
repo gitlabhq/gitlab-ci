@@ -45,7 +45,7 @@ describe Runner do
 
     it { shared_runner.should be_specific }
     it { shared_runner.projects.should == [project] }
-    it { shared_runner.only_for?(project).should be_true }
+    it { shared_runner.only_for?(project).should be_truthy }
   end
 
   describe "belongs_to_one_project?" do
@@ -56,7 +56,7 @@ describe Runner do
       project.runners << runner
       project1.runners << runner
 
-      runner.belongs_to_one_project?.should be_false
+      runner.belongs_to_one_project?.should be_falsey
     end
 
     it "returns true" do
@@ -64,7 +64,7 @@ describe Runner do
       project = FactoryGirl.create(:project)
       project.runners << runner
 
-      runner.belongs_to_one_project?.should be_true
+      runner.belongs_to_one_project?.should be_truthy
     end
   end
 end

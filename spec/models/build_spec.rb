@@ -69,14 +69,14 @@ describe Build do
     context 'without started_at' do
       before { build.started_at = nil }
 
-      it { should be_false }
+      it { should be_falsey }
     end
 
     %w(running success failed).each do |status|
       context "if build status is #{status}" do
         before { build.status = status }
 
-        it { should be_true }
+        it { should be_truthy }
       end
     end
 
@@ -84,7 +84,7 @@ describe Build do
       context "if build status is #{status}" do
         before { build.status = status }
 
-        it { should be_false }
+        it { should be_falsey }
       end
     end
   end
@@ -96,7 +96,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_true }
+        it { should be_truthy }
       end
     end
 
@@ -104,7 +104,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_false }
+        it { should be_falsey }
       end
     end
   end
@@ -116,7 +116,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_true }
+        it { should be_truthy }
       end
     end
 
@@ -124,7 +124,7 @@ describe Build do
       context "if build.status is #{state}" do
         before { build.status = state }
 
-        it { should be_false }
+        it { should be_falsey }
       end
     end
   end
@@ -138,13 +138,13 @@ describe Build do
       context 'and build.status is success' do
         before { build.status = 'success' }
 
-        it { should be_false }
+        it { should be_falsey }
       end
 
       context 'and build.status is failed' do
         before { build.status = 'failed' }
 
-        it { should be_false }
+        it { should be_falsey }
       end
     end
 
@@ -154,13 +154,13 @@ describe Build do
       context 'and build.status is success' do
         before { build.status = 'success' }
 
-        it { should be_false }
+        it { should be_falsey }
       end
 
       context 'and build.status is failed' do
         before { build.status = 'failed' }
 
-        it { should be_true }
+        it { should be_truthy }
       end
     end
   end

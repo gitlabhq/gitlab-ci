@@ -25,7 +25,7 @@ describe RegisterBuildService do
         pending_build.tag_list = ["linux"]
         pending_build.save
         specific_runner.tag_list = ["win32"]
-        service.execute(specific_runner).should be_false
+        service.execute(specific_runner).should be_falsey
       end
 
       it "picks build without tag" do
@@ -35,7 +35,7 @@ describe RegisterBuildService do
       it "does not pick build with tag" do
         pending_build.tag_list = ["linux"]
         pending_build.save
-        service.execute(specific_runner).should be_false
+        service.execute(specific_runner).should be_falsey
       end
 
       it "pick build without tag" do

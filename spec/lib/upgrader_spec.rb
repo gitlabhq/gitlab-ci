@@ -11,7 +11,7 @@ describe Upgrader do
   describe 'latest_version?' do
     it 'should be true if newest version' do
       upgrader.stub(latest_version_raw: current_version)
-      upgrader.latest_version?.should be_true
+      upgrader.latest_version?.should be_truthy
     end
   end
 

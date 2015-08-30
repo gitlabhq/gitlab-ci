@@ -60,7 +60,7 @@ describe "Runners" do
         click_on "Remove runner"
       end
 
-      Runner.exists?(id: @specific_runner).should be_false
+      Runner.exists?(id: @specific_runner).should be_falsey
     end
   end
 
@@ -75,7 +75,7 @@ describe "Runners" do
 
       click_on "Enable shared runners"
 
-      @project.reload.shared_runners_enabled.should be_true
+      @project.reload.shared_runners_enabled.should be_truthy
     end
   end
 

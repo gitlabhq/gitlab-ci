@@ -13,7 +13,7 @@ describe Network do
         network.class.stub(:put) { response }
       end
 
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context 'on failure' do

@@ -42,13 +42,13 @@ describe User do
     it "returns false for reporter" do
       @user.stub(:project_info).and_return(project_with_reporter_access)
 
-      @user.has_developer_access?(1).should be_false
+      @user.has_developer_access?(1).should be_falsey
     end
 
     it "returns true for owner" do
       @user.stub(:project_info).and_return(project_with_owner_access)
 
-      @user.has_developer_access?(1).should be_true
+      @user.has_developer_access?(1).should be_truthy
     end
   end
 
