@@ -107,15 +107,15 @@ group :development do
   gem 'annotate'
   gem 'quiet_assets'
   gem "letter_opener"
-  gem "spring-commands-rspec"
 end
 
 
 group :development, :test do
   gem 'spring', '~> 1.3.6'
+  gem "spring-commands-rspec", '~> 1.0.0'
   gem 'minitest'
   gem 'pry'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.3.0'
   gem 'capybara'
   gem 'poltergeist', '~> 1.5.1'
   gem 'factory_girl_rails'
@@ -123,10 +123,6 @@ group :development, :test do
   gem "byebug"
   gem "database_cleaner"
   gem 'shoulda-matchers'
-  gem 'guard-rspec'
-  gem 'rb-fsevent', require: darwin_only('rb-fsevent')
-  gem 'growl',      require: darwin_only('growl')
-  gem 'rb-inotify', require: linux_only('rb-inotify')
 
   gem "simplecov", require: false
   gem 'coveralls', '~> 0.8.2', require: false
