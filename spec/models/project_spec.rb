@@ -139,7 +139,7 @@ describe Project do
     end
   end
 
-  describe :repo_url_with_auth do
+  describe '#repo_url_with_auth' do
     let(:project) { FactoryGirl.create :project }
     subject { project.repo_url_with_auth }
 
@@ -151,14 +151,14 @@ describe Project do
     it { should include(project.gitlab_url[7..-1]) }
   end
 
-  describe :search do
+  describe '.search' do
     let!(:project) { FactoryGirl.create(:project, name: "foo") }
 
     it { Project.search('fo').should include(project) }
     it { Project.search('bar').should be_empty }
   end
 
-  describe :any_runners do
+  describe '#any_runners' do
     it "there are no runners available" do
       project = FactoryGirl.create(:project)
       project.any_runners?.should be_falsey

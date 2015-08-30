@@ -37,7 +37,7 @@ describe Runner do
     end
   end
 
-  describe :assign_to do
+  describe '#assign_to' do
     let!(:project) { FactoryGirl.create :project }
     let!(:shared_runner) { FactoryGirl.create(:shared_runner) }
 

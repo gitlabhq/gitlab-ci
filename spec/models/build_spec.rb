@@ -39,7 +39,7 @@ describe Build do
   it { should respond_to :pending? }
   it { should respond_to :trace_html }
 
-  describe :first_pending do
+  describe '.first_pending' do
     let(:first) { FactoryGirl.create :build, commit: commit, status: 'pending', created_at: Date.yesterday }
     let(:second) { FactoryGirl.create :build, commit: commit, status: 'pending' }
     before { first; second }
@@ -49,7 +49,7 @@ describe Build do
     it('returns with the first pending build') { should eq(first) }
   end
 
-  describe :create_from do
+  describe '.create_from' do
     before do
       build.status = 'success'
       build.save
@@ -63,7 +63,7 @@ describe Build do
     end
   end
 
-  describe :started? do
+  describe '#started?' do
     subject { build.started? }
 
     context 'without started_at' do
@@ -89,7 +89,7 @@ describe Build do
     end
   end
 
-  describe :active? do
+  describe '#active?' do
     subject { build.active? }
 
     %w(pending running).each do |state|
@@ -109,7 +109,7 @@ describe Build do
     end
   end
 
-  describe :complete? do
+  describe '#complete?' do
     subject { build.complete? }
 
     %w(success failed canceled).each do |state|
@@ -129,7 +129,7 @@ describe Build do
     end
   end
 
-  describe :ignored? do
+  describe '#ignored?' do
     subject { build.ignored? }
 
     context 'if build is not allowed to fail' do
@@ -165,7 +165,7 @@ describe Build do
     end
   end
 
-  describe :trace do
+  describe '#trace' do
     subject { build.trace_html }
 
     it { should be_empty }
@@ -179,13 +179,13 @@ describe Build do
     end
   end
 
-  describe :timeout do
+  describe '#timeout' do
     subject { build.timeout }
 
     it { should eq(commit.project.timeout) }
   end
 
-  describe :duration do
+  describe '#duration' do
     subject { build.duration }
 
     it { should eq(120.0) }
@@ -210,7 +210,7 @@ describe Build do
     end
   end
 
-  describe :options do
+  describe '#options' do
     let(:options) {
       {
         :image => "ruby:2.1",
@@ -224,61 +224,61 @@ describe Build do
     it { should eq(options) }
   end
 
-  describe :ref do
+  describe '#ref' do
     subject { build.ref }
 
     it { should eq(commit.ref) }
   end
 
-  describe :sha do
+  describe '#sha' do
     subject { build.sha }
 
     it { should eq(commit.sha) }
   end
 
-  describe :short_sha do
+  describe '#short_sha' do
     subject { build.short_sha }
 
     it { should eq(commit.short_sha) }
   end
 
-  describe :before_sha do
+  describe '#before_sha' do
     subject { build.before_sha }
 
     it { should eq(commit.before_sha) }
   end
 
-  describe :allow_git_fetch do
+  describe '#allow_git_fetch' do
     subject { build.allow_git_fetch }
 
     it { should eq(project.allow_git_fetch) }
   end
 
-  describe :project do
+  describe '#project' do
     subject { build.project }
 
     it { should eq(commit.project) }
   end
 
-  describe :project_id do
+  describe '#project_id' do
     subject { build.project_id }
 
     it { should eq(commit.project_id) }
   end
 
-  describe :project_name do
+  describe '#project_name' do
     subject { build.project_name }
 
     it { should eq(project.name) }
   end
 
-  describe :repo_url do
+  describe '#repo_url' do
     subject { build.repo_url }
 
     it { should eq(project.repo_url_with_auth) }
   end
 
-  describe :extract_coverage do
+  describe '#extract_coverage' do
     context 'valid content & regex' do
       subject { build.extract_coverage('Coverage 1033 / 1051 LOC (98.29%) covered', '\(\d+.\d+\%\) covered') }
 
@@ -304,7 +304,7 @@ describe Build do
     end
   end
 
-  describe :variables do
+  describe '#variables' do
     context 'returns variables' do
       subject { build.variables }
 

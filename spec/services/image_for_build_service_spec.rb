@@ -6,7 +6,7 @@ describe ImageForBuildService do
   let(:commit) { FactoryGirl.create(:commit, project: project, ref: 'master') }
   let(:build) { FactoryGirl.create(:build, commit: commit) }
 
-  describe :execute do
+  describe '#execute' do
     before { build }
 
     context 'branch name' do

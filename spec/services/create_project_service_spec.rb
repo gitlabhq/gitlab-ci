@@ -7,7 +7,7 @@ describe CreateProjectService do
 
   before { allow_any_instance_of(Network).to receive_messages(enable_ci: true) }
 
-  describe :execute do
+  describe '#execute' do
     context 'valid params' do
       let(:project) { service.execute(current_user, project_dump, 'http://localhost/projects/:project_id') }
 

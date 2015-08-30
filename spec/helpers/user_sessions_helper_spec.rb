@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe UserSessionsHelper do
-  describe :generate_oauth_hmac do
+  describe 'generate_oauth_hmac' do
     let (:salt) { 'a' }
     let (:salt2) { 'b' }
     let (:return_to) { 'b' }
@@ -21,7 +21,7 @@ describe UserSessionsHelper do
     end
   end
 
-  describe :generate_oauth_state do
+  describe 'generate_oauth_state' do
     let (:return_to) { 'b' }
 
     it 'should return null if return_to is also null' do
@@ -35,7 +35,7 @@ describe UserSessionsHelper do
     end
   end
 
-  describe :get_ouath_state_return_to do
+  describe 'get_ouath_state_return_to' do
     let (:return_to) { 'a' }
     let (:state) { generate_oauth_state(return_to) }
 
@@ -44,7 +44,7 @@ describe UserSessionsHelper do
     end
   end
 
-  describe :is_oauth_state_valid? do
+  describe 'is_oauth_state_valid?' do
     let (:return_to) { 'a' }
     let (:state) { generate_oauth_state(return_to) }
     let (:forged) { "forged#{state}" }

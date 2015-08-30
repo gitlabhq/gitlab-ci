@@ -22,7 +22,7 @@ describe Variable do
     subject.value = secret_value
   end
 
-  describe :value do
+  describe '#value' do
     it 'stores the encrypted value' do
       subject.encrypted_value.should_not be_nil
     end

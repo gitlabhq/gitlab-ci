@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Network do
   let(:network) { Network.new }
 
-  describe :enable_ci do
+  describe '#enable_ci' do
     subject { network.enable_ci '', '', '' }
 
     context 'on success' do
@@ -27,7 +27,7 @@ describe Network do
     end
   end
 
-  describe :disable_ci do
+  describe '#disable_ci' do
     let(:response) { double }
     subject { network.disable_ci '', '' }
 

@@ -4,7 +4,7 @@ describe CreateCommitService do
   let(:service) { CreateCommitService.new }
   let(:project) { FactoryGirl.create(:project) }
   
-  describe :execute do
+  describe '#execute' do
     context 'valid params' do
       let(:commit) do 
         service.execute(project,
@@ -49,7 +49,7 @@ describe CreateCommitService do
       end
     end
 
-    describe :ci_skip? do
+    describe '#ci_skip?' do
       it "skips builds creation if there is [ci skip] tag in commit message" do
         commits = [{message: "some message[ci skip]"}]
         commit = service.execute(project,

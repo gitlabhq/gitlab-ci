@@ -5,7 +5,7 @@ describe CreateTriggerRequestService do
   let(:project) { FactoryGirl.create :project }
   let(:trigger) { FactoryGirl.create :trigger, project: project }
 
-  describe :execute do
+  describe '#execute' do
     context 'valid params' do
       subject { service.execute(project, trigger, 'master') }
 

@@ -8,7 +8,7 @@ describe EventService do
     Event.destroy_all
   end
   
-  describe :remove_project do
+  describe '#remove_project' do
     it "creates event" do
       EventService.new.remove_project(user, project)
 
@@ -16,7 +16,7 @@ describe EventService do
     end
   end
 
-  describe :create_project do
+  describe '#create_project' do
     it "creates event" do
       EventService.new.create_project(user, project)
 
@@ -24,7 +24,7 @@ describe EventService do
     end
   end
 
-  describe :change_project_settings do
+  describe '#change_project_settings' do
     it "creates event" do
       EventService.new.change_project_settings(user, project)
 

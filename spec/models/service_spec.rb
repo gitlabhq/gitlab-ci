@@ -41,7 +41,7 @@ describe Service do
         @testable = @service.can_test?
       end
 
-      describe :can_test do
+      describe '#can_test' do
         it { @testable.should == true }
       end
     end

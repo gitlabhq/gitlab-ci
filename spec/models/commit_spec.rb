@@ -34,7 +34,7 @@ describe Commit do
   it { should respond_to :git_author_email }
   it { should respond_to :short_sha }
 
-  describe :last_build do
+  describe '#last_build' do
     subject { commit.last_build }
     before do
       @first = FactoryGirl.create :build, commit: commit, created_at: Date.yesterday
@@ -45,7 +45,7 @@ describe Commit do
     it('returns with the most recently created build') { should eq(@second) }
   end
 
-  describe :retry do
+  describe '#retry' do
     before do
       @first = FactoryGirl.create :build, commit: commit, created_at: Date.yesterday
       @second = FactoryGirl.create :build, commit: commit
@@ -58,7 +58,7 @@ describe Commit do
     end
   end
 
-  describe :project_recipients do
+  describe '#project_recipients' do
 
     context 'always sending notification' do
       it 'should return commit_pusher_email as only recipient when no additional recipients are given' do
@@ -101,7 +101,7 @@ describe Commit do
     end
   end
 
-  describe :valid_commit_sha do
+  describe '#valid_commit_sha' do
     context 'commit.sha can not start with 00000000' do
       before do
         commit.sha = '0' * 40
@@ -112,7 +112,7 @@ describe Commit do
     end
   end
 
-  describe :compare? do
+  describe '#compare?' do
     subject { commit_with_project.compare? }
 
     context 'if commit.before_sha are not nil' do
@@ -120,21 +120,21 @@ describe Commit do
     end
   end
 
-  describe :short_sha do
+  describe '#short_before_sha' do
     subject { commit.short_before_sha }
 
     it { should have(8).items }
     it { commit.before_sha.should start_with(subject) }
   end
 
-  describe :short_sha do
+  describe '#short_sha' do
     subject { commit.short_sha }
 
     it { should have(8).items }
     it { commit.sha.should start_with(subject) }
   end
 
-  describe :create_next_builds do
+  describe '#create_next_builds' do
     before do
       commit.stub(:config_processor).and_return(config_processor)
     end
@@ -156,7 +156,7 @@ describe Commit do
     end
   end
 
-  describe :create_builds do
+  describe '#create_builds' do
     before do
       commit.stub(:config_processor).and_return(config_processor)
     end
