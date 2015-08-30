@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Commits" do
+describe "Commits", feature: true do
   context "Authenticated user" do
     before do
       login_as :user

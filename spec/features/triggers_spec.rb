@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Variables' do
+describe 'Variables', feature: true do
   before do
     login_as :user
     @project = FactoryGirl.create :project

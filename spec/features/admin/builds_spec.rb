@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Admin Builds" do
+describe "Admin Builds", feature: true do
   let(:project) { FactoryGirl.create :project }
   let(:commit) { FactoryGirl.create :commit, project: project }
   let(:build) { FactoryGirl.create :build, commit: commit }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Admin Projects" do
+describe "Admin Projects", feature: true do
   let(:project) { FactoryGirl.create :project }
 
   before do

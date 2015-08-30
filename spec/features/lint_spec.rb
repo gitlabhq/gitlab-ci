@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Lint" do
+describe "Lint", feature: true do
   before do
     login_as :user
   end

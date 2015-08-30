@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Builds" do
+describe "Builds", feature: true do
   before do
     @project = FactoryGirl.create :project
     @commit = FactoryGirl.create :commit, project: @project

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Events" do
+describe "Events", feature: true do
   let(:project) { FactoryGirl.create :project }
   let(:event) { FactoryGirl.create :admin_event, project: project }
   

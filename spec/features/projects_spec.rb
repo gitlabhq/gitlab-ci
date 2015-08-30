@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Projects" do
+describe "Projects", feature: true do
   before do
     login_as :user
     @project = FactoryGirl.create :project, name: "GitLab / gitlab-shell"

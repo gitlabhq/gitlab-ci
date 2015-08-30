@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Admin Runners" do
+describe "Admin Runners", feature: true do
   before do
     skip_admin_auth
     login_as :user

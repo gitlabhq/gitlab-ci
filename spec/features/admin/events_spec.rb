@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Admin Events" do
+describe "Admin Events", feature: true do
   let(:event) { FactoryGirl.create :admin_event }
   
   before do

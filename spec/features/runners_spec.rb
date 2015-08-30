@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Runners" do
+describe "Runners", feature: true do
   before do
     login_as :user
   end
