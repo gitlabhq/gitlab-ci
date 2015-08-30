@@ -123,14 +123,14 @@ describe Commit do
   describe '#short_before_sha' do
     subject { commit.short_before_sha }
 
-    it { should have(8).items }
+    it { expect(subject.length).to eq 8 }
     it { commit.before_sha.should start_with(subject) }
   end
 
   describe '#short_sha' do
     subject { commit.short_sha }
 
-    it { should have(8).items }
+    it { expect(subject.length).to eq 8 }
     it { commit.sha.should start_with(subject) }
   end
 

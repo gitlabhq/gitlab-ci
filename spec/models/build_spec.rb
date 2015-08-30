@@ -175,7 +175,7 @@ describe Build do
       before { build.trace = text }
 
       it { should include(text) }
-      it { should have_at_least(text.length).items }
+      it { expect(subject.length).to be >= text.length }
     end
   end
 
