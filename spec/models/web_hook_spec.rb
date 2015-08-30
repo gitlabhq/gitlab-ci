@@ -56,9 +56,8 @@ describe WebHook do
     it "catches exceptions" do
       WebHook.should_receive(:post).and_raise("Some HTTP Post error")
 
-      lambda {
-        @web_hook.execute(@data)
-      }.should raise_error
+      expect { @web_hook.execute(@data) }.
+        to raise_error(RuntimeError, 'Some HTTP Post error')
     end
   end
 end

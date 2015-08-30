@@ -147,7 +147,7 @@ describe API::API do
       delete api("/projects/#{project.id}"), options
       response.status.should == 200
 
-      expect { project.reload }.to raise_error
+      expect { project.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "non-manager is not authorized" do
