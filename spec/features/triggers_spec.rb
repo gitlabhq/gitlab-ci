@@ -15,7 +15,7 @@ describe 'Variables' do
     end
 
     it 'contains trigger token' do
-      page.should have_content(@project.triggers.first.token)
+      expect(page).to have_content(@project.triggers.first.token)
     end
 
     it 'revokes the trigger' do

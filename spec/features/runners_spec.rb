@@ -26,9 +26,9 @@ describe "Runners" do
 
     it "places runners in right places" do
       visit project_runners_path(@project)
-      page.find(".available-specific-runners").should have_content(@specific_runner2.display_name)
-      page.find(".activated-specific-runners").should have_content(@specific_runner.display_name)
-      page.find(".available-shared-runners").should have_content(@shared_runner.display_name)
+      expect(page.find(".available-specific-runners")).to have_content(@specific_runner2.display_name)
+      expect(page.find(".activated-specific-runners")).to have_content(@specific_runner.display_name)
+      expect(page.find(".available-shared-runners")).to have_content(@shared_runner.display_name)
     end
 
     it "enables specific runner for project" do
@@ -38,7 +38,7 @@ describe "Runners" do
         click_on "Enable for this project"
       end
 
-      page.find(".activated-specific-runners").should have_content(@specific_runner2.display_name)
+      expect(page.find(".activated-specific-runners")).to have_content(@specific_runner2.display_name)
     end
 
     it "disables specific runner for project" do
@@ -50,7 +50,7 @@ describe "Runners" do
         click_on "Disable for this project"
       end
 
-      page.find(".available-specific-runners").should have_content(@specific_runner.display_name)
+      expect(page.find(".available-specific-runners")).to have_content(@specific_runner.display_name)
     end
 
     it "removes specific runner for project if this is last project for that runners" do
@@ -92,7 +92,7 @@ describe "Runners" do
 
       click_on @specific_runner.short_sha
 
-      page.should have_content(@specific_runner.platform)
+      expect(page).to have_content(@specific_runner.platform)
     end
   end
 end
