@@ -25,10 +25,10 @@ describe API::API do
 
       it "should return all projects on the CI instance" do
         get api("/projects"), options
-        response.status.should eq 200
-        json_response.count.should eq 2
-        json_response.first["id"].should eq project1.id
-        json_response.last["id"].should eq project2.id
+        expect(response.status).to eq 200
+        expect(json_response.count).to eq 2
+        expect(json_response.first["id"]).to eq project1.id
+        expect(json_response.last["id"]).to eq project2.id
       end
     end
 
@@ -40,8 +40,8 @@ describe API::API do
       it "should return all projects on the CI instance" do
         get api("/projects/owned"), options
 
-        response.status.should eq 200
-        json_response.count.should eq 0
+        expect(response.status).to eq 200
+        expect(json_response.count).to eq 0
       end
     end
   end
@@ -58,19 +58,19 @@ describe API::API do
 
       it "should create webhook for specified project" do
         post api("/projects/#{project.id}/webhooks"), options
-        response.status.should eq 201
-        json_response["url"].should eq webhook[:web_hook]
+        expect(response.status).to eq 201
+        expect(json_response["url"]).to eq webhook[:web_hook]
       end
 
       it "fails to create webhook for non existsing project" do
         post api("/projects/non-existant-id/webhooks"), options
-        response.status.should eq 404
+        expect(response.status).to eq 404
       end
 
       it "non-manager is not authorized" do
         allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
         post api("/projects/#{project.id}/webhooks"), options
-        response.status.should eq 401
+        expect(response.status).to eq 401
       end
     end
 
@@ -83,14 +83,14 @@ describe API::API do
 
       it "fails to create webhook for not valid url" do
         post api("/projects/#{project.id}/webhooks"), options
-        response.status.should eq 400
+        expect(response.status).to eq 400
       end
     end
 
     context "Missed web_hook parameter" do
       it "fails to create webhook for not provided url" do
         post api("/projects/#{project.id}/webhooks"), options
-        response.status.should eq 400
+        expect(response.status).to eq 400
       end
     end
   end
@@ -101,15 +101,15 @@ describe API::API do
     context "with an existing project" do
       it "should retrieve the project info" do
         get api("/projects/#{project.id}"), options
-        response.status.should eq 200
-        json_response['id'].should eq project.id
+        expect(response.status).to eq 200
+        expect(json_response['id']).to eq project.id
       end
     end
 
     context "with a non-existing project" do
       it "should return 404 error if project not found" do
         get api("/projects/non_existent_id"), options
-        response.status.should eq 404
+        expect(response.status).to eq 404
       end
     end
   end
@@ -124,19 +124,19 @@ describe API::API do
 
     it "should update a specific project's information" do
       put api("/projects/#{project.id}"), options
-      response.status.should eq 200
-      json_response["name"].should eq project_info[:name]
+      expect(response.status).to eq 200
+      expect(json_response["name"]).to eq project_info[:name]
     end
 
     it "fails to update a non-existing project" do
       put api("/projects/non-existant-id"), options
-      response.status.should eq 404
+      expect(response.status).to eq 404
     end
 
     it "non-manager is not authorized" do
       allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
       put api("/projects/#{project.id}"), options
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
   end
 
@@ -145,7 +145,7 @@ describe API::API do
 
     it "should delete a specific project" do
       delete api("/projects/#{project.id}"), options
-      response.status.should eq 200
+      expect(response.status).to eq 200
 
       expect { project.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
@@ -153,12 +153,12 @@ describe API::API do
     it "non-manager is not authorized" do
       allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
       delete api("/projects/#{project.id}"), options
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
 
     it "is getting not found error" do
       delete api("/projects/not-existing_id"), options
-      response.status.should eq 404
+      expect(response.status).to eq 404
     end
   end
 
@@ -181,8 +181,8 @@ describe API::API do
 
       it "should create a project with valid data" do
         post api("/projects"), options
-        response.status.should eq 201
-        json_response['name'].should eq project_info[:name]
+        expect(response.status).to eq 201
+        expect(json_response['name']).to eq project_info[:name]
       end
     end
 
@@ -193,7 +193,7 @@ describe API::API do
 
       it "should error with invalid data" do
         post api("/projects"), options
-        response.status.should eq 400
+        expect(response.status).to eq 400
       end
     end
 
@@ -203,24 +203,24 @@ describe API::API do
 
       it "should add the project to the runner" do
         post api("/projects/#{project.id}/runners/#{runner.id}"), options
-        response.status.should eq 201
+        expect(response.status).to eq 201
 
         project.reload
-        project.runners.first.id.should eq runner.id
+        expect(project.runners.first.id).to eq runner.id
       end
 
       it "should fail if it tries to link a non-existing project or runner" do
         post api("/projects/#{project.id}/runners/non-existing"), options
-        response.status.should eq 404
+        expect(response.status).to eq 404
 
         post api("/projects/non-existing/runners/#{runner.id}"), options
-        response.status.should eq 404
+        expect(response.status).to eq 404
       end
 
       it "non-manager is not authorized" do
         allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
         post api("/projects/#{project.id}/runners/#{runner.id}"), options
-        response.status.should eq 401
+        expect(response.status).to eq 401
       end
     end
 
@@ -233,18 +233,18 @@ describe API::API do
       end
 
       it "should remove the project from the runner" do
-        project.runners.should be_present
+        expect(project.runners).to be_present
         delete api("/projects/#{project.id}/runners/#{runner.id}"), options
-        response.status.should eq 200
+        expect(response.status).to eq 200
 
         project.reload
-        project.runners.should be_empty
+        expect(project.runners).to be_empty
       end
 
       it "non-manager is not authorized" do
         allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
         post api("/projects/#{project.id}/runners/#{runner.id}"), options
-        response.status.should eq 401
+        expect(response.status).to eq 401
       end
     end
   end

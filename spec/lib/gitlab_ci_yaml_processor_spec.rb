@@ -13,8 +13,8 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 1
-      config_processor.builds_for_stage_and_ref(type, "master").first.should eq({
+      expect(config_processor.builds_for_stage_and_ref(type, "master").size).to eq 1
+      expect(config_processor.builds_for_stage_and_ref(type, "master").first).to eq({
         stage: "test",
         except: nil,
         name: :rspec,
@@ -34,7 +34,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 0
+      expect(config_processor.builds_for_stage_and_ref(type, "master").size).to eq 0
     end
 
     it "does not return builds if only has regexp with another branch" do
@@ -45,7 +45,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 0
+      expect(config_processor.builds_for_stage_and_ref(type, "master").size).to eq 0
     end
 
     it "returns builds if only has specified this branch" do
@@ -56,7 +56,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "master").size.should eq 1
+      expect(config_processor.builds_for_stage_and_ref(type, "master").size).to eq 1
     end
 
     it "does not build tags" do
@@ -67,7 +67,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "0-1", true).size.should eq 0
+      expect(config_processor.builds_for_stage_and_ref(type, "0-1", true).size).to eq 0
     end
 
     it "returns builds if only has a list of branches including specified" do
@@ -78,7 +78,7 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref(type, "deploy").size.should eq 1
+      expect(config_processor.builds_for_stage_and_ref(type, "deploy").size).to eq 1
     end
 
     it "returns build only for specified type" do
@@ -93,9 +93,9 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref("production", "deploy").size.should eq 0
-      config_processor.builds_for_stage_and_ref(type, "deploy").size.should eq 1
-      config_processor.builds_for_stage_and_ref("deploy", "deploy").size.should eq 2
+      expect(config_processor.builds_for_stage_and_ref("production", "deploy").size).to eq 0
+      expect(config_processor.builds_for_stage_and_ref(type, "deploy").size).to eq 1
+      expect(config_processor.builds_for_stage_and_ref("deploy", "deploy").size).to eq 2
     end
   end
 
@@ -110,8 +110,8 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref("test", "master").size.should eq 1
-      config_processor.builds_for_stage_and_ref("test", "master").first.should eq({
+      expect(config_processor.builds_for_stage_and_ref("test", "master").size).to eq 1
+      expect(config_processor.builds_for_stage_and_ref("test", "master").first).to eq({
         except: nil,
         stage: "test",
         name: :rspec,
@@ -136,8 +136,8 @@ describe GitlabCiYamlProcessor do
 
       config_processor = described_class.new(config)
 
-      config_processor.builds_for_stage_and_ref("test", "master").size.should eq 1
-      config_processor.builds_for_stage_and_ref("test", "master").first.should eq({
+      expect(config_processor.builds_for_stage_and_ref("test", "master").size).to eq 1
+      expect(config_processor.builds_for_stage_and_ref("test", "master").first).to eq({
         except: nil,
         stage: "test",
         name: :rspec,
@@ -166,7 +166,7 @@ describe GitlabCiYamlProcessor do
                          })
 
       config_processor = described_class.new(config)
-      config_processor.variables.should eq variables
+      expect(config_processor.variables).to eq variables
     end
   end
 

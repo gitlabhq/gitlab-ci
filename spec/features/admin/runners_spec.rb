@@ -42,7 +42,7 @@ describe "Admin Runners", feature: true do
     end
 
     describe 'runner info' do
-      it { find_field('runner_token').value.should eq runner.token }
+      it { expect(find_field('runner_token').value).to eq runner.token }
     end
 
     describe 'projects' do

@@ -11,8 +11,8 @@ describe CreateProjectService do
     context 'valid params' do
       let(:project) { service.execute(current_user, project_dump, 'http://localhost/projects/:project_id') }
 
-      it { project.should be_kind_of(Project) }
-      it { project.should be_persisted }
+      it { expect(project).to be_kind_of(Project) }
+      it { expect(project).to be_persisted }
     end
 
     context 'without project dump' do
@@ -32,9 +32,9 @@ describe CreateProjectService do
 
         project = service.execute(current_user, project_dump, 'http://localhost/projects/:project_id', origin_project)
 
-        project.shared_runners_enabled.should be_truthy
-        project.public.should be_truthy
-        project.allow_git_fetch.should be_truthy
+        expect(project.shared_runners_enabled).to be_truthy
+        expect(project.public).to be_truthy
+        expect(project.allow_git_fetch).to be_truthy
       end
     end
   end

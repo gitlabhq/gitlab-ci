@@ -12,7 +12,7 @@ describe EventService do
     it "creates event" do
       described_class.new.remove_project(user, project)
 
-      Event.admin.last.description.should eq "Project \"GitLab / gitlab-shell\" has been removed by root"
+      expect(Event.admin.last.description).to eq "Project \"GitLab / gitlab-shell\" has been removed by root"
     end
   end
 
@@ -20,7 +20,7 @@ describe EventService do
     it "creates event" do
       described_class.new.create_project(user, project)
 
-      Event.admin.last.description.should eq "Project \"GitLab / gitlab-shell\" has been created by root"
+      expect(Event.admin.last.description).to eq "Project \"GitLab / gitlab-shell\" has been created by root"
     end
   end
 
@@ -28,7 +28,7 @@ describe EventService do
     it "creates event" do
       described_class.new.change_project_settings(user, project)
 
-      Event.last.description.should eq "User \"root\" updated projects settings"
+      expect(Event.last.description).to eq "User \"root\" updated projects settings"
     end
   end
 end

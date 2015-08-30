@@ -13,7 +13,7 @@ describe Network do
         allow(network.class).to receive(:put) { response }
       end
 
-      it { should be_truthy }
+      it { is_expected.to be_truthy }
     end
 
     context 'on failure' do
@@ -23,7 +23,7 @@ describe Network do
         allow(network.class).to receive(:put) { response }
       end
 
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
   end
 
@@ -39,7 +39,7 @@ describe Network do
         allow(network.class).to receive(:delete) { response }
       end
 
-      it { should equal(parsed_response) }
+      it { is_expected.to equal(parsed_response) }
     end
 
     context 'on failure' do
@@ -48,7 +48,7 @@ describe Network do
         allow(network.class).to receive(:delete) { response }
       end
 
-      it { should be_nil }
+      it { is_expected.to be_nil }
     end
   end
 end

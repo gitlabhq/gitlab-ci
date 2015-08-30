@@ -12,7 +12,7 @@ describe "Builds" do
       get status_project_build_path(@project, @build), format: :json
     end
 
-    it { response.status.should eq 200 }
-    it { response.body.should include(@build.sha) }
+    it { expect(response.status).to eq 200 }
+    it { expect(response.body).to include(@build.sha) }
   end
 end

@@ -43,9 +43,9 @@ describe Runner do
 
     before { shared_runner.assign_to(project) }
 
-    it { shared_runner.should be_specific }
-    it { shared_runner.projects.should eq [project] }
-    it { shared_runner.only_for?(project).should be_truthy }
+    it { expect(shared_runner).to be_specific }
+    it { expect(shared_runner.projects).to eq [project] }
+    it { expect(shared_runner.only_for?(project)).to be_truthy }
   end
 
   describe "belongs_to_one_project?" do
@@ -56,7 +56,7 @@ describe Runner do
       project.runners << runner
       project1.runners << runner
 
-      runner.belongs_to_one_project?.should be_falsey
+      expect(runner.belongs_to_one_project?).to be_falsey
     end
 
     it "returns true" do
@@ -64,7 +64,7 @@ describe Runner do
       project = FactoryGirl.create(:project)
       project.runners << runner
 
-      runner.belongs_to_one_project?.should be_truthy
+      expect(runner.belongs_to_one_project?).to be_truthy
     end
   end
 end

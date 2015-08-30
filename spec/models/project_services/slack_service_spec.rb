@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe SlackService do
   describe "Associations" do
-    it { should belong_to :project }
+    it { is_expected.to belong_to :project }
   end
 
   describe "Validations" do
@@ -25,7 +25,7 @@ describe SlackService do
         subject.active = true
       end
 
-      it { should validate_presence_of :webhook }
+      it { is_expected.to validate_presence_of :webhook }
     end
   end
 
@@ -52,7 +52,7 @@ describe SlackService do
       slack.execute(build)
       SlackNotifierWorker.drain
 
-      WebMock.should have_requested(:post, webhook_url).once
+      expect(WebMock).to have_requested(:post, webhook_url).once
     end
   end
 end

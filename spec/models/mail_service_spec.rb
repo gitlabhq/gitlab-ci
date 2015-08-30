@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe MailService do
   describe "Associations" do
-    it { should belong_to :project }
+    it { is_expected.to belong_to :project }
   end
 
   describe "Validations" do
@@ -45,8 +45,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_receive(:build_fail_email).with(build.id, email)
-        Notify.should_not_receive(:build_success_email).with(build.id, email)
+        expect(Notify).to receive(:build_fail_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_success_email).with(build.id, email)
       end
     end
 
@@ -65,8 +65,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
 
@@ -91,8 +91,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
 
@@ -117,8 +117,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_not_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
 
@@ -138,7 +138,7 @@ describe MailService do
       end
 
       it do
-        mail.can_test?.should eq true
+        expect(mail.can_test?).to eq true
       end
     end
 
@@ -164,8 +164,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_not_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
   end

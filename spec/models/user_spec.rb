@@ -42,13 +42,13 @@ describe User do
     it "returns false for reporter" do
       allow(@user).to receive(:project_info).and_return(project_with_reporter_access)
 
-      @user.has_developer_access?(1).should be_falsey
+      expect(@user.has_developer_access?(1)).to be_falsey
     end
 
     it "returns true for owner" do
       allow(@user).to receive(:project_info).and_return(project_with_owner_access)
 
-      @user.has_developer_access?(1).should be_truthy
+      expect(@user.has_developer_access?(1)).to be_truthy
     end
   end
 
@@ -66,13 +66,13 @@ describe User do
     it "returns projects" do
       allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(true)
 
-      user.authorized_projects.count.should eq 2
+      expect(user.authorized_projects.count).to eq 2
     end
 
     it "empty list if user miss manage permission" do
       allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(false)
 
-      user.authorized_projects.count.should eq 0
+      expect(user.authorized_projects.count).to eq 0
     end
   end
 
@@ -93,8 +93,8 @@ describe User do
       project.runners << runner
       project1.runners << runner1
 
-      user.authorized_runners.should include(runner, runner1)
-      user.authorized_runners.should_not include(runner2)
+      expect(user.authorized_runners).to include(runner, runner1)
+      expect(user.authorized_runners).not_to include(runner2)
     end
   end
 end

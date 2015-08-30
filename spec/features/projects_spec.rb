@@ -39,7 +39,7 @@ describe "Projects", feature: true do
 
       expect(page).to have_content 'was successfully updated'
 
-      find_field('Timeout').value.should eq '70'
+      expect(find_field('Timeout').value).to eq '70'
     end
   end
 

@@ -9,6 +9,6 @@ describe Charts::BuildTime do
 
   it 'should return build times in minutes' do
     chart = described_class.new(@project)
-    chart.build_times.should eq [2]
+    expect(chart.build_times).to eq [2]
   end
 end

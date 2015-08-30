@@ -11,7 +11,7 @@ describe 'Variables', feature: true do
   context 'create a trigger' do
     before do
       click_on 'Add Trigger'
-      @project.triggers.count.should eq 1
+      expect(@project.triggers.count).to eq 1
     end
 
     it 'contains trigger token' do
@@ -20,7 +20,7 @@ describe 'Variables', feature: true do
 
     it 'revokes the trigger' do
       click_on 'Revoke'
-      @project.triggers.count.should eq 0
+      expect(@project.triggers.count).to eq 0
     end
   end
 end

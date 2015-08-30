@@ -18,29 +18,29 @@ describe RegisterBuildService do
         pending_build.tag_list = ["linux"]
         pending_build.save
         specific_runner.tag_list = ["linux"]
-        service.execute(specific_runner).should eq pending_build
+        expect(service.execute(specific_runner)).to eq pending_build
       end
 
       it "does not pick build with different tag" do
         pending_build.tag_list = ["linux"]
         pending_build.save
         specific_runner.tag_list = ["win32"]
-        service.execute(specific_runner).should be_falsey
+        expect(service.execute(specific_runner)).to be_falsey
       end
 
       it "picks build without tag" do
-        service.execute(specific_runner).should eq pending_build
+        expect(service.execute(specific_runner)).to eq pending_build
       end
 
       it "does not pick build with tag" do
         pending_build.tag_list = ["linux"]
         pending_build.save
-        service.execute(specific_runner).should be_falsey
+        expect(service.execute(specific_runner)).to be_falsey
       end
 
       it "pick build without tag" do
         specific_runner.tag_list = ["win32"]
-        service.execute(specific_runner).should eq pending_build
+        expect(service.execute(specific_runner)).to eq pending_build
       end
     end
 
@@ -53,19 +53,19 @@ describe RegisterBuildService do
       context 'shared runner' do
         let(:build) { service.execute(shared_runner) }
 
-        it { build.should be_kind_of(Build) }
-        it { build.should be_valid }
-        it { build.should be_running }
-        it { build.runner.should eq shared_runner }
+        it { expect(build).to be_kind_of(Build) }
+        it { expect(build).to be_valid }
+        it { expect(build).to be_running }
+        it { expect(build.runner).to eq shared_runner }
       end
 
       context 'specific runner' do
         let(:build) { service.execute(specific_runner) }
 
-        it { build.should be_kind_of(Build) }
-        it { build.should be_valid }
-        it { build.should be_running }
-        it { build.runner.should eq specific_runner }
+        it { expect(build).to be_kind_of(Build) }
+        it { expect(build).to be_valid }
+        it { expect(build).to be_running }
+        it { expect(build.runner).to eq specific_runner }
       end
     end
 
@@ -73,16 +73,16 @@ describe RegisterBuildService do
       context 'shared runner' do
         let(:build) { service.execute(shared_runner) }
 
-        it { build.should be_nil }
+        it { expect(build).to be_nil }
       end
 
       context 'specific runner' do
         let(:build) { service.execute(specific_runner) }
 
-        it { build.should be_kind_of(Build) }
-        it { build.should be_valid }
-        it { build.should be_running }
-        it { build.runner.should eq specific_runner }
+        it { expect(build).to be_kind_of(Build) }
+        it { expect(build).to be_valid }
+        it { expect(build).to be_running }
+        it { expect(build.runner).to eq specific_runner }
       end
     end
   end

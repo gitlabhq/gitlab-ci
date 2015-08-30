@@ -5,13 +5,13 @@ describe Upgrader do
   let(:current_version) { GitlabCi::VERSION }
 
   describe 'current_version_raw' do
-    it { upgrader.current_version_raw.should eq current_version }
+    it { expect(upgrader.current_version_raw).to eq current_version }
   end
 
   describe 'latest_version?' do
     it 'should be true if newest version' do
       allow(upgrader).to receive_messages(latest_version_raw: current_version)
-      upgrader.latest_version?.should be_truthy
+      expect(upgrader.latest_version?).to be_truthy
     end
   end
 

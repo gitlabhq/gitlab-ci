@@ -24,8 +24,8 @@ describe HipChatService do
         subject.active = true
       end
 
-      it { should validate_presence_of :hipchat_room }
-      it { should validate_presence_of :hipchat_token }
+      it { is_expected.to validate_presence_of :hipchat_room }
+      it { is_expected.to validate_presence_of :hipchat_token }
 
     end
   end
