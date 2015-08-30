@@ -112,6 +112,7 @@ end
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem 'fuubar', '~> 2.0.0'
   gem 'pry-rails'
 
   gem "database_cleaner", '~> 1.4.0'
