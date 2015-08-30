@@ -36,9 +36,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -58,9 +56,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -85,9 +81,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -113,9 +107,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -141,9 +133,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
         build
       end
 
@@ -163,9 +153,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do

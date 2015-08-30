@@ -34,9 +34,7 @@ describe Service do
       let (:build) { FactoryGirl.create :build, commit: commit }
 
       before do
-        @service.stub(
-          project: project
-        )
+        allow(@service).to receive_messages(project: project)
         build
         @testable = @service.can_test?
       end

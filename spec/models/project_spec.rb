@@ -96,29 +96,29 @@ describe Project do
   describe '#broken_or_success?' do
     it {
       project = FactoryGirl.create :project, email_add_pusher: true
-      project.stub(:broken?).and_return(true)
-      project.stub(:success?).and_return(true)
+      allow(project).to receive(:broken?).and_return(true)
+      allow(project).to receive(:success?).and_return(true)
       project.broken_or_success?.should eq true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_pusher: true
-      project.stub(:broken?).and_return(true)
-      project.stub(:success?).and_return(false)
+      allow(project).to receive(:broken?).and_return(true)
+      allow(project).to receive(:success?).and_return(false)
       project.broken_or_success?.should eq true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_pusher: true
-      project.stub(:broken?).and_return(false)
-      project.stub(:success?).and_return(true)
+      allow(project).to receive(:broken?).and_return(false)
+      allow(project).to receive(:success?).and_return(true)
       project.broken_or_success?.should eq true
     }
 
     it {
       project = FactoryGirl.create :project, email_add_pusher: true
-      project.stub(:broken?).and_return(false)
-      project.stub(:success?).and_return(false)
+      allow(project).to receive(:broken?).and_return(false)
+      allow(project).to receive(:success?).and_return(false)
       project.broken_or_success?.should eq false
     }
   end

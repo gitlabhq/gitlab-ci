@@ -38,7 +38,7 @@ describe SlackService do
     let(:notify_only_broken_builds) { false }
 
     before do
-      slack.stub(
+      allow(slack).to receive_messages(
         project: project,
         project_id: project.id,
         webhook: webhook_url,

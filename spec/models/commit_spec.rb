@@ -67,7 +67,7 @@ describe Commit do
           email_recipients: ''
         commit =  FactoryGirl.create :commit, project: project
         expected = 'commit_pusher_email'
-        commit.stub(:push_data) { { user_email: expected } }
+        allow(commit).to receive(:push_data) { { user_email: expected } }
         commit.project_recipients.should eq [expected]
       end
 
@@ -77,7 +77,7 @@ describe Commit do
           email_recipients: 'rec1 rec2'
         commit = FactoryGirl.create :commit, project: project
         expected = 'commit_pusher_email'
-        commit.stub(:push_data) { { user_email: expected } }
+        allow(commit).to receive(:push_data) { { user_email: expected } }
         commit.project_recipients.should eq ['rec1', 'rec2', expected]
       end
 
@@ -95,7 +95,7 @@ describe Commit do
           email_recipients: 'rec1 rec1 rec2'
         commit = FactoryGirl.create :commit, project: project
         expected = 'rec2'
-        commit.stub(:push_data) { { user_email: expected } }
+        allow(commit).to receive(:push_data) { { user_email: expected } }
         commit.project_recipients.should eq ['rec1', 'rec2']
       end
     end
@@ -136,7 +136,7 @@ describe Commit do
 
   describe '#create_next_builds' do
     before do
-      commit.stub(:config_processor).and_return(config_processor)
+      allow(commit).to receive(:config_processor).and_return(config_processor)
     end
 
     it "creates builds for next type" do
@@ -158,7 +158,7 @@ describe Commit do
 
   describe '#create_builds' do
     before do
-      commit.stub(:config_processor).and_return(config_processor)
+      allow(commit).to receive(:config_processor).and_return(config_processor)
     end
 
     it 'creates builds' do
