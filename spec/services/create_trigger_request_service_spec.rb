@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CreateTriggerRequestService do
-  let(:service) { CreateTriggerRequestService.new }
+  let(:service) { described_class.new }
   let(:project) { FactoryGirl.create :project }
   let(:trigger) { FactoryGirl.create :trigger, project: project }
 

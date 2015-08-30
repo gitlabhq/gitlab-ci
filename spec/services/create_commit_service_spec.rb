@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CreateCommitService do
-  let(:service) { CreateCommitService.new }
+  let(:service) { described_class.new }
   let(:project) { FactoryGirl.create(:project) }
   
   describe '#execute' do

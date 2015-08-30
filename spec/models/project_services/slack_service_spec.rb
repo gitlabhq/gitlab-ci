@@ -30,7 +30,7 @@ describe SlackService do
   end
 
   describe "Execute" do
-    let(:slack)   { SlackService.new }
+    let(:slack)   { described_class.new }
     let(:project) { FactoryGirl.create :project }
     let(:commit)  { FactoryGirl.create :commit, project: project }
     let(:build)   { FactoryGirl.create :build, commit: commit, status: 'failed' }

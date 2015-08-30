@@ -54,7 +54,7 @@ describe WebHook do
     end
 
     it "catches exceptions" do
-      WebHook.should_receive(:post).and_raise("Some HTTP Post error")
+      described_class.should_receive(:post).and_raise("Some HTTP Post error")
 
       expect { @web_hook.execute(@data) }.
         to raise_error(RuntimeError, 'Some HTTP Post error')

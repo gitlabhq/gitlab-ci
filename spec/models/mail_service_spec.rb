@@ -28,7 +28,7 @@ describe MailService do
   end
 
   describe 'Sends email for' do
-    let(:mail)   { MailService.new }
+    let(:mail) { described_class.new }
 
     describe 'failed build' do
       let(:project) { FactoryGirl.create(:project, email_add_pusher: true) }

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CreateProjectService do
-  let(:service) { CreateProjectService.new }
+  let(:service) { described_class.new }
   let(:current_user) { double.as_null_object }
   let(:project_dump) { YAML.load File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
 

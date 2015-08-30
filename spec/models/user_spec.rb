@@ -4,7 +4,7 @@ describe User do
 
   describe "has_developer_access?" do
     before do
-      @user = User.new({})
+      @user = described_class.new({})
     end
 
     let(:project_with_owner_access) do
@@ -53,24 +53,24 @@ describe User do
   end
 
   describe "authorized_projects" do
-    let (:user) { User.new({}) }
+    let (:user) { described_class.new({}) }
 
     before do
       FactoryGirl.create :project, gitlab_id: 1
       FactoryGirl.create :project, gitlab_id: 2
       gitlab_project = OpenStruct.new({id: 1})
       gitlab_project1 = OpenStruct.new({id: 2})
-      allow_any_instance_of(User).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
+      allow_any_instance_of(described_class).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
     end
 
     it "returns projects" do
-      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(true)
+      allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(true)
 
       user.authorized_projects.count.should eq 2
     end
 
     it "empty list if user miss manage permission" do
-      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
+      allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(false)
 
       user.authorized_projects.count.should eq 0
     end
@@ -82,9 +82,9 @@ describe User do
       project1 = FactoryGirl.create :project, gitlab_id: 2
       gitlab_project = OpenStruct.new({id: 1})
       gitlab_project1 = OpenStruct.new({id: 2})
-      allow_any_instance_of(User).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
-      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(true)
-      user = User.new({})
+      allow_any_instance_of(described_class).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
+      allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(true)
+      user = described_class.new({})
 
       runner = FactoryGirl.create :specific_runner
       runner1 = FactoryGirl.create :specific_runner

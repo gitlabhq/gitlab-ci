@@ -9,7 +9,7 @@ describe WebHookService do
   describe '#execute' do
     it "should execute successfully" do
       stub_request(:post, hook.url).to_return(status: 200)
-      WebHookService.new.build_end(build).should be_truthy
+      described_class.new.build_end(build).should be_truthy
     end
   end
 
@@ -31,6 +31,6 @@ describe WebHookService do
   end
 
   def build_data(build)
-    WebHookService.new.send :build_data, build
+    described_class.new.send :build_data, build
   end
 end

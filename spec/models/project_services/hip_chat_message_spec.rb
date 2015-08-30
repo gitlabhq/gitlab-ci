@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe HipChatMessage do
-  subject { HipChatMessage.new(build) }
+  subject { described_class.new(build) }
 
   let(:project) { FactoryGirl.create(:project) }
 

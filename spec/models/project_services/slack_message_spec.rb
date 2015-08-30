@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SlackMessage do
-  subject { SlackMessage.new(commit) }
+  subject { described_class.new(commit) }
 
   let(:project) { FactoryGirl.create :project }
 

@@ -57,7 +57,7 @@ describe Project do
       FactoryGirl.create :commit, committed_at: 1.hour.ago, project: newest_project
       FactoryGirl.create :commit, committed_at: 2.hour.ago, project: oldest_project
 
-      Project.ordered_by_last_commit_date.should eq [newest_project, oldest_project, project_without_commits]
+      described_class.ordered_by_last_commit_date.should eq [newest_project, oldest_project, project_without_commits]
     end
   end
 
@@ -123,19 +123,19 @@ describe Project do
     }
   end
 
-  describe 'Project.parse' do
+  describe '.parse' do
     let(:project_dump) { YAML.load File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
-    let(:parsed_project) { Project.parse(project_dump) }
+    let(:parsed_project) { described_class.parse(project_dump) }
 
     
     it { parsed_project.should be_valid }
-    it { parsed_project.should be_kind_of(Project) }
+    it { parsed_project.should be_kind_of(described_class) }
     it { parsed_project.name.should eq("GitLab / api.gitlab.org") }
     it { parsed_project.gitlab_id.should eq(189) }
     it { parsed_project.gitlab_url.should eq("http://demo.gitlab.com/gitlab/api-gitlab-org") }
 
     it "parses plain hash" do
-      Project.parse(project_dump).name.should eq("GitLab / api.gitlab.org")
+      described_class.parse(project_dump).name.should eq("GitLab / api.gitlab.org")
     end
   end
 
@@ -154,8 +154,8 @@ describe Project do
   describe '.search' do
     let!(:project) { FactoryGirl.create(:project, name: "foo") }
 
-    it { Project.search('fo').should include(project) }
-    it { Project.search('bar').should be_empty }
+    it { described_class.search('fo').should include(project) }
+    it { described_class.search('bar').should be_empty }
   end
 
   describe '#any_runners' do

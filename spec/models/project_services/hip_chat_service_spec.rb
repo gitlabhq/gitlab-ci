@@ -32,7 +32,7 @@ describe HipChatService do
 
   describe "Execute" do
 
-    let(:service) { HipChatService.new }
+    let(:service) { described_class.new }
     let(:project) { FactoryGirl.create :project }
     let(:commit)  { FactoryGirl.create :commit, project: project }
     let(:build)   { FactoryGirl.create :build, commit: commit, status: 'failed' }

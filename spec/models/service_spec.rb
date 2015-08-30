@@ -25,7 +25,7 @@ describe Service do
 
   describe "Test Button" do
     before do
-      @service = Service.new
+      @service = described_class.new
     end
 
     describe "Testable" do

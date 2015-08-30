@@ -14,7 +14,7 @@
 require 'spec_helper'
 
 describe Variable do
-  subject { Variable.new }
+  subject { described_class.new }
 
   let(:secret_value) { 'secret' }
 

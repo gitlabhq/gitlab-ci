@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Network do
-  let(:network) { Network.new }
+  let(:network) { described_class.new }
 
   describe '#enable_ci' do
     subject { network.enable_ci '', '', '' }
