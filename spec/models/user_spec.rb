@@ -60,17 +60,17 @@ describe User do
       FactoryGirl.create :project, gitlab_id: 2
       gitlab_project = OpenStruct.new({id: 1})
       gitlab_project1 = OpenStruct.new({id: 2})
-      User.any_instance.stub(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
+      allow_any_instance_of(User).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
     end
 
     it "returns projects" do
-      User.any_instance.stub(:can_manage_project?).and_return(true)
+      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(true)
 
       user.authorized_projects.count.should == 2
     end
 
     it "empty list if user miss manage permission" do
-      User.any_instance.stub(:can_manage_project?).and_return(false)
+      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
 
       user.authorized_projects.count.should == 0
     end
@@ -82,8 +82,8 @@ describe User do
       project1 = FactoryGirl.create :project, gitlab_id: 2
       gitlab_project = OpenStruct.new({id: 1})
       gitlab_project1 = OpenStruct.new({id: 2})
-      User.any_instance.stub(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
-      User.any_instance.stub(:can_manage_project?).and_return(true)
+      allow_any_instance_of(User).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
+      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(true)
       user = User.new({})
 
       runner = FactoryGirl.create :specific_runner

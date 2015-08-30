@@ -12,7 +12,7 @@ describe "Runners" do
       stub_js_gitlab_calls
 
       # all projects should be authorized for user
-      Network.any_instance.stub(:projects).and_return([
+      allow_any_instance_of(Network).to receive(:projects).and_return([
         OpenStruct.new({id: @project.gitlab_id}),
         OpenStruct.new({id: @project2.gitlab_id})
       ])

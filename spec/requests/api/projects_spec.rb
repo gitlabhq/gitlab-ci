@@ -68,7 +68,7 @@ describe API::API do
       end
 
       it "non-manager is not authorized" do
-        User.any_instance.stub(:can_manage_project?).and_return(false)
+        allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
         post api("/projects/#{project.id}/webhooks"), options
         response.status.should == 401
       end
@@ -134,7 +134,7 @@ describe API::API do
     end
 
     it "non-manager is not authorized" do
-      User.any_instance.stub(:can_manage_project?).and_return(false)
+      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
       put api("/projects/#{project.id}"), options
       response.status.should == 401
     end
@@ -151,7 +151,7 @@ describe API::API do
     end
 
     it "non-manager is not authorized" do
-      User.any_instance.stub(:can_manage_project?).and_return(false)
+      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
       delete api("/projects/#{project.id}"), options
       response.status.should == 401
     end
@@ -218,7 +218,7 @@ describe API::API do
       end
 
       it "non-manager is not authorized" do
-        User.any_instance.stub(:can_manage_project?).and_return(false)
+        allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
         post api("/projects/#{project.id}/runners/#{runner.id}"), options
         response.status.should == 401
       end
@@ -242,7 +242,7 @@ describe API::API do
       end
 
       it "non-manager is not authorized" do
-        User.any_instance.stub(:can_manage_project?).and_return(false)
+        allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
         post api("/projects/#{project.id}/runners/#{runner.id}"), options
         response.status.should == 401
       end
