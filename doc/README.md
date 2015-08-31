@@ -25,3 +25,6 @@
 + [Backup/Restore](raketasks/backup_restore.md)
 + [Migrating to packaged CI](migration_to_omnibus/README.md)
 + [API](api/README.md)
+
+### Note
+To use GitLab CI with GitHub or others, you should mirror your repository to GitLab or move it there.
