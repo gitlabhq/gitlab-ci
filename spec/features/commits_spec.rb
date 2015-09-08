@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Commits" do
+describe "Commits", feature: true do
   context "Authenticated user" do
     before do
       login_as :user
@@ -14,9 +14,9 @@ describe "Commits" do
         visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
       end
 
-      it { page.should have_content @commit.sha[0..7] }
-      it { page.should have_content @commit.git_commit_message }
-      it { page.should have_content @commit.git_author_name }
+      it { expect(page).to have_content @commit.sha[0..7] }
+      it { expect(page).to have_content @commit.git_commit_message }
+      it { expect(page).to have_content @commit.git_author_name }
     end
 
     describe "Cancel commit" do
@@ -24,7 +24,7 @@ describe "Commits" do
         visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
         click_on "Cancel"
 
-        page.should have_content "canceled"
+        expect(page).to have_content "canceled"
       end
     end
 
@@ -32,7 +32,7 @@ describe "Commits" do
       it "does not show warning" do
         visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
 
-        page.should_not have_content ".gitlab-ci.yml not found in this commit"
+        expect(page).not_to have_content ".gitlab-ci.yml not found in this commit"
       end
 
       it "shows warning" do
@@ -41,7 +41,7 @@ describe "Commits" do
 
         visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
 
-        page.should have_content ".gitlab-ci.yml not found in this commit"
+        expect(page).to have_content ".gitlab-ci.yml not found in this commit"
       end
     end
   end
@@ -58,9 +58,9 @@ describe "Commits" do
         visit project_ref_commit_path(@project, @commit.ref, @commit.sha)
       end
 
-      it { page.should have_content @commit.sha[0..7] }
-      it { page.should have_content @commit.git_commit_message }
-      it { page.should have_content @commit.git_author_name }
+      it { expect(page).to have_content @commit.sha[0..7] }
+      it { expect(page).to have_content @commit.git_commit_message }
+      it { expect(page).to have_content @commit.git_author_name }
     end
   end
 end

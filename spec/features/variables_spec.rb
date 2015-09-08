@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Variables" do
+describe "Variables", feature: true do
   before do
     login_as :user
   end
@@ -18,8 +18,8 @@ describe "Variables" do
       fill_in "Value", with: "SECRET_VALUE"
       click_on "Save changes"
       
-      page.should have_content("Variables were successfully updated.")
-      @project.variables.count.should == 1
+      expect(page).to have_content("Variables were successfully updated.")
+      expect(@project.variables.count).to eq 1
     end
 
   end

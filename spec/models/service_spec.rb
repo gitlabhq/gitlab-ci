@@ -17,7 +17,7 @@ require 'spec_helper'
 describe Service do
 
   describe "Associations" do
-    it { should belong_to :project }
+    it { is_expected.to belong_to :project }
   end
 
   describe "Mass assignment" do
@@ -25,7 +25,7 @@ describe Service do
 
   describe "Test Button" do
     before do
-      @service = Service.new
+      @service = described_class.new
     end
 
     describe "Testable" do
@@ -34,15 +34,13 @@ describe Service do
       let (:build) { FactoryGirl.create :build, commit: commit }
 
       before do
-        @service.stub(
-          project: project
-        )
+        allow(@service).to receive_messages(project: project)
         build
         @testable = @service.can_test?
       end
 
-      describe :can_test do
-        it { @testable.should == true }
+      describe '#can_test' do
+        it { expect(@testable).to eq true }
       end
     end
   end

@@ -1,23 +1,24 @@
 require 'spec_helper'
 
 describe CreateProjectService do
-  let(:service) { CreateProjectService.new }
+  let(:service) { described_class.new }
   let(:current_user) { double.as_null_object }
   let(:project_dump) { YAML.load File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
 
-  before { Network.any_instance.stub(enable_ci: true) }
+  before { allow_any_instance_of(Network).to receive_messages(enable_ci: true) }
 
-  describe :execute do
+  describe '#execute' do
     context 'valid params' do
       let(:project) { service.execute(current_user, project_dump, 'http://localhost/projects/:project_id') }
 
-      it { project.should be_kind_of(Project) }
-      it { project.should be_persisted }
+      it { expect(project).to be_kind_of(Project) }
+      it { expect(project).to be_persisted }
     end
 
     context 'without project dump' do
       it 'should raise exception' do
-        expect { service.execute(current_user, '', '') }.to raise_error
+        expect { service.execute(current_user, '', '') }.
+          to raise_error(NoMethodError)
       end
     end
 
@@ -31,9 +32,9 @@ describe CreateProjectService do
 
         project = service.execute(current_user, project_dump, 'http://localhost/projects/:project_id', origin_project)
 
-        project.shared_runners_enabled.should be_true
-        project.public.should be_true
-        project.allow_git_fetch.should be_true
+        expect(project.shared_runners_enabled).to be_truthy
+        expect(project.public).to be_truthy
+        expect(project.allow_git_fetch).to be_truthy
       end
     end
   end

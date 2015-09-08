@@ -6,16 +6,16 @@ describe WebHookService do
   let (:build)   { FactoryGirl.create :build, commit: commit }
   let (:hook)    { FactoryGirl.create :web_hook, project: project }
 
-  describe :execute do
+  describe '#execute' do
     it "should execute successfully" do
       stub_request(:post, hook.url).to_return(status: 200)
-      WebHookService.new.build_end(build).should be_true
+      expect(described_class.new.build_end(build)).to be_truthy
     end
   end
 
   context 'build_data' do
     it "contains all needed fields" do
-      build_data(build).should include(
+      expect(build_data(build)).to include(
         :build_id,
         :project_id,
         :ref,
@@ -31,6 +31,6 @@ describe WebHookService do
   end
 
   def build_data(build)
-    WebHookService.new.send :build_data, build
+    described_class.new.send :build_data, build
   end
 end

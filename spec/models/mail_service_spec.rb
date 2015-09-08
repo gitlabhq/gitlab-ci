@@ -16,7 +16,7 @@ require 'spec_helper'
 
 describe MailService do
   describe "Associations" do
-    it { should belong_to :project }
+    it { is_expected.to belong_to :project }
   end
 
   describe "Validations" do
@@ -28,7 +28,7 @@ describe MailService do
   end
 
   describe 'Sends email for' do
-    let(:mail)   { MailService.new }
+    let(:mail) { described_class.new }
 
     describe 'failed build' do
       let(:project) { FactoryGirl.create(:project, email_add_pusher: true) }
@@ -36,9 +36,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -47,8 +45,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_receive(:build_fail_email).with(build.id, email)
-        Notify.should_not_receive(:build_success_email).with(build.id, email)
+        expect(Notify).to receive(:build_fail_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_success_email).with(build.id, email)
       end
     end
 
@@ -58,9 +56,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -69,8 +65,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
 
@@ -85,9 +81,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -97,8 +91,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
 
@@ -113,9 +107,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -125,8 +117,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_not_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
 
@@ -141,14 +133,12 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :success, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
         build
       end
 
       it do
-        mail.can_test?.should == true
+        expect(mail.can_test?).to eq true
       end
     end
 
@@ -163,9 +153,7 @@ describe MailService do
       let(:build) { FactoryGirl.create(:build, status: :failed, commit: commit) }
 
       before do
-        mail.stub(
-          project: project
-        )
+        allow(mail).to receive_messages(project: project)
       end
 
       it do
@@ -176,8 +164,8 @@ describe MailService do
       end
 
       def should_email(email)
-        Notify.should_not_receive(:build_success_email).with(build.id, email)
-        Notify.should_not_receive(:build_fail_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_success_email).with(build.id, email)
+        expect(Notify).not_to receive(:build_fail_email).with(build.id, email)
       end
     end
   end

@@ -22,15 +22,15 @@ describe API::API do
 
         post api("/builds/register"), token: runner.token, info: {platform: :darwin}
 
-        response.status.should == 201
-        json_response['sha'].should == build.sha
-        runner.reload.platform.should == "darwin"
+        expect(response.status).to eq 201
+        expect(json_response['sha']).to eq build.sha
+        expect(runner.reload.platform).to eq "darwin"
       end
 
       it "should return 404 error if no pending build found" do
         post api("/builds/register"), token: runner.token
 
-        response.status.should == 404
+        expect(response.status).to eq 404
       end
 
       it "should return 404 error if no builds for specific runner" do
@@ -39,7 +39,7 @@ describe API::API do
 
         post api("/builds/register"), token: runner.token
 
-        response.status.should == 404
+        expect(response.status).to eq 404
       end
 
       it "should return 404 error if no builds for shared runner" do
@@ -48,7 +48,7 @@ describe API::API do
 
         post api("/builds/register"), token: shared_runner.token
 
-        response.status.should == 404
+        expect(response.status).to eq 404
       end
 
       it "returns options" do
@@ -57,8 +57,8 @@ describe API::API do
 
         post api("/builds/register"), token: runner.token, info: {platform: :darwin}
 
-        response.status.should == 201
-        json_response["options"].should == {"image" => "ruby:2.1", "services" => ["postgres"]}
+        expect(response.status).to eq 201
+        expect(json_response["options"]).to eq({"image" => "ruby:2.1", "services" => ["postgres"]})
       end
 
       it "returns variables" do
@@ -68,8 +68,8 @@ describe API::API do
 
         post api("/builds/register"), token: runner.token, info: {platform: :darwin}
 
-        response.status.should == 201
-        json_response["variables"].should == [
+        expect(response.status).to eq 201
+        expect(json_response["variables"]).to eq [
           {"key" => "DB_NAME", "value" => "postgres", "public" => true},
           {"key" => "SECRET_KEY", "value" => "secret_value", "public" => false},
         ]
@@ -85,8 +85,8 @@ describe API::API do
 
         post api("/builds/register"), token: runner.token, info: {platform: :darwin}
 
-        response.status.should == 201
-        json_response["variables"].should == [
+        expect(response.status).to eq 201
+        expect(json_response["variables"]).to eq [
           {"key" => "DB_NAME", "value" => "postgres", "public" => true},
           {"key" => "SECRET_KEY", "value" => "secret_value", "public" => false},
           {"key" => "TRIGGER_KEY", "value" => "TRIGGER_VALUE", "public" => false},
@@ -101,7 +101,7 @@ describe API::API do
       it "should update a running build" do
         build.run!
         put api("/builds/#{build.id}"), token: runner.token
-        response.status.should == 200
+        expect(response.status).to eq 200
       end
 
       it 'Should not override trace information when no trace is given' do

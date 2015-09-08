@@ -61,8 +61,8 @@ describe ProjectsController do
     it "creates project" do
       allow(controller).to receive(:reset_cache) { true }
       allow(controller).to receive(:current_user) { user }
-      Network.any_instance.stub(:enable_ci).and_return(true)
-      Network.any_instance.stub(:project_hooks).and_return(true)
+      allow_any_instance_of(Network).to receive(:enable_ci).and_return(true)
+      allow_any_instance_of(Network).to receive(:project_hooks).and_return(true)
 
       post :create, { project: JSON.dump(project_dump.to_h) }.with_indifferent_access
 
@@ -73,7 +73,7 @@ describe ProjectsController do
     it "shows error" do
       allow(controller).to receive(:reset_cache) { true }
       allow(controller).to receive(:current_user) { user }
-      User.any_instance.stub(:can_manage_project?).and_return(false)
+      allow_any_instance_of(User).to receive(:can_manage_project?).and_return(false)
 
       post :create, { project: JSON.dump(project_dump.to_h) }.with_indifferent_access
 
@@ -97,7 +97,7 @@ describe ProjectsController do
     it "searches projects" do
       allow(controller).to receive(:reset_cache) { true }
       allow(controller).to receive(:current_user) { user }
-      Network.any_instance.should_receive(:projects).with(hash_including(search: 'str'), :authorized)
+      expect_any_instance_of(Network).to receive(:projects).with(hash_including(search: 'str'), :authorized)
 
       xhr :get, :gitlab, { search: "str", format: "js" }.with_indifferent_access
 

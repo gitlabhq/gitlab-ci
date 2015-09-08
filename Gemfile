@@ -103,37 +103,39 @@ gem "unf"
 
 group :development do
   gem 'brakeman', require: false
-  gem 'rack-mini-profiler', require: false
   gem 'annotate'
-  gem 'quiet_assets'
   gem "letter_opener"
-  gem "spring-commands-rspec"
+  gem 'quiet_assets'
+  gem 'rack-mini-profiler', require: false
 end
 
 
 group :development, :test do
-  gem 'spring', '~> 1.3.6'
-  gem 'minitest'
-  gem 'pry'
-  gem 'rspec-rails'
-  gem 'capybara'
-  gem 'poltergeist', '~> 1.5.1'
-  gem 'factory_girl_rails'
-  gem "ffaker"
-  gem "byebug"
-  gem "database_cleaner"
-  gem 'shoulda-matchers'
-  gem 'guard-rspec'
-  gem 'rb-fsevent', require: darwin_only('rb-fsevent')
-  gem 'growl',      require: darwin_only('growl')
-  gem 'rb-inotify', require: linux_only('rb-inotify')
+  gem 'byebug', platform: :mri
+  gem 'fuubar', '~> 2.0.0'
+  gem 'pry-rails'
 
-  gem "simplecov", require: false
+  gem "database_cleaner", '~> 1.4.0'
+  gem 'factory_girl_rails'
+  gem 'rspec-rails',      '~> 3.3.0'
+  gem 'rubocop',          '0.28.0', require: false
+
+  gem 'capybara',            '~> 2.4.0'
+  gem 'capybara-screenshot', '~> 1.0.0'
+  gem 'poltergeist',         '~> 1.6.0'
+
+  gem 'spring',                '~> 1.3.6'
+  gem 'spring-commands-rspec', '~> 1.0.0'
+
+  gem 'minitest'
+  gem 'ffaker', '~> 2.0.0'
+
   gem 'coveralls', '~> 0.8.2', require: false
-  gem 'rubocop', '0.28.0', require: false
 end
 
 group :test do
-  gem 'webmock'
-  gem 'email_spec'
+  gem 'simplecov', require: false
+  gem 'shoulda-matchers', '~> 2.8.0', require: false
+  gem 'email_spec', '~> 1.6.0'
+  gem 'webmock', '~> 1.21.0'
 end

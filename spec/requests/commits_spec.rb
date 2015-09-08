@@ -11,7 +11,7 @@ describe "Commits" do
       get status_project_ref_commit_path(@project, @commit.ref, @commit.sha), format: :json
     end
 
-    it { response.status.should == 200 }
-    it { response.body.should include(@commit.sha) }
+    it { expect(response.status).to eq 200 }
+    it { expect(response.body).to include(@commit.sha) }
   end
 end

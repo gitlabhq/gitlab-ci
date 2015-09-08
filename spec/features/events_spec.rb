@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Events" do
+describe "Events", feature: true do
   let(:project) { FactoryGirl.create :project }
   let(:event) { FactoryGirl.create :admin_event, project: project }
   
@@ -14,7 +14,7 @@ describe "Events" do
       visit project_events_path(project)
     end
 
-    it { page.should have_content "Events" }
-    it { page.should have_content event.description }
+    it { expect(page).to have_content "Events" }
+    it { expect(page).to have_content event.description }
   end
 end

@@ -11,26 +11,26 @@ describe Notify do
   end
 
   describe 'build success' do
-    subject { Notify.build_success_email(@build.id, 'wow@example.com') }
+    subject { described_class.build_success_email(@build.id, 'wow@example.com') }
 
     it 'has the correct subject' do
-      should have_subject /Build success for/
+      is_expected.to have_subject /Build success for/
     end
 
     it 'contains name of project' do
-      should have_body_text /build successful/
+      is_expected.to have_body_text /build successful/
     end
   end
 
   describe 'build fail' do
-    subject { Notify.build_fail_email(@build.id, 'wow@example.com') }
+    subject { described_class.build_fail_email(@build.id, 'wow@example.com') }
 
     it 'has the correct subject' do
-      should have_subject /Build failed for/
+      is_expected.to have_subject /Build failed for/
     end
 
     it 'contains name of project' do
-      should have_body_text /build failed/
+      is_expected.to have_body_text /build failed/
     end
   end
 end

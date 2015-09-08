@@ -24,22 +24,22 @@ describe HipChatService do
         subject.active = true
       end
 
-      it { should validate_presence_of :hipchat_room }
-      it { should validate_presence_of :hipchat_token }
+      it { is_expected.to validate_presence_of :hipchat_room }
+      it { is_expected.to validate_presence_of :hipchat_token }
 
     end
   end
 
   describe "Execute" do
 
-    let(:service) { HipChatService.new }
+    let(:service) { described_class.new }
     let(:project) { FactoryGirl.create :project }
     let(:commit)  { FactoryGirl.create :commit, project: project }
     let(:build)   { FactoryGirl.create :build, commit: commit, status: 'failed' }
     let(:api_url) { 'https://api.hipchat.com/v2/room/123/notification?auth_token=a1b2c3d4e5f6' }
 
     before do
-      service.stub(
+      allow(service).to receive_messages(
         project: project,
         project_id: project.id,
         notify_only_broken_builds: false,

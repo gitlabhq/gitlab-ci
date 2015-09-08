@@ -17,6 +17,6 @@ module LoginHelpers
   end
 
   def skip_admin_auth
-    ApplicationController.any_instance.stub(authenticate_admin!: true)
+    allow_any_instance_of(ApplicationController).to receive_messages(authenticate_admin!: true)
   end
 end

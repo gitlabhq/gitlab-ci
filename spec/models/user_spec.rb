@@ -4,7 +4,7 @@ describe User do
 
   describe "has_developer_access?" do
     before do
-      @user = User.new({})
+      @user = described_class.new({})
     end
 
     let(:project_with_owner_access) do
@@ -40,39 +40,39 @@ describe User do
     end
 
     it "returns false for reporter" do
-      @user.stub(:project_info).and_return(project_with_reporter_access)
+      allow(@user).to receive(:project_info).and_return(project_with_reporter_access)
 
-      @user.has_developer_access?(1).should be_false
+      expect(@user.has_developer_access?(1)).to be_falsey
     end
 
     it "returns true for owner" do
-      @user.stub(:project_info).and_return(project_with_owner_access)
+      allow(@user).to receive(:project_info).and_return(project_with_owner_access)
 
-      @user.has_developer_access?(1).should be_true
+      expect(@user.has_developer_access?(1)).to be_truthy
     end
   end
 
   describe "authorized_projects" do
-    let (:user) { User.new({}) }
+    let (:user) { described_class.new({}) }
 
     before do
       FactoryGirl.create :project, gitlab_id: 1
       FactoryGirl.create :project, gitlab_id: 2
       gitlab_project = OpenStruct.new({id: 1})
       gitlab_project1 = OpenStruct.new({id: 2})
-      User.any_instance.stub(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
+      allow_any_instance_of(described_class).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
     end
 
     it "returns projects" do
-      User.any_instance.stub(:can_manage_project?).and_return(true)
+      allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(true)
 
-      user.authorized_projects.count.should == 2
+      expect(user.authorized_projects.count).to eq 2
     end
 
     it "empty list if user miss manage permission" do
-      User.any_instance.stub(:can_manage_project?).and_return(false)
+      allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(false)
 
-      user.authorized_projects.count.should == 0
+      expect(user.authorized_projects.count).to eq 0
     end
   end
 
@@ -82,9 +82,9 @@ describe User do
       project1 = FactoryGirl.create :project, gitlab_id: 2
       gitlab_project = OpenStruct.new({id: 1})
       gitlab_project1 = OpenStruct.new({id: 2})
-      User.any_instance.stub(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
-      User.any_instance.stub(:can_manage_project?).and_return(true)
-      user = User.new({})
+      allow_any_instance_of(described_class).to receive(:gitlab_projects).and_return([gitlab_project, gitlab_project1])
+      allow_any_instance_of(described_class).to receive(:can_manage_project?).and_return(true)
+      user = described_class.new({})
 
       runner = FactoryGirl.create :specific_runner
       runner1 = FactoryGirl.create :specific_runner
@@ -93,8 +93,8 @@ describe User do
       project.runners << runner
       project1.runners << runner1
 
-      user.authorized_runners.should include(runner, runner1)
-      user.authorized_runners.should_not include(runner2)
+      expect(user.authorized_runners).to include(runner, runner1)
+      expect(user.authorized_runners).not_to include(runner2)
     end
   end
 end
