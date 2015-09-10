@@ -1,7 +1,10 @@
 v8.0.0 (unreleased)
 
-v7.14.2
+v7.14.3
   - Fix commits ordering when using PostgreSQL
+
+v7.14.2
+  - No changes
 
 v7.14.1
   - Fix skipped svg
