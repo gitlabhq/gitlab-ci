@@ -1,0 +1,12 @@
+# Look for the 'Drop indexes' line and mark it with 'a'
+/^-- Drop indexes --$/
+ka
+# Look for the 'END Drop indexes' line and mark it with 'b'
+/^-- END Drop indexes --$/
+kb
+# Move the 'Drop indexes'..'END Drop indexes' block after the line containing
+# 'SET CONSTRAINTS'.
+1
+/SET CONSTRAINTS/
+'a,'bm.
+wq
