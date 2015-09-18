@@ -63,6 +63,7 @@ module Backup
         abort "mysql-to-postgresql-converter failed"
       end
       $progress.puts '[DONE]'.green
+      FileUtils.rm_f(mysql_dump_gz) # save disk space during conversion
 
       $progress.print "Splicing in 'DROP INDEX' statements ... "
       statuses = Open3.pipeline(
