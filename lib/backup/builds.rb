@@ -21,6 +21,7 @@ module Backup
 
     def restore
       backup_existing_builds_dir
+      Dir.mkdir(app_builds_dir, 0700)
 
       system(
         *%W(tar -C #{app_builds_dir} -xzf - -- .),
