@@ -13,6 +13,9 @@ module Backup
       FileUtils.mkdir_p(File.dirname(backup_builds_tarball))
       FileUtils.rm_f(backup_builds_tarball)
 
+      # Use 'tar -czf -' instead of 'tar -cz' because on some systems the
+      # default behavior of tar is to talk to a tape device instead of
+      # stdin/stdout.
       system(
         *%W(tar -C #{app_builds_dir} -czf - -- .),
         out: [backup_builds_tarball, 'w', 0600]
@@ -23,6 +26,9 @@ module Backup
       backup_existing_builds_dir
       Dir.mkdir(app_builds_dir, 0700)
 
+      # Use 'tar -xzf -' instead of 'tar -xz' because on some systems the
+      # default behavior of tar is to talk to a tape device instead of
+      # stdin/stdout.
       system(
         *%W(tar -C #{app_builds_dir} -xzf - -- .),
         in: backup_builds_tarball

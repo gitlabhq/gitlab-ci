@@ -2,6 +2,7 @@ require 'yaml'
 
 module Backup
   class Database
+    # These are the final CI tables (final prior to integration in GitLab)
     TABLES = %w{
       ci_application_settings ci_builds ci_commits ci_events ci_jobs ci_projects 
       ci_runner_projects ci_runners ci_services ci_tags ci_taggings ci_trigger_requests 
