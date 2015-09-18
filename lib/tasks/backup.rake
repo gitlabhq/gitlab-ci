@@ -4,6 +4,10 @@ namespace :backup do
   task create: :environment do
     configure_cron_mode
 
+    $progress.puts "Applying final database migrations ... ".blue
+    Rake::Task['db:migrate'].invoke
+    $progress.puts "done".green
+
     $progress.puts "Dumping database ... ".blue
     Backup::Database.new.dump
     $progress.puts "done".green

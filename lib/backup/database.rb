@@ -7,7 +7,6 @@ module Backup
       ci_runner_projects ci_runners ci_services ci_tags ci_taggings ci_trigger_requests 
       ci_triggers ci_variables ci_web_hooks
     }
-    TABLES.map! { |t| t.sub('ci_', '') } # hack until Kamil's migration lands
 
     attr_reader :config, :db_dir
 
