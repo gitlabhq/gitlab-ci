@@ -11,19 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150824202238) do
+ActiveRecord::Schema.define(version: 20150914102123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "application_settings", force: true do |t|
+  create_table "ci_application_settings", force: true do |t|
     t.boolean  "all_broken_builds"
     t.boolean  "add_pusher"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "builds", force: true do |t|
+  create_table "ci_builds", force: true do |t|
     t.integer  "project_id"
     t.string   "status"
     t.datetime "finished_at"
@@ -44,12 +44,12 @@ ActiveRecord::Schema.define(version: 20150824202238) do
     t.integer  "trigger_request_id"
   end
 
-  add_index "builds", ["commit_id"], name: "index_builds_on_commit_id", using: :btree
-  add_index "builds", ["project_id", "commit_id"], name: "index_builds_on_project_id_and_commit_id", using: :btree
-  add_index "builds", ["project_id"], name: "index_builds_on_project_id", using: :btree
-  add_index "builds", ["runner_id"], name: "index_builds_on_runner_id", using: :btree
+  add_index "ci_builds", ["commit_id"], name: "index_ci_builds_on_commit_id", using: :btree
+  add_index "ci_builds", ["project_id", "commit_id"], name: "index_ci_builds_on_project_id_and_commit_id", using: :btree
+  add_index "ci_builds", ["project_id"], name: "index_ci_builds_on_project_id", using: :btree
+  add_index "ci_builds", ["runner_id"], name: "index_ci_builds_on_runner_id", using: :btree
 
-  create_table "commits", force: true do |t|
+  create_table "ci_commits", force: true do |t|
     t.integer  "project_id"
     t.string   "ref"
     t.string   "sha"
@@ -62,13 +62,13 @@ ActiveRecord::Schema.define(version: 20150824202238) do
     t.datetime "committed_at"
   end
 
-  add_index "commits", ["project_id", "committed_at", "id"], name: "index_commits_on_project_id_and_committed_at_and_id", using: :btree
-  add_index "commits", ["project_id", "committed_at"], name: "index_commits_on_project_id_and_committed_at", using: :btree
-  add_index "commits", ["project_id", "sha"], name: "index_commits_on_project_id_and_sha", using: :btree
-  add_index "commits", ["project_id"], name: "index_commits_on_project_id", using: :btree
-  add_index "commits", ["sha"], name: "index_commits_on_sha", using: :btree
+  add_index "ci_commits", ["project_id", "committed_at", "id"], name: "index_ci_commits_on_project_id_and_committed_at_and_id", using: :btree
+  add_index "ci_commits", ["project_id", "committed_at"], name: "index_ci_commits_on_project_id_and_committed_at", using: :btree
+  add_index "ci_commits", ["project_id", "sha"], name: "index_ci_commits_on_project_id_and_sha", using: :btree
+  add_index "ci_commits", ["project_id"], name: "index_ci_commits_on_project_id", using: :btree
+  add_index "ci_commits", ["sha"], name: "index_ci_commits_on_sha", using: :btree
 
-  create_table "events", force: true do |t|
+  create_table "ci_events", force: true do |t|
     t.integer  "project_id"
     t.integer  "user_id"
     t.integer  "is_admin"
@@ -77,11 +77,11 @@ ActiveRecord::Schema.define(version: 20150824202238) do
     t.datetime "updated_at"
   end
 
-  add_index "events", ["created_at"], name: "index_events_on_created_at", using: :btree
-  add_index "events", ["is_admin"], name: "index_events_on_is_admin", using: :btree
-  add_index "events", ["project_id"], name: "index_events_on_project_id", using: :btree
+  add_index "ci_events", ["created_at"], name: "index_ci_events_on_created_at", using: :btree
+  add_index "ci_events", ["is_admin"], name: "index_ci_events_on_is_admin", using: :btree
+  add_index "ci_events", ["project_id"], name: "index_ci_events_on_project_id", using: :btree
 
-  create_table "jobs", force: true do |t|
+  create_table "ci_jobs", force: true do |t|
     t.integer  "project_id",                          null: false
     t.text     "commands"
     t.boolean  "active",         default: true,       null: false
@@ -95,10 +95,10 @@ ActiveRecord::Schema.define(version: 20150824202238) do
     t.datetime "deleted_at"
   end
 
-  add_index "jobs", ["deleted_at"], name: "index_jobs_on_deleted_at", using: :btree
-  add_index "jobs", ["project_id"], name: "index_jobs_on_project_id", using: :btree
+  add_index "ci_jobs", ["deleted_at"], name: "index_ci_jobs_on_deleted_at", using: :btree
+  add_index "ci_jobs", ["project_id"], name: "index_ci_jobs_on_project_id", using: :btree
 
-  create_table "projects", force: true do |t|
+  create_table "ci_projects", force: true do |t|
     t.string   "name",                                     null: false
     t.integer  "timeout",                  default: 3600,  null: false
     t.datetime "created_at"
@@ -121,17 +121,17 @@ ActiveRecord::Schema.define(version: 20150824202238) do
     t.text     "generated_yaml_config"
   end
 
-  create_table "runner_projects", force: true do |t|
+  create_table "ci_runner_projects", force: true do |t|
     t.integer  "runner_id",  null: false
     t.integer  "project_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "runner_projects", ["project_id"], name: "index_runner_projects_on_project_id", using: :btree
-  add_index "runner_projects", ["runner_id"], name: "index_runner_projects_on_runner_id", using: :btree
+  add_index "ci_runner_projects", ["project_id"], name: "index_ci_runner_projects_on_project_id", using: :btree
+  add_index "ci_runner_projects", ["runner_id"], name: "index_ci_runner_projects_on_runner_id", using: :btree
 
-  create_table "runners", force: true do |t|
+  create_table "ci_runners", force: true do |t|
     t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(version: 20150824202238) do
     t.string   "architecture"
   end
 
-  create_table "services", force: true do |t|
+  create_table "ci_services", force: true do |t|
     t.string   "type"
     t.string   "title"
     t.integer  "project_id",                 null: false
@@ -156,7 +156,63 @@ ActiveRecord::Schema.define(version: 20150824202238) do
     t.text     "properties"
   end
 
-  add_index "services", ["project_id"], name: "index_services_on_project_id", using: :btree
+  add_index "ci_services", ["project_id"], name: "index_ci_services_on_project_id", using: :btree
+
+  create_table "ci_taggings", force: true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+  end
+
+  add_index "ci_taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
+  add_index "ci_taggings", ["taggable_id", "taggable_type", "context"], name: "index_ci_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+
+  create_table "ci_tags", force: true do |t|
+    t.string  "name"
+    t.integer "taggings_count", default: 0
+  end
+
+  add_index "ci_tags", ["name"], name: "index_ci_tags_on_name", unique: true, using: :btree
+
+  create_table "ci_trigger_requests", force: true do |t|
+    t.integer  "trigger_id", null: false
+    t.text     "variables"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "commit_id"
+  end
+
+  create_table "ci_triggers", force: true do |t|
+    t.string   "token"
+    t.integer  "project_id", null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ci_triggers", ["deleted_at"], name: "index_ci_triggers_on_deleted_at", using: :btree
+
+  create_table "ci_variables", force: true do |t|
+    t.integer "project_id",           null: false
+    t.string  "key"
+    t.text    "value"
+    t.text    "encrypted_value"
+    t.string  "encrypted_value_salt"
+    t.string  "encrypted_value_iv"
+  end
+
+  add_index "ci_variables", ["project_id"], name: "index_ci_variables_on_project_id", using: :btree
+
+  create_table "ci_web_hooks", force: true do |t|
+    t.string   "url",        null: false
+    t.integer  "project_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
@@ -167,61 +223,5 @@ ActiveRecord::Schema.define(version: 20150824202238) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
-
-  create_table "taggings", force: true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "context",       limit: 128
-    t.datetime "created_at"
-  end
-
-  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
-
-  create_table "tags", force: true do |t|
-    t.string  "name"
-    t.integer "taggings_count", default: 0
-  end
-
-  add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
-
-  create_table "trigger_requests", force: true do |t|
-    t.integer  "trigger_id", null: false
-    t.text     "variables"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "commit_id"
-  end
-
-  create_table "triggers", force: true do |t|
-    t.string   "token"
-    t.integer  "project_id", null: false
-    t.datetime "deleted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "triggers", ["deleted_at"], name: "index_triggers_on_deleted_at", using: :btree
-
-  create_table "variables", force: true do |t|
-    t.integer "project_id",           null: false
-    t.string  "key"
-    t.text    "value"
-    t.text    "encrypted_value"
-    t.string  "encrypted_value_salt"
-    t.string  "encrypted_value_iv"
-  end
-
-  add_index "variables", ["project_id"], name: "index_variables_on_project_id", using: :btree
-
-  create_table "web_hooks", force: true do |t|
-    t.string   "url",        null: false
-    t.integer  "project_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
 end
