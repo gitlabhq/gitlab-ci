@@ -15,7 +15,7 @@ import time
 import subprocess
 
 
-def parse(input_filename, output_filename):
+def parse(input_filename, output_filename, drop_index_filename):
     "Feed it a file, and it'll output a fixed one"
 
     # State storage
@@ -43,6 +43,8 @@ def parse(input_filename, output_filename):
     else:
         output = open(output_filename, "w")
         logging = sys.stdout
+
+    drop_index = open(drop_index_filename, "w")
 
     if input_filename == "-":
         input_fh = sys.stdin
@@ -234,12 +236,9 @@ def parse(input_filename, output_filename):
     for line in sequence_lines:
         output.write("%s;\n" % line)
 
-    # This line is an anchor for move_drop_indexes.ed
-    output.write("\n-- Drop indexes --\n")
+    drop_index.write("-- Drop indexes --\n")
     for line in drop_index_lines:
-        output.write("%s;\n" % line)
-    # This line is an anchor for move_drop_indexes.ed
-    output.write("-- END Drop indexes --\n")
+        drop_index.write("%s;\n" % line)
 
     # Write indexes out
     output.write("\n-- Indexes --\n")
@@ -253,4 +252,4 @@ def parse(input_filename, output_filename):
 
 
 if __name__ == "__main__":
-    parse(sys.argv[1], sys.argv[2])
+    parse(sys.argv[1], sys.argv[2], sys.argv[3])

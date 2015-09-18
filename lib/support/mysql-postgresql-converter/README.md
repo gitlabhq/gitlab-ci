@@ -35,17 +35,14 @@ First, dump your MySQL database in PostgreSQL-compatible format
 
 Then, convert it using the dbconverter.py script.
 
-    python db_converter.py databasename.mysql databasename.psql
+    python db_converter.py databasename.mysql - drop_indexes.sql | gzip -c > databasename.unfinished.psql.gz
 
 It'll print progress to the terminal
 
 Now we have a DB dump that can be imported but the dump will be slow due
-to existing indexes. We use 'ed' to edit the DB dump file and move the
-'DROP INDEX' statements to the start of the import. Ed is not the fastest
-tool for this job if your DB dump is multiple gigabytes. (Patches to
-the converter are welcome!)
+to existing indexes.
 
-    ed -s databasename.psql < move_drop_indexes.ed
+    ./splice_drop_indexes databasename.unfinished.psql.gz drop_indexes.sql > databasename.psql
 
 Next, load your new dump into a fresh PostgreSQL database using: 
 

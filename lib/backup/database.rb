@@ -1,4 +1,5 @@
 require 'yaml'
+require 'open3'
 
 module Backup
   class Database
@@ -17,7 +18,7 @@ module Backup
       FileUtils.mkdir_p(@db_dir) unless Dir.exists?(@db_dir)
     end
 
-    def dump
+    def dump(mysql_to_postgresql=false)
       FileUtils.rm_f(db_file_name)
       compress_rd, compress_wr = IO.pipe
       compress_pid = spawn(*%W(gzip -c), in: compress_rd, out: [db_file_name, 'w', 0600])
@@ -26,7 +27,9 @@ module Backup
       dump_pid = case config["adapter"]
       when /^mysql/ then
         $progress.print "Dumping MySQL database #{config['database']} ... "
-        spawn('mysqldump', *mysql_args, config['database'], *TABLES, out: compress_wr)
+        args = mysql_args
+        args << '--compatible=postgresql' if mysql_to_postgresql
+        spawn('mysqldump', *args, config['database'], *TABLES, out: compress_wr)
       when "postgresql" then
         $progress.print "Dumping PostgreSQL database #{config['database']} ... "
         pg_env
@@ -38,6 +41,42 @@ module Backup
 
       report_success(success)
       abort 'Backup failed' unless success
+      convert_to_postgresql if mysql_to_postgresql
+    end
+
+    def convert_to_postgresql
+      mysql_dump_gz = db_file_name + '.mysql'
+      psql_dump_gz = db_file_name + '.psql'
+      drop_indexes_sql = File.join(db_dir, 'drop_indexes.sql')
+
+      File.rename(db_file_name, mysql_dump_gz)
+
+      $progress.print "Converting MySQL database dump to Postgres ... "
+      statuses = Open3.pipeline(
+        %W(gzip -cd #{mysql_dump_gz}),
+        %W(python lib/support/mysql-postgresql-converter/db_converter.py - - #{drop_indexes_sql}),
+        %W(gzip -c),
+        out: [psql_dump_gz, 'w', 0600]
+      )
+
+      if !statuses.compact.all?(&:success?)
+        abort "mysql-to-postgresql-converter failed"
+      end
+      $progress.puts '[DONE]'.green
+
+      $progress.print "Splicing in 'DROP INDEX' statements ... "
+      statuses = Open3.pipeline(
+        %W(lib/support/mysql-postgresql-converter/splice_drop_indexes #{psql_dump_gz} #{drop_indexes_sql}),
+        %W(gzip -c),
+        out: [db_file_name, 'w', 0600]
+      )
+      if !statuses.compact.all?(&:success?)
+        abort "Failed to splice in 'DROP INDEXES' statements"
+      end
+
+      $progress.puts '[DONE]'.green
+    ensure
+      FileUtils.rm_f([mysql_dump_gz, psql_dump_gz, drop_indexes_sql])
     end
 
     def restore
