@@ -2,6 +2,13 @@ require 'yaml'
 
 module Backup
   class Database
+    TABLES = %w{
+      ci_application_settings ci_builds ci_commits ci_events ci_jobs ci_projects 
+      ci_runner_projects ci_runners ci_services ci_tags ci_taggings ci_trigger_requests 
+      ci_triggers ci_variables ci_web_hooks
+    }
+    TABLES.map! { |t| t.sub('ci_', '') } # hack until Kamil's migration lands
+
     attr_reader :config, :db_dir
 
     def initialize
@@ -19,11 +26,11 @@ module Backup
       dump_pid = case config["adapter"]
       when /^mysql/ then
         $progress.print "Dumping MySQL database #{config['database']} ... "
-        spawn('mysqldump', *mysql_args, config['database'], out: compress_wr)
+        spawn('mysqldump', *mysql_args, config['database'], *TABLES, out: compress_wr)
       when "postgresql" then
         $progress.print "Dumping PostgreSQL database #{config['database']} ... "
         pg_env
-        spawn('pg_dump', config['database'], out: compress_wr)
+        spawn('pg_dump', '--clean', *TABLES.map { |t| "--table=#{t}" }, config['database'], out: compress_wr)
       end
       compress_wr.close
 
@@ -44,10 +51,6 @@ module Backup
         spawn('mysql', *mysql_args, config['database'], in: decompress_rd)
       when "postgresql" then
         $progress.print "Restoring PostgreSQL database #{config['database']} ... "
-        # Drop all tables because PostgreSQL DB dumps do not contain DROP TABLE
-        # statements like MySQL.
-        drop_all_tables
-        drop_all_postgres_sequences
         pg_env
         spawn('psql', config['database'], in: decompress_rd)
       end
@@ -89,20 +92,6 @@ module Backup
         $progress.puts '[DONE]'.green
       else
         $progress.puts '[FAILED]'.red
-      end
-    end
-
-    def drop_all_tables
-      connection = ActiveRecord::Base.connection
-      connection.tables.each do |table|
-        connection.drop_table(table)
-      end
-    end
-
-    def drop_all_postgres_sequences
-      connection = ActiveRecord::Base.connection
-      connection.execute("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';").each do |sequence|
-        connection.execute("DROP SEQUENCE #{sequence['relname']}")
       end
     end
   end
