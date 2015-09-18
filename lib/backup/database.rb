@@ -21,7 +21,7 @@ module Backup
     def dump(mysql_to_postgresql=false)
       FileUtils.rm_f(db_file_name)
       compress_rd, compress_wr = IO.pipe
-      compress_pid = spawn(*%W(gzip -c), in: compress_rd, out: [db_file_name, 'w', 0600])
+      compress_pid = spawn(*%W(gzip -1 -c), in: compress_rd, out: [db_file_name, 'w', 0600])
       compress_rd.close
 
       dump_pid = case config["adapter"]
@@ -55,7 +55,7 @@ module Backup
       statuses = Open3.pipeline(
         %W(gzip -cd #{mysql_dump_gz}),
         %W(python lib/support/mysql-postgresql-converter/db_converter.py - - #{drop_indexes_sql}),
-        %W(gzip -c),
+        %W(gzip -1 -c),
         out: [psql_dump_gz, 'w', 0600]
       )
 
@@ -67,7 +67,7 @@ module Backup
       $progress.print "Splicing in 'DROP INDEX' statements ... "
       statuses = Open3.pipeline(
         %W(lib/support/mysql-postgresql-converter/splice_drop_indexes #{psql_dump_gz} #{drop_indexes_sql}),
-        %W(gzip -c),
+        %W(gzip -1 -c),
         out: [db_file_name, 'w', 0600]
       )
       if !statuses.compact.all?(&:success?)
