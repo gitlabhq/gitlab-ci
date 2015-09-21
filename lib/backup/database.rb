@@ -33,7 +33,7 @@ module Backup
       when "postgresql" then
         $progress.print "Dumping PostgreSQL database #{config['database']} ... "
         pg_env
-        spawn('pg_dump', '--clean', *TABLES.map { |t| "--table=#{t}" }, config['database'], out: compress_wr)
+        spawn('pg_dump', '--no-owner', '--clean', *TABLES.map { |t| "--table=#{t}" }, config['database'], out: compress_wr)
       end
       compress_wr.close
 
@@ -41,7 +41,10 @@ module Backup
 
       report_success(success)
       abort 'Backup failed' unless success
-      convert_to_postgresql if mysql_to_postgresql
+
+      if mysql_to_postgresql && config["adapter"] =~ /^mysql/
+        convert_to_postgresql
+      end
     end
 
     def convert_to_postgresql
