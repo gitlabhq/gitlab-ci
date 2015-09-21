@@ -7,7 +7,7 @@ module Backup
       s[:backup_created_at]  = Time.now
       s[:gitlab_version]     = GitlabCi::VERSION
       s[:tar_version]        = tar_version
-      tar_file = "#{s[:backup_created_at].to_i}_gitlab_ci_backup.tar.gz"
+      tar_file = "#{s[:backup_created_at].to_i}_gitlab_ci_backup.tar"
 
       Dir.chdir(GitlabCi.config.backup.path) do
         File.open("#{GitlabCi.config.backup.path}/backup_information.yml",
@@ -20,7 +20,7 @@ module Backup
         # create archive
         $progress.print "Creating backup archive: #{tar_file} ... "
         orig_umask = File.umask(0077)
-        if Kernel.system('tar', '-czf', tar_file, *backup_contents)
+        if Kernel.system('tar', '-cf', tar_file, *backup_contents)
           $progress.puts "done".green
         else
           puts "creating archive #{tar_file} failed".red
@@ -78,11 +78,11 @@ module Backup
         removed = 0
         
         Dir.chdir(GitlabCi.config.backup.path) do
-          file_list = Dir.glob('*_gitlab_ci_backup.tar.gz')
-          file_list.map! { |f| $1.to_i if f =~ /(\d+)_gitlab_ci_backup.tar.gz/ }
+          file_list = Dir.glob('*_gitlab_ci_backup.tar')
+          file_list.map! { |f| $1.to_i if f =~ /(\d+)_gitlab_ci_backup.tar/ }
           file_list.sort.each do |timestamp|
             if Time.at(timestamp) < (Time.now - keep_time)
-              if Kernel.system(*%W(rm #{timestamp}_gitlab_ci_backup.tar.gz))
+              if Kernel.system(*%W(rm #{timestamp}_gitlab_ci_backup.tar))
                 removed += 1
               end
             end
@@ -99,7 +99,7 @@ module Backup
       Dir.chdir(GitlabCi.config.backup.path)
 
       # check for existing backups in the backup dir
-      file_list = Dir.glob("*_gitlab_ci_backup.tar.gz").each.map { |f| f.split(/_/).first.to_i }
+      file_list = Dir.glob("*_gitlab_ci_backup.tar").each.map { |f| f.split(/_/).first.to_i }
       puts "no backups found" if file_list.count == 0
 
       if file_list.count > 1 && ENV["BACKUP"].nil?
@@ -108,7 +108,7 @@ module Backup
         exit 1
       end
 
-      tar_file = ENV["BACKUP"].nil? ? File.join("#{file_list.first}_gitlab_ci_backup.tar.gz") : File.join(ENV["BACKUP"] + "_gitlab_ci_backup.tar.gz")
+      tar_file = ENV["BACKUP"].nil? ? File.join("#{file_list.first}_gitlab_ci_backup.tar") : File.join(ENV["BACKUP"] + "_gitlab_ci_backup.tar")
 
       unless File.exists?(tar_file)
         puts "The specified backup doesn't exist!"
@@ -117,7 +117,7 @@ module Backup
 
       $progress.print "Unpacking backup ... "
 
-      unless Kernel.system(*%W(tar -xzf #{tar_file}))
+      unless Kernel.system(*%W(tar -xf #{tar_file}))
         puts "unpacking backup failed".red
         exit 1
       else

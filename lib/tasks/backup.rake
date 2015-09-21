@@ -3,9 +3,14 @@ namespace :backup do
   desc "GITLAB | Create a backup of the GitLab CI database"
   task create: :environment do
     configure_cron_mode
+    mysql_to_postgresql = (ENV['MYSQL_TO_POSTGRESQL'] == '1')
+
+    $progress.puts "Applying final database migrations ... ".blue
+    Rake::Task['db:migrate'].invoke
+    $progress.puts "done".green
 
     $progress.puts "Dumping database ... ".blue
-    Backup::Database.new.dump
+    Backup::Database.new.dump(mysql_to_postgresql)
     $progress.puts "done".green
 
     $progress.puts "Dumping builds ... ".blue
