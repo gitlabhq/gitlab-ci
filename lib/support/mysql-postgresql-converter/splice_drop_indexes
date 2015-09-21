@@ -15,7 +15,7 @@ if [ -z "$db_gz" ] || [ -z "$drop_indexes_sql" ] ; then
 fi
 
 # Capture all text up to the first occurence of 'SET CONSTRAINTS'
-preamble=$(zcat "$db_gz" | sed '/SET CONSTRAINTS/q')
+preamble=$(gzip -cd "$db_gz" | sed '/SET CONSTRAINTS/q')
 if [ -z "$preamble" ] ; then
   fail "Could not read preamble"
 fi
@@ -34,4 +34,4 @@ EOF
 
 # Print the rest of database.sql.gz. I don't understand this awk script but it
 # prints all lines after the first match of 'SET CONSTRAINTS'.
-zcat "$db_gz" | awk 'f; /SET CONSTRAINTS/ { f = 1 }'
+gzip -cd "$db_gz" | awk 'f; /SET CONSTRAINTS/ { f = 1 }'
