@@ -30,6 +30,30 @@ namespace :backup do
     $progress.puts
   end
 
+  desc "GITLAB | Show database secrets"
+  task show_secrets: :environment do
+    configure_cron_mode
+    $progress.puts <<-EOS
+
+If you are moving to a GitLab installation installed from source, replace the
+contents of /home/git/gitlab/config/secrets.yml with the following:
+
+
+---
+production:
+  db_key_base: #{JSON.dump(GitlabCi::Application.secrets.db_key_base)}
+
+
+If your GitLab server uses Omnibus packages, add the following line to
+/etc/gitlab/gitlab.rb:
+
+
+gitlab_rails['db_key_base'] = #{GitlabCi::Application.secrets.db_key_base.inspect}
+
+
+EOS
+  end
+
   desc "GITLAB | Restore a previously created backup"
   task restore: :environment do
     configure_cron_mode
