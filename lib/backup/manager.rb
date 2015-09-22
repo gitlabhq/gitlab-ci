@@ -19,14 +19,12 @@ module Backup
 
         # create archive
         $progress.print "Creating backup archive: #{tar_file} ... "
-        orig_umask = File.umask(0077)
         if Kernel.system('tar', '-cf', tar_file, *backup_contents)
           $progress.puts "done".green
         else
           puts "creating archive #{tar_file} failed".red
           abort 'Backup failed'
         end
-        File.umask(orig_umask)
 
         upload(tar_file)
       end
