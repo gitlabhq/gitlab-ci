@@ -30,7 +30,7 @@ module Backup
       # default behavior of tar is to talk to a tape device instead of
       # stdin/stdout.
       system(
-        *%W(tar -C #{app_builds_dir} -xzf - -- .),
+        *%W(tar -C #{app_builds_dir} -xzf -),
         in: backup_builds_tarball
       )
     end

@@ -18,9 +18,40 @@ namespace :backup do
     $progress.puts "done".green
 
     backup = Backup::Manager.new
-    backup.pack
+    tar_file = backup.pack
     backup.cleanup
     backup.remove_old
+
+    # Relax backup directory permissions to make the migration easier
+    File.chmod(0755, GitlabCi.config.backup.path)
+
+    $progress.puts "\n\nYour final CI export is in the following file:\n\n"
+    system(*%W(ls -lh #{tar_file}))
+    $progress.puts
+  end
+
+  desc "GITLAB | Show database secrets"
+  task show_secrets: :environment do
+    configure_cron_mode
+    $progress.puts <<-EOS
+
+If you are moving to a GitLab installation installed from source, replace the
+contents of /home/git/gitlab/config/secrets.yml with the following:
+
+
+---
+production:
+  db_key_base: #{JSON.dump(GitlabCi::Application.secrets.db_key_base)}
+
+
+If your GitLab server uses Omnibus packages, add the following line to
+/etc/gitlab/gitlab.rb:
+
+
+gitlab_rails['db_key_base'] = #{GitlabCi::Application.secrets.db_key_base.inspect}
+
+
+EOS
   end
 
   desc "GITLAB | Restore a previously created backup"
