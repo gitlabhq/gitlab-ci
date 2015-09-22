@@ -154,7 +154,7 @@ If you are courageous enough, you can make it fully open and accept everything:
 ```
 [runners.docker]
   image = "ruby:2.1"
-  allowed_images = ["*", "*/*"]
+  allowed_images = ["*", "*/*", "*/*/*"]
   allowed_services = ["*", "*/*"]
 ```
 
