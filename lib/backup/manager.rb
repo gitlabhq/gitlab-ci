@@ -30,6 +30,7 @@ module Backup
 
         upload(tar_file)
       end
+      File.join(GitlabCi.config.backup.path, tar_file)
     end
 
     def upload(tar_file)

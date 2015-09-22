@@ -18,12 +18,16 @@ namespace :backup do
     $progress.puts "done".green
 
     backup = Backup::Manager.new
-    backup.pack
+    tar_file = backup.pack
     backup.cleanup
     backup.remove_old
 
     # Relax backup directory permissions to make the migration easier
     File.chmod(0755, GitlabCi.config.backup.path)
+
+    $progress.puts "\n\nYour final CI export is in the following file:\n\n"
+    $progress.puts tar_file
+    $progress.puts
   end
 
   desc "GITLAB | Restore a previously created backup"
