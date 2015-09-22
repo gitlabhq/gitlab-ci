@@ -1,4 +1,8 @@
-v8.0.0 (unreleased)
+v8.0.1
+  - Improve CI migration procedure
+
+v8.0.0
+  - Preparation for CI migration
 
 v7.14.3
   - Fix commits ordering when using PostgreSQL
