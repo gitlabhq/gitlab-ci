@@ -21,6 +21,9 @@ namespace :backup do
     backup.pack
     backup.cleanup
     backup.remove_old
+
+    # Relax backup directory permissions to make the migration easier
+    File.chmod(0755, GitlabCi.config.backup.path)
   end
 
   desc "GITLAB | Restore a previously created backup"
