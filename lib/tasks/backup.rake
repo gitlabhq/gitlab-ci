@@ -26,7 +26,7 @@ namespace :backup do
     File.chmod(0755, GitlabCi.config.backup.path)
 
     $progress.puts "\n\nYour final CI export is in the following file:\n\n"
-    $progress.puts tar_file
+    system(*%W(ls -lh #{tar_file}))
     $progress.puts
   end
 
