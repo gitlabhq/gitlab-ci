@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -f /.dockerinit ]; then
+if [ -f /.dockerenv ]; then
     export FLAGS=(--deployment --path /cache)
 
     apt-get update -qq
