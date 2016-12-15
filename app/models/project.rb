@@ -129,6 +129,10 @@ ls -la
 
     shared_runners_enabled && Runner.shared.active.any?
   end
+  
+  def last_build
+    builds.last
+  end
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
