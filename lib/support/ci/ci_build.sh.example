@@ -1,0 +1,119 @@
+#! /bin/bash
+
+# This CI build script is invoked by GitLab CI on each build run and meant to be project specific.
+# The script will run common build tasks (bundle install, rake db:setup and rake rspec) 
+# upon each invocation, but you may easily modify the build() function to add your
+# own steps.
+#
+# Tested on: Mac OS X 10.8.5 and Ubuntu Server 12.04 
+#
+# I. Prerequisites
+# -----------------
+# The script uses mutt email client (https://wiki.ubuntu.com/Mutt) for HTML email notificaton. 
+# Make sure to install it first and run some command line tests to verify its functionality. 
+# Detail docs: http://www.mutt.org/doc/manual/
+#
+# On a Mac OS X (via brew):
+# $ brew install mutt
+#
+# On Ubuntu:
+# $ sudo apt-get install mutt
+#
+# And of course, you have to have GitLab CI installed and tiggered upon each push to remote
+#
+# II. CI Build Script Installation steps
+# --------------------------------------
+# 1. Copy this script to your Rails app project support directory as ci_build.sh (e.g. lib/support/ci/ci_build.sh)
+# 2. Modify variables at the top of the scipt to match your project and save it
+# 3. Go to yor project GitLab CI settings (e.g. http://ci.colddata.com/projects/1/edit) 
+# 4. In text area under "Scripts" add the following:
+#    ./lib/support/ci/ci_build.sh 
+#
+# III. Post-install test
+# ----------------------
+# 1. Push your project to remote repository to trigger a CI build. If all configured properly, 
+# your failing build should trigger email to $MAIL_TO recipients (and $MAIL_CC, if set). Your
+# passing buil should not trigger any emails. 
+# 2. Check each build output in GitLab CI to ensure there are no errors
+#
+# Author: colddata
+# Version: 1.0
+
+RAILS_ENV="test"
+BUNDLE_GEMFILE_PATH=$BUNDLE_GEMFILE
+CI_BUILD_ID=$CI_BUILD_ID
+CI_BUILD_REF=$CI_BUILD_REF
+CI_BUILD_BRANCH=$CI_BUILD_REF_NAME
+CI_BUILD_DIR=$PWD
+CI_BUILD_EXIT_CODE=0
+CI_HTTP_HOST="http://[Your GitLab CI host]"
+CI_BUILD_PROJECT_Name="[Your project name]"
+CI_BUILD_LOG=
+CI_BUILD_PROJECT_NBR=
+MAIL_FROM="[Sender's email]"
+MAIL_TO="$(git show  --pretty=tformat:%ae $CI_BUILD_REF | head -n 1)" # email of commit author
+MAIL_CC=
+
+# Optional CC: recipients
+#MAIL_CC="[Failed build email cc: recipient]" 
+
+# Extract project number from the Gemfile path
+[[ "$BUNDLE_GEMFILE_PATH" =~ \/builds\/project-(.*)\/Gemfile$ ]] && CI_BUILD_PROJECT_NBR=${BASH_REMATCH[1]}
+
+notify() {
+  echo "$CI_BUILD_LOG" | mutt -e 'set content_type="text/html"' -e "my_hdr From:$MAIL_FROM" -e "my_hdr Importance: High" $MAIL_TO ${MAIL_CC:+-c $MAIL_CC} -s "FAILED Build $CI_BUILD_ID in Gitlab CI for $CI_BUILD_PROJECT_Name"
+}
+
+prep_log() {
+  CI_BUILD_LOG+="<br/><br/><a href=\"$CI_HTTP_HOST/projects/$CI_BUILD_PROJECT_NBR/builds/$CI_BUILD_REF\">See full build info at GitLab CI</a>"
+  CI_BUILD_LOG="${CI_BUILD_LOG//$'\n'/<br/>}"
+}
+
+build() {
+
+  # Print environment info
+  echo;
+  env;
+
+  echo;
+  gem env;
+
+  echo -e "\nCI_BUILD_PROJECT_NBR=$CI_BUILD_PROJECT_NBR"
+  echo "CI_BUILD_ID=$CI_BUILD_ID"
+  echo "CI_BUILD_REF=$CI_BUILD_REF"
+  echo "CI_BUILD_BRANCH=$CI_BUILD_REF_NAME"
+  echo "CI_BUILD_DIR=$CI_BUILD_DIR"
+  echo "CI_HTTP_HOST=$CI_HTTP_HOST"
+  echo "MAIL_TO=$MAIL_TO"
+  echo "MAIL_CC=$MAIL_CC"
+
+  CI_BUILD_LOG="$(echo -e "\n1. Running bundle install...")"
+  CI_BUILD_LOG+="$(echo -e "\n"; RAILS_ENV=$RAILS_ENV bundle install;)"
+  [ $? -ne 0 ] && CI_BUILD_EXIT_CODE=1 && return
+
+  CI_BUILD_LOG+=$(echo -e "\n\n2. Starting DB setup...")
+  CI_BUILD_LOG+=$(echo -e "\n"; RAILS_ENV=$RAILS_ENV bundle exec rake db:setup;)
+  [ $? -ne 0 ] && CI_BUILD_EXIT_CODE=1 && return
+
+  CI_BUILD_LOG+="$(echo -e "\n\n3. Running specs...")"
+  CI_BUILD_LOG+="$(echo -e "\n"; RAILS_ENV=$RAILS_ENV bundle exec rake spec;)"
+  [ $? -ne 0 ] && CI_BUILD_EXIT_CODE=1 && return
+
+  # If we got here, then build passed
+  CI_BUILD_LOG+="$(echo -e "\nYeeeeah! The build has passed. Looking good.")"
+}
+
+# Execute build commands
+echo -e "\nStarting the build..."
+build
+echo "$CI_BUILD_LOG"
+
+# Do what you need here when a given build fails
+if [ $CI_BUILD_EXIT_CODE -ne 0 ]; then
+  echo "Notifying ${MAIL_TO}${MAIL_CC:+ and $MAIL_CC} about the failed build..."
+  prep_log
+  notify
+fi
+
+echo "Exiting with code: $CI_BUILD_EXIT_CODE"
+exit $CI_BUILD_EXIT_CODE
