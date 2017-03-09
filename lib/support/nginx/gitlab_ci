@@ -3,7 +3,7 @@
 # App Version: 2.0
 
 upstream gitlab_ci {
-  server unix:/home/gitlab_ci/gitlab-ci/tmp/sockets/gitlab-ci.socket;
+  server unix:/home/gitlab_ci/gitlab-ci/tmp/sockets/gitlab-ci.socket fail_timeout=0;
 }
 
 server {
